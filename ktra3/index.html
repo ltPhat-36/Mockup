@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>HUNRE - Quản lý Sách</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: #f4fdf6;
+      color: #333;
+      margin: 0;
+    }
+
+    /* ===== Header ===== */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: #34d399;
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header img {
+      height: 45px;
+      background-color: #e6f4ea;
+      border-radius: 8px;
+      padding: 4px;
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    header nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+    header nav a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+    header nav a.active {
+      background: #059669;
+      font-weight: 600;
+    }
+    header nav input {
+      border-radius: 20px;
+      padding: 4px 12px;
+      border: none;
+      font-size: 0.85rem;
+      outline: none;
+      min-width: 160px;
+      color: #333;
+    }
+
+    /* Heading */
+    h2 {
+      font-weight: 600;
+      color: #14532d;
+      margin: 30px 0 20px;
+    }
+
+    /* Form */
+    form {
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .invalid-feedback {
+      color: #b91c1c;
+      font-size: 0.85rem;
+    }
+
+    /* Table */
+    table {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    thead {
+      background: #ecfdf5 !important;
+      color: #065f46;
+    }
+    tbody tr:hover td {
+      background: #f0fdf4;
+    }
+
+    /* Pagination */
+    #pagination button {
+      margin: 0 3px;
+      padding: 5px 12px;
+      border-radius: 5px;
+      border: 1px solid #34d399;
+      background: #fff;
+      color: #34d399;
+    }
+    #pagination button.active {
+      background: #34d399;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <img src="logoHUNRE.png" alt="Logo">
+      <h1>HUNRE - Quản lý Sách</h1>
+    </div>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="#">Giảng viên</a>
+      <a href="#">Sinh viên</a>
+      <a href="#">Báo cáo</a>
+      <input id="searchInput" type="text" placeholder="Tìm nhanh..."> <!-- 🔍 Search input -->
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2 class="text-center">Danh sách Sách</h2>
+
+    <!-- API Key -->
+    <div class="mb-3">
+      <label for="apiKey" class="form-label">API Key (mã sinh viên) — dùng cho Add/Edit/Delete</label>
+      <input id="apiKey" class="form-control" placeholder="S12345678" />
+      <small class="text-muted">Header: X-API-KEY</small>
+    </div>
+
+    <!-- Form -->
+    <form id="bookForm" class="row g-3 mb-4">
+      <div class="col-md-2">
+        <label class="form-label">Mã sách</label>
+        <input id="ma_sach" class="form-control" maxlength="6" placeholder="S00001" required />
+        <div class="invalid-feedback" id="ma_sach_err"></div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Tên sách</label>
+        <input id="ten_sach" class="form-control" required minlength="2" />
+        <div class="invalid-feedback" id="ten_sach_err"></div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Tác giả</label>
+        <input id="tac_gia" class="form-control" required minlength="2" />
+        <div class="invalid-feedback" id="tac_gia_err"></div>
+      </div>
+      <!-- ✅ Thêm cột Thể loại -->
+      <div class="col-md-3">
+        <label class="form-label">Thể loại</label>
+        <input id="the_loai" class="form-control" required maxlength="30" />
+        <div class="invalid-feedback" id="the_loai_err"></div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Năm xuất bản</label>
+        <input id="nam_xuat_ban" type="number" class="form-control" min="1900" required />
+        <div class="invalid-feedback" id="nam_err"></div>
+      </div>
+      <div class="col-md-1">
+        <label class="form-label">Số lượng</label>
+        <input id="so_luong" type="number" step="any" class="form-control" min="0.0000001" required />
+        <div class="invalid-feedback" id="sl_err"></div>
+      </div>
+      <div class="col-12">
+        <button id="btnAdd" type="button" class="btn btn-success">Thêm</button>
+        <button id="btnUpdate" type="button" class="btn btn-warning">Sửa</button>
+        <button id="btnClear" type="button" class="btn btn-secondary">Clear</button>
+      </div>
+    </form>
+
+    <!-- Table -->
+    <table class="table table-bordered" id="booksTable">
+      <thead>
+        <tr>
+          <th>Mã</th><th>Tên</th><th>Tác giả</th><th>Thể loại</th><th>Năm</th><th>Số lượng</th><th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="pagination" class="text-center my-3"></div>
+  </div>
+
+<script>
+  const baseUrl = 'http://localhost:8080/api/books';
+  const apiKeyInput = document.getElementById('apiKey');
+  const maInput = document.getElementById('ma_sach');
+  const tenInput = document.getElementById('ten_sach');
+  const tacGiaInput = document.getElementById('tac_gia');
+  const theLoaiInput = document.getElementById('the_loai'); // ✅ thêm biến
+  const namInput = document.getElementById('nam_xuat_ban');
+  const soLuongInput = document.getElementById('so_luong');
+  const btnAdd = document.getElementById('btnAdd');
+  const btnUpdate = document.getElementById('btnUpdate');
+  const btnClear = document.getElementById('btnClear');
+  const tbody = document.querySelector('#booksTable tbody');
+  const paginationDiv = document.getElementById("pagination");
+  const searchInput = document.getElementById("searchInput"); // 🔍 Search
+
+  const currentYear = new Date().getFullYear();
+  namInput.max = currentYear;
+
+  let allBooks = [];
+  let filteredBooks = [];
+  let currentPage = 1;
+  const pageSize = 5;
+
+  // ✅ Validate toàn diện
+  function validateForm() {
+    let ok = true;
+
+    // --- Mã sách ---
+    const ma = maInput.value.trim();
+    if (!/^S\d{5}$/.test(ma)) {
+      document.getElementById('ma_sach_err').innerText = 'Mã sách phải là S + 5 chữ số (S00001)';
+      maInput.classList.add('is-invalid'); ok = false;
+    } else { maInput.classList.remove('is-invalid'); document.getElementById('ma_sach_err').innerText = ''; }
+
+    // --- Tên sách ---
+    const ten = tenInput.value.trim();
+    if (ten.length < 2) {
+      document.getElementById('ten_sach_err').innerText = 'Tên sách tối thiểu 2 ký tự';
+      tenInput.classList.add('is-invalid'); ok = false;
+    } else if (/^\d+$/.test(ten)) {
+      document.getElementById('ten_sach_err').innerText = 'Tên sách không được toàn số';
+      tenInput.classList.add('is-invalid'); ok = false;
+    } else { tenInput.classList.remove('is-invalid'); document.getElementById('ten_sach_err').innerText = ''; }
+
+    // --- Tác giả ---
+    const tg = tacGiaInput.value.trim();
+    if (tg.length < 2) {
+      document.getElementById('tac_gia_err').innerText = 'Tên tác giả tối thiểu 2 ký tự';
+      tacGiaInput.classList.add('is-invalid'); ok = false;
+    } else if (!/^[\p{L}\s]+$/u.test(tg)) {
+      document.getElementById('tac_gia_err').innerText = 'Tên tác giả chỉ chứa chữ cái và khoảng trắng';
+      tacGiaInput.classList.add('is-invalid'); ok = false;
+    } else { tacGiaInput.classList.remove('is-invalid'); document.getElementById('tac_gia_err').innerText = ''; }
+
+    // --- Thể loại ---
+    const tl = theLoaiInput.value.trim();
+    if (!tl) {
+      document.getElementById('the_loai_err').innerText = 'Thể loại bắt buộc';
+      theLoaiInput.classList.add('is-invalid'); ok = false;
+    } else if (tl.length > 30) {
+      document.getElementById('the_loai_err').innerText = 'Thể loại tối đa 30 ký tự';
+      theLoaiInput.classList.add('is-invalid'); ok = false;
+    } else { theLoaiInput.classList.remove('is-invalid'); document.getElementById('the_loai_err').innerText = ''; }
+
+    // --- Năm xuất bản ---
+    const nam = parseInt(namInput.value);
+    if (isNaN(nam) || nam < 1900 || nam > currentYear) {
+      document.getElementById('nam_err').innerText = 'Năm xuất bản phải trong 1900..' + currentYear;
+      namInput.classList.add('is-invalid'); ok = false;
+    } else { namInput.classList.remove('is-invalid'); document.getElementById('nam_err').innerText = ''; }
+
+    // --- Số lượng ---
+    const sl = parseFloat(soLuongInput.value);
+    if (isNaN(sl) || sl <= 0) {
+      document.getElementById('sl_err').innerText = 'Số lượng phải là số dương';
+      soLuongInput.classList.add('is-invalid'); ok = false;
+    } else if (sl > 100000) {
+      document.getElementById('sl_err').innerText = 'Số lượng quá lớn (tối đa 100000)';
+      soLuongInput.classList.add('is-invalid'); ok = false;
+    } else { soLuongInput.classList.remove('is-invalid'); document.getElementById('sl_err').innerText = ''; }
+
+    return ok;
+  }
+
+  async function loadBooks() {
+    const res = await fetch(baseUrl);
+    allBooks = await res.json();
+    filteredBooks = allBooks;
+    renderTable();
+    renderPagination();
+  }
+
+  function renderTable() {
+    tbody.innerHTML = '';
+    const start = (currentPage - 1) * pageSize;
+    const pageData = filteredBooks.slice(start, start + pageSize);
+    pageData.forEach(b => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${b.maSach}</td>
+        <td>${b.tenSach}</td>
+        <td>${b.tacGia || ''}</td>
+        <td>${b.theLoai || ''}</td>
+        <td>${b.namXuatBan}</td>
+        <td>${b.soLuong}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" onclick="editBook('${b.maSach}')">Sửa</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteBook('${b.maSach}')">Xóa</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderPagination() {
+    paginationDiv.innerHTML = "";
+    const totalPages = Math.ceil(filteredBooks.length / pageSize);
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.innerText = i;
+      btn.className = i === currentPage ? "active" : "";
+      btn.onclick = () => { currentPage = i; renderTable(); renderPagination(); };
+      paginationDiv.appendChild(btn);
+    }
+  }
+
+  // 🔍 Search function
+  function searchBooks() {
+    const keyword = searchInput.value.toLowerCase().trim();
+    filteredBooks = allBooks.filter(b =>
+      b.maSach.toLowerCase().includes(keyword) ||
+      b.tenSach.toLowerCase().includes(keyword) ||
+      (b.tacGia && b.tacGia.toLowerCase().includes(keyword)) ||
+      (b.theLoai && b.theLoai.toLowerCase().includes(keyword))
+    );
+    currentPage = 1;
+    renderTable();
+    renderPagination();
+  }
+
+  searchInput.addEventListener("input", searchBooks);
+
+  async function addBook() {
+    if (!validateForm()) return;
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+      alert("❌ Bạn phải nhập API key để thêm sách!");
+      return;
+    }
+    const payload = {
+      maSach: maInput.value.trim(),
+      tenSach: tenInput.value.trim(),
+      tacGia: tacGiaInput.value.trim(),
+      theLoai: theLoaiInput.value.trim(),
+      namXuatBan: parseInt(namInput.value),
+      soLuong: parseFloat(soLuongInput.value)
+    };
+    const res = await fetch(baseUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-KEY': key },
+      body: JSON.stringify(payload)
+    });
+    if (res.status === 201) {
+      alert('✅ Thêm thành công');
+      loadBooks();
+      clearForm();
+    } else if (res.status === 401 || res.status === 403) {
+      alert("⛔ API key không hợp lệ hoặc bạn không có quyền!");
+    } else {
+      const err = await res.json();
+      alert('Lỗi: ' + JSON.stringify(err));
+    }
+  }
+
+  async function updateBook() {
+    if (!validateForm()) return;
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+      alert("❌ Bạn phải nhập API key để sửa sách!");
+      return;
+    }
+    const id = maInput.value.trim();
+    const payload = {
+      maSach: id,
+      tenSach: tenInput.value.trim(),
+      tacGia: tacGiaInput.value.trim(),
+      theLoai: theLoaiInput.value.trim(),
+      namXuatBan: parseInt(namInput.value),
+      soLuong: parseFloat(soLuongInput.value)
+    };
+    const res = await fetch(baseUrl + '/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-API-KEY': key },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      alert('✅ Sửa thành công');
+      loadBooks();
+      clearForm();
+    } else if (res.status === 401 || res.status === 403) {
+      alert("⛔ API key không hợp lệ hoặc bạn không có quyền!");
+    } else {
+      const err = await res.json();
+      alert('Lỗi: ' + JSON.stringify(err));
+    }
+  }
+
+  async function deleteBook(id) {
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+      alert("❌ Bạn phải nhập API key để xóa sách!");
+      return;
+    }
+    if (!confirm('Xóa sách ' + id + ' ?')) return;
+    const res = await fetch(baseUrl + '/' + id, {
+      method: 'DELETE', headers: { 'X-API-KEY': key }
+    });
+    if (res.status === 204) {
+      alert('✅ Xóa thành công');
+      loadBooks();
+    } else if (res.status === 401 || res.status === 403) {
+      alert("⛔ API key không hợp lệ hoặc bạn không có quyền!");
+    } else {
+      const err = await res.json();
+      alert('Lỗi: ' + JSON.stringify(err));
+    }
+  }
+
+  window.editBook = async function(id) {
+    const res = await fetch(baseUrl + '/' + id);
+    if (res.ok) {
+      const b = await res.json();
+      maInput.value = b.maSach;
+      tenInput.value = b.tenSach;
+      tacGiaInput.value = b.tacGia || '';
+      theLoaiInput.value = b.theLoai || '';
+      namInput.value = b.namXuatBan;
+      soLuongInput.value = b.soLuong;
+    } else { alert('Không tìm thấy sách'); }
+  }
+
+  function clearForm() {
+    maInput.value = '';
+    tenInput.value = '';
+    tacGiaInput.value = '';
+    theLoaiInput.value = '';
+    namInput.value = '';
+    soLuongInput.value = '';
+    maInput.classList.remove('is-invalid');
+    tenInput.classList.remove('is-invalid');
+    tacGiaInput.classList.remove('is-invalid');
+    theLoaiInput.classList.remove('is-invalid');
+    namInput.classList.remove('is-invalid');
+    soLuongInput.classList.remove('is-invalid');
+  }
+
+  btnAdd.addEventListener('click', addBook);
+  btnUpdate.addEventListener('click', updateBook);
+  btnClear.addEventListener('click', clearForm);
+
+  loadBooks();
+</script>
+</body>
+</html>

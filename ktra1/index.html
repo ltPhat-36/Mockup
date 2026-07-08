@@ -1,0 +1,426 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>QL Sinh Viên - Client</title>
+  <style>
+    /* ========== Reset cơ bản ========== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif; 
+      background: #f4fdf6; 
+      color: #333; 
+      line-height: 1.6;
+    }
+    /* ========== Alert Message ========== */
+    #message {
+      padding: 12px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: none;
+      transition: opacity 0.3s ease;
+    }
+    #message.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    #message.error {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* ========== Header ========== */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 20px;
+      background: #34d399; /* xanh lá nhạt chủ đạo */
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    header img {
+      height: 50px;
+      background-color: #e6f4ea; 
+      border-radius: 8px;
+      padding: 5px;
+    }
+    header h1 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    main { padding: 30px; }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    /* ========== Form ========== */
+    form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    input[type="text"], input[type="date"] {
+      flex: 1 1 180px;
+      padding: 8px 10px;
+      border: 1px solid #a7f3d0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]:focus, input[type="date"]:focus {
+      outline: none;
+      border-color: #34d399;
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button[type="submit"], .btn-primary {
+      background: #34d399;
+      color: #fff;
+    }
+    button[type="submit"]:hover, .btn-primary:hover {
+      background: #10b981;
+    }
+    button[type="submit"]:active, .btn-primary:active {
+      transform: scale(0.97);
+    }
+    #cancelBtn {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    #cancelBtn:hover { background: #dcfce7; }
+
+    /* ========== Table ========== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #ecfdf5;
+      font-weight: 600;
+      color: #065f46;
+    }
+    tr:hover td { background: #f0fdf4; }
+
+    /* ========== Buttons trong bảng ========== */
+    table button {
+      margin-right: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 5px;
+    }
+    table button:first-child {
+      background: #22c55e;
+      color: #fff;
+    }
+    table button:first-child:hover { background: #16a34a; }
+    table button:last-child {
+      background: #ef4444;
+      color: #fff;
+    }
+    table button:last-child:hover { background: #dc2626; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <img src="logoHUNRE.png" alt="HUNRE Logo">
+    <h1>HUNRE - Quản lý Sinh Viên</h1>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h2>Danh sách Sinh Viên (QL_SinhVien)</h2>
+    <div id="message"></div>
+
+    <!-- Form thêm / sửa -->
+    <form id="svForm">
+      <input type="text" id="maSV" placeholder="Mã SV (vd: SV006)" required />
+      <input type="text" id="hoTen" placeholder="Họ và tên" required />
+      <input type="date" id="ngaySinh" />
+      <input type="text" id="lop" placeholder="Lớp" />
+      <input type="text" id="khoa" placeholder="Khoa" />
+      <button type="submit" id="submitBtn">Thêm</button>
+      <button type="button" id="cancelBtn" class="hidden">Hủy sửa</button>
+    </form>
+    <!-- 🔍 Ô tìm kiếm -->
+  <input type="text" id="searchInput" placeholder="Tìm theo Mã SV hoặc Họ tên..." 
+  style="margin-bottom:15px; padding:8px 10px; width:300px; border:1px solid #a7f3d0; border-radius:6px;">
+  <button type="button" id="resetBtn" class="btn-primary">Reset</button>
+
+
+    <!-- Bảng sinh viên -->
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th>Mã SV</th><th>Họ tên</th><th>Ngày sinh</th><th>Lớp</th><th>Khoa</th><th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- Thanh phân trang -->
+    <div id="pagination" style="margin-top:15px; text-align:center;"></div>
+  </main>
+
+<script>
+const API = 'http://localhost:8080/api/sinhviens';
+const form = document.getElementById('svForm');
+const tblBody = document.querySelector('#tbl tbody');
+const messageDiv = document.getElementById('message');
+const submitBtn = document.getElementById('submitBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const paginationDiv = document.getElementById('pagination');
+
+let editingId = null;
+let allData = [];
+let currentPage = 1;
+const pageSize = 10;
+
+function showMsg(text, ok=true) {
+  messageDiv.innerText = text;
+  messageDiv.className = ok ? 'success' : 'error';
+  messageDiv.style.display = 'block';
+  messageDiv.style.opacity = '1';
+  setTimeout(() => {
+    messageDiv.style.opacity = '0';
+    setTimeout(() => messageDiv.style.display = 'none', 300);
+  }, 3000);
+}
+
+async function fetchAll() {
+  const res = await fetch(API);
+  allData = await res.json();
+
+  const totalPages = Math.ceil(allData.length / pageSize);
+  if (currentPage > totalPages) currentPage = totalPages || 1;
+
+  renderTable();
+  renderPagination();
+}
+
+function renderTable() {
+  tblBody.innerHTML = '';
+  const start = (currentPage - 1) * pageSize;
+  const end = start + pageSize;
+  const pageData = allData.slice(start, end);
+  pageData.forEach(sv => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${sv.maSV}</td>
+      <td>${sv.hoTen || ''}</td>
+      <td>${sv.ngaySinh || ''}</td>
+      <td>${sv.lop || ''}</td>
+      <td>${sv.khoa || ''}</td>
+      <td>
+        <button onclick="startEdit('${sv.maSV}')">Sửa</button>
+        <button onclick="del('${sv.maSV}')">Xóa</button>
+      </td>
+    `;
+    tblBody.appendChild(tr);
+  });
+}
+
+function renderPagination() {
+  paginationDiv.innerHTML = '';
+  const totalPages = Math.ceil(allData.length / pageSize);
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.innerText = i;
+    btn.style.margin = "0 5px";
+    btn.style.padding = "5px 10px";
+    btn.style.borderRadius = "5px";
+    btn.style.border = "1px solid #34d399";
+    btn.style.background = i === currentPage ? "#34d399" : "#fff";
+    btn.style.color = i === currentPage ? "#fff" : "#34d399";
+    btn.onclick = () => {
+      currentPage = i;
+      renderTable();
+      renderPagination();
+    };
+    paginationDiv.appendChild(btn);
+  }
+}
+
+async function goToPageOf(id) {
+  await fetchAll();
+  const idx = allData.findIndex(sv => sv.maSV === id);
+  if (idx !== -1) {
+    currentPage = Math.floor(idx / pageSize) + 1;
+    renderTable();
+    renderPagination();
+  }
+}
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const maSV = document.getElementById('maSV').value.trim();
+    const hoTen = document.getElementById('hoTen').value.trim();
+    const ngaySinh = document.getElementById('ngaySinh').value || null;
+    const lop = document.getElementById('lop').value.trim();
+    const khoa = document.getElementById('khoa').value.trim();
+  
+    // ✅ Kiểm tra họ tên: không chứa ký tự đặc biệt
+    const nameRegex = /^[A-Za-zÀ-ỹ\s'-]+$/u;
+    if (!nameRegex.test(hoTen)) {
+      showMsg("Họ tên không được chứa ký tự đặc biệt!", false);
+      return;
+    }
+  
+    // ✅ Kiểm tra tuổi >= 18
+    if (ngaySinh) {
+      const dob = new Date(ngaySinh);
+      const today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const m = today.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+      if (age < 18) { 
+        showMsg("Sinh viên phải đủ 18 tuổi!", false); 
+        return; 
+      }
+    }
+  
+    const payload = { maSV, hoTen, ngaySinh: ngaySinh ? ngaySinh : null, lop, khoa };
+  
+    try {
+      if (!editingId) {
+        const r = await fetch(API, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if (r.status === 201) {
+          showMsg('Thêm thành công');
+          form.reset();
+          await goToPageOf(maSV);
+        } else showMsg('Lỗi thêm', false);
+      } else {
+        const r = await fetch(`${API}/${editingId}`, {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if (r.ok) {
+          showMsg('Cập nhật thành công');
+          editingId = null;
+          submitBtn.innerText = 'Thêm';
+          cancelBtn.classList.add('hidden');
+          form.reset();
+          await goToPageOf(maSV);
+        } else showMsg('Lỗi cập nhật', false);
+      }
+    } catch (err) { 
+      showMsg('Lỗi kết nối: ' + err.message, false); 
+    }
+  });
+  
+
+window.startEdit = async function(id) {
+  try {
+    const r = await fetch(`${API}/${id}`);
+    if (!r.ok) { showMsg('Không tìm thấy sinh viên', false); return; }
+    const sv = await r.json();
+    document.getElementById('maSV').value = sv.maSV;
+    document.getElementById('maSV').disabled = true;
+    document.getElementById('hoTen').value = sv.hoTen || '';
+    document.getElementById('ngaySinh').value = sv.ngaySinh || '';
+    document.getElementById('lop').value = sv.lop || '';
+    document.getElementById('khoa').value = sv.khoa || '';
+    editingId = id;
+    submitBtn.innerText = 'Lưu';
+    cancelBtn.classList.remove('hidden');
+  } catch (err) { showMsg('Lỗi: ' + err.message, false); }
+};
+
+cancelBtn.addEventListener('click', () => {
+  editingId = null;
+  document.getElementById('maSV').disabled = false;
+  submitBtn.innerText = 'Thêm';
+  cancelBtn.classList.add('hidden');
+  form.reset();
+});
+
+window.del = async function(id) {
+  if (!confirm('Xác nhận xóa ' + id + '?')) return;
+  try {
+    const r = await fetch(`${API}/${id}`, { method: 'DELETE' });
+    if (r.status === 204) {
+      showMsg('Đã xóa');
+      await fetchAll();
+    } else showMsg('Xóa thất bại', false);
+  } catch (err) { showMsg('Lỗi: ' + err.message, false); }
+};
+// ========== Tìm kiếm realtime ==========
+document.getElementById('searchInput').addEventListener('input', () => {
+    const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+  
+    if (!keyword) {
+      // Nếu rỗng thì render lại toàn bộ
+      currentPage = 1;
+      renderTable();
+      renderPagination();
+      return;
+    }
+  
+    const filtered = allData.filter(sv =>
+      sv.maSV.toLowerCase().includes(keyword) ||
+      (sv.hoTen && sv.hoTen.toLowerCase().includes(keyword))
+    );
+  
+    // Render kết quả (ẩn phân trang)
+    tblBody.innerHTML = '';
+    filtered.forEach(sv => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${sv.maSV}</td>
+        <td>${sv.hoTen || ''}</td>
+        <td>${sv.ngaySinh || ''}</td>
+        <td>${sv.lop || ''}</td>
+        <td>${sv.khoa || ''}</td>
+        <td>
+          <button onclick="startEdit('${sv.maSV}')">Sửa</button>
+          <button onclick="del('${sv.maSV}')">Xóa</button>
+        </td>
+      `;
+      tblBody.appendChild(tr);
+    });
+    paginationDiv.innerHTML = '';
+  });
+  
+  
+fetchAll();
+</script>
+</body>
+</html>

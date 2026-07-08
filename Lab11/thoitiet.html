@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Weather by Province (VN) - Robust Geocode</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa);
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  
+    h2 {
+      text-align: center;
+      color: #00796b;
+    }
+  
+    label, select, button {
+      display: block;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+  
+    select, button {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+  
+    button {
+      background-color: #00796b;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+  
+    button:hover {
+      background-color: #004d40;
+    }
+  
+    #weather {
+      margin-top: 20px;
+    }
+  
+    /* Card thời tiết */
+    .weather-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    .weather-card img.weather-icon {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .weather-info {
+      flex: 1;
+      min-width: 200px;
+      padding-left: 20px;
+    }
+  
+    .weather-info h3 {
+      margin-top: 0;
+      color: #00796b;
+    }
+  
+    .weather-info p {
+      margin: 5px 0;
+      font-size: 1rem;
+    }
+  
+    /* Màu nền theo nhiệt độ */
+    .temp-cold { background-color: #b3e5fc; }      /* dưới 20°C */
+    .temp-warm { background-color: #ffe082; }      /* 20–30°C */
+    .temp-hot  { background-color: #ff8a65; }      /* trên 30°C */
+    
+    /* Log (ẩn) */
+    #log {
+      display: none;
+    }
+  
+    /* Responsive */
+    @media(max-width:500px){
+      .weather-card {
+        flex-direction: column;
+        align-items: center;
+      }
+      .weather-info {
+        padding-left: 0;
+        text-align: center;
+      }
+    }
+  </style>
+  
+  
+</head>
+<body>
+  <h2>Weather (Chọn tỉnh Việt Nam)</h2>
+  <label>Tỉnh/Thành:
+    <select id="provinceSelect"><option>Loading...</option></select>
+  </label>
+  <button id="getWeather">Get Weather</button>
+
+  <div id="weather"></div>
+  <div id="log">—</div>
+
+  <script src="thoitiet.js"></script>
+</body>
+</html>

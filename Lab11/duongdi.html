@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ứng dụng tìm đường đi miễn phí</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <style>
+    html, body { 
+      height: 100%; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Floating control góc trái */
+    #controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    #controls input, #controls button {
+      display: block;
+      margin: 5px 0;
+      padding: 8px;
+      width: 250px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    #controls button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #controls button:hover {
+      background-color: #357ae8;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Floating controls -->
+  <div id="controls">
+    <input id="start" type="text" placeholder="Điểm xuất phát">
+    <input id="end" type="text" placeholder="Điểm đến">
+    <button id="routeBtn">Tìm đường đi</button>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <script src="duongdi.js"></script>
+</body>
+</html>

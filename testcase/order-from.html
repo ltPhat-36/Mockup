@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Biểu mẫu Đặt dịch vụ & Đơn hàng nâng cao</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    /* === Layout chung và accessibility === */
+    :root{
+      --bg:#0f1724;
+      --card:#28324a;
+      --muted:#94a3b8;
+      --accent:#5b86e5;
+      --success:#16a34a;
+      --danger:#ef4444;
+      --warning:#f59e0b;
+      --text:#e6eef8;
+      --gap:12px; /* >=10px requirement */
+      --btn-min-w:100px;
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:28px;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,#071025 0%, #0b1b2f 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .container{
+      max-width:980px;
+      margin:0 auto;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.15));
+      border-radius:12px;
+      padding:20px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.7);
+    }
+
+    h1{
+      font-size:20px; margin:0 0 18px 0; color:var(--text);
+    }
+    p.lead{color:var(--muted); margin-top:6px; margin-bottom:18px; font-size:13px;}
+
+    fieldset{
+      border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      padding:16px;
+      margin-bottom:18px;
+      border-radius:8px;
+    }
+    legend{padding:0 8px; font-weight:600; color:var(--accent);}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:var(--gap);
+      align-items:center;
+    }
+    /* single column on small screens */
+    @media (max-width:720px){
+      .grid{grid-template-columns:1fr}
+      label{width:100%}
+      input,select,textarea{width:100%}
+    }
+
+    label{
+      display:block;
+      margin-bottom:6px;
+      font-size:13px;
+      color:var(--text);
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    input[type="text"],input[type="date"],input[type="email"],input[type="number"],select,textarea{
+      border-radius:6px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color:var(--text);
+      padding:8px 10px;
+      font-size:14px;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus{
+      box-shadow:0 0 0 3px rgba(91,134,229,0.12);
+      border-color:var(--accent);
+    }
+    textarea{min-height:72px; resize:vertical}
+
+    .row{display:flex; gap:var(--gap); align-items:flex-start}
+    .col{flex:1; min-width:0}
+
+    .error{
+      color:var(--danger);
+      font-size:13px;
+      margin-top:6px;
+    }
+    .sr-only{position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;}
+
+    /* Buttons */
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
+    button.btn{
+      border:none; border-radius:8px; padding:10px 14px; cursor:pointer; font-weight:600;
+      min-width:var(--btn-min-w);
+    }
+    .btn-primary{background:var(--success); color:#042007}
+    .btn-danger{background:var(--danger); color:#fff}
+    .btn-warning{background:var(--warning); color:#071204}
+    .btn-muted{background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text)}
+
+    /* summary box */
+    .summary{
+      background:rgba(0,0,0,0.35);
+      border-radius:8px; padding:12px; color:var(--text);
+      margin-top:8px;
+    }
+    .summary .line{display:flex; justify-content:space-between; font-size:14px; padding:6px 0; border-bottom:1px dashed rgba(255,255,255,0.03);}
+    .summary .line:last-child{border-bottom:none; font-weight:700}
+
+    /* badges */
+    .badge{display:inline-block; padding:6px 8px; border-radius:8px; font-size:12px; margin-left:6px; background:rgba(255,255,255,0.04); color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <h1>Biểu mẫu Đặt dịch vụ & Đơn hàng nâng cao</h1>
+    <p class="lead">Mẫu cho thực hành kiểm thử: UI/Validation/Function. (Selenium friendly — id cho hầu hết fields)</p>
+
+    <form id="orderForm" novalidate>
+      <!-- 1) Thông tin khách hàng -->
+      <fieldset>
+        <legend>1) Thông tin khách hàng</legend>
+        <div class="grid" aria-describedby="infoHint">
+          <div class="field">
+            <label for="fullname">Họ và tên *</label>
+            <input id="fullname" name="fullname" type="text" aria-required="true" aria-describedby="errFullname" />
+            <div id="errFullname" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="dob">Ngày sinh *</label>
+            <input id="dob" name="dob" type="date" aria-required="true" aria-describedby="errDob" />
+            <div id="errDob" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="gender">Giới tính *</label>
+            <select id="gender" name="gender" aria-required="true" aria-describedby="errGender">
+              <option value="">--Chọn--</option>
+              <option>Nam</option>
+              <option>Nữ</option>
+              <option>Khác</option>
+            </select>
+            <div id="errGender" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email *</label>
+            <input id="email" name="email" type="email" aria-required="true" aria-describedby="errEmail" />
+            <div id="errEmail" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="phone">Số điện thoại *</label>
+            <input id="phone" name="phone" type="text" inputmode="numeric" aria-required="true" aria-describedby="errPhone" />
+            <div id="errPhone" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="note">Ghi chú</label>
+            <textarea id="note" name="note" aria-describedby="noteHelp"></textarea>
+            <div id="noteHelp" class="badge">VD: Yêu cầu xuất hóa đơn, giao trước cửa, v.v.</div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 2) Địa chỉ & giao hàng -->
+      <fieldset>
+        <legend>2) Địa chỉ & giao hàng</legend>
+        <div class="grid">
+          <div class="field">
+            <label for="province">Tỉnh/Thành phố *</label>
+            <select id="province" aria-required="true" aria-describedby="errProvince">
+              <option value="">--Chọn Tỉnh/TP--</option>
+              <option value="HN">Hà Nội</option>
+              <option value="HCM">TP.HCM</option>
+              <option value="DN">Đà Nẵng</option>
+            </select>
+            <div id="errProvince" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="district">Quận/Huyện *</label>
+            <select id="district" aria-required="true" aria-describedby="errDistrict">
+              <option value="">--Chọn Quận/Huyện--</option>
+            </select>
+            <div id="errDistrict" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="ward">Phường/Xã</label>
+            <input id="ward" type="text" />
+          </div>
+
+          <div class="field">
+            <label for="address">Số nhà, đường *</label>
+            <input id="address" type="text" aria-required="true" aria-describedby="errAddress" />
+            <div id="errAddress" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="slot">Khung giờ</label>
+            <select id="slot">
+              <option value="">--Chọn khung giờ--</option>
+              <option>09:00 - 12:00</option>
+              <option>13:00 - 17:00</option>
+              <option>18:00 - 21:00</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="deliveryDate">Ngày giao *</label>
+            <input id="deliveryDate" type="date" aria-required="true" aria-describedby="errDeliveryDate" />
+            <div id="errDeliveryDate" class="error" role="alert" aria-live="polite"></div>
+          </div>
+        </div>
+        <div style="margin-top:8px">
+          <label><input id="leaveAtDoor" type="checkbox" /> Để trước cửa</label>
+          <label style="margin-left:12px"><input id="callBefore" type="checkbox" /> Gọi trước khi giao</label>
+          <label style="margin-left:12px"><input id="giftWrap" type="checkbox" /> Gói quà (+8.000 VND)</label>
+        </div>
+      </fieldset>
+
+      <!-- 3) Sản phẩm & thanh toán -->
+      <fieldset>
+        <legend>3) Sản phẩm & thanh toán</legend>
+
+        <div class="grid">
+          <div class="field">
+            <label for="category">Danh mục *</label>
+            <select id="category" aria-required="true" aria-describedby="errCategory">
+              <option value="">--Chọn danh mục--</option>
+              <option value="phone">Điện thoại</option>
+              <option value="laptop">Laptop</option>
+              <option value="accessory">Phụ kiện</option>
+            </select>
+            <div id="errCategory" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="product">Sản phẩm *</label>
+            <select id="product" aria-required="true" aria-describedby="errProduct">
+              <option value="">--Chọn sản phẩm--</option>
+            </select>
+            <div id="errProduct" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="quantity">Số lượng *</label>
+            <input id="quantity" type="number" min="1" max="100" value="1" aria-required="true" aria-describedby="errQuantity" />
+            <div id="errQuantity" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="currency">Tiền tệ *</label>
+            <select id="currency" aria-required="true" aria-describedby="errCurrency">
+              <option value="VND">VND</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+            <div id="errCurrency" class="error" role="alert" aria-live="polite"></div>
+          </div>
+
+          <div class="field">
+            <label for="shippingType">Gói giao</label>
+            <select id="shippingType">
+              <option value="standard">Chuẩn (25.000 VND)</option>
+              <option value="fast">Nhanh (60.000 VND)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="promo">Mã giảm giá</label>
+            <input id="promo" type="text" placeholder="VD: SAVE10 hoặc FREESHIP" />
+            <div class="badge">SAVE10 = -10% (không áp dụng cho ship). FREESHIP = miễn phí ship.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+          <button type="button" id="calcBtn" class="btn btn-warning">Tính tổng</button>
+          <div id="currencyRate" class="badge" aria-live="polite">Tỷ giá: 1 USD = 24,000 VND | 1 EUR = 27,000 VND</div>
+        </div>
+
+        <div class="summary" id="summaryBox" aria-live="polite" style="display:none; margin-top:12px">
+          <div class="line"><div>Tạm tính:</div><div id="subtotalText">-</div></div>
+          <div class="line"><div>Giảm giá:</div><div id="discountText">-</div></div>
+          <div class="line"><div>VAT (10%):</div><div id="vatText">-</div></div>
+          <div class="line"><div>Phí ship:</div><div id="shipText">-</div></div>
+          <div class="line"><div>Phí gói quà:</div><div id="giftText">-</div></div>
+          <div class="line"><div>Tổng thanh toán:</div><div id="totalText">-</div></div>
+        </div>
+      </fieldset>
+
+      <!-- 4) Xác nhận -->
+      <fieldset>
+        <legend>4) Xác nhận</legend>
+        <div class="field">
+          <label><input id="terms" type="checkbox" aria-required="true" /> Tôi đồng ý với Điều khoản & Bảo mật *</label>
+          <div id="errTerms" class="error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <div class="actions" aria-label="Hành động form">
+          <button id="placeOrder" type="submit" class="btn btn-primary">Đặt hàng</button>
+          <button id="resetBtn" type="reset" class="btn btn-muted">Làm mới</button>
+          <button id="saveDraft" type="button" class="btn btn-muted">Lưu nháp</button>
+          <button id="loadDraft" type="button" class="btn btn-muted">Tải nháp</button>
+          <button id="clearDraft" type="button" class="btn btn-danger">Xoá nháp</button>
+          <button id="printBtn" type="button" class="btn btn-warning">In phiếu</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <script>
+    /***********************
+     * Data models (fixed)
+     ***********************/
+    const products = {
+      phone: [
+        {id:'p1', name:'iPhone 14', priceVND: 25000000},
+        {id:'p2', name:'Samsung S23', priceVND: 20000000},
+      ],
+      laptop: [
+        {id:'l1', name:'MacBook Air', priceVND: 30000000},
+        {id:'l2', name:'Dell XPS 13', priceVND: 26000000},
+      ],
+      accessory: [
+        {id:'a1', name:'Tai nghe Bluetooth', priceVND: 1200000},
+        {id:'a2', name:'Sạc nhanh 65W', priceVND: 600000},
+      ]
+    };
+
+    const districtsByProvince = {
+      HN: ['Ba Đình','Hoàn Kiếm','Đống Đa'],
+      HCM: ['Quận 1','Quận 3','Quận 7'],
+      DN: ['Hải Châu','Thanh Khê']
+    };
+
+    // giả định tỷ giá (có thể thay)
+    const rates = { USD:24000, EUR:27000 };
+
+    /***********************
+     * Helpers
+     ***********************/
+    const $ = id => document.getElementById(id);
+
+    function setError(id,msg){
+      $(id).textContent = msg || '';
+    }
+
+    function formatVND(n){
+      return new Intl.NumberFormat('vi-VN').format(Math.round(n)) + ' ₫';
+    }
+    function formatCurrency(n, cur){
+      if(cur === 'VND') return formatVND(n);
+      if(cur === 'USD') return (n / rates.USD).toFixed(2) + ' $';
+      if(cur === 'EUR') return (n / rates.EUR).toFixed(2) + ' €';
+      return n;
+    }
+
+    /***********************
+     * Dynamic: Province -> District
+     ***********************/
+    $('province').addEventListener('change', function(){
+      const d = $('district');
+      d.innerHTML = "<option value=''>--Chọn Quận/Huyện--</option>";
+      const arr = districtsByProvince[this.value] || [];
+      arr.forEach(it => {
+        const o = document.createElement('option'); o.value = it; o.textContent = it; d.appendChild(o);
+      });
+    });
+
+    /***********************
+     * Category -> Product
+     ***********************/
+    $('category').addEventListener('change', function(){
+      const sel = $('product');
+      sel.innerHTML = "<option value=''>--Chọn sản phẩm--</option>";
+      const list = products[this.value] || [];
+      list.forEach(p => {
+        const o = document.createElement('option');
+        o.value = p.id; o.textContent = `${p.name} — ${formatVND(p.priceVND)}`;
+        o.dataset.price = p.priceVND;
+        sel.appendChild(o);
+      });
+    });
+
+    /***********************
+     * Validation rules
+     ***********************/
+    function validateAll(showErrors=true){
+      let ok = true;
+      // fullname: 5-50 letters & spaces (unicode letters)
+      const fullname = $('fullname').value.trim();
+      const nameRe = /^[\p{L}\s]{5,50}$/u;
+      if(!nameRe.test(fullname)){
+        ok=false; if(showErrors) setError('errFullname','Tên 5-50 ký tự, chỉ chữ và khoảng trắng');
+      } else setError('errFullname','');
+
+      // dob - required and reasonable (not future)
+      const dob = $('dob').value;
+      if(!dob){
+        ok=false; if(showErrors) setError('errDob','Chọn ngày sinh');
+      } else setError('errDob','');
+
+      // gender
+      if(!$('gender').value){
+        ok=false; if(showErrors) setError('errGender','Chọn giới tính');
+      } else setError('errGender','');
+
+      // email
+      const email = $('email').value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        ok=false; if(showErrors) setError('errEmail','Email không hợp lệ');
+      } else setError('errEmail','');
+
+      // phone: VN 0 + 9..10 digits => total 10-11 digits
+      const phone = $('phone').value.trim();
+      if(!/^0\d{9,10}$/.test(phone)){
+        ok=false; if(showErrors) setError('errPhone','SĐT phải bắt đầu 0 và dài 10-11 chữ số');
+      } else setError('errPhone','');
+
+      // province/district
+      if(!$('province').value){ ok=false; if(showErrors) setError('errProvince','Chọn Tỉnh/TP') } else setError('errProvince','');
+      if(!$('district').value){ ok=false; if(showErrors) setError('errDistrict','Chọn Quận/Huyện') } else setError('errDistrict','');
+
+      // address 10-100 allow letters numbers ,/ .
+      const address = $('address').value.trim();
+      if(address.length < 10 || address.length > 100){
+        ok=false; if(showErrors) setError('errAddress','Địa chỉ 10-100 ký tự');
+      } else setError('errAddress','');
+
+      // deliveryDate not in past
+      const dd = $('deliveryDate').value;
+      if(!dd){ ok=false; if(showErrors) setError('errDeliveryDate','Chọn ngày giao') }
+      else {
+        const selDate = new Date(dd); 
+        const today = new Date(); today.setHours(0,0,0,0);
+        if(selDate < today){ ok=false; if(showErrors) setError('errDeliveryDate','Ngày giao không được là quá khứ') }
+        else setError('errDeliveryDate','');
+      }
+
+      // category/product
+      if(!$('category').value){ ok=false; if(showErrors) setError('errCategory','Chọn danh mục') } else setError('errCategory','');
+      if(!$('product').value){ ok=false; if(showErrors) setError('errProduct','Chọn sản phẩm') } else setError('errProduct','');
+
+      // quantity 1-100 integer
+      const q = parseInt($('quantity').value,10);
+      if(isNaN(q) || q < 1 || q > 100){
+        ok=false; if(showErrors) setError('errQuantity','Số lượng phải là số nguyên 1-100');
+      } else setError('errQuantity','');
+
+      // currency
+      if(!$('currency').value){ ok=false; if(showErrors) setError('errCurrency','Chọn tiền tệ') } else setError('errCurrency','');
+
+      // terms
+      if(!$('terms').checked){ ok=false; if(showErrors) setError('errTerms','Bạn phải đồng ý điều khoản') } else setError('errTerms','');
+
+      return ok;
+    }
+
+    /***********************
+     * Calculation logic
+     ***********************/
+    function calculateAndShow(){
+      // require category/product/quantity
+      const prodOption = $('product').selectedOptions[0];
+      if(!prodOption || !prodOption.dataset.price){
+        alert('Chưa chọn sản phẩm hoặc sản phẩm không có giá.');
+        return;
+      }
+      const basePrice = Number(prodOption.dataset.price); // price per unit in VND
+      const qty = parseInt($('quantity').value,10) || 1;
+      const subtotalVND = basePrice * qty; // tạm tính
+      // promo
+      const promo = $('promo').value.trim().toUpperCase();
+      let discountVND = 0;
+      if(promo === 'SAVE10') discountVND = subtotalVND * 0.10;
+      if(promo === 'FREESHIP') discountVND = 0;
+
+      // shipping
+      const shipType = $('shippingType').value;
+      let shipVND = 25000;
+      if(shipType === 'fast') shipVND = 60000;
+      // FREESHIP promo overrides
+      if(promo === 'FREESHIP') shipVND = 0;
+
+      // gift wrap
+      const gift = $('giftWrap').checked;
+      const giftVND = gift ? 8000 : 0;
+
+      // VAT: 10% on (subtotal - discount)
+      const vatVND = 0.10 * Math.max(0, (subtotalVND - discountVND));
+
+      const totalVND = (subtotalVND - discountVND) + vatVND + shipVND + giftVND;
+
+      // currency conversion for display
+      const cur = $('currency').value || 'VND';
+
+      $('subtotalText').textContent = formatCurrency(subtotalVND, cur);
+      $('discountText').textContent = formatCurrency(discountVND, cur);
+      $('vatText').textContent = formatCurrency(vatVND, cur);
+      $('shipText').textContent = formatCurrency(shipVND, cur);
+      $('giftText').textContent = formatCurrency(giftVND, cur);
+      $('totalText').textContent = formatCurrency(totalVND, cur);
+      $('summaryBox').style.display = 'block';
+
+      // return object for potential further assertions (useful in tests)
+      return {
+        subtotalVND, discountVND, vatVND, shipVND, giftVND, totalVND, currency:cur
+      };
+    }
+
+    $('calcBtn').addEventListener('click', function(){
+      // run validation that matters for calc (product/quantity/currency ok)
+      // show friendly errors if missing
+      if(!$('product').value) { setError('errProduct','Chọn sản phẩm để tính'); return; } else setError('errProduct','');
+      if(!$('currency').value) { setError('errCurrency','Chọn tiền tệ'); return; } else setError('errCurrency','');
+      calculateAndShow();
+    });
+
+    /***********************
+     * Form submit (Đặt hàng)
+     ***********************/
+    $('orderForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const ok = validateAll(true);
+      if(!ok) {
+        // focus first error field
+        const firstErr = document.querySelector('.error:not(:empty)');
+        if(firstErr){
+          const id = firstErr.id.replace(/^err/,'');
+          const field = document.getElementById(id);
+          if(field) field.focus();
+        }
+        return;
+      }
+      // ensure calculation done
+      const result = calculateAndShow();
+      // show summary modal or alert (simplified)
+      const summary = `
+        Đặt hàng thành công!\n
+        Tạm tính: ${formatCurrency(result.subtotalVND, result.currency)}
+        Giảm giá: ${formatCurrency(result.discountVND, result.currency)}
+        VAT: ${formatCurrency(result.vatVND, result.currency)}
+        Ship: ${formatCurrency(result.shipVND, result.currency)}
+        Gói quà: ${formatCurrency(result.giftVND, result.currency)}
+        Tổng: ${formatCurrency(result.totalVND, result.currency)}
+      `;
+      alert(summary);
+      // optionally clear form or do other actions
+    });
+
+    /***********************
+     * Draft saving/loading (localStorage)
+     ***********************/
+    function gatherFormData(){
+      return {
+        fullname: $('fullname').value,
+        dob: $('dob').value,
+        gender: $('gender').value,
+        email: $('email').value,
+        phone: $('phone').value,
+        note: $('note').value,
+        province: $('province').value,
+        district: $('district').value,
+        ward: $('ward').value,
+        address: $('address').value,
+        slot: $('slot').value,
+        deliveryDate: $('deliveryDate').value,
+        leaveAtDoor: $('leaveAtDoor').checked,
+        callBefore: $('callBefore').checked,
+        giftWrap: $('giftWrap').checked,
+        category: $('category').value,
+        product: $('product').value,
+        quantity: $('quantity').value,
+        currency: $('currency').value,
+        shippingType: $('shippingType').value,
+        promo: $('promo').value,
+        terms: $('terms').checked
+      };
+    }
+
+    function applyFormData(d){
+      if(!d) return;
+      $('fullname').value = d.fullname || '';
+      $('dob').value = d.dob || '';
+      $('gender').value = d.gender || '';
+      $('email').value = d.email || '';
+      $('phone').value = d.phone || '';
+      $('note').value = d.note || '';
+      $('province').value = d.province || '';
+      // trigger province change to populate districts
+      $('province').dispatchEvent(new Event('change'));
+      setTimeout(()=>{ $('district').value = d.district || ''; }, 0);
+      $('ward').value = d.ward || '';
+      $('address').value = d.address || '';
+      $('slot').value = d.slot || '';
+      $('deliveryDate').value = d.deliveryDate || '';
+      $('leaveAtDoor').checked = !!d.leaveAtDoor;
+      $('callBefore').checked = !!d.callBefore;
+      $('giftWrap').checked = !!d.giftWrap;
+      $('category').value = d.category || '';
+      $('category').dispatchEvent(new Event('change'));
+      setTimeout(()=>{ $('product').value = d.product || ''; }, 0);
+      $('quantity').value = d.quantity || '1';
+      $('currency').value = d.currency || 'VND';
+      $('shippingType').value = d.shippingType || 'standard';
+      $('promo').value = d.promo || '';
+      $('terms').checked = !!d.terms;
+    }
+
+    $('saveDraft').addEventListener('click', function(){
+      const data = gatherFormData();
+      localStorage.setItem('orderDraft', JSON.stringify(data));
+      alert('Đã lưu nháp vào localStorage.');
+    });
+
+    $('loadDraft').addEventListener('click', function(){
+      const raw = localStorage.getItem('orderDraft');
+      if(!raw){ alert('Không có nháp.'); return; }
+      try{
+        const d = JSON.parse(raw);
+        applyFormData(d);
+        alert('Đã tải nháp.');
+      }catch(e){
+        alert('Không thể tải nháp (dữ liệu hỏng).');
+      }
+    });
+
+    $('clearDraft').addEventListener('click', function(){
+      localStorage.removeItem('orderDraft');
+      alert('Đã xóa nháp.');
+    });
+
+    $('printBtn').addEventListener('click', function(){
+      window.print();
+    });
+
+    // reset clears errors and summary
+    $('resetBtn').addEventListener('click', function(){
+      // small delay to allow form reset
+      setTimeout(()=>{
+        document.querySelectorAll('.error').forEach(el=>el.textContent='');
+        $('summaryBox').style.display='none';
+      },20);
+    });
+
+    /***********************
+     * Small UX: prevent script injection display (trim already used)
+     ***********************/
+    // prevent Enter on number fields triggering submit accidentally
+    document.querySelectorAll('input[type="number"]').forEach(i=>{
+      i.addEventListener('keydown', ev => { if(ev.key === 'Enter') ev.preventDefault(); });
+    });
+
+    /***********************
+     * Accessibility: set min for date inputs (deliveryDate >= today)
+     ***********************/
+    (function setMinDeliveryDate(){
+      const today = new Date(); 
+      const y = today.getFullYear();
+      const m = String(today.getMonth()+1).padStart(2,'0');
+      const d = String(today.getDate()).padStart(2,'0');
+      $('deliveryDate').setAttribute('min', `${y}-${m}-${d}`);
+    })();
+
+    /***********************
+     * Provide JS hook for automated tests to get last calculation result
+     * (Optional) window.__lastCalcResult used by automated tests
+     ***********************/
+    window.__lastCalcResult = null;
+    // wrap calculate to set lastCalc
+    const origCalcBtn = $('calcBtn');
+    origCalcBtn.addEventListener('click', function(){
+      const r = calculateAndShow();
+      window.__lastCalcResult = r || null;
+    });
+
+    // initial small setup: currencyRate text
+    $('currencyRate').textContent = `Tỷ giá: 1 USD = ${rates.USD.toLocaleString()} VND | 1 EUR = ${rates.EUR.toLocaleString()} VND`;
+
+    // Auto-populate a few product prices to product select if category preset (safety)
+    // (No-op; category change handles)
+
+  </script>
+</body>
+</html>

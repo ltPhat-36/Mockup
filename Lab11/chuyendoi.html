@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>Bộ chuyển đổi tiền tệ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f4f6f8;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    .converter {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      background: #3498db;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: bold;
+      color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bộ chuyển đổi tiền tệ (OpenExchangeRates)</h2>
+  <div class="converter">
+    <label for="amount">Số tiền:</label>
+    <input id="amount" type="number" value="1" step="any">
+
+    <label for="fromCur">Từ:</label>
+    <select id="fromCur"></select>
+
+    <label for="toCur">Sang:</label>
+    <select id="toCur"></select>
+
+    <button id="convertBtn">Chuyển đổi</button>
+    <p id="result"></p>
+  </div>
+
+  <script src="chuyendoi.js"></script>
+</body>
+</html>

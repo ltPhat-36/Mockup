@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDPRO Wireframes - BA Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 p-10 space-y-20 flex flex-col items-center">
+
+    <div class="text-center space-y-4">
+        <h2 class="text-2xl font-bold uppercase">1. AI Chatbot Interface</h2>
+        <div class="w-[375px] h-[700px] bg-white border-[8px] border-gray-800 rounded-[2.5rem] relative flex flex-col overflow-hidden shadow-xl mx-auto">
+            <div class="bg-gray-100 p-4 border-b flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white font-bold">AI</div>
+                <div>
+                    <p class="font-bold text-sm">Gemini Health Assistant</p>
+                    <p class="text-[10px] text-green-600">● Đang trực tuyến</p>
+                </div>
+            </div>
+            <div class="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50">
+                <div class="flex justify-start">
+                    <div class="bg-gray-200 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm">Xin chào! Tôi có thể giúp gì cho sức khỏe của bạn hôm nay?</div>
+                </div>
+                <div class="flex justify-end">
+                    <div class="bg-gray-800 text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] text-sm">Tôi bị đau đầu và chóng mặt từ sáng nay.</div>
+                </div>
+                <div class="flex justify-start">
+                    <div class="bg-gray-200 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-sm border-2 border-dashed border-gray-400">
+                        [Phản hồi từ AI: Phân tích triệu chứng và đưa ra lời khuyên hoặc gợi ý khoa khám]
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t bg-white flex space-x-2">
+                <div class="flex-1 border rounded-full px-4 py-2 text-sm text-gray-400">Nhập tin nhắn...</div>
+                <div class="w-10 h-10 bg-gray-800 rounded-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center space-y-4 w-full">
+        <h2 class="text-2xl font-bold uppercase">2. Doctor Workspace (EMR)</h2>
+        <div class="max-w-5xl mx-auto bg-white border-4 border-gray-800 shadow-xl flex h-[600px]">
+            <div class="w-20 border-r-2 border-gray-200 flex flex-col items-center py-6 space-y-8 bg-gray-50">
+                <div class="w-10 h-10 bg-gray-300 rounded"></div>
+                <div class="w-10 h-10 bg-gray-800 rounded"></div>
+                <div class="w-10 h-10 bg-gray-300 rounded"></div>
+            </div>
+            <div class="flex-1 flex flex-col">
+                <div class="p-6 border-b-2 flex justify-between items-center bg-gray-50">
+                    <div>
+                        <h3 class="font-bold text-xl">Bệnh nhân: Nguyễn Văn A</h3>
+                        <p class="text-sm text-gray-500">ID: #12345 | Nam | 28 tuổi</p>
+                    </div>
+                    <button class="bg-gray-800 text-white px-4 py-2 rounded font-bold">HOÀN TẤT KHÁM</button>
+                </div>
+                <div class="flex-1 p-6 grid grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <label class="font-bold block uppercase text-xs">Chẩn đoán bệnh</label>
+                        <textarea class="w-full h-32 border-2 p-3" placeholder="Nhập kết luận chẩn đoán..."></textarea>
+                        <label class="font-bold block uppercase text-xs">Ghi chú lâm sàng</label>
+                        <textarea class="w-full h-32 border-2 p-3" placeholder="Nhập triệu chứng ghi nhận..."></textarea>
+                    </div>
+                    <div class="border-2 border-dashed border-gray-300 p-4 flex flex-col">
+                        <label class="font-bold block uppercase text-xs mb-4">Đơn thuốc (Prescription)</label>
+                        <div class="flex-1 border-t pt-4 space-y-2">
+                            <div class="flex justify-between border-b pb-2 text-sm">
+                                <span>1. Paracetamol 500mg</span>
+                                <span>x10 Viên</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2 text-sm">
+                                <span>2. Vitamin C</span>
+                                <span>x05 Viên</span>
+                            </div>
+                        </div>
+                        <button class="mt-4 border-2 border-gray-800 py-2 font-bold text-sm">+ THÊM THUỐC</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center space-y-4 w-full">
+        <h2 class="text-2xl font-bold uppercase">3. Admin Dashboard</h2>
+        <div class="max-w-5xl mx-auto bg-white border-4 border-gray-800 shadow-xl flex h-[600px]">
+            <div class="w-48 bg-gray-900 text-white p-6 space-y-6">
+                <div class="font-black text-xl italic">MEDPRO</div>
+                <div class="space-y-4 text-sm text-gray-400">
+                    <p class="text-white font-bold">Thống kê chung</p>
+                    <p>Quản lý lịch trực</p>
+                    <p>Quản lý bác sĩ</p>
+                    <p>Cài đặt hệ thống</p>
+                </div>
+            </div>
+            <div class="flex-1 p-8 space-y-8 bg-gray-50">
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-white p-4 border-2 border-gray-200">
+                        <p class="text-xs text-gray-500 uppercase font-bold">Tổng doanh thu</p>
+                        <p class="text-2xl font-black">245.000.000đ</p>
+                    </div>
+                    <div class="bg-white p-4 border-2 border-gray-200">
+                        <p class="text-xs text-gray-500 uppercase font-bold">Lượt khám mới</p>
+                        <p class="text-2xl font-black">1,240</p>
+                    </div>
+                    <div class="bg-white p-4 border-2 border-gray-200">
+                        <p class="text-xs text-gray-500 uppercase font-bold">Đánh giá 5*</p>
+                        <p class="text-2xl font-black">98%</p>
+                    </div>
+                </div>
+                <div class="flex-1 border-4 border-dashed border-gray-300 flex items-center justify-center relative">
+                    <svg class="absolute inset-0 w-full h-full text-gray-200" preserveAspectRatio="none"><line x1="0" y1="0" x2="100%" y2="100%" stroke="currentColor" stroke-width="2"/><line x1="100%" y1="0" x2="0" y2="100%" stroke="currentColor" stroke-width="2"/></svg>
+                    <span class="bg-white px-4 font-bold text-gray-400 z-10">[ BIỂU ĐỒ DOANH THU THEO THÁNG ]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center space-y-4">
+        <h2 class="text-2xl font-bold uppercase">4. E-Ticket (QR Check-in)</h2>
+        <div class="w-[375px] h-[650px] bg-white border-[8px] border-gray-800 rounded-[2.5rem] relative flex flex-col p-6 shadow-xl mx-auto">
+            <h3 class="text-center font-black text-xl mb-6">PHIẾU KHÁM BỆNH</h3>
+            <div class="bg-gray-50 border-2 border-dashed border-gray-400 rounded-2xl p-6 flex flex-col items-center space-y-6">
+                <div class="w-48 h-48 bg-white border-4 border-gray-800 flex items-center justify-center p-2">
+                    <div class="w-full h-full grid grid-cols-4 grid-rows-4 gap-1 opacity-20">
+                        <div class="bg-black"></div><div class="bg-black"></div><div></div><div class="bg-black"></div>
+                        <div></div><div class="bg-black"></div><div class="bg-black"></div><div></div>
+                        <div class="bg-black"></div><div></div><div class="bg-black"></div><div class="bg-black"></div>
+                        <div class="bg-black"></div><div class="bg-black"></div><div></div><div class="bg-black"></div>
+                    </div>
+                    <span class="absolute font-bold text-xs uppercase bg-white px-2">QR Code</span>
+                </div>
+                <div class="w-full space-y-2 text-center">
+                    <p class="text-sm text-gray-500 italic">Mã số: MED-992023</p>
+                    <p class="font-black text-lg">BS. Nguyễn Văn B</p>
+                    <p class="text-sm">Chuyên khoa: Nội tim mạch</p>
+                </div>
+            </div>
+            <div class="mt-8 space-y-4">
+                <div class="flex justify-between border-b pb-2 text-sm">
+                    <span class="text-gray-500 font-medium">Thời gian khám:</span>
+                    <span class="font-bold">08:30 - 15/05/2026</span>
+                </div>
+                <div class="flex justify-between border-b pb-2 text-sm">
+                    <span class="text-gray-500 font-medium">Số thứ tự:</span>
+                    <span class="text-2xl font-black">08</span>
+                </div>
+            </div>
+            <p class="mt-auto text-[10px] text-center text-gray-400 font-medium italic">Vui lòng đưa mã này cho lễ tân khi đến phòng khám.</p>
+        </div>
+    </div>
+
+</body>
+</html>

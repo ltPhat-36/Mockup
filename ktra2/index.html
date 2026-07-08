@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý Giảng viên</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: #f4fdf6;
+  color: #333;
+  margin: 0;
+}
+/* ===== Header ===== */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   /* logo + title bên trái, nav bên phải */
+    padding: 12px 20px;
+    background: #34d399;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+  
+  /* Logo + Title */
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  header img {
+    height: 45px;
+    background-color: #e6f4ea;
+    border-radius: 8px;
+    padding: 4px;
+  }
+  header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  /* Nav */
+  header nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  header nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+  header nav a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+  header nav a.active {
+    background: #059669;
+    font-weight: 600;
+  }
+  
+  /* Input tìm kiếm */
+  header nav input {
+    border-radius: 20px;
+    padding: 4px 12px;
+    border: none;
+    font-size: 0.85rem;
+    outline: none;
+    min-width: 160px;
+  }
+  
+  /* User box */
+  header nav .user-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 10px;
+  }
+  header nav .user-box img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+  }
+  header nav .user-box span {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  header nav .user-box button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  
+  /* Responsive - khi màn nhỏ */
+  @media (max-width: 768px) {
+    header {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    header nav {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 10px;
+    }
+    header nav input {
+      flex: 1;
+      min-width: 120px;
+    }
+  }
+  
+
+
+
+
+/* User info */
+header nav img {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+    h2 {
+      font-weight: 600;
+      color: #14532d;
+      margin-bottom: 20px;
+      margin: 30px 0 20px; 
+    }
+
+    /* Form card */
+    form {
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .error-message {
+      color: #b91c1c;
+      font-size: 0.85rem;
+    }
+
+    /* Alert */
+    #message {
+      padding: 12px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin: 15px 0;
+      display: none;
+    }
+    #message.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    #message.error {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* Table style */
+    table {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    thead {
+      background: #ecfdf5 !important;
+      color: #065f46;
+    }
+    tbody tr:hover td {
+      background: #f0fdf4;
+    }
+
+    /* Pagination */
+    #pagination button {
+      margin: 0 3px;
+      padding: 5px 12px;
+      border-radius: 5px;
+      border: 1px solid #34d399;
+      background: #fff;
+      color: #34d399;
+    }
+    #pagination button.active {
+      background: #34d399;
+      color: #fff;
+    }
+    .stat-box {
+        padding: 12px;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        font-size: 0.9rem;
+      }
+      
+      .stat-box h5 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      
+      .stat-box p {
+        margin: 5px 0 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      
+  </style>
+  
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <img src="logoHUNRE.png" alt="Logo">
+      <h1>HUNRE - Quản lý Giảng viên</h1>
+    </div>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="#">Khoa</a>
+      <a href="#">Môn học</a>
+      <a href="#">Báo cáo</a>
+  
+      <!-- Input tìm kiếm -->
+      <input type="text" placeholder="Tìm nhanh...">
+  
+      <!-- User box -->
+      
+    </nav>
+  </header>
+  
+  <div class="container">
+  <h2 class="text-center">Danh sách Giảng viên</h2>
+  
+  <!-- Khu vực thống kê -->
+  <div class="row text-center my-3">
+    <div class="col-md-6">
+      <div class="stat-box bg-success text-white">
+        <h5>Tổng số Giảng viên</h5>
+        <p id="totalGiangVien">0</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="stat-box bg-info text-white">
+        <h5>Tổng số Môn giảng dạy</h5>
+        <p id="totalMon">0</p>
+      </div>
+    </div>
+  </div>
+  <div id="message"></div>
+
+  <!-- Form thêm/sửa -->
+  <form id="giangVienForm" class="mb-4 needs-validation" novalidate>
+    <div class="row g-3">
+      <div class="col-md-2">
+        <input type="text" id="maGiangVien" class="form-control" placeholder="Mã GV (VD: GV0006)" required>
+        <div id="maGVError" class="error-message"></div>
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="hoTen" class="form-control" placeholder="Họ và tên" required>
+        <div id="hoTenError" class="error-message"></div>
+      </div>
+      <div class="col-md-3">
+        <input type="email" id="email" class="form-control" placeholder="Email" required>
+        <div id="emailError" class="error-message"></div>
+      </div>
+      <div class="col-md-2">
+        <input type="text" id="khoa" class="form-control" placeholder="Khoa" required>
+        <div id="khoaError" class="error-message"></div>
+      </div>
+      <div class="col-md-2">
+        <input type="text" id="monGiangDay" class="form-control" placeholder="Môn dạy" required>
+        <div id="monError" class="error-message"></div>
+      </div>
+    </div>
+    <div class="mt-3">
+      <button type="submit" class="btn btn-success">Lưu</button>
+      <button type="button" id="resetBtn" class="btn btn-secondary">Reset</button>
+    </div>
+  </form>
+
+  <!-- Search -->
+  <input type="text" id="searchInput" placeholder="Tìm theo Mã GV hoặc Họ tên..." 
+    class="form-control mb-3" style="max-width:300px; display:inline-block;">
+  <button type="button" id="resetSearchBtn" class="btn btn-outline-success mb-3">Reset</button>
+
+  <!-- Bảng -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Mã GV</th>
+        <th>Họ và tên</th>
+        <th>Email</th>
+        <th>Khoa</th>
+        <th>Môn giảng dạy</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody id="giangVienTableBody"></tbody>
+  </table>
+
+  <div id="pagination" class="text-center my-3"></div>
+</div>
+  <script>
+    const API_URL = "http://localhost:8080/api/giangvien";
+  
+    const form = document.getElementById("giangVienForm");
+    const messageDiv = document.getElementById("message");
+    const tableBody = document.getElementById("giangVienTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const paginationDiv = document.getElementById("pagination");
+  
+    const maGVInput = document.getElementById("maGiangVien");
+    const hoTenInput = document.getElementById("hoTen");
+    const emailInput = document.getElementById("email");
+    const khoaInput = document.getElementById("khoa");
+    const monInput = document.getElementById("monGiangDay");
+  
+    let editingId = null;
+    let allData = [];
+    let currentPage = 1;
+    const pageSize = 5;
+  
+    // Tạo nút Hủy sửa
+    const cancelBtn = document.createElement("button");
+    cancelBtn.type = "button";
+    cancelBtn.innerText = "Hủy sửa";
+    cancelBtn.className = "btn btn-outline-danger ms-2";
+    cancelBtn.style.display = "none";
+    form.querySelector(".mt-3").appendChild(cancelBtn);
+  
+    function showMsg(text, ok = true) {
+      messageDiv.innerText = text;
+      messageDiv.className = ok ? "success" : "error";
+      messageDiv.style.display = "block";
+      setTimeout(() => {
+        messageDiv.style.display = "none";
+      }, 3000);
+    }
+  
+    function validateForm() {
+      let valid = true;
+      document.querySelectorAll(".error-message").forEach(e => (e.innerText = ""));
+  
+      const maGV = maGVInput.value.trim();
+      const hoTen = hoTenInput.value.trim();
+      const email = emailInput.value.trim();
+  
+      if (!/^GV\d{4}$/.test(maGV)) {
+        document.getElementById("maGVError").innerText =
+          "Mã giảng viên phải theo định dạng GVxxxx (VD: GV0001)";
+        valid = false;
+      }
+      if (hoTen.length < 3) {
+        document.getElementById("hoTenError").innerText =
+          "Họ tên phải có ít nhất 3 ký tự";
+        valid = false;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById("emailError").innerText = "Email không hợp lệ";
+        valid = false;
+      }
+      return valid;
+    }
+  
+    async function loadGiangVien() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Không lấy được dữ liệu");
+        allData = await res.json();
+        // Cập nhật thống kê
+document.getElementById("totalGiangVien").textContent = allData.length;
+let monHocSet = new Set(allData.map(gv => gv.monGiangDay));
+document.getElementById("totalMon").textContent = monHocSet.size;
+
+        renderTable();
+        renderPagination();
+      } catch (err) {
+        showMsg("Không thể tải dữ liệu!", false);
+      }
+    }
+  
+    function renderTable() {
+      tableBody.innerHTML = "";
+      const start = (currentPage - 1) * pageSize;
+      const pageData = allData.slice(start, start + pageSize);
+  
+      pageData.forEach(gv => {
+        const row = `
+          <tr>
+            <td>${gv.maGiangVien}</td>
+            <td>${gv.hoTen}</td>
+            <td>${gv.email}</td>
+            <td>${gv.khoa}</td>
+            <td>${gv.monGiangDay}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" onclick="editGiangVien('${gv.maGiangVien}')">Sửa</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteGiangVien('${gv.maGiangVien}')">Xóa</button>
+            </td>
+          </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+  
+    function renderPagination() {
+      paginationDiv.innerHTML = "";
+      const totalPages = Math.ceil(allData.length / pageSize);
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        btn.className = i === currentPage ? "active" : "";
+        btn.onclick = () => {
+          currentPage = i;
+          renderTable();
+          renderPagination();
+        };
+        paginationDiv.appendChild(btn);
+      }
+    }
+  
+    // Submit
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!validateForm()) return;
+  
+      const gv = {
+        maGiangVien: maGVInput.value,
+        hoTen: hoTenInput.value,
+        email: emailInput.value,
+        khoa: khoaInput.value,
+        monGiangDay: monInput.value
+      };
+  
+      let url = API_URL,
+        method = "POST";
+      if (editingId) {
+        url = API_URL + "/" + editingId;
+        method = "PUT";
+      }
+  
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(gv)
+        });
+        if (res.ok) {
+          showMsg(editingId ? "Cập nhật thành công" : "Thêm thành công");
+          resetForm();
+          await loadGiangVien();
+        } else showMsg("Lỗi xử lý!", false);
+      } catch {
+        showMsg("Lỗi kết nối API!", false);
+      }
+    });
+  
+    // Sửa
+    window.editGiangVien = async id => {
+      try {
+        const res = await fetch(API_URL + "/" + id);
+        if (!res.ok) return showMsg("Không tìm thấy giảng viên!", false);
+        const gv = await res.json();
+        maGVInput.value = gv.maGiangVien;
+        hoTenInput.value = gv.hoTen;
+        emailInput.value = gv.email;
+        khoaInput.value = gv.khoa;
+        monInput.value = gv.monGiangDay;
+  
+        editingId = id;
+  
+        // disable mã GV và email khi sửa
+        maGVInput.disabled = true;
+        emailInput.disabled = true;
+        cancelBtn.style.display = "inline-block";
+      } catch {
+        showMsg("Lỗi khi tải giảng viên!", false);
+      }
+    };
+  
+    // Xóa
+    // Xóa
+window.deleteGiangVien = async id => {
+    if (!confirm("Xác nhận xóa giảng viên này?")) return;
+    try {
+      const res = await fetch(API_URL + "/" + id, { method: "DELETE" });
+      if (res.ok) { // <-- sửa từ res.status === 204 thành res.ok
+        showMsg("Đã xóa");
+        await loadGiangVien();
+      } else showMsg("Xóa thất bại", false);
+    } catch {
+      showMsg("Lỗi kết nối API!", false);
+    }
+  };
+  
+  
+    // Hủy sửa
+    cancelBtn.onclick = () => {
+      resetForm();
+    };
+  
+    function resetForm() {
+      form.reset();
+      editingId = null;
+      maGVInput.disabled = false;
+      emailInput.disabled = false;
+      cancelBtn.style.display = "none";
+    }
+  
+    // Search
+    searchInput.addEventListener("input", () => {
+      const kw = searchInput.value.trim().toLowerCase();
+      if (!kw) {
+        renderTable();
+        renderPagination();
+        return;
+      }
+      const filtered = allData.filter(
+        gv =>
+          gv.maGiangVien.toLowerCase().includes(kw) ||
+          gv.hoTen.toLowerCase().includes(kw)
+      );
+      tableBody.innerHTML = "";
+      filtered.forEach(gv => {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${gv.maGiangVien}</td>
+            <td>${gv.hoTen}</td>
+            <td>${gv.email}</td>
+            <td>${gv.khoa}</td>
+            <td>${gv.monGiangDay}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" onclick="editGiangVien('${gv.maGiangVien}')">Sửa</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteGiangVien('${gv.maGiangVien}')">Xóa</button>
+            </td>
+          </tr>`;
+      });
+      paginationDiv.innerHTML = "";
+    });
+  
+    document.getElementById("resetSearchBtn").onclick = () => {
+      searchInput.value = "";
+      renderTable();
+      renderPagination();
+    };
+  
+    loadGiangVien();
+  </script>
+  
+</body>
+</html>

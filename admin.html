@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Background tổng thể */
+        body {
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    
+        /* Navbar */
+        .navbar {
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        .navbar:hover {
+            transform: translateY(-2px);
+        }
+    
+        /* Tiêu đề chính */
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: #1a237e;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+    
+        /* Card sản phẩm */
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: #ffffffcc;
+            backdrop-filter: blur(5px);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .card-body p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+    
+        /* Form thêm/sửa */
+        #productForm {
+            background: #ffffffdd;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        #productForm h4 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #0d47a1;
+        }
+        #productForm .form-label {
+            font-weight: 500;
+            color: #1a237e;
+        }
+        #productForm .btn-primary {
+            background: linear-gradient(90deg, #1e88e5, #42a5f5);
+            border: none;
+            transition: 0.3s;
+        }
+        #productForm .btn-primary:hover {
+            background: linear-gradient(90deg, #42a5f5, #1e88e5);
+        }
+        #productForm .btn-secondary {
+            background: #f1f1f1;
+            color: #333;
+        }
+    
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            background: #1a237e;
+            color: #fff;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .card-img-top {
+                height: 180px;
+            }
+            #productForm {
+                padding: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .card-img-top {
+                height: 150px;
+            }
+            #productForm {
+                padding: 15px;
+            }
+        }
+    </style>
+    
+</head>
+<body class="container py-4">
+
+    <!-- Thanh menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">🛒 Admin Panel</a>
+            <div class="d-flex">
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="mb-4">Quản lý sản phẩm</h2>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="row" id="productList"></div>
+
+    <!-- Form thêm / sửa -->
+    <div class="mt-5">
+        <h4>➕ Thêm / ✏️ Sửa sản phẩm</h4>
+        <form id="productForm">
+            <input type="hidden" id="productId">
+
+            <div class="mb-3">
+                <label class="form-label">Tên sản phẩm</label>
+                <input type="text" class="form-control" id="productName" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Giá</label>
+                <input type="number" class="form-control" id="productPrice" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea class="form-control" id="productDescription"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Danh mục</label>
+                <select class="form-select" id="productCategory" required>
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ảnh sản phẩm</label>
+                <input type="file" class="form-control" id="productImage">
+            </div>
+
+            <button type="submit" class="btn btn-primary">💾 Lưu</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">🔄 Làm mới</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>© 2025 Quản lý sản phẩm - Admin Panel</p>
+    </footer>
+
+    <script src="admin.js"></script>
+    <script>
+        // Hàm logout
+        function logout() {
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

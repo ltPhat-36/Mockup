@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm BA - Hệ thống Load Control & ULD (Bản Full 80 Câu)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e2d;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            background-color: #2b2b40;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .header {
+            border-bottom: 1px solid #4a4a6a;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h2 { margin: 0; font-size: 1.5rem; color: #00d2ff; }
+        .badge {
+            background-color: #e83e8c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .option-btn {
+            background-color: #3f3f5a;
+            color: #fff;
+            border: 1px solid #5a5a7e;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #4a4a6a;
+        }
+        .option-btn.correct {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .option-btn.wrong {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            line-height: 1.4;
+        }
+        .feedback.show { display: block; }
+        .feedback.success { background-color: rgba(40, 167, 69, 0.2); border-left: 4px solid #28a745; }
+        .feedback.error { background-color: rgba(220, 53, 69, 0.2); border-left: 4px solid #dc3545; }
+        .controls { margin-top: 25px; display: flex; justify-content: flex-end; }
+        button.next-btn {
+            background-color: #007bff; color: white; border: none;
+            padding: 10px 25px; border-radius: 6px; cursor: pointer;
+            font-size: 1rem; display: none; font-weight: bold;
+        }
+        button.next-btn:hover { background-color: #0056b3; }
+        .progress-bar { width: 100%; height: 8px; background-color: #4a4a6a; border-radius: 4px; margin-bottom: 20px; }
+        .progress-fill { height: 100%; background-color: #00d2ff; border-radius: 4px; transition: width 0.3s ease; }
+        .result-screen { text-align: center; display: none; }
+        .score { font-size: 3.5rem; color: #00d2ff; margin: 20px 0; font-weight: bold;}
+    </style>
+</head>
+<body>
+
+<div class="quiz-container" id="quiz-box">
+    <div class="header">
+        <h2>Nghiệp vụ Hệ thống ULD <span class="badge">Shuffled</span></h2>
+        <span id="question-tracker">Đang tải...</span>
+    </div>
+    
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+
+    <div id="quiz-content">
+        <div class="question-text" id="question">Đang tải câu hỏi...</div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="controls">
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">Câu tiếp theo ❯</button>
+        </div>
+    </div>
+
+    <div class="result-screen" id="result-screen">
+        <h2>Hoàn thành bài Test!</h2>
+        <div class="score" id="final-score">0 / 80</div>
+        <p>Kiến thức nền tảng và tư duy hệ thống là cốt lõi của một Business Analyst giỏi. Hãy tiếp tục phát huy!</p>
+        <button class="next-btn" style="display:inline-block; margin-top: 20px;" onclick="location.reload()">Làm lại bài (Trộn câu hỏi mới)</button>
+    </div>
+</div>
+
+<script>
+    // Toàn bộ 80 câu hỏi
+    const originalQuizData = [
+        // --- 25 CÂU CƠ BẢN ---
+        { question: "Trong hệ thống Load Control, 'AC Subtype' đại diện cho điều gì?", options: ["A. Mã định danh của một chiếc máy bay cụ thể.", "B. Dòng máy bay phụ định nghĩa cấu hình chi tiết (ví dụ A320-200).", "C. Các hãng hàng không đang khai thác chung đường bay.", "D. Thông số kỹ thuật của thùng hàng ULD."], answer: 1, explain: "AC Subtype (Aircraft Subtype) dùng để định nghĩa cấu hình chi tiết của dòng máy bay gốc, từ đó làm cơ sở tính toán sức chứa hầm hàng." },
+        { question: "Sự khác biệt cốt lõi giữa 'ULD Type' và 'ULD' là gì?", options: ["A. ULD Type là thùng của hãng mình, ULD là thùng đi mượn.", "B. ULD Type là bản thiết kế/tiêu chuẩn, ULD là thực thể tài sản vật lý.", "C. ULD Type dùng cho hàng hóa, ULD dùng cho hành lý khách hàng.", "D. Không có sự khác biệt, chúng là một."], answer: 1, explain: "ULD Type định nghĩa các thông số chuẩn (kích thước, tải trọng). ULD là cái thùng thực tế ngoài sân bay được sinh ra từ chuẩn đó." },
+        { question: "Trường 'Tare Weight' trong định nghĩa ULD Type có ý nghĩa gì?", options: ["A. Tổng trọng lượng cho phép của thùng và hàng.", "B. Trọng lượng hàng hóa thực tế bên trong thùng.", "C. Thể tích tối đa của thùng.", "D. Trọng lượng vỏ rỗng của thiết bị."], answer: 3, explain: "Tare Weight là trọng lượng vỏ thùng. Hệ thống tự động trừ số này khỏi Gross Weight để ra Net Weight (trọng lượng hàng hóa thực)." },
+        { question: "Trường 'Max Gross' quản lý vấn đề gì trong vận hành?", options: ["A. Kích thước tối đa để không kẹt cửa hầm.", "B. Trọng lượng tối đa (vỏ + hàng) mà thùng có thể chịu được an toàn.", "C. Tổng số lượng thùng được phép chất lên máy bay.", "D. Chi phí lớn nhất để bảo trì thùng."], answer: 1, explain: "Max Gross giới hạn sức chịu tải của thùng. Vượt quá mức này hệ thống sẽ báo vi phạm an toàn." },
+        { question: "Vì sao cần khai báo trường 'Aircraft Compatibility' trong ULD Type?", options: ["A. Để tính toán vé máy bay.", "B. Để ngăn việc chất thùng hàng lên hầm máy bay không có khả năng chứa hoặc sai ngoàm giữ.", "C. Để biết máy bay của hãng nào sản xuất.", "D. Để xếp lịch phi công bay."], answer: 1, explain: "Ràng buộc vật lý. Hệ thống dựa vào đây để chặn lỗi con người khi cố xếp sai thùng vào sai loại máy bay." },
+        { question: "Trong màn hình quản lý ULD vật lý, trường 'Owner' dùng để làm gì?", options: ["A. Xác định khách hàng gửi lô hàng bên trong.", "B. Xác định hãng hàng không hoặc đối tác sở hữu cái thùng đó.", "C. Xác định người nhân viên đang thao tác hệ thống.", "D. Xác định tên phi công."], answer: 1, explain: "ULD thường xuyên luân chuyển và mượn/đổi giữa các hãng. Cần theo dõi Owner để quản lý tài sản." },
+        { question: "Trạng thái (Status) của một AC Subtype nên được chuyển thành gì khi hãng không khai thác cấu hình đó nữa?", options: ["A. Xóa (Delete).", "B. Cập nhật thành tên máy bay khác.", "C. Ngừng hoạt động (Inactive/Deactive).", "D. Ẩn (Hide)."], answer: 2, explain: "Không bao giờ hard-delete dữ liệu nền tảng đã phát sinh giao dịch. Chuyển sang Inactive để giữ nguyên Audit Trail." },
+        { question: "Mục đích của bảng lưới 'Serial Number' bên trong cấu hình một ULD là gì?", options: ["A. Quản lý danh sách hàng hóa của khách.", "B. Quản lý tài sản phụ kiện đi kèm cái thùng đó (lưới, dây đai, định vị).", "C. Lưu mã số chuyến bay.", "D. Lưu danh sách mã quét QR của nhân viên."], answer: 1, explain: "Đại diện cho mối quan hệ 1-N. Một ULD có thể gắn nhiều lưới, đai, tag định vị. Cần tracking sê-ri để quản lý vòng đời." },
+        { question: "Lưới, dây đai chằng hàng trên mâm ULD là thành phần:", options: ["A. Tùy chọn, có cũng được không có cũng được.", "B. Chỉ dùng để trang trí.", "C. Bắt buộc đối với thùng hở/mâm để đảm bảo an toàn bay.", "D. Chỉ dùng khi trời mưa."], answer: 2, explain: "Nếu mâm hàng không có thiết bị chằng trói khai báo số sê-ri hợp lệ, hệ thống Load Control sẽ cảnh báo không cho bay." },
+        { question: "Nếu một tấm lưới ULD bị rách ngoài thực địa, nhân viên cần làm gì trên hệ thống phần mềm?", options: ["A. Xóa ULD đó đi tạo lại cái mới.", "B. Vào ULD hiện tại, xóa dòng Serial của lưới cũ trong bảng phụ kiện, thêm Serial của lưới mới.", "C. Đổi mã ULD Code.", "D. Kệ nó, hệ thống tự biết."], answer: 1, explain: "Thao tác Update tài sản: Gỡ bỏ thiết bị hỏng (unassign) và gán (assign) thiết bị mới vào để đồng bộ thực tế." },
+        { question: "Vì sao chức năng 'Import' được thêm vào bảng Serial Number?", options: ["A. Để tính toán tải trọng nhanh hơn.", "B. Giải quyết Use Case nhập liệu hàng loạt khi hãng mua lô hàng trăm phụ kiện mới.", "C. Để export ra file Excel.", "D. Để liên kết với hệ thống nhân sự."], answer: 1, explain: "Tính năng UI/UX tốt giúp tiết kiệm thời gian nhập liệu thủ công cho người dùng." },
+        { question: "Khái niệm 'Volume' trong ULD Type đóng vai trò gì?", options: ["A. Tính khối lượng tối đa tính bằng kg.", "B. Tính thể tích khối mét vuông (m3) không gian cho phép chất hàng.", "C. Tính độ dày của vỏ thùng.", "D. Tính giá trị tiền của hàng hóa."], answer: 1, explain: "Thể tích (m3) kết hợp cùng Max Gross giúp hệ thống tính toán xem một chuyến bay đã 'đầy' về không gian hay 'đầy' về trọng lượng." },
+        { question: "Nếu cần tracking ngày hết hạn của một tấm lưới (Net), ta nên thêm trường Expiry Date vào đâu?", options: ["A. Màn hình Master của ULD Type.", "B. Dòng thông tin chung của ULD.", "C. Một cột mới trong bảng lưới Serial Number.", "D. Trong thông tin AC Subtype."], answer: 2, explain: "Vì mỗi tấm lưới (phân biệt qua Serial) sẽ có hạn sử dụng riêng. Nên trường này phải nằm cùng cấp độ quản lý với Serial Number." },
+        { question: "Mã 'AKE' là một ví dụ của:", options: ["A. ULD Code thực tế.", "B. ULD Type Code theo chuẩn quốc tế.", "C. Dòng máy bay.", "D. Mã sân bay."], answer: 1, explain: "AKE là mã chuẩn IATA cho thùng LD3. Dựa vào mã ULD Type, toàn bộ ngành hàng không hiểu chung về thông số vật lý của thùng đó." },
+        { question: "Một bản ghi ULD Code thực tế ngoài đời có cấu trúc ví dụ nào dưới đây?", options: ["A. Boeing 777", "B. AKE13", "C. AKE 12345 VN", "D. 32C"], answer: 2, explain: "Cấu trúc gồm: Loại chuẩn (AKE) + Số định danh sê-ri của thùng (12345) + Chủ sở hữu (VN)." },
+        { question: "Trong cơ sở dữ liệu, một ULD Type có thể liên kết với tối đa bao nhiêu ULD vật lý?", options: ["A. Chỉ 1.", "B. Tối đa 100.", "C. Vô số (N) - tùy vào số lượng tài sản hãng mua.", "D. Không liên kết được."], answer: 2, explain: "Mối quan hệ 1-N. Bản mô tả chuẩn đẻ ra hàng ngàn thực thể ngoài đời." },
+        { question: "Trường 'Current Location' trong ULD dùng để giải quyết nghiệp vụ gì?", options: ["A. Quản lý kho bãi và luân chuyển tài sản (Inventory Routing).", "B. Tính giá vé máy bay.", "C. Xác định điểm đến của khách hàng.", "D. Đo độ ẩm môi trường."], answer: 0, explain: "Giúp phòng điều hành biết thùng đang ở sân bay nào để điều phối phục vụ chuyến bay tiếp theo." },
+        { question: "Khi xóa một ULD Type, tại sao hệ thống lại yêu cầu nhập 'Lý do' (Reason)?", options: ["A. Để gây khó khăn cho người dùng.", "B. Yêu cầu bắt buộc của Audit Trail để truy vết trách nhiệm.", "C. Để tự động gửi email cho khách hàng.", "D. Để tính tiền phạt."], answer: 1, explain: "Xóa Master Data là rủi ro lớn. Việc bắt buộc nhập lý do là nguyên tắc Compliance trong BA." },
+        { question: "Một mâm (Pallet) đang hỏng được đánh dấu 'Deactive'. Điều gì sẽ xảy ra trong luồng hệ thống tiếp theo?", options: ["A. Nó tự động biến mất khỏi hệ thống.", "B. Module xếp lịch chuyến bay sẽ filter (lọc) nó ra và không cho phép gán nó vào chuyến bay.", "C. Nó tự động được sửa chữa.", "D. Tự động thông báo cho nhà sản xuất."], answer: 1, explain: "Status Deactive đóng vai trò là cờ (flag) để các luồng quy trình khác chặn khai thác tài sản lỗi." },
+        { question: "Tính năng 'Search by ULD Type Code' trên giao diện giúp ích gì cho người dùng?", options: ["A. Tăng tốc độ lọc và truy xuất thông số của một nhóm thùng cụ thể.", "B. Mở khóa máy bay.", "C. Liên hệ với bộ phận IT.", "D. Thay đổi giao diện màn hình."], answer: 0, explain: "Đây là tính năng UX cơ bản của một Master List." },
+        { question: "Mối quan hệ giữa AC Subtype và ULD Type là gì?", options: ["A. 1 - 1", "B. 1 - N", "C. N - 1", "D. N - N (Nhiều - Nhiều)"], answer: 3, explain: "Một dòng máy bay chở được nhiều loại thùng, và một loại thùng có thể chui lọt được vào nhiều dòng máy bay khác nhau." },
+        { question: "Thuật ngữ 'Physical Dimensions' bao gồm những gì?", options: ["A. Gross Weight, Net Weight, Tare Weight.", "B. Width, Height, Depth, Base Dimensions.", "C. ULD Code, Owner, Location.", "D. Active, Inactive."], answer: 1, explain: "Kích thước vật lý (Rộng, Cao, Sâu) dùng để thuật toán xếp chỗ không gian hầm hàng 3D hoạt động." },
+        { question: "Tag định vị thông minh (BLE/IoT) gắn trên thùng ULD sẽ được quản lý ở đâu trong phần mềm?", options: ["A. Ở màn hình cấu hình AC Subtype.", "B. Ở trường Note của ULD Type.", "C. Là một dòng mới trong lưới 'Serial Number' của ULD đó.", "D. Không cần quản lý."], answer: 2, explain: "Các thiết bị ngoại vi gắn thêm đều là tài sản phụ trợ, phải quản lý sê-ri ở bảng phụ kiện 1-N." },
+        { question: "Là BA, bạn thấy người dùng nhập Tare Weight là chữ (ví dụ: 'Mười ký'). Lỗi này thuộc về?", options: ["A. Lỗi Database.", "B. Thiếu Data Validation ở Frontend (Chặn chỉ cho nhập số).", "C. Lỗi đường truyền mạng.", "D. Lỗi do máy bay quá tải."], answer: 1, explain: "Trường dùng để tính toán toán học bắt buộc phải chặn nhập ký tự Text ngay từ giao diện." },
+        { question: "Hệ thống quản lý ULD và Load Control đóng vai trò chính trong việc:", options: ["A. Bán hàng và Marketing.", "B. Chăm sóc khách hàng.", "C. Đảm bảo an toàn tính mạng con người và tối ưu hóa chuỗi cung ứng hàng hóa.", "D. Tuyển dụng phi công."], answer: 2, explain: "Tính toán sai trọng tải hoặc sai kích thước hầm hàng dẫn đến rủi ro thảm họa hàng không." },
+
+        // --- 25 CÂU NÂNG CAO ---
+        { question: "Dưới góc độ BA thiết kế Database, trường dữ liệu 'Volume' (Thể tích) của ULD Type nên được lưu trữ dưới định dạng nào là tốt nhất?", options: ["A. String/Varchar (Chuỗi ký tự).", "B. Integer (Số nguyên).", "C. Decimal/Float (Số thập phân).", "D. Boolean (Đúng/Sai)."], answer: 2, explain: "Thể tích thường có các giá trị lẻ (ví dụ 4.3 m3), việc dùng Decimal/Float giúp hệ thống Load Control tính toán chính xác không gian hầm hàng mà không bị sai số làm tròn." },
+        { question: "Mã IATA của ULD bắt đầu bằng chữ 'P' (ví dụ: PMC, PAG) và chữ 'A' (ví dụ: AKE, ALF). Sự khác biệt vật lý cơ bản nhất là gì?", options: ["A. P là thùng nhựa, A là thùng nhôm.", "B. P là mâm lộ thiên (Pallet), A là thùng kín (Container).", "C. P dùng cho hành khách, A dùng cho hàng hóa.", "D. P là hàng nặng, A là hàng nhẹ."], answer: 1, explain: "Đây là kiến thức chuẩn IATA. Ký tự đầu tiên xác định danh mục thiết bị: P (Pallet) là mâm cần lưới chằng, A (Certified Container) là thùng kín có cửa." },
+        { question: "Bạn quan sát thấy hình dáng (Contour) của thùng AKE bị vát chéo một bên thay vì vuông vức. Mục đích của thiết kế này là gì?", options: ["A. Tiết kiệm vật liệu nhôm khi sản xuất.", "B. Để nước mưa dễ chảy xuống.", "C. Khớp với độ cong của vòm hầm hàng (Fuselage) máy bay.", "D. Để dễ dàng kéo tay trên sân đỗ."], answer: 2, explain: "Máy bay có thân hình trụ. Các thùng hàng ở rìa hầm phải vát chéo (Contour) để lắp vừa vặn vào vòm cong của thân máy bay nhằm tối ưu hóa diện tích." },
+        { question: "Hai nhân viên thủ kho ở hai máy tính khác nhau cùng lúc mở màn hình Cập nhật (Update) trạng thái của thùng AKE 12345 VN. Là BA, bạn đề xuất cơ chế gì để tránh xung đột dữ liệu?", options: ["A. Không làm gì, ai lưu sau thì đè dữ liệu người trước.", "B. Áp dụng cơ chế Optimistic/Pessimistic Locking (Khóa bản ghi).", "C. Tắt hệ thống của một người.", "D. Gửi email cảnh báo."], answer: 1, explain: "Trong thiết kế hệ thống nhiều người dùng (Concurrent Users), cơ chế Locking là bắt buộc để đảm bảo tính toàn vẹn dữ liệu (Data Integrity)." },
+        { question: "Hệ thống quản lý tài sản ULD (Inventory) cần tích hợp chặt chẽ nhất (qua API/Message) với hệ thống nào để đảm bảo chuyến bay cất cánh an toàn?", options: ["A. Hệ thống Bán vé (Ticketing).", "B. Hệ thống Cân bằng trọng tải (Weight & Balance / Load Control).", "C. Hệ thống Quản trị nhân sự (HRM).", "D. Hệ thống Giải trí trên chuyến bay (IFE)."], answer: 1, explain: "Inventory cung cấp danh sách vỏ thùng hợp lệ, Load Control lấy vỏ đó để nhét hàng vào và tính toán trọng tâm máy bay (CG - Center of Gravity)." },
+        { question: "Nếu một tấm lưới (Net) gắn trên mâm ULD chuẩn bị hết hạn (Expiry Date) trong 3 ngày tới. Luồng UX hợp lý nhất trên màn hình chuẩn bị chuyến bay là gì?", options: ["A. Xóa luôn mâm ULD đó khỏi hệ thống.", "B. Chặn cứng (Hard Block) không cho xếp hàng.", "C. Hiển thị cảnh báo màu vàng (Soft Warning) nhưng vẫn cho phép khai thác chuyến này, đồng thời tạo task bảo trì.", "D. Trừ lương nhân viên."], answer: 2, explain: "Thiết bị chưa hết hạn thì vẫn hợp lệ an toàn, nhưng cần cảnh báo Soft Warning (Warning level) để điều phối viên có kế hoạch thay lưới ngay sau khi chuyến bay hạ cánh." },
+        { question: "Báo cáo 'ULD Imbalance' (Mất cân bằng ULD) giữa các nhà ga cho biết điều gì?", options: ["A. Máy bay đang bị nghiêng vì xếp hàng sai.", "B. Sân bay A đang tích tụ quá nhiều vỏ thùng rỗng, trong khi Sân bay B lại thiếu vỏ để đóng hàng.", "C. Thu chi tài chính của hãng đang lỗ.", "D. Thùng ULD bị móp méo."], answer: 1, explain: "Đây là bài toán điều phối kho bãi (Logistics). Imbalance xảy ra khi hàng xuất - nhập không đều, buộc hãng phải chở vỏ ULD rỗng (chở gió) đến nơi đang thiếu để bù đắp." },
+        { question: "Khi khách hàng gửi Hàng nguy hiểm (DG - Dangerous Goods), quy tắc nghiệp vụ (Business Rule) nào phải được hệ thống áp dụng khi gán lô hàng vào ULD?", options: ["A. Hàng DG không bị tính phí.", "B. Phải kiểm tra luật phân tách (Segregation) - Ví dụ: Không gán chất độc chung thùng với động vật sống.", "C. Hàng DG chỉ được xếp vào mâm lộ thiên.", "D. Phải có phi công đi theo giám sát ULD đó."], answer: 1, explain: "Quy tắc Segregation (Phân tách hàng hóa) là sống còn. Hệ thống phải tự động cảnh báo (Conflict Alert) nếu nhân viên gán nhầm các lớp hàng kỵ nhau vào chung 1 thùng." },
+        { question: "Một nhân viên cố tình nhập Net Weight (trọng lượng hàng) là -50kg. Thuật ngữ BA dùng để chỉ tính năng chặn lỗi này trên Form là gì?", options: ["A. API Timeout.", "B. Cross-site Scripting (XSS).", "C. Data Validation (Input Type / Min value = 0).", "D. Load Balancing."], answer: 2, explain: "Ràng buộc dữ liệu đầu vào ở mức Frontend. Trọng lượng không thể là số âm." },
+        { question: "Thay vì xóa một ULD bị mất tích, hãng cập nhật trạng thái thành 'Missing'. Ưu điểm của việc này so với 'Delete' là gì?", options: ["A. Giải phóng dung lượng ổ cứng.", "B. Vẫn theo dõi được thời gian mất tích để tính khấu hao hoặc làm việc với bảo hiểm.", "C. Để làm cho danh sách dài hơn.", "D. Không có ưu điểm gì."], answer: 1, explain: "Tài sản mất tích vẫn có giá trị về mặt sổ sách kế toán (khấu hao, đền bù). Hard-delete sẽ làm mất dấu vết tài sản này." },
+        { question: "Nếu Master Data thay đổi (Ví dụ: Giảm Tare Weight của chuẩn AKE từ 80kg xuống 75kg). Điều này ảnh hưởng gì đến hệ thống?", options: ["A. Không ảnh hưởng gì.", "B. Hệ thống bị crash.", "C. Có thể làm sai lệch tính toán của các chuyến bay Lịch sử (đã bay). Cần cơ chế Versioning hoặc chỉ áp dụng từ thời điểm hiện tại trở đi.", "D. Trọng lượng máy bay sẽ tăng lên."], answer: 2, explain: "Đây là vấn đề nhức nhối khi đổi Master Data. Nếu update đè, các báo cáo bay quá khứ sẽ bị sai lệch. Hệ thống cần snapshot (chụp) lại thông số tại thời điểm bay." },
+        { question: "Để tối ưu UX cho việc nhập hàng chục mã Serial Number cho phụ kiện ULD, bạn nên thiết kế tính năng nào?", options: ["A. Bắt người dùng nhập từng ô một và bấm Save 100 lần.", "B. Hỗ trợ quét Barcode/RFID trực tiếp hoặc Upload file CSV/Excel.", "C. Dùng giọng nói để nhập liệu.", "D. Tự động sinh ra chuỗi Serial ngẫu nhiên."], answer: 1, explain: "Nghiệp vụ thực địa yêu cầu tốc độ. Việc hỗ trợ máy quét mã vạch (Scanner) hoặc Import Excel là Use Case điển hình của quản lý tài sản." },
+        { question: "Trường dữ liệu 'Current Location' của ULD được tự động cập nhật chính xác nhất nhờ vào thao tác nghiệp vụ nào?", options: ["A. Khi máy bay cất cánh.", "B. Khi nhân viên kho quét mã xác nhận dỡ thùng hàng (Offload) thành công tại trạm đến.", "C. Khi khách hàng mua vé.", "D. Khi hết hạn bảo trì."], answer: 1, explain: "Trạng thái vật lý chỉ thay đổi khi có xác nhận giao nhận ngoài đời thực (thông qua thao tác Scan/Offload) tại sân bay hạ cánh." },
+        { question: "Trên hệ thống phần mềm, một mâm (Pallet) và 5 cái vỏ thùng kín rỗng được xếp chồng lên nhau để chuyển đi ga khác. Hệ thống quản lý khái niệm này gọi là gì?", options: ["A. ULD Stack / Empty Stack.", "B. ULD Crash.", "C. ULD Delete.", "D. ULD Merge."], answer: 0, explain: "Stacking (chất chồng vỏ rỗng) là cách hãng hàng không luân chuyển vỏ để giải quyết bài toán Imbalance, tiết kiệm không gian hầm hàng." },
+        { question: "Nếu hãng hàng không A mượn ULD của hãng B để bay. Trách nhiệm khai báo Tare Weight của ULD đó thuộc về ai?", options: ["A. Không cần khai báo.", "B. Hãng B (Chủ sở hữu) phải cấp thông số, và hệ thống hãng A phải cho phép nhập 'Foreign ULD' (Thùng ngoại lai).", "C. Hành khách.", "D. Tự lấy Tare Weight của thùng nhẹ nhất."], answer: 1, explain: "Luồng khai thác Foreign ULD (thùng mượn/thuê) là Use Case phổ biến. Hệ thống phải linh hoạt cho phép khởi tạo ULD tạm thời dựa trên Master Data của hãng bạn." },
+        { question: "Theo IATA, ULD mang mã bắt đầu bằng R (Ví dụ: RKN, RAP) là loại thùng gì?", options: ["A. Thùng chở rác (Rubbish).", "B. Thùng bảo ôn/kiểm soát nhiệt độ (Refrigerated/Temperature Controlled).", "C. Thùng chở tia phóng xạ (Radioactive).", "D. Thùng bằng cao su (Rubber)."], answer: 1, explain: "Thùng làm lạnh chuyên chở vaccine, thuốc y tế hoặc thực phẩm tươi sống. BA cần thiết kế thêm trường 'Temperature Setpoint' (Mức nhiệt độ cài đặt) cho loại ULD này." },
+        { question: "Cột 'Actions' (chứa nút Edit, Delete) thường được phân quyền (Authorization) dựa trên yếu tố nào?", options: ["A. Tuổi của nhân viên.", "B. Giới tính của nhân viên.", "C. Role-Based Access Control (RBAC) - Vai trò của user trên hệ thống.", "D. Tốc độ gõ phím."], answer: 2, explain: "Chỉ Admin hoặc Supervisor mới có quyền Delete. System User bình thường chỉ có quyền View hoặc Edit một số trường." },
+        { question: "Khi viết User Story cho tính năng cảnh báo quá tải ULD, cấu trúc Gherkin (Given-When-Then) nào sau đây là chuẩn mực?", options: ["A. Nếu tôi nhập sai, máy sẽ kêu bíp.", "B. Given tôi ở màn hình ULD, When tôi nhập Gross > Max Gross, Then hệ thống disable nút Save và báo lỗi đỏ.", "C. Là quản lý tôi muốn không bị quá tải để bay an toàn.", "D. Khi quá tải thì không cho bay."], answer: 1, explain: "Cấu trúc BDD (Behavior-Driven Development) rõ ràng nhất mô tả trạng thái ban đầu (Given), hành động (When) và kết quả hệ thống phải thực thi (Then)." },
+        { question: "Để theo dõi Ai là người đã cập nhật trạng thái ULD bị hỏng và cập nhật Lúc nào, BA cần thêm các trường Audit mặc định nào vào Database?", options: ["A. Username, Password.", "B. Created_By, Created_At, Updated_By, Updated_At.", "C. Latitude, Longitude.", "D. IP Address, MAC Address."], answer: 1, explain: "Đây là 4 trường Audit Column kinh điển bắt buộc phải có trong mọi bảng dữ liệu quản lý nghiệp vụ để truy vết lịch sử (Tracking)." },
+        { question: "Nếu hệ thống Load Control bị rớt mạng (Offline) ngay sát giờ bay, giải pháp nghiệp vụ dự phòng (Fallback) là gì?", options: ["A. Hủy chuyến bay.", "B. Bắt hành khách xuống máy bay.", "C. Chuyển sang quy trình Manual (Tính toán bằng giấy và gửi điện văn Loadsheet thủ công).", "D. Đợi đến khi có mạng rồi mới bay."], answer: 2, explain: "Đặc thù ngành hàng không là tính liên tục. Mọi hệ thống IT đều phải có quy trình Fallback (chạy bằng giấy/Manual) để chuyến bay không bị delay." },
+        { question: "Vì sao một số máy bay nhỏ (như ATR72) không có thiết lập AC Subtype liên kết với ULD Type?", options: ["A. Vì ATR72 bay quá chậm.", "B. Vì hầm hàng của máy bay nhỏ không có hệ thống ray/ngoàm giữ, hàng hóa phải chất rời (Bulk Loading) thay vì dùng ULD.", "C. Vì ULD quá đắt tiền.", "D. Vì phi công không thích ULD."], answer: 1, explain: "Chất rời (Bulk) là chất trực tiếp kiện hàng lên sàn máy bay. Chỉ máy bay thân rộng (Wide-body) hoặc hầm hàng thiết kế riêng mới dùng ULD." },
+        { question: "Tính năng 'Filter by Status: Active/Inactive' trên màn hình Master List giải quyết vấn đề UX gì?", options: ["A. Đổi màu giao diện.", "B. Giảm nhiễu thông tin (Noise reduction), giúp người dùng tập trung vào các thiết bị đang được khai thác thực tế.", "C. Tăng tốc độ gõ phím.", "D. Để trang web tự động tải lại."], answer: 1, explain: "Kho dữ liệu ULD có hàng chục ngàn dòng. Ẩn đi các ULD hỏng/bỏ đi giúp màn hình làm việc gọn gàng và tránh sai sót." },
+        { question: "Floor Bearing Limit (Giới hạn chịu lực sàn hầm hàng) liên quan gì đến ULD Type?", options: ["A. Nó tính màu sắc của hầm hàng.", "B. Nếu Max Gross của ULD chia cho Base Dimensions (Diện tích đáy) vượt quá giới hạn chịu lực của sàn máy bay, sàn sẽ bị thủng.", "C. Nó liên quan đến số lượng bánh xe trên ULD.", "D. Nó là giá trị bảo hiểm."], answer: 1, explain: "Đây là bài toán vật lý. Trọng lượng quá nặng đè lên diện tích đáy quá nhỏ (áp suất) sẽ phá hủy sàn máy bay. AC Subtype phải giới hạn ULD Type vì điều này." },
+        { question: "Điện văn LDM (Load Message) mà hệ thống gửi đi sau khi máy bay cất cánh chứa thông tin gì?", options: ["A. Menu thức ăn của chuyến bay.", "B. Danh sách tên hành khách.", "C. Tổng hợp thông tin tải trọng (Weight) thực tế và số lượng ULD đã xếp theo từng hầm (Compartment) để trạm đến chuẩn bị dỡ hàng.", "D. Bản đồ đường bay."], answer: 2, explain: "LDM là luồng output quan trọng nhất của Load Control để giao tiếp với sân bay đến (Destination Station)." },
+        { question: "Tư duy thiết kế (Design Thinking): Màn hình Add/Edit ULD hiện tại có thanh trượt (Scroll) quá dài. BA nên cải thiện UI như thế nào?", options: ["A. Bắt người dùng dùng màn hình to hơn.", "B. Gộp chung các trường dữ liệu lại thành 1 ô nhập chữ.", "C. Tổ chức lại theo dạng Tabs, Accordions (mở/đóng) hoặc Step-by-step (Wizard) phân theo nhóm: Thông tin chung -> Thông số kỹ thuật -> Phụ kiện.", "D. Xóa bớt các trường đi."], answer: 2, explain: "Tổ chức Layout theo nguyên lý nhóm thông tin logic (Logical Grouping) giúp UX thao tác mượt mà và giảm tải nhận thức (Cognitive Load) cho nhân viên nghiệp vụ." },
+
+        // --- 30 CÂU MASTER KHÓ NHẤT ---
+        { question: "Khi hệ thống ghi nhận sự kiện 'Cập nhật trạng thái ULD', trường thời gian (Updated_At) nên được lưu trữ trong Database theo chuẩn nào để tránh sai lệch khi máy bay bay qua các quốc gia khác nhau?", options: ["A. Giờ địa phương của sân bay khởi hành.", "B. Giờ địa phương của sân bay hạ cánh.", "C. Chuẩn UTC (Coordinated Universal Time).", "D. Giờ của máy chủ (Server Time)."], answer: 2, explain: "Trong hệ thống hàng không toàn cầu, mọi log thời gian bắt buộc phải lưu dưới dạng UTC ở Database. Khi hiển thị lên giao diện (Frontend), hệ thống mới convert sang múi giờ của người dùng đang xem." },
+        { question: "BA cần viết validation rule (ràng buộc) nào sau đây cho màn hình tạo ULD Type để đảm bảo logic toán học vật lý?", options: ["A. Tare Weight (Trọng lượng vỏ) phải lớn hơn Max Gross (Trọng lượng tối đa).", "B. Tare Weight bắt buộc phải nhỏ hơn Max Gross.", "C. Thể tích (Volume) phải bằng Max Gross.", "D. Tare Weight phải là số âm."], answer: 1, explain: "Trọng lượng vỏ rỗng luôn phải nhỏ hơn tổng trọng lượng chịu tải tối đa của thùng. Nếu nhập sai, thùng sẽ không chứa được gram hàng nào." },
+        { question: "Trong tính năng 'Export Excel' danh sách ULD, nếu một ULD có 5 phụ kiện (Serial Number) đi kèm, hệ thống nên xuất file như thế nào là tối ưu nhất cho người dùng báo cáo?", options: ["A. Bỏ qua không xuất các Serial Number.", "B. Xuất thành 5 dòng khác nhau cho cùng 1 ULD Code.", "C. Gộp 5 Serial Number thành 1 chuỗi cách nhau bằng dấu phẩy trong cùng 1 ô (cell) của Excel.", "D. Bắt người dùng tải 2 file Excel riêng biệt."], answer: 2, explain: "Để người dùng dễ dàng filter và xem tổng quan danh sách Master, việc gom nhóm dữ liệu 1-N vào một chuỗi (Comma-separated) trong 1 cột là UX tốt nhất cho báo cáo phẳng." },
+        { question: "Hệ thống A (Quản lý ULD) cần báo cho Hệ thống B (Load Control) biết một cái thùng vừa bị hỏng. Giao thức tích hợp nào phù hợp nhất cho bài toán yêu cầu tính thời gian thực (Real-time) này?", options: ["A. Gửi file CSV qua Email mỗi ngày 1 lần.", "B. Cập nhật qua Message Broker (RabbitMQ/Kafka) hoặc API Webhook để B nhận tín hiệu ngay lập tức.", "C. Nhân viên gọi điện thoại báo cho nhau.", "D. Export database gửi qua USB."], answer: 1, explain: "Event-driven architecture (Kiến trúc hướng sự kiện) bằng Message Queue hoặc Webhook là chuẩn mực cho các hệ thống hàng không cần đồng bộ trạng thái ngay lập tức." },
+        { question: "Một ULD đang được gán (Assigned) vào chuyến bay VN123. Có người cố tình vào màn hình Master Data để xóa (Delete) cái ULD này. Hệ thống nên xử lý thế nào?", options: ["A. Cho phép xóa bình thường.", "B. Văng lỗi màn hình xanh (Crash).", "C. Hiển thị thông báo lỗi (Foreign Key Constraint Alert): 'Không thể xóa ULD đang trong trạng thái khai thác'.", "D. Xóa luôn cả chuyến bay VN123."], answer: 2, explain: "Đây là bài toán quản lý trạng thái tài sản (Lifecycle). Không được phép thao tác phá hủy dữ liệu Master đang bị tham chiếu (Reference) bởi dữ liệu Giao dịch (Transaction) chưa hoàn tất." },
+        { question: "Trường 'Base Dimensions' (Kích thước đáy) của ULD Type có công dụng lớn nhất trong module nào?", options: ["A. Tính giá trị bảo hiểm.", "B. Module tính cước phi hành lý.", "C. Thuật toán Auto-Load Planning (Tự động xếp chỗ hầm hàng bằng 2D/3D).", "D. Quản lý kho bãi."], answer: 2, explain: "Kích thước đáy xác định cái thùng sẽ chiếm bao nhiêu vị trí (Positions) trên mặt sàn của máy bay, giúp thuật toán tự động phân bổ không gian trống." },
+        { question: "Khi người dùng nhấn 'Deactive' một ULD, ngoài việc cập nhật Status, hệ thống ngầm ghi nhận Username và Timestamp. Đây là yêu cầu thuộc loại (Requirement Type) nào?", options: ["A. Functional Requirement (Yêu cầu chức năng).", "B. Non-Functional Requirement (Yêu cầu phi chức năng) - Cụ thể là Audit/Security.", "C. Business Requirement (Yêu cầu kinh doanh).", "D. UI Requirement."], answer: 1, explain: "Việc lưu vết hệ thống (Logging/Auditing) thường được xếp vào nhóm Yêu cầu phi chức năng (NFR), đảm bảo tính bảo mật và truy vết." },
+        { question: "Trong quy trình cấp phát (Provisioning), thuật ngữ 'Dolly' liên quan đến ULD là gì?", options: ["A. Tên một hãng máy bay.", "B. Một loại thùng hàng.", "C. Xe rơ-moóc kéo ngoài sân đỗ dùng để chở các thùng ULD từ kho ra máy bay.", "D. Thiết bị quét mã vạch."], answer: 2, explain: "Dolly là các xe kéo nhỏ chở ULD chạy nối đuôi nhau dưới sân đỗ. Hệ thống Inventory cấp cao có thể phải tracking cả tài sản Dolly này." },
+        { question: "Một nhân viên cố ý nhập mã ULD Code chứa các ký tự đặc biệt như '!@#$'. Tính năng nào của Frontend sẽ ngăn chặn việc này?", options: ["A. Lazy Loading.", "B. Regex (Regular Expression) Validation chỉ cho phép chữ và số (Alphanumeric).", "C. SQL Injection.", "D. CSS Styling."], answer: 1, explain: "Regex là công cụ kiểm tra định dạng chuỗi mạnh mẽ nhất để đảm bảo chuẩn IATA (chỉ gồm ký tự A-Z và số 0-9)." },
+        { question: "Nếu hãng muốn mua 500 cái lưới mới và đưa vào hệ thống. Việc thiết kế chức năng '+ Add Row' thủ công sẽ tốn hàng giờ. Bạn đề xuất chức năng gì cho User Story này?", options: ["A. Không mua lưới nữa.", "B. Chức năng Bulk Import bằng file Excel/CSV kèm theo tải template mẫu (Download Template).", "C. Nhờ team IT chạy script chèn thẳng vào Database.", "D. Bắt 500 nhân viên mỗi người nhập 1 cái."], answer: 1, explain: "Bulk Import là tính năng 'must-have' trong mọi hệ thống quản trị tài sản (Asset Management) để giải quyết Use Case khởi tạo dữ liệu hàng loạt." },
+        { question: "Tại màn hình Import Serial Number bằng Excel, hệ thống phát hiện dòng thứ 5 bị trùng mã (Duplicate) với mã đã có trong DB. Cú pháp xử lý UX tốt nhất là gì?", options: ["A. Hủy toàn bộ file và báo lỗi 'Có lỗi xảy ra'.", "B. Import 499 dòng kia, bỏ qua dòng 5 và không nói gì.", "C. Import các dòng hợp lệ, hiển thị danh sách dòng lỗi (dòng 5) bằng màu đỏ kèm nguyên nhân 'Trùng mã Serial' để user sửa.", "D. Lưu đè dữ liệu cũ."], answer: 2, explain: "Nguyên tắc thiết kế hệ thống tốt: Trả về phản hồi chi tiết (Detailed Feedback) để hỗ trợ quá trình sửa lỗi của người dùng." },
+        { question: "Thuật ngữ 'Deadload' trong hệ thống Load Control nghĩa là gì?", options: ["A. Hành khách đã chết.", "B. Trọng lượng của máy bay khi chưa có gì.", "C. Tổng trọng lượng của Hàng hóa (Cargo), Bưu kiện (Mail) và Hành lý (Baggage) nằm dưới hầm hàng, không tính hành khách.", "D. Trọng lượng nhiên liệu."], answer: 2, explain: "Deadload (Tải trọng chết) là dữ liệu cốt lõi mà các ULD đóng góp vào tổng trọng lượng cất cánh của máy bay." },
+        { question: "Cấu trúc mã 'AKE 12345 VN'. Chữ 'VN' đại diện cho trường thông tin nào trong Database?", options: ["A. Current Location.", "B. ULD Type.", "C. Owner Code (Mã hãng hàng không).", "D. Destination."], answer: 2, explain: "IATA quy định cấu trúc 3 phần: [Type Code] [Serial Number] [Owner Code]. VN ở đây là mã của Vietnam Airlines." },
+        { question: "Khi người dùng tìm kiếm (Search) 'A330' ở ô AC Subtype trong màn hình ULD Type, giao diện nên phản hồi thế nào để tăng tính thân thiện (User-friendly)?", options: ["A. Đợi người dùng nhấn Enter rồi mới load lại toàn bộ trang web.", "B. Áp dụng Auto-complete / Live Filter, kết quả hiển thị ngay khi đang gõ chữ.", "C. Mở ra một popup khác.", "D. Bắt nhập đúng chữ thường a330."], answer: 1, explain: "Kỹ thuật Live Search không cần tải lại trang là tiêu chuẩn cho hệ thống Web App hiện đại, giúp tìm kiếm nhanh gọn." },
+        { question: "Hành động 'Unassign' (Gỡ thiết bị) một tấm lưới khỏi ULD đồng nghĩa với việc thực thi lệnh gì dưới Backend Database?", options: ["A. DELETE hoàn toàn dòng dữ liệu của tấm lưới đó trong bảng thiết bị.", "B. DROP bảng dữ liệu.", "C. UPDATE trường ULD_ID (khóa ngoại) của tấm lưới đó thành NULL.", "D. Không làm gì cả."], answer: 2, explain: "Tấm lưới vẫn là tài sản của công ty (nằm trong kho), nó chỉ không còn gắn với cái ULD kia nữa. Xóa khóa ngoại (FK) là chuẩn xác." },
+        { question: "Việc thiết kế trường 'Reason' (Lý do) dưới dạng Dropdown (danh sách thả xuống chọn sẵn) thay vì Textbox (cho phép nhập chữ tự do) khi Deactive ULD mang lại lợi ích gì?", options: ["A. Làm đẹp giao diện.", "B. Chuẩn hóa dữ liệu (Data Standardization) để dễ dàng lập biểu đồ thống kê nguyên nhân hỏng hóc sau này.", "C. Gây khó khăn cho nhân viên.", "D. Tiết kiệm dung lượng Database."], answer: 1, explain: "Nếu cho nhập tự do, mỗi người nhập 1 kiểu ('hỏng', 'rách', 'bị rách') khiến hệ thống không thể gom nhóm dữ liệu để thống kê (Data Analytics)." },
+        { question: "Trong quy trình phát triển Agile, nếu tính năng 'Thêm Serial Number' bị phát hiện gây chậm hệ thống, BA nên làm gì tiếp theo?", options: ["A. Mắng team Dev.", "B. Viết một Bug Ticket / Performance Task đưa vào Backlog Sprint tiếp theo để team Dev tối ưu Query Database.", "C. Xóa tính năng đó đi.", "D. Kệ nó, hệ thống chạy được là được."], answer: 1, explain: "Theo dõi và tạo task cải thiện hiệu năng (Performance Optimization) là công việc thường xuyên của team làm Product." },
+        { question: "Thuật ngữ 'Bypass' (vượt quyền/bỏ qua) trong nghiệp vụ Load Control xảy ra khi nào?", options: ["A. Máy bay bay qua mây.", "B. Phi công đi nhầm cửa.", "C. Trưởng ca quyết định cấp quyền bỏ qua một cảnh báo hệ thống (như thiếu lưới chằng) trong tình huống khẩn cấp có kiểm soát.", "D. Hành khách trốn vé."], answer: 2, explain: "Hệ thống luôn phải có chức năng Override/Bypass có lưu vết dành riêng cho người có thẩm quyền cao nhất (Supervisor) để xử lý tình huống ngoại lệ (Edge Cases)." },
+        { question: "Để đảm bảo ứng dụng Web này hoạt động tốt trên máy tính bảng (Tablet) của nhân viên kho ngoài sân đỗ, BA cần yêu cầu thiết kế giao diện phải:", options: ["A. Chỉ hiển thị chữ đen trắng.", "B. Responsive (Tương thích kích thước màn hình) và tối ưu vùng chạm (Touch-friendly).", "C. Bắt buộc dùng chuột.", "D. Giảm font chữ xuống nhỏ nhất."], answer: 1, explain: "Nhân viên thực địa thường dùng Tablet/iPad. Giao diện phải Responsive và các nút bấm (như Checkbox, Button) phải đủ to để ngón tay chạm dễ dàng." },
+        { question: "Màn hình 'System History' (Lịch sử hệ thống) góc trên bên phải đóng vai trò gì?", options: ["A. Để xem phim.", "B. Cung cấp Audit Log toàn cục: Liệt kê mọi thay đổi CRUD (Create, Read, Update, Delete) của toàn bộ module hệ thống theo thời gian.", "C. Lưu lịch sử chat của nhân viên.", "D. Hiển thị lịch sử bay của khách hàng."], answer: 1, explain: "Chức năng Audit Trail tập trung (Centralized Logging) giúp Admin truy vết toàn bộ hoạt động của bất kỳ User nào trên hệ thống." },
+        { question: "Biểu tượng thông báo (Cái chuông góc phải trên cùng) hiển thị số '99+'. Thiết kế hệ thống đằng sau nó gọi là gì?", options: ["A. Email System.", "B. In-app Notification System (Hệ thống thông báo nội bộ ứng dụng).", "C. SMS Service.", "D. Push-to-talk."], answer: 1, explain: "Hệ thống thông báo đẩy (Push/Polling) giúp người dùng nhận được các Alert như 'Có ULD hỏng', 'Chuyến bay thay đổi hầm hàng' mà không cần chuyển trang." },
+        { question: "Nếu 1 ULD Type có thuộc tính 'Max Gross' là Null (không có giá trị), hệ thống Load Control sẽ:", options: ["A. Coi trọng lượng tối đa là vô cực.", "B. Không thể tính toán và báo lỗi Null Pointer Exception hoặc ngăn chặn quy trình chất xếp.", "C. Tự cho giá trị bằng 0.", "D. Lấy ngẫu nhiên 1 số."], answer: 1, explain: "Thông số cốt lõi không bao giờ được phép Null. Ở mức Master Data, trường Max Gross phải được thiết lập Required (Bắt buộc nhập)." },
+        { question: "Một BA ghi lại yêu cầu: 'Hệ thống cần có API để đồng bộ dữ liệu ULD từ hệ thống SITA toàn cầu'. Kỹ năng này gọi là:", options: ["A. API Testing.", "B. System Integration Elicitation (Khơi gợi yêu cầu tích hợp hệ thống).", "C. Database Design.", "D. UI/UX Design."], answer: 1, explain: "SITA là nhà cung cấp giải pháp mạng hàng không lớn nhất. Hiểu rõ các Data Point cần trao đổi với bên thứ 3 là kỹ năng cốt lõi của BA Enterprise." },
+        { question: "Hệ thống đang hiển thị phân trang (Pagination) ở dưới cùng. Mục đích kỹ thuật lớn nhất của phân trang là gì?", options: ["A. Làm đẹp giao diện.", "B. Tránh quá tải RAM trình duyệt và tiết kiệm băng thông khi không phải load hàng vạn dòng ULD cùng 1 lúc.", "C. Để đếm số lượng.", "D. Giúp trang web chạy chậm hơn."], answer: 1, explain: "Lazy Load và Pagination là giải pháp kinh điển để tối ưu Performance khi làm việc với Master Data có hàng triệu records." },
+        { question: "Một khách hàng gửi 1 con ngựa đua. BA cần thiết kế thêm trường nào cho ULD Type để phục vụ việc này?", options: ["A. Tốc độ ngựa chạy.", "B. Tên con ngựa.", "C. Cờ (Flag): 'Live Animal Compatible' (Tương thích vận chuyển động vật sống) để đảm bảo thông gió và cấp ôxy.", "D. Khối lượng cỏ."], answer: 2, explain: "Hàng hóa đặc biệt (Special Cargo) yêu cầu các thùng/chuồng thiết kế đặc thù. Master Data phải có cờ đánh dấu các thuộc tính chuyên ngành này." },
+        { question: "Thuật ngữ 'Service Level Agreement' (SLA) khi thiết kế module hệ thống này liên quan đến gì?", options: ["A. Cam kết hệ thống phải hoạt động (Uptime) 99.9% và API phản hồi dưới 2 giây.", "B. Ký hợp đồng lao động với phi công.", "C. Hợp đồng mua máy bay.", "D. Mức lương của BA."], answer: 0, explain: "SLA là các thông số cam kết chất lượng dịch vụ (Non-Functional Requirements) mà hệ thống phần mềm phải đạt được khi bàn giao." },
+        { question: "Nếu có 1 chuyến bay chở toàn bộ vaccine COVID-19, loại thùng RKN (Làm lạnh) sẽ được ưu tiên gán nhãn trạng thái nghiệp vụ nào?", options: ["A. Rỗng (Empty).", "B. Tối khẩn / Ưu tiên cao nhất (High Priority / AOG).", "C. Deactive.", "D. Thùng rác."], answer: 1, explain: "Hệ thống cần quản lý Mức độ ưu tiên (Priority Level) của từng thùng hàng để bộ phận mặt đất dỡ hàng ngay lập tức khi máy bay vừa hạ cánh." },
+        { question: "Trong tài liệu SRS, sơ đồ nào tốt nhất để mô tả luồng một thùng ULD từ lúc 'Mua về kho' -> 'Khai thác' -> 'Hỏng' -> 'Thanh lý'?", options: ["A. Sơ đồ thực thể (ERD).", "B. Sơ đồ trạng thái (State Machine Diagram).", "C. Wireframe.", "D. Sơ đồ mạng."], answer: 1, explain: "State Machine Diagram (Biểu đồ trạng thái máy) là công cụ chuyên dụng trong UML để mô hình hóa vòng đời (Lifecycle) của một thực thể dữ liệu." },
+        { question: "Khi BA làm việc với dev, câu hỏi 'Nếu API lấy dữ liệu chuyến bay bị chết, màn hình ULD này sẽ hiển thị gì?' nhằm khai thác vấn đề gì?", options: ["A. Khen ngợi dev.", "B. Khai thác Exception Handling (Xử lý ngoại lệ / Báo lỗi).", "C. Test tốc độ mạng.", "D. Hỏi về màu sắc giao diện."], answer: 1, explain: "BA xuất sắc phải luôn đặt câu hỏi 'What if...?' (Điều gì xảy ra nếu...) để thiết kế các kịch bản báo lỗi (Error States) an toàn cho người dùng." },
+        { question: "Cuối cùng, cốt lõi giá trị (Business Value) lớn nhất mà module Master Data này mang lại cho hãng hàng không là gì?", options: ["A. Để có phần mềm xài cho vui.", "B. Là nền tảng nguồn dữ liệu sạch (Single Source of Truth) để tự động hóa, giảm lỗi con người và đảm bảo an toàn khai thác bay tuyệt đối.", "C. Bán được nhiều vé hơn.", "D. Tiết kiệm giấy in."], answer: 1, explain: "Master Data Management (MDM) không tạo ra doanh thu trực tiếp, nhưng nó là 'mạch máu' đảm bảo tính chính xác cho toàn bộ quy trình vận hành chuỗi cung ứng của hãng." }
+    ];
+
+    // Thuật toán xáo trộn mảng (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+        let shuffled = [...array]; // Clone array để không làm hỏng mảng gốc
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
+    // Khởi tạo dữ liệu đã xáo trộn
+    const quizData = shuffleArray(originalQuizData);
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    // Elements DOM
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const feedbackEl = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const trackerEl = document.getElementById('question-tracker');
+    const progressEl = document.getElementById('progress');
+    const quizContent = document.getElementById('quiz-content');
+    const resultScreen = document.getElementById('result-screen');
+    const finalScoreEl = document.getElementById('final-score');
+
+    function loadQuestion() {
+        answered = false;
+        feedbackEl.className = 'feedback';
+        nextBtn.style.display = 'none';
+        optionsEl.innerHTML = '';
+        
+        const qData = quizData[currentQuestion];
+        questionEl.innerText = qData.question;
+        trackerEl.innerText = `Câu ${currentQuestion + 1} / ${quizData.length}`;
+        progressEl.style.width = `${((currentQuestion) / quizData.length) * 100}%`;
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            optionsEl.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIndex, btnElement) {
+        if (answered) return;
+        answered = true;
+
+        const correctIndex = quizData[currentQuestion].answer;
+        const allButtons = optionsEl.querySelectorAll('.option-btn');
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score++;
+            showFeedback('Chính xác! ' + quizData[currentQuestion].explain, 'success');
+        } else {
+            btnElement.classList.add('wrong');
+            allButtons[correctIndex].classList.add('correct'); // Highlight đáp án đúng
+            showFeedback('Chưa chính xác. ' + quizData[currentQuestion].explain, 'error');
+        }
+
+        // Khóa tất cả các nút sau khi trả lời
+        allButtons.forEach(btn => {
+            btn.style.cursor = 'default';
+            btn.disabled = true; 
+        });
+        
+        nextBtn.style.display = 'inline-block';
+        if(currentQuestion === quizData.length - 1) {
+            nextBtn.innerText = 'Xem kết quả';
+        }
+    }
+
+    function showFeedback(text, type) {
+        feedbackEl.innerText = text;
+        feedbackEl.className = `feedback show ${type}`;
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        quizContent.style.display = 'none';
+        resultScreen.style.display = 'block';
+        progressEl.style.width = '100%';
+        trackerEl.innerText = 'Hoàn thành';
+        finalScoreEl.innerText = `${score} / ${quizData.length}`;
+    }
+
+    // Khởi động Quiz ngay khi mở trang
+    loadQuestion();
+</script>
+
+</body>
+</html>
