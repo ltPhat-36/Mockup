@@ -151,7 +151,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <button class="flex items-center px-3 py-1.5 bg-slate-800 text-gray-300 text-sm rounded border border-slate-700 hover:bg-slate-700">
+                <button onclick="openTableSetting()" class="flex items-center px-3 py-1.5 bg-slate-800 text-gray-300 text-sm rounded border border-slate-700 hover:bg-slate-700">
                     <i class="fa-solid fa-table mr-2"></i> Table Setting
                 </button>
                 <button class="w-8 h-8 flex items-center justify-center bg-slate-800 text-gray-300 rounded border border-slate-700 hover:bg-slate-700">
@@ -339,174 +339,356 @@
             <!-- Nội dung chi tiết (Chia 2 cột) -->
             <div class="flex-1 overflow-hidden flex">
                 
-                <!-- Cột trái: Form & Checkbox -->
+                <!-- CỘT TRÁI: Form, Checkbox & Weight/Fuel -->
                 <div class="w-[45%] p-6 overflow-y-auto border-r border-slate-800 bg-[#0F172A]">
-                    <div class="space-y-6">
-                        <!-- Checkbox grid -->
-                        <div class="grid grid-cols-3 gap-y-5 gap-x-2">
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">ZFW CHG</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">ALTN CHG</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">MEL/CDL</span>
-                            </label>
-                            
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">ATC DEP</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">ATC ENR</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">ATC DES</span>
-                            </label>
-
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">LOW FL</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">WX ENR</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">WX DES</span>
-                            </label>
-                            
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">OTHS</span>
-                            </label>
-                            <div class="col-span-2 pl-1">
-                                <input type="text" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
-                            </div>
-                        </div>
+                    <div class="space-y-8">
                         
-                        <div class="pt-2">
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
-                                <span class="text-sm text-gray-300">Reason not provided by crew</span>
-                            </label>
-                        </div>
+                        <!-- MỚI: Khối Weight and Fuel (Nằm ở cột trái) -->
+                        <div>
+                            <h4 class="text-gray-400 font-bold text-[11px] uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">Weight and Fuel - In KGs</h4>
+                            <div class="grid grid-cols-2 gap-x-12 gap-y-5">
+                                <!-- Hàng 1 -->
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">OFP Rev</span>
+                                    <span class="text-white text-sm font-semibold">2<span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">EST PAX</span>
+                                    <span class="text-white text-sm font-semibold">139</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">COR. TAXI FUEL</span>
+                                    <span class="text-white text-sm font-semibold">178</span>
+                                </div>
 
-                        <div class="mt-8 flex items-center space-x-4">
-                            <span class="text-sm font-bold text-white w-20">Remarks</span>
-                            <input type="text" class="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
-                        </div>
+                                <!-- Hàng 2 -->
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">COR.EZFW</span>
+                                    <span class="text-white text-sm font-semibold">61358</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">COR. TRIP FUEL</span>
+                                    <span class="text-white text-sm font-semibold">2580</span>
+                                </div>
 
-                        <div class="mt-6 flex items-center justify-between border-t border-slate-800 pt-6">
-                            <div class="flex items-center space-x-4">
-                                <span class="text-sm font-bold text-white w-20">Last Update</span>
-                                <span class="text-sm text-gray-400 font-bold">01/07/2026 22:39 (Z)</span>
+                                <!-- Hàng 3 -->
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">COR. EST PLD</span>
+                                    <span class="text-white text-sm font-semibold">11553</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">PILOT EXTRA FUEL</span>
+                                    <span class="text-white text-sm font-semibold">0</span>
+                                </div>
+
+                                <!-- Hàng 4 -->
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">OFP BLOCK FUEL</span>
+                                    <span class="text-white text-sm font-semibold">6235</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-xs font-medium">REQUEST FUEL</span>
+                                    <span class="text-white text-sm font-semibold">6235</span>
+                                </div>
                             </div>
-                            <button class="bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold px-6 py-2 rounded transition-colors shadow">
-                                Update
-                            </button>
+                        </div>
+
+                        <!-- TOÀN BỘ CỤM CHECKBOX & FORM BÊN DƯỚI -->
+                        <div class="border-t border-slate-800 pt-6">
+                            <h4 class="bg-[#0891B2] text-white font-bold text-[12px] uppercase tracking-wider py-2.5 px-4 rounded-md mb-4">EXTRA FUEL REASON</h4>
+
+
+                            <div class="grid grid-cols-3 gap-y-5 gap-x-2">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">ZFW CHG</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">ALTN CHG</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">MEL/CDL</span>
+                                </label>
+                                
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">ATC DEP</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">ATC ENR</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">ATC DES</span>
+                                </label>
+
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">LOW FL</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">WX ENR</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">WX DES</span>
+                                </label>
+                                
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">OTHS</span>
+                                </label>
+                                <div class="col-span-2 pl-1">
+                                    <input type="text" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <span class="text-sm text-gray-300">Reason not provided by crew</span>
+                                </label>
+                            </div>
+
+                            <div class="mt-8 flex items-center space-x-4">
+                                <span class="text-sm font-bold text-white w-20">Remarks</span>
+                                <input type="text" class="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
+                            </div>
+
+                            <div class="mt-6 flex items-center justify-between border-t border-slate-800 pt-6">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm font-bold text-white w-20">Last Update</span>
+                                    <span class="text-sm text-gray-400 font-bold">01/07/2026 22:39 (Z)</span>
+                                </div>
+                                <button class="bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold px-6 py-2 rounded transition-colors shadow">
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cột phải: Dữ liệu chi tiết (Chỉ giữ lại các trường từ hình 2) -->
+                <!-- CỘT PHẢI: Dữ liệu chi tiết gốc -->
                 <div class="flex-1 overflow-y-auto bg-[#0B1120] relative">
                     <!-- Tiêu đề vàng dính trên cùng -->
-                    <div class="bg-yellow-500 text-black font-bold px-6 py-2.5 text-sm sticky top-0 z-10 shadow-sm">
+                    <div class="bg-[#0891B2] text-white font-bold px-6 py-2.5 text-sm sticky top-0 z-10 shadow-sm">
                         Details
                     </div>
                     
+                    
                     <div class="p-6 bg-[#0F172A] space-y-6">
                         
-                        <!-- Khối Payload & Cargo -->
-                        <div>
-                            <h4 class="text-white font-bold text-sm mb-4">Payload & Cargo</h4>
-                            <div class="grid grid-cols-3 gap-y-5 gap-x-4">
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">PAX ADL</p>
-                                    <p class="text-white text-sm font-medium">145</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">PAX CHD</p>
-                                    <p class="text-white text-sm font-medium">12</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
-                                    <p class="text-white text-sm font-medium">11,250 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-                                </div>
-                                
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">EST BAG</p>
-                                    <p class="text-white text-sm font-medium">150</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">ULD BAG</p>
-                                    <p class="text-white text-sm font-medium">12</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
-                                    <p class="text-white text-sm font-medium">2,450 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-                                </div>
+                                              <!-- Khối Payload & Cargo (Hỗ trợ Edit in-place) -->
+<div id="payload-section">
+    <!-- HEADER: CHẾ ĐỘ XEM -->
+    <div id="payload-header-view" class="flex items-center justify-between mb-4">
+        <h4 class="text-white font-bold text-sm">Payload & Cargo</h4>
+        <button onclick="togglePayloadEdit()" class="text-gray-400 hover:text-[#0891B2] transition-colors" title="Edit Payload & Cargo">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+    </div>
 
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
-                                    <p class="text-white text-sm font-medium">1,800 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight Cargo</p>
-                                    <p class="text-white text-sm font-medium">3,000 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
-                                    <p class="text-yellow-500 text-sm font-bold">18,500 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-                                </div>
-                            </div>
-                        </div>
+    <!-- HEADER: CHẾ ĐỘ SỬA (Ẩn mặc định) -->
+    <div id="payload-header-edit" class="hidden flex items-center justify-between mb-4">
+        <h4 class="text-[#0891B2] font-bold text-sm">Editing Payload & Cargo...</h4>
+        <div class="flex items-center gap-2">
+            <button onclick="togglePayloadEdit()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-md transition-colors">Cancel</button>
+            <button onclick="togglePayloadEdit()" class="px-4 py-1.5 bg-[#0891B2] hover:bg-[#06b6d4] text-white text-xs font-semibold rounded-md transition-colors">Save</button>
+        </div>
+    </div>
+
+    <!-- NỘI DUNG: CHẾ ĐỘ XEM -->
+    <div id="payload-content-view" class="grid grid-cols-3 gap-y-5 gap-x-4">
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">PAX ADL</p>
+            <p class="text-white text-sm font-medium">145</p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">PAX CHD</p>
+            <p class="text-white text-sm font-medium">12</p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
+            <p class="text-white text-sm font-medium">11,250 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+        
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">EST BAG</p>
+            <p class="text-white text-sm font-medium">150</p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">ULD BAG</p>
+            <p class="text-white text-sm font-medium">12</p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
+            <p class="text-white text-sm font-medium">2,450 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
+            <p class="text-white text-sm font-medium">1,800 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight Cargo</p>
+            <p class="text-white text-sm font-medium">3,000 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
+            <p class="text-yellow-500 text-sm font-bold">18,500 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+    </div>
+
+       <!-- NỘI DUNG: CHẾ ĐỘ SỬA IN-PLACE (Ẩn mặc định) -->
+       <div id="payload-content-edit" class="hidden grid grid-cols-3 gap-y-5 gap-x-4">
+        <!-- Cột 1: Ô sửa PAX ADL -->
+        <div>
+            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">PAX ADL <span class="text-red-500">*</span></label>
+            <input type="text" value="145" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+        </div>
+        <!-- Cột 2: Ô sửa PAX CHD -->
+        <div>
+            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">PAX CHD <span class="text-red-500">*</span></label>
+            <input type="text" value="12" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+        </div>
+        <!-- Cột 3 -->
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
+            <p class="text-gray-400 text-sm font-medium opacity-60">11,250 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+        
+        <!-- Cột 1: Ô sửa EST BAG -->
+        <div>
+            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">EST BAG <span class="text-red-500">*</span></label>
+            <input type="text" value="150" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+        </div>
+        <!-- Cột 2: Ô sửa ULD BAG -->
+        <div>
+            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">ULD BAG <span class="text-red-500">*</span></label>
+            <input type="text" value="12" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+        </div>
+        <!-- Cột 3 -->
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
+            <p class="text-gray-400 text-sm font-medium opacity-60">2,450 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+
+        <!-- Cột 1: Total Weight ULD BAG (Trở lại thành Read-only) -->
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
+            <p class="text-gray-400 text-sm font-medium opacity-60">1,800 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+        </div>
+        <!-- Cột 2: Ô sửa Total Weight Cargo -->
+        <div>
+            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">Total Weight Cargo <span class="text-red-500">*</span></label>
+            <input type="text" value="3,000" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+        </div>
+        <!-- Cột 3 -->
+        <div>
+            <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
+            <p class="text-yellow-500/60 text-sm font-bold">18,500 <span class="text-gray-500/60 text-xs font-normal">kg</span></p>
+        </div>
+    </div>
+
+   
+</div>
+
+                    
 
                         <div class="border-t border-slate-800"></div>
 
-                        <!-- Khối Weight Control -->
-                        <div>
-                            <h4 class="text-white font-bold text-sm mb-4">Weight Control (kg)</h4>
-                            <div class="grid grid-cols-3 gap-y-5 gap-x-4">
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
-                                    <p class="text-white text-sm font-medium">18,400</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
-                                    <p class="text-green-500 text-sm font-medium">+100</p>
-                                </div>
-                                <div></div>
-
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
-                                    <p class="text-white text-sm font-medium">42,150</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">ADJ DOW</p>
-                                    <p class="text-[#00E5FF] text-sm font-medium">42,200</p>
-                                </div>
-                                <div></div>
-
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
-                                    <p class="text-white text-sm font-medium">60,550</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
-                                    <p class="text-green-500 text-sm font-medium">+150</p>
-                                </div>
-                                <div></div>
-                            </div>
-                        </div>
+                                                <!-- Khối Weight Control (Hỗ trợ Edit in-place) -->
+                                                <div id="weight-section">
+                                                    <!-- HEADER: CHẾ ĐỘ XEM -->
+                                                    <div id="weight-header-view" class="flex items-center justify-between mb-4">
+                                                        <h4 class="text-white font-bold text-sm">Weight Control (kg)</h4>
+                                                        <button onclick="toggleWeightEdit()" class="text-gray-400 hover:text-[#0891B2] transition-colors" title="Edit Weight Control">
+                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                        </button>
+                                                    </div>
+                        
+                                                    <!-- HEADER: CHẾ ĐỘ SỬA -->
+                                                    <div id="weight-header-edit" class="hidden flex items-center justify-between mb-4">
+                                                        <h4 class="text-[#0891B2] font-bold text-sm">Editing Weight Control...</h4>
+                                                        <div class="flex items-center gap-2">
+                                                            <button onclick="toggleWeightEdit()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-md transition-colors">Cancel</button>
+                                                            <button onclick="toggleWeightEdit()" class="px-4 py-1.5 bg-[#0891B2] hover:bg-[#06b6d4] text-white text-xs font-semibold rounded-md transition-colors">Save</button>
+                                                        </div>
+                                                    </div>
+                        
+                                                    <!-- NỘI DUNG: CHẾ ĐỘ XEM -->
+                                                    <div id="weight-content-view" class="grid grid-cols-3 gap-y-5 gap-x-4">
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
+                                                            <p class="text-white text-sm font-medium">18,400</p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
+                                                            <p class="text-green-500 text-sm font-medium">+100</p>
+                                                        </div>
+                                                        <div></div>
+                        
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
+                                                            <p class="text-white text-sm font-medium">42,150</p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">ADJ DOW</p>
+                                                            <p class="text-[#00E5FF] text-sm font-medium">42,200</p>
+                                                        </div>
+                                                        <div></div>
+                        
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
+                                                            <p class="text-white text-sm font-medium">60,550</p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
+                                                            <p class="text-green-500 text-sm font-medium">+150</p>
+                                                        </div>
+                                                        <div></div>
+                                                    </div>
+                        
+                                                    <!-- NỘI DUNG: CHẾ ĐỘ SỬA IN-PLACE -->
+                                                    <div id="weight-content-edit" class="hidden grid grid-cols-3 gap-y-5 gap-x-4">
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
+                                                            <p class="text-white text-sm font-medium opacity-60">18,400</p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
+                                                            <p class="text-green-500/60 text-sm font-medium">+100</p>
+                                                        </div>
+                                                        <div></div>
+                        
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
+                                                            <p class="text-white text-sm font-medium opacity-60">42,150</p>
+                                                        </div>
+                                                        
+                                                        <!-- Ô SỬA: ADJ DOW -->
+                                                        <div>
+                                                            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">ADJ DOW <span class="text-red-500">*</span></label>
+                                                            <input type="text" value="42,200" class="w-full bg-[#111827] border border-[#0891B2] text-[#00E5FF] rounded px-2 py-1 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                                        </div>
+                                                        <div></div>
+                        
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
+                                                            <p class="text-white text-sm font-medium opacity-60">60,550</p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
+                                                            <p class="text-green-500/60 text-sm font-medium">+150</p>
+                                                        </div>
+                                                        <div></div>
+                                                    </div>
+                                                </div>
+                        
 
                         <div class="border-t border-slate-800"></div>
 
@@ -540,7 +722,7 @@
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">Trip Fuel</p>
-                                    <p class="text-white text-sm font-medium">6,200 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+                                    <p class="text-white text-sm font-medium">2,580 <span class="text-gray-500 text-xs font-normal">kg</span></p>
                                 </div>
                                 <div></div>
                             </div>
@@ -554,31 +736,35 @@
 
     <script>
         function toggleFilter() {
-            const panel = document.getElementById('filter-panel');
-            panel.classList.toggle('hidden');
+            document.getElementById('filter-panel').classList.toggle('hidden');
         }
 
-        // Đóng dropdown khi click ra ngoài
-        window.addEventListener('click', function(e) {
-            const container = document.getElementById('filter-dropdown-container');
-            const panel = document.getElementById('filter-panel');
-            if (!container.contains(e.target)) {
-                if (!panel.classList.contains('hidden')) {
-                    panel.classList.add('hidden');
-                }
-            }
-        });
+        function openTableSetting() {
+            alert("Table Setting Modal Opened");
+        }
 
-        // Mở bảng chi tiết
         function openDetails() {
-            const panel = document.getElementById('flight-details-panel');
-            panel.classList.remove('translate-x-full');
+            document.getElementById('flight-details-panel').classList.remove('translate-x-full');
+        }
+        function togglePayloadEdit() {
+            // Chuyển đổi ẩn/hiện giữa 2 Header
+            document.getElementById('payload-header-view').classList.toggle('hidden');
+            document.getElementById('payload-header-edit').classList.toggle('hidden');
+            
+            // Chuyển đổi ẩn/hiện giữa 2 Khối nội dung
+            document.getElementById('payload-content-view').classList.toggle('hidden');
+            document.getElementById('payload-content-edit').classList.toggle('hidden');
+        }
+        function toggleWeightEdit() {
+            document.getElementById('weight-header-view').classList.toggle('hidden');
+            document.getElementById('weight-header-edit').classList.toggle('hidden');
+            
+            document.getElementById('weight-content-view').classList.toggle('hidden');
+            document.getElementById('weight-content-edit').classList.toggle('hidden');
         }
 
-        // Đóng bảng chi tiết
         function closeDetails() {
-            const panel = document.getElementById('flight-details-panel');
-            panel.classList.add('translate-x-full');
+            document.getElementById('flight-details-panel').classList.add('translate-x-full');
         }
     </script>
 </body>
