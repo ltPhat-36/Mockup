@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,27 +9,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0F172A; /* Slate 900 */
-            color: #E2E8F0; /* Slate 200 */
+            background-color: #0F172A;
+            /* Slate 900 */
+            color: #E2E8F0;
+            /* Slate 200 */
         }
+
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
+
         ::-webkit-scrollbar-track {
-            background: #1E293B; 
+            background: #1E293B;
         }
+
         ::-webkit-scrollbar-thumb {
-            background: #475569; 
+            background: #475569;
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #64748B; 
+            background: #64748B;
         }
     </style>
 </head>
+
 <body class="h-screen w-screen flex overflow-hidden">
 
     <aside class="w-64 bg-[#111827] flex flex-col justify-between border-r border-slate-800 shrink-0">
@@ -39,23 +48,28 @@
             </div>
 
             <nav class="mt-4 flex flex-col gap-1 px-2">
-                <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
+                <a href="#"
+                    class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
                     <i class="fa-solid fa-plane-departure w-6 text-center"></i>
                     <span class="ml-2">Live Operations</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
+                <a href="#"
+                    class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
                     <i class="fa-solid fa-clipboard-list w-6 text-center"></i>
                     <span class="ml-2">Flight Dispatch</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 text-sm text-[#00E5FF] bg-[#0891B2]/20 border-l-4 border-[#00E5FF] rounded-r-md transition-colors">
+                <a href="#"
+                    class="flex items-center px-4 py-3 text-sm text-[#00E5FF] bg-[#0891B2]/20 border-l-4 border-[#00E5FF] rounded-r-md transition-colors">
                     <i class="fa-solid fa-scale-balanced w-6 text-center"></i>
                     <span class="ml-2 font-medium">Flight Load Control</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
+                <a href="#"
+                    class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
                     <i class="fa-solid fa-user-tie w-6 text-center"></i>
                     <span class="ml-2">Station Manager</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
+                <a href="#"
+                    class="flex items-center px-4 py-3 text-sm text-gray-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors">
                     <i class="fa-solid fa-file-contract w-6 text-center"></i>
                     <span class="ml-2">Report</span>
                 </a>
@@ -70,7 +84,8 @@
                 <div class="flex items-center">
                     <div class="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center relative">
                         <i class="fa-solid fa-user text-white text-xs"></i>
-                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-[#111827] rounded-full"></span>
+                        <span
+                            class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-[#111827] rounded-full"></span>
                     </div>
                     <div class="ml-3">
                         <p class="text-sm font-medium text-white">Admin</p>
@@ -79,23 +94,29 @@
                 </div>
                 <div class="flex flex-col items-end gap-2">
                     <div class="flex bg-slate-800 rounded-full p-0.5">
-                        <button class="w-6 h-6 rounded-full flex items-center justify-center text-gray-400"><i class="fa-solid fa-sun text-xs"></i></button>
-                        <button class="w-6 h-6 rounded-full bg-slate-600 flex items-center justify-center text-white shadow"><i class="fa-solid fa-moon text-xs"></i></button>
+                        <button class="w-6 h-6 rounded-full flex items-center justify-center text-gray-400"><i
+                                class="fa-solid fa-sun text-xs"></i></button>
+                        <button
+                            class="w-6 h-6 rounded-full bg-slate-600 flex items-center justify-center text-white shadow"><i
+                                class="fa-solid fa-moon text-xs"></i></button>
                     </div>
-                    <button class="text-gray-400 hover:text-white"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                    <button class="text-gray-400 hover:text-white"><i
+                            class="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="flex-1 flex flex-col bg-[#0B1120] min-w-0 relative overflow-hidden">
-        
+
         <header class="h-14 flex justify-between items-center px-4 border-b border-slate-800 bg-[#0F172A] shrink-0">
             <div class="flex gap-2">
-                <button class="flex items-center px-4 py-1.5 text-gray-400 hover:text-white text-sm font-medium transition-colors">
+                <button
+                    class="flex items-center px-4 py-1.5 text-gray-400 hover:text-white text-sm font-medium transition-colors">
                     <i class="fa-regular fa-file-lines mr-2"></i> Document
                 </button>
-                <button class="flex items-center px-4 py-1.5 bg-[#0891B2] text-white text-sm font-medium rounded shadow">
+                <button
+                    class="flex items-center px-4 py-1.5 bg-[#0891B2] text-white text-sm font-medium rounded shadow">
                     <i class="fa-solid fa-gas-pump mr-2"></i> Fuel Order
                 </button>
             </div>
@@ -105,56 +126,71 @@
         </header>
 
         <div class="flex justify-between items-center px-4 py-3 bg-[#0B1120] shrink-0">
-            
+
             <div class="relative inline-block text-left" id="filter-dropdown-container">
-                <button onclick="toggleFilter()" class="flex items-center text-sm text-gray-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded border border-slate-700 hover:bg-slate-700 transition">
-                    <i class="fa-solid fa-bars-staggered mr-2"></i> Filter <i class="fa-solid fa-caret-down ml-2 text-xs"></i>
+                <button onclick="toggleFilter()"
+                    class="flex items-center text-sm text-gray-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded border border-slate-700 hover:bg-slate-700 transition">
+                    <i class="fa-solid fa-bars-staggered mr-2"></i> Filter <i
+                        class="fa-solid fa-caret-down ml-2 text-xs"></i>
                 </button>
-                
-                <div id="filter-panel" class="hidden absolute left-0 z-20 mt-2 w-[400px] origin-top-left rounded-md bg-slate-800 shadow-xl border border-slate-600 p-4">
+
+                <div id="filter-panel"
+                    class="hidden absolute left-0 z-20 mt-2 w-[400px] origin-top-left rounded-md bg-slate-800 shadow-xl border border-slate-600 p-4">
                     <h3 class="text-white font-medium mb-3 border-b border-slate-700 pb-2 text-sm">Advanced Search</h3>
                     <div class="grid grid-cols-2 gap-3 text-sm">
                         <div>
                             <label class="block text-gray-400 text-xs mb-1">EDD</label>
-                            <input type="text" placeholder="e.g. 23JUN" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
+                            <input type="text" placeholder="e.g. 23JUN"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
                         </div>
                         <div>
                             <label class="block text-gray-400 text-xs mb-1">FLT NO</label>
-                            <input type="text" placeholder="e.g. VN7273" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
+                            <input type="text" placeholder="e.g. VN7273"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
                         </div>
                         <div>
                             <label class="block text-gray-400 text-xs mb-1">ACREG</label>
-                            <input type="text" placeholder="e.g. VNA339" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
+                            <input type="text" placeholder="e.g. VNA339"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
                         </div>
                         <div>
                             <label class="block text-gray-400 text-xs mb-1">ACTYPE</label>
-                            <input type="text" placeholder="e.g. A321" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
+                            <input type="text" placeholder="e.g. A321"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
                         </div>
                         <div>
                             <label class="block text-gray-400 text-xs mb-1">ETD</label>
-                            <input type="time" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none [color-scheme:dark]">
+                            <input type="time"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none [color-scheme:dark]">
                         </div>
                         <div>
                             <label class="block text-gray-400 text-xs mb-1">DEP</label>
-                            <input type="text" placeholder="e.g. HAN" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
+                            <input type="text" placeholder="e.g. HAN"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
                         </div>
                         <div class="col-span-2">
                             <label class="block text-gray-400 text-xs mb-1">ARR</label>
-                            <input type="text" placeholder="e.g. THD" class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
+                            <input type="text" placeholder="e.g. THD"
+                                class="w-full bg-slate-900 text-gray-200 rounded border border-slate-600 px-2 py-1.5 focus:border-[#0891B2] focus:outline-none placeholder-slate-600">
                         </div>
                     </div>
                     <div class="mt-4 flex justify-end gap-2 pt-2 border-t border-slate-700">
-                        <button class="px-4 py-1.5 text-xs text-gray-300 hover:text-white bg-slate-700 hover:bg-slate-600 rounded transition font-medium">Clear</button>
-                        <button class="px-4 py-1.5 text-xs text-white bg-[#0891B2] hover:bg-[#06b6d4] rounded transition font-medium"><i class="fa-solid fa-magnifying-glass mr-1"></i> Search</button>
+                        <button
+                            class="px-4 py-1.5 text-xs text-gray-300 hover:text-white bg-slate-700 hover:bg-slate-600 rounded transition font-medium">Clear</button>
+                        <button
+                            class="px-4 py-1.5 text-xs text-white bg-[#0891B2] hover:bg-[#06b6d4] rounded transition font-medium"><i
+                                class="fa-solid fa-magnifying-glass mr-1"></i> Search</button>
                     </div>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
-                <button onclick="openTableSetting()" class="flex items-center px-3 py-1.5 bg-slate-800 text-gray-300 text-sm rounded border border-slate-700 hover:bg-slate-700">
+                <button onclick="openTableSetting()"
+                    class="flex items-center px-3 py-1.5 bg-slate-800 text-gray-300 text-sm rounded border border-slate-700 hover:bg-slate-700">
                     <i class="fa-solid fa-table mr-2"></i> Table Setting
                 </button>
-                <button class="w-8 h-8 flex items-center justify-center bg-slate-800 text-gray-300 rounded border border-slate-700 hover:bg-slate-700">
+                <button
+                    class="w-8 h-8 flex items-center justify-center bg-slate-800 text-gray-300 rounded border border-slate-700 hover:bg-slate-700">
                     <i class="fa-solid fa-chevron-up"></i>
                 </button>
             </div>
@@ -184,125 +220,342 @@
                     </tr>
                 </thead>
                 <tbody class="text-xs text-gray-300">
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">23JUN</td><td class="py-2.5 px-2">VN7273</td><td class="py-2.5 px-2">VNA339</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">00:00</td><td class="py-2.5 px-2">HAN</td><td class="py-2.5 px-2">THD</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">23JUN</td>
+                        <td class="py-2.5 px-2">VN7273</td>
+                        <td class="py-2.5 px-2">VNA339</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">00:00</td>
+                        <td class="py-2.5 px-2">HAN</td>
+                        <td class="py-2.5 px-2">THD</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">49765</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6410</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">246</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">3135</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">49765</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6410</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">246</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">3135</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">24JUN</td><td class="py-2.5 px-2">VN120</td><td class="py-2.5 px-2">VNA123</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">00:00</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">HAN</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">24JUN</td>
+                        <td class="py-2.5 px-2">VN120</td>
+                        <td class="py-2.5 px-2">VNA123</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">00:00</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">HAN</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">49765</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6410</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">246</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">3135</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11130</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">49765</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6410</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">246</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">3135</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">24JUN</td><td class="py-2.5 px-2">VN220</td><td class="py-2.5 px-2">VNA321</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">00:00</td><td class="py-2.5 px-2">HAN</td><td class="py-2.5 px-2">SGN</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">24JUN</td>
+                        <td class="py-2.5 px-2">VN220</td>
+                        <td class="py-2.5 px-2">VNA321</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">00:00</td>
+                        <td class="py-2.5 px-2">HAN</td>
+                        <td class="py-2.5 px-2">SGN</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">11500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">48500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6300</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">3000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">48500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6300</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">3000</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">24JUN</td><td class="py-2.5 px-2">VN340</td><td class="py-2.5 px-2">VNB456</td><td class="py-2.5 px-2">B787</td><td class="py-2.5 px-2">00:00</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">DAD</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">24JUN</td>
+                        <td class="py-2.5 px-2">VN340</td>
+                        <td class="py-2.5 px-2">VNB456</td>
+                        <td class="py-2.5 px-2">B787</td>
+                        <td class="py-2.5 px-2">00:00</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">DAD</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">25000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">24800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">120000</td><td class="py-2.5 px-2 text-center text-red-400 border-l border-slate-800/50">200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">15000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">15500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">400</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">8500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">25000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">24800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">120000</td>
+                        <td class="py-2.5 px-2 text-center text-red-400 border-l border-slate-800/50">200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">15000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">15500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">400</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">8500</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">24JUN</td><td class="py-2.5 px-2">VN456</td><td class="py-2.5 px-2">VNA144</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">00:00</td><td class="py-2.5 px-2">DAD</td><td class="py-2.5 px-2">HAN</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">24JUN</td>
+                        <td class="py-2.5 px-2">VN456</td>
+                        <td class="py-2.5 px-2">VNA144</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">00:00</td>
+                        <td class="py-2.5 px-2">DAD</td>
+                        <td class="py-2.5 px-2">HAN</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">11000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">49100</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6100</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">210</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">2900</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">49100</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6100</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">210</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">2900</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">25JUN</td><td class="py-2.5 px-2">VN568</td><td class="py-2.5 px-2">VNA588</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">08:00</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">HKG</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">25JUN</td>
+                        <td class="py-2.5 px-2">VN568</td>
+                        <td class="py-2.5 px-2">VNA588</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">08:00</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">HKG</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">10500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">10500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">49000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">7500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">7600</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">250</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4100</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">10500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">10500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">49000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">7500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">7600</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">250</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4100</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">25JUN</td><td class="py-2.5 px-2">VN608</td><td class="py-2.5 px-2">VNB787</td><td class="py-2.5 px-2">B787</td><td class="py-2.5 px-2">12:30</td><td class="py-2.5 px-2">HAN</td><td class="py-2.5 px-2">ICN</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">25JUN</td>
+                        <td class="py-2.5 px-2">VN608</td>
+                        <td class="py-2.5 px-2">VNB787</td>
+                        <td class="py-2.5 px-2">B787</td>
+                        <td class="py-2.5 px-2">12:30</td>
+                        <td class="py-2.5 px-2">HAN</td>
+                        <td class="py-2.5 px-2">ICN</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">30000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">30000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">122000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">22000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">22500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">14000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">30000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">30000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">122000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">22000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">22500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">14000</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">26JUN</td><td class="py-2.5 px-2">VN720</td><td class="py-2.5 px-2">VNA381</td><td class="py-2.5 px-2">A320</td><td class="py-2.5 px-2">14:00</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">HAN</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">26JUN</td>
+                        <td class="py-2.5 px-2">VN720</td>
+                        <td class="py-2.5 px-2">VNA381</td>
+                        <td class="py-2.5 px-2">A320</td>
+                        <td class="py-2.5 px-2">14:00</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">HAN</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">11800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">43000</td><td class="py-2.5 px-2 text-center text-red-400 border-l border-slate-800/50">200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">5800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">6000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">180</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">3200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">11800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">43000</td>
+                        <td class="py-2.5 px-2 text-center text-red-400 border-l border-slate-800/50">200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">5800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">6000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">180</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">3200</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">26JUN</td><td class="py-2.5 px-2">VN832</td><td class="py-2.5 px-2">VNB190</td><td class="py-2.5 px-2">B787</td><td class="py-2.5 px-2">16:45</td><td class="py-2.5 px-2">HAN</td><td class="py-2.5 px-2">PQC</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">26JUN</td>
+                        <td class="py-2.5 px-2">VN832</td>
+                        <td class="py-2.5 px-2">VNB190</td>
+                        <td class="py-2.5 px-2">B787</td>
+                        <td class="py-2.5 px-2">16:45</td>
+                        <td class="py-2.5 px-2">HAN</td>
+                        <td class="py-2.5 px-2">PQC</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">28000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">28000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">121500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">12000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">12200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">350</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">7500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">28000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">28000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">121500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">350</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">7500</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">27JUN</td><td class="py-2.5 px-2">VN944</td><td class="py-2.5 px-2">VNA777</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">09:15</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">CXR</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">27JUN</td>
+                        <td class="py-2.5 px-2">VN944</td>
+                        <td class="py-2.5 px-2">VNA777</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">09:15</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">CXR</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">9500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">48000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">150</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">2100</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">48000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">150</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">2100</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">27JUN</td><td class="py-2.5 px-2">VN052</td><td class="py-2.5 px-2">VNB350</td><td class="py-2.5 px-2">A350</td><td class="py-2.5 px-2">18:00</td><td class="py-2.5 px-2">HAN</td><td class="py-2.5 px-2">SGN</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">27JUN</td>
+                        <td class="py-2.5 px-2">VN052</td>
+                        <td class="py-2.5 px-2">VNB350</td>
+                        <td class="py-2.5 px-2">A350</td>
+                        <td class="py-2.5 px-2">18:00</td>
+                        <td class="py-2.5 px-2">HAN</td>
+                        <td class="py-2.5 px-2">SGN</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">32000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">32000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">145000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">16000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">16500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">450</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">9200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">32000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">32000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">145000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">16000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">16500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">450</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9200</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">28JUN</td><td class="py-2.5 px-2">VN164</td><td class="py-2.5 px-2">VNA201</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">20:30</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">NRT</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">28JUN</td>
+                        <td class="py-2.5 px-2">VN164</td>
+                        <td class="py-2.5 px-2">VNA201</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">20:30</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">NRT</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">12500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">49500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">14500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">15000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">300</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">8500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">12500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">49500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">14500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">15000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">300</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">8500</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">28JUN</td><td class="py-2.5 px-2">VN278</td><td class="py-2.5 px-2">VNA332</td><td class="py-2.5 px-2">A330</td><td class="py-2.5 px-2">11:00</td><td class="py-2.5 px-2">HAN</td><td class="py-2.5 px-2">DAD</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">28JUN</td>
+                        <td class="py-2.5 px-2">VN278</td>
+                        <td class="py-2.5 px-2">VNA332</td>
+                        <td class="py-2.5 px-2">A330</td>
+                        <td class="py-2.5 px-2">11:00</td>
+                        <td class="py-2.5 px-2">HAN</td>
+                        <td class="py-2.5 px-2">DAD</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">18000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">18000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">105000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">9500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">9800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">300</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">5000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">18000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">18000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">105000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">300</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">5000</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">29JUN</td><td class="py-2.5 px-2">VN386</td><td class="py-2.5 px-2">VNA099</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">15:00</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">PQC</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">29JUN</td>
+                        <td class="py-2.5 px-2">VN386</td>
+                        <td class="py-2.5 px-2">VNA099</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">15:00</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">PQC</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">10000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">10000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">48200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4000</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">150</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">1800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">10000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">10000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">48200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">150</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">1800</td>
                     </tr>
-                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer" onclick="openDetails()">
-                        <td class="py-2.5 px-2">29JUN</td><td class="py-2.5 px-2">VN387</td><td class="py-2.5 px-2">VNA100</td><td class="py-2.5 px-2">A321</td><td class="py-2.5 px-2">22:00</td><td class="py-2.5 px-2">SGN</td><td class="py-2.5 px-2">HUI</td>
+                    <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 cursor-pointer"
+                        onclick="openDetails()">
+                        <td class="py-2.5 px-2">29JUN</td>
+                        <td class="py-2.5 px-2">VN387</td>
+                        <td class="py-2.5 px-2">VNA100</td>
+                        <td class="py-2.5 px-2">A321</td>
+                        <td class="py-2.5 px-2">22:00</td>
+                        <td class="py-2.5 px-2">SGN</td>
+                        <td class="py-2.5 px-2">HUI</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
                         <td class="py-2.5 px-2 text-center border-l border-slate-800/50">R02</td>
-                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">9800</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">48500</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4200</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">4400</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">160</td><td class="py-2.5 px-2 text-center border-l border-slate-800/50">2000</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">9800</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">48500</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">0</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4200</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">4400</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">160</td>
+                        <td class="py-2.5 px-2 text-center border-l border-slate-800/50">2000</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="h-14 flex justify-between items-center px-4 border-t border-slate-800 bg-[#0F172A] shrink-0 text-xs text-gray-400">
+        <div
+            class="h-14 flex justify-between items-center px-4 border-t border-slate-800 bg-[#0F172A] shrink-0 text-xs text-gray-400">
             <div>Tất cả danh sách: <span class="text-white font-medium">80</span></div>
             <div class="flex items-center gap-4">
                 <div class="flex items-center">
                     <span class="mr-2">Hiển thị</span>
-                    <button class="bg-slate-800 border border-slate-700 text-white px-3 py-1.5 rounded flex items-center gap-2">
+                    <button
+                        class="bg-slate-800 border border-slate-700 text-white px-3 py-1.5 rounded flex items-center gap-2">
                         10 bản ghi <i class="fa-solid fa-chevron-down text-[10px]"></i>
                     </button>
                 </div>
                 <div class="flex gap-1">
-                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-angles-left"></i></button>
-                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-angle-left"></i></button>
+                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i
+                            class="fa-solid fa-angles-left"></i></button>
+                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i
+                            class="fa-solid fa-angle-left"></i></button>
                     <button class="w-8 h-8 rounded bg-[#0891B2] text-white flex items-center justify-center">1</button>
                     <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center">2</button>
                     <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center">3</button>
                     <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center">4</button>
                     <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center">5</button>
-                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-angle-right"></i></button>
-                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i class="fa-solid fa-angles-right"></i></button>
+                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i
+                            class="fa-solid fa-angle-right"></i></button>
+                    <button class="w-8 h-8 rounded hover:bg-slate-800 flex items-center justify-center"><i
+                            class="fa-solid fa-angles-right"></i></button>
                 </div>
             </div>
         </div>
 
         <!-- BẢNG THÔNG TIN CHI TIẾT (SIDE PANEL) -->
-        <div id="flight-details-panel" class="absolute top-0 right-0 bottom-0 w-[900px] bg-[#0F172A] border-l border-slate-700 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <div id="flight-details-panel"
+            class="absolute top-0 right-0 bottom-0 w-[900px] bg-[#0F172A] border-l border-slate-700 z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
             <!-- Header của bảng thông tin -->
             <div class="px-6 py-5 flex items-start justify-between border-b border-slate-800 bg-[#111827]">
                 <div class="flex items-center gap-6 flex-1">
@@ -310,12 +563,12 @@
                         <span class="text-yellow-500 text-2xl font-bold tracking-wide">VN1573</span>
                         <span class="text-gray-400 text-xs mt-1">32C - VNA601</span>
                     </div>
-                    
+
                     <div class="flex flex-col items-center">
                         <span class="text-white text-2xl font-bold">07:25</span>
                         <span class="text-gray-400 text-xs mt-1 uppercase">DAD - VVDN</span>
                     </div>
-                    
+
                     <div class="flex flex-col items-center justify-center flex-1 px-2 mt-1">
                         <span class="text-gray-300 text-xs mb-1 font-medium">26JUN</span>
                         <div class="flex items-center w-full text-gray-500">
@@ -330,22 +583,25 @@
                         <span class="text-gray-400 text-xs mt-1 uppercase">HAN - VVNB</span>
                     </div>
                 </div>
-                
-                <button onclick="closeDetails()" class="ml-6 w-8 h-8 rounded-full bg-slate-700/50 hover:bg-slate-600 flex items-center justify-center text-gray-400 hover:text-white transition-colors shrink-0">
+
+                <button onclick="closeDetails()"
+                    class="ml-6 w-8 h-8 rounded-full bg-slate-700/50 hover:bg-slate-600 flex items-center justify-center text-gray-400 hover:text-white transition-colors shrink-0">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
 
             <!-- Nội dung chi tiết (Chia 2 cột) -->
             <div class="flex-1 overflow-hidden flex">
-                
+
                 <!-- CỘT TRÁI: Form, Checkbox & Weight/Fuel -->
                 <div class="w-[45%] p-6 overflow-y-auto border-r border-slate-800 bg-[#0F172A]">
                     <div class="space-y-8">
-                        
+
                         <!-- MỚI: Khối Weight and Fuel (Nằm ở cột trái) -->
                         <div>
-                            <h4 class="text-gray-400 font-bold text-[11px] uppercase tracking-wider mb-4 border-b border-slate-800 pb-2">Weight and Fuel - In KGs</h4>
+                            <h4
+                                class="bg-[#0891B2] text-white font-bold text-[12px] uppercase tracking-wider py-2.5 px-4 rounded-md mb-4">
+                                Weight and Fuel - In KGs</h4>
                             <div class="grid grid-cols-2 gap-x-12 gap-y-5">
                                 <!-- Hàng 1 -->
                                 <div class="flex justify-between items-center">
@@ -395,68 +651,83 @@
 
                         <!-- TOÀN BỘ CỤM CHECKBOX & FORM BÊN DƯỚI -->
                         <div class="border-t border-slate-800 pt-6">
-                            <h4 class="bg-[#0891B2] text-white font-bold text-[12px] uppercase tracking-wider py-2.5 px-4 rounded-md mb-4">EXTRA FUEL REASON</h4>
+                            <h4
+                                class="bg-[#0891B2] text-white font-bold text-[12px] uppercase tracking-wider py-2.5 px-4 rounded-md mb-4">
+                                EXTRA FUEL REASON</h4>
 
 
                             <div class="grid grid-cols-3 gap-y-5 gap-x-2">
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">ZFW CHG</span>
                                 </label>
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">ALTN CHG</span>
                                 </label>
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">MEL/CDL</span>
                                 </label>
-                                
+
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">ATC DEP</span>
                                 </label>
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">ATC ENR</span>
                                 </label>
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">ATC DES</span>
                                 </label>
 
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">LOW FL</span>
                                 </label>
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">WX ENR</span>
                                 </label>
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">WX DES</span>
                                 </label>
-                                
+
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">OTHS</span>
                                 </label>
                                 <div class="col-span-2 pl-1">
-                                    <input type="text" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
+                                    <input type="text"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
                                 </div>
                             </div>
-                            
+
                             <div class="pt-4">
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 rounded border-slate-600 bg-slate-800 accent-[#0891B2] cursor-pointer">
                                     <span class="text-sm text-gray-300">Reason not provided by crew</span>
                                 </label>
                             </div>
 
                             <div class="mt-8 flex items-center space-x-4">
                                 <span class="text-sm font-bold text-white w-20">Remarks</span>
-                                <input type="text" class="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
+                                <input type="text"
+                                    class="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#0891B2] transition-colors">
                             </div>
 
                             <div class="mt-6 flex items-center justify-between border-t border-slate-800 pt-6">
@@ -464,7 +735,8 @@
                                     <span class="text-sm font-bold text-white w-20">Last Update</span>
                                     <span class="text-sm text-gray-400 font-bold">01/07/2026 22:39 (Z)</span>
                                 </div>
-                                <button class="bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold px-6 py-2 rounded transition-colors shadow">
+                                <button
+                                    class="bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold px-6 py-2 rounded transition-colors shadow">
                                     Update
                                 </button>
                             </div>
@@ -478,217 +750,246 @@
                     <div class="bg-[#0891B2] text-white font-bold px-6 py-2.5 text-sm sticky top-0 z-10 shadow-sm">
                         Details
                     </div>
-                    
-                    
+
+
                     <div class="p-6 bg-[#0F172A] space-y-6">
-                        
-                                              <!-- Khối Payload & Cargo (Hỗ trợ Edit in-place) -->
-<div id="payload-section">
-    <!-- HEADER: CHẾ ĐỘ XEM -->
-    <div id="payload-header-view" class="flex items-center justify-between mb-4">
-        <h4 class="text-white font-bold text-sm">Payload & Cargo</h4>
-        <button onclick="togglePayloadEdit()" class="text-gray-400 hover:text-[#0891B2] transition-colors" title="Edit Payload & Cargo">
-            <i class="fa-solid fa-pen-to-square"></i>
-        </button>
-    </div>
 
-    <!-- HEADER: CHẾ ĐỘ SỬA (Ẩn mặc định) -->
-    <div id="payload-header-edit" class="hidden flex items-center justify-between mb-4">
-        <h4 class="text-[#0891B2] font-bold text-sm">Editing Payload & Cargo...</h4>
-        <div class="flex items-center gap-2">
-            <button onclick="togglePayloadEdit()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-md transition-colors">Cancel</button>
-            <button onclick="togglePayloadEdit()" class="px-4 py-1.5 bg-[#0891B2] hover:bg-[#06b6d4] text-white text-xs font-semibold rounded-md transition-colors">Save</button>
-        </div>
-    </div>
+                        <!-- Khối Payload & Cargo (Hỗ trợ Edit in-place) -->
+                        <div id="payload-section">
+                            <!-- HEADER: CHẾ ĐỘ XEM -->
+                            <div id="payload-header-view" class="flex items-center justify-between mb-4">
+                                <h4 class="text-white font-bold text-sm">Payload & Cargo</h4>
+                                <button onclick="togglePayloadEdit()"
+                                    class="text-gray-400 hover:text-[#0891B2] transition-colors"
+                                    title="Edit Payload & Cargo">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            </div>
 
-    <!-- NỘI DUNG: CHẾ ĐỘ XEM -->
-    <div id="payload-content-view" class="grid grid-cols-3 gap-y-5 gap-x-4">
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">PAX ADL</p>
-            <p class="text-white text-sm font-medium">145</p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">PAX CHD</p>
-            <p class="text-white text-sm font-medium">12</p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
-            <p class="text-white text-sm font-medium">11,250 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
-        
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">EST BAG</p>
-            <p class="text-white text-sm font-medium">150</p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">ULD BAG</p>
-            <p class="text-white text-sm font-medium">12</p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
-            <p class="text-white text-sm font-medium">2,450 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
+                            <!-- HEADER: CHẾ ĐỘ SỬA (Ẩn mặc định) -->
+                            <div id="payload-header-edit" class="hidden flex items-center justify-between mb-4">
+                                <h4 class="text-[#0891B2] font-bold text-sm">Editing Payload & Cargo...</h4>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="togglePayloadEdit()"
+                                        class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-md transition-colors">Cancel</button>
+                                    <button onclick="togglePayloadEdit()"
+                                        class="px-4 py-1.5 bg-[#0891B2] hover:bg-[#06b6d4] text-white text-xs font-semibold rounded-md transition-colors">Save</button>
+                                </div>
+                            </div>
 
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
-            <p class="text-white text-sm font-medium">1,800 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight Cargo</p>
-            <p class="text-white text-sm font-medium">3,000 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
-            <p class="text-yellow-500 text-sm font-bold">18,500 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
-    </div>
+                            <!-- NỘI DUNG: CHẾ ĐỘ XEM -->
+                            <div id="payload-content-view" class="grid grid-cols-3 gap-y-5 gap-x-4">
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">PAX ADL</p>
+                                    <p class="text-white text-sm font-medium">145</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">PAX CHD</p>
+                                    <p class="text-white text-sm font-medium">12</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
+                                    <p class="text-white text-sm font-medium">11,250 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
 
-       <!-- NỘI DUNG: CHẾ ĐỘ SỬA IN-PLACE (Ẩn mặc định) -->
-       <div id="payload-content-edit" class="hidden grid grid-cols-3 gap-y-5 gap-x-4">
-        <!-- Cột 1: Ô sửa PAX ADL -->
-        <div>
-            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">PAX ADL <span class="text-red-500">*</span></label>
-            <input type="text" value="145" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
-        </div>
-        <!-- Cột 2: Ô sửa PAX CHD -->
-        <div>
-            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">PAX CHD <span class="text-red-500">*</span></label>
-            <input type="text" value="12" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
-        </div>
-        <!-- Cột 3 -->
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
-            <p class="text-gray-400 text-sm font-medium opacity-60">11,250 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
-        
-        <!-- Cột 1: Ô sửa EST BAG -->
-        <div>
-            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">EST BAG <span class="text-red-500">*</span></label>
-            <input type="text" value="150" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
-        </div>
-        <!-- Cột 2: Ô sửa ULD BAG -->
-        <div>
-            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">ULD BAG <span class="text-red-500">*</span></label>
-            <input type="text" value="12" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
-        </div>
-        <!-- Cột 3 -->
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
-            <p class="text-gray-400 text-sm font-medium opacity-60">2,450 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">EST BAG</p>
+                                    <p class="text-white text-sm font-medium">150</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">ULD BAG</p>
+                                    <p class="text-white text-sm font-medium">12</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
+                                    <p class="text-white text-sm font-medium">2,450 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
 
-        <!-- Cột 1: Total Weight ULD BAG (Trở lại thành Read-only) -->
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
-            <p class="text-gray-400 text-sm font-medium opacity-60">1,800 <span class="text-gray-500 text-xs font-normal">kg</span></p>
-        </div>
-        <!-- Cột 2: Ô sửa Total Weight Cargo -->
-        <div>
-            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">Total Weight Cargo <span class="text-red-500">*</span></label>
-            <input type="text" value="3,000" class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
-        </div>
-        <!-- Cột 3 -->
-        <div>
-            <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
-            <p class="text-yellow-500/60 text-sm font-bold">18,500 <span class="text-gray-500/60 text-xs font-normal">kg</span></p>
-        </div>
-    </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
+                                    <p class="text-white text-sm font-medium">1,800 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight Cargo</p>
+                                    <p class="text-white text-sm font-medium">3,000 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
+                                    <p class="text-yellow-500 text-sm font-bold">18,500 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
+                            </div>
 
-   
-</div>
+                            <!-- NỘI DUNG: CHẾ ĐỘ SỬA IN-PLACE (Ẩn mặc định) -->
+                            <div id="payload-content-edit" class="hidden grid grid-cols-3 gap-y-5 gap-x-4">
+                                <!-- Cột 1: Ô sửa PAX ADL -->
+                                <div>
+                                    <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">PAX ADL <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" value="145"
+                                        class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                </div>
+                                <!-- Cột 2: Ô sửa PAX CHD -->
+                                <div>
+                                    <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">PAX CHD <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" value="12"
+                                        class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                </div>
+                                <!-- Cột 3 -->
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight PAX</p>
+                                    <p class="text-gray-400 text-sm font-medium opacity-60">11,250 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
 
-                    
+                                <!-- Cột 1: Ô sửa EST BAG -->
+                                <div>
+                                    <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">EST BAG <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" value="150"
+                                        class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                </div>
+                                <!-- Cột 2: Ô sửa ULD BAG -->
+                                <div>
+                                    <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">ULD BAG <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" value="12"
+                                        class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                </div>
+                                <!-- Cột 3 -->
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight BAG</p>
+                                    <p class="text-gray-400 text-sm font-medium opacity-60">2,450 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
+
+                                <!-- Cột 1: Total Weight ULD BAG (Trở lại thành Read-only) -->
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Weight ULD BAG</p>
+                                    <p class="text-gray-400 text-sm font-medium opacity-60">1,800 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
+                                </div>
+                                <!-- Cột 2: Ô sửa Total Weight Cargo -->
+                                <div>
+                                    <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">Total Weight
+                                        Cargo <span class="text-red-500">*</span></label>
+                                    <input type="text" value="3,000"
+                                        class="w-full bg-[#111827] border border-[#0891B2] text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                </div>
+                                <!-- Cột 3 -->
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Total Payload</p>
+                                    <p class="text-yellow-500/60 text-sm font-bold">18,500 <span
+                                            class="text-gray-500/60 text-xs font-normal">kg</span></p>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
 
                         <div class="border-t border-slate-800"></div>
 
-                                                <!-- Khối Weight Control (Hỗ trợ Edit in-place) -->
-                                                <div id="weight-section">
-                                                    <!-- HEADER: CHẾ ĐỘ XEM -->
-                                                    <div id="weight-header-view" class="flex items-center justify-between mb-4">
-                                                        <h4 class="text-white font-bold text-sm">Weight Control (kg)</h4>
-                                                        <button onclick="toggleWeightEdit()" class="text-gray-400 hover:text-[#0891B2] transition-colors" title="Edit Weight Control">
-                                                            <i class="fa-solid fa-pen-to-square"></i>
-                                                        </button>
-                                                    </div>
-                        
-                                                    <!-- HEADER: CHẾ ĐỘ SỬA -->
-                                                    <div id="weight-header-edit" class="hidden flex items-center justify-between mb-4">
-                                                        <h4 class="text-[#0891B2] font-bold text-sm">Editing Weight Control...</h4>
-                                                        <div class="flex items-center gap-2">
-                                                            <button onclick="toggleWeightEdit()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-md transition-colors">Cancel</button>
-                                                            <button onclick="toggleWeightEdit()" class="px-4 py-1.5 bg-[#0891B2] hover:bg-[#06b6d4] text-white text-xs font-semibold rounded-md transition-colors">Save</button>
-                                                        </div>
-                                                    </div>
-                        
-                                                    <!-- NỘI DUNG: CHẾ ĐỘ XEM -->
-                                                    <div id="weight-content-view" class="grid grid-cols-3 gap-y-5 gap-x-4">
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
-                                                            <p class="text-white text-sm font-medium">18,400</p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
-                                                            <p class="text-green-500 text-sm font-medium">+100</p>
-                                                        </div>
-                                                        <div></div>
-                        
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
-                                                            <p class="text-white text-sm font-medium">42,150</p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">ADJ DOW</p>
-                                                            <p class="text-[#00E5FF] text-sm font-medium">42,200</p>
-                                                        </div>
-                                                        <div></div>
-                        
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
-                                                            <p class="text-white text-sm font-medium">60,550</p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
-                                                            <p class="text-green-500 text-sm font-medium">+150</p>
-                                                        </div>
-                                                        <div></div>
-                                                    </div>
-                        
-                                                    <!-- NỘI DUNG: CHẾ ĐỘ SỬA IN-PLACE -->
-                                                    <div id="weight-content-edit" class="hidden grid grid-cols-3 gap-y-5 gap-x-4">
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
-                                                            <p class="text-white text-sm font-medium opacity-60">18,400</p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
-                                                            <p class="text-green-500/60 text-sm font-medium">+100</p>
-                                                        </div>
-                                                        <div></div>
-                        
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
-                                                            <p class="text-white text-sm font-medium opacity-60">42,150</p>
-                                                        </div>
-                                                        
-                                                        <!-- Ô SỬA: ADJ DOW -->
-                                                        <div>
-                                                            <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">ADJ DOW <span class="text-red-500">*</span></label>
-                                                            <input type="text" value="42,200" class="w-full bg-[#111827] border border-[#0891B2] text-[#00E5FF] rounded px-2 py-1 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
-                                                        </div>
-                                                        <div></div>
-                        
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
-                                                            <p class="text-white text-sm font-medium opacity-60">60,550</p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
-                                                            <p class="text-green-500/60 text-sm font-medium">+150</p>
-                                                        </div>
-                                                        <div></div>
-                                                    </div>
-                                                </div>
-                        
+                        <!-- Khối Weight Control (Hỗ trợ Edit in-place) -->
+                        <div id="weight-section">
+                            <!-- HEADER: CHẾ ĐỘ XEM -->
+                            <div id="weight-header-view" class="flex items-center justify-between mb-4">
+                                <h4 class="text-white font-bold text-sm">Weight Control (kg)</h4>
+                                <button onclick="toggleWeightEdit()"
+                                    class="text-gray-400 hover:text-[#0891B2] transition-colors"
+                                    title="Edit Weight Control">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            </div>
+
+                            <!-- HEADER: CHẾ ĐỘ SỬA -->
+                            <div id="weight-header-edit" class="hidden flex items-center justify-between mb-4">
+                                <h4 class="text-[#0891B2] font-bold text-sm">Editing Weight Control...</h4>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="toggleWeightEdit()"
+                                        class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-md transition-colors">Cancel</button>
+                                    <button onclick="toggleWeightEdit()"
+                                        class="px-4 py-1.5 bg-[#0891B2] hover:bg-[#06b6d4] text-white text-xs font-semibold rounded-md transition-colors">Save</button>
+                                </div>
+                            </div>
+
+                            <!-- NỘI DUNG: CHẾ ĐỘ XEM -->
+                            <div id="weight-content-view" class="grid grid-cols-3 gap-y-5 gap-x-4">
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
+                                    <p class="text-white text-sm font-medium">18,400</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
+                                    <p class="text-green-500 text-sm font-medium">+100</p>
+                                </div>
+                                <div></div>
+
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
+                                    <p class="text-white text-sm font-medium">42,150</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">ADJ DOW</p>
+                                    <p class="text-[#00E5FF] text-sm font-medium">42,200</p>
+                                </div>
+                                <div></div>
+
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
+                                    <p class="text-white text-sm font-medium">60,550</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
+                                    <p class="text-green-500 text-sm font-medium">+150</p>
+                                </div>
+                                <div></div>
+                            </div>
+
+                            <!-- NỘI DUNG: CHẾ ĐỘ SỬA IN-PLACE -->
+                            <div id="weight-content-edit" class="hidden grid grid-cols-3 gap-y-5 gap-x-4">
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">CFP Payload</p>
+                                    <p class="text-white text-sm font-medium opacity-60">18,400</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Different Payload</p>
+                                    <p class="text-green-500/60 text-sm font-medium">+100</p>
+                                </div>
+                                <div></div>
+
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">CFP DOW</p>
+                                    <p class="text-white text-sm font-medium opacity-60">42,150</p>
+                                </div>
+
+                                <!-- Ô SỬA: ADJ DOW -->
+                                <div>
+                                    <label class="block text-[#0891B2] text-[11px] font-semibold mb-1">ADJ DOW <span
+                                            class="text-red-500">*</span></label>
+                                    <input type="text" value="42,200"
+                                        class="w-full bg-[#111827] border border-[#0891B2] text-[#00E5FF] rounded px-2 py-1 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-[#0891B2] transition-colors shadow-[0_0_8px_rgba(8,145,178,0.2)]">
+                                </div>
+                                <div></div>
+
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">CFP ZFW</p>
+                                    <p class="text-white text-sm font-medium opacity-60">60,550</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 text-[11px] mb-1">Different ZFW</p>
+                                    <p class="text-green-500/60 text-sm font-medium">+150</p>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+
 
                         <div class="border-t border-slate-800"></div>
 
@@ -698,7 +999,8 @@
                             <div class="grid grid-cols-3 gap-y-5 gap-x-4">
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">CFP Block Fuel</p>
-                                    <p class="text-white text-sm font-medium">8,500 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+                                    <p class="text-white text-sm font-medium">8,500 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">CFP Number</p>
@@ -708,7 +1010,8 @@
 
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">Fuel Order</p>
-                                    <p class="text-white text-sm font-medium">8,800 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+                                    <p class="text-white text-sm font-medium">8,800 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">Trip Time</p>
@@ -718,11 +1021,13 @@
 
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">Taxi Fuel</p>
-                                    <p class="text-white text-sm font-medium">450 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+                                    <p class="text-white text-sm font-medium">450 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 text-[11px] mb-1">Trip Fuel</p>
-                                    <p class="text-white text-sm font-medium">2,580 <span class="text-gray-500 text-xs font-normal">kg</span></p>
+                                    <p class="text-white text-sm font-medium">2,580 <span
+                                            class="text-gray-500 text-xs font-normal">kg</span></p>
                                 </div>
                                 <div></div>
                             </div>
@@ -750,7 +1055,7 @@
             // Chuyển đổi ẩn/hiện giữa 2 Header
             document.getElementById('payload-header-view').classList.toggle('hidden');
             document.getElementById('payload-header-edit').classList.toggle('hidden');
-            
+
             // Chuyển đổi ẩn/hiện giữa 2 Khối nội dung
             document.getElementById('payload-content-view').classList.toggle('hidden');
             document.getElementById('payload-content-edit').classList.toggle('hidden');
@@ -758,7 +1063,7 @@
         function toggleWeightEdit() {
             document.getElementById('weight-header-view').classList.toggle('hidden');
             document.getElementById('weight-header-edit').classList.toggle('hidden');
-            
+
             document.getElementById('weight-content-view').classList.toggle('hidden');
             document.getElementById('weight-content-edit').classList.toggle('hidden');
         }
@@ -768,4 +1073,5 @@
         }
     </script>
 </body>
+
 </html>
