@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Export History - TOSS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Dark Theme Colors matching the image */
+            --bg-main: #0B1121;
+            --bg-sidebar-primary: #060B14;
+            --bg-sidebar-secondary: #0F172A;
+            --bg-surface: #131E32;
+            --bg-surface-hover: #1E293B;
+            
+            --border-color: #1E293B;
+            --border-light: #334155;
+            
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-dark: #cbd5e1;
+            
+            --primary-color: #0EA5E9; /* Cyan/Teal accent */
+            --primary-bg: #0C4A6E;
+            
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --danger-color: #EF4444;
+
+            --font-family: 'Inter', sans-serif;
+            --sidebar-primary-w: 220px;
+            --sidebar-secondary-w: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 13px;
+            overflow: hidden; /* App-like feel */
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Primary Sidebar */
+        .sidebar-primary {
+            width: var(--sidebar-primary-w);
+            background-color: var(--bg-sidebar-primary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .logo-container {
+            padding: 20px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-container img {
+            height: 24px;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 16px;
+            color: #E2E8F0;
+            letter-spacing: 0.5px;
+        }
+
+        .primary-nav {
+            flex: 1;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item:hover {
+            color: var(--text-main);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-bg);
+            color: var(--primary-color);
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+        }
+
+        .btn-hide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .user-info .email {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            padding: 2px;
+        }
+        .theme-toggle i {
+            padding: 4px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .theme-toggle i.active {
+            background: #334155;
+        }
+
+        /* Secondary Sidebar */
+        .sidebar-secondary {
+            width: var(--sidebar-secondary-w);
+            background-color: var(--bg-sidebar-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 5;
+        }
+
+        .sec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 16px;
+        }
+
+        .sec-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .sec-search {
+            padding: 0 16px 16px 16px;
+        }
+
+        .sec-search .input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            padding: 0 12px;
+            height: 36px;
+        }
+
+        .sec-search input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            width: 100%;
+            padding-left: 8px;
+            outline: none;
+            font-size: 13px;
+        }
+        
+        .sec-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .report-list {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .report-item {
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .report-item:hover {
+            background-color: rgba(255,255,255,0.03);
+            color: var(--text-main);
+        }
+
+        .report-item.active {
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-main);
+            overflow: hidden;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .btn-filter {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .op-date {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background-color: var(--bg-surface-hover);
+        }
+
+        .content-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 24px;
+            position: relative;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .toggle-utc {
+            position: absolute;
+            right: 24px;
+            top: 20px;
+            display: flex;
+            background-color: var(--bg-surface);
+            border-radius: 20px;
+            padding: 2px;
+            border: 1px solid var(--border-light);
+        }
+
+        .toggle-utc span {
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 18px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .toggle-utc span.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* Filter Panel (Collapsible style) */
+        .filter-panel {
+            padding: 0 24px 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .custom-input {
+            width: 100%;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-size: 13px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .custom-input:focus-within {
+            border-color: var(--primary-color);
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .date-range input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 13px;
+            width: 100%;
+            outline: none;
+        }
+        .date-range input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Custom Select inside dark theme */
+        .custom-select { position: relative; width: 100%; }
+        .select-trigger { cursor: pointer; }
+        .select-dropdown {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: var(--bg-surface-hover);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            margin-top: 4px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+        }
+        .custom-select.active .select-dropdown { display: block; }
+        .search-box {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .search-box input {
+            background: transparent; border: none; color: white; width: 100%; outline: none;
+        }
+        .options-list { max-height: 150px; overflow-y: auto; padding: 4px 0; }
+        .option {
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .option:hover { background: rgba(255,255,255,0.05); }
+        .option input { accent-color: var(--primary-color); }
+
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+        }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--border-light); color: var(--text-main); }
+
+        /* Table */
+        .table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 0 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-main);
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-light);
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-completed { color: var(--success-color); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status-inprogress { color: var(--warning-color); background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .status-failed { color: var(--danger-color); background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        .link-active { color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 4px;}
+        .link-active:hover { text-decoration: underline; }
+        .link-disabled { color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+        .link-expired { color: var(--text-muted); text-decoration: line-through; display: flex; align-items: center; gap: 4px; }
+
+        /* Pagination Footer */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-main);
+        }
+
+        .total-records {
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-size {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+
+        .page-size select {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            padding: 4px 8px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .pages {
+            display: flex;
+            gap: 4px;
+        }
+
+        .page-btn {
+            min-width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .page-btn:hover:not(.active):not(:disabled) {
+            background: var(--bg-surface);
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .page-btn:disabled {
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        
+        /* Utility */
+        .text-truncate {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Primary Sidebar -->
+        <aside class="sidebar-primary">
+            <div>
+                <div class="logo-container">
+                    <!-- Placeholder for Lotus Logo -->
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#EAB308"><path d="M12 2L15 10H22L16 15L18 22L12 18L6 22L8 15L2 10H9L12 2Z"></path></svg>
+                    <span class="logo-text">Vietnam Airlines</span>
+                </div>
+                <nav class="primary-nav">
+                    <a href="#" class="nav-item"><i class="ri-flight-takeoff-line"></i> Live Operations</a>
+                    <a href="#" class="nav-item"><i class="ri-file-list-3-line"></i> Flight Dispatch</a>
+                    <a href="#" class="nav-item"><i class="ri-scales-3-line"></i> Flight Load Control</a>
+                    <a href="#" class="nav-item"><i class="ri-team-line"></i> Station Manager</a>
+                    <a href="#" class="nav-item"><i class="ri-bar-chart-box-line"></i> Report</a>
+                    <a href="#" class="nav-item active"><i class="ri-history-line"></i> Report Export History</a>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <button class="btn-hide"><i class="ri-arrow-left-s-line"></i> Hide</button>
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Admin">
+                    <div class="user-info">
+                        <span class="name">Admin</span>
+                        <span class="email">admin@viettel.com</span>
+                    </div>
+                    <div class="controls">
+                        <div class="theme-toggle">
+                            <i class="ri-sun-line"></i>
+                            <i class="ri-moon-line active"></i>
+                        </div>
+                        <i class="ri-logout-box-r-line" style="color: var(--text-muted); cursor: pointer; font-size: 16px;"></i>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Secondary Sidebar removed per user request -->
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <button class="btn-filter" id="toggleFilterBtn">
+                    <i class="ri-filter-3-line"></i> Filter <i class="ri-arrow-down-s-line"></i>
+                </button>
+                <div class="top-right">
+                    <span class="op-date">Operating Date: 19/09/2026 15:21:42Z</span>
+                    <button class="btn-action"><i class="ri-file-excel-2-line"></i> Export excel</button>
+                    <button class="btn-action"><i class="ri-settings-3-line"></i> Table Setting</button>
+                </div>
+            </div>
+
+            <div class="content-header">
+                <h1 class="page-title">Report Export History</h1>
+                <div class="toggle-utc">
+                    <span class="active">UTC</span>
+                    <span>LT</span>
+                </div>
+            </div>
+
+            <!-- Filter Panel -->
+            <div class="filter-panel" id="filterPanel">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label>REQUESTED TIME</label>
+                        <div class="custom-input date-range">
+                            <i class="ri-calendar-line" style="color: var(--text-muted)"></i>
+                            <input type="text" placeholder="Start time">
+                            <i class="ri-arrow-right-line" style="color: var(--text-muted); font-size: 12px;"></i>
+                            <input type="text" placeholder="End time">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>REPORT NAME</label>
+                        <div class="custom-select" id="reportNameSelect">
+                            <div class="custom-input select-trigger">
+                                <span class="selected-value text-truncate">REPORT NAME</span>
+                                <i class="ri-arrow-down-s-line" style="color: var(--text-muted)"></i>
+                            </div>
+                            <div class="select-dropdown">
+                                <div class="search-box">
+                                    <i class="ri-search-line" style="color:var(--text-muted)"></i>
+                                    <input type="text" placeholder="Search...">
+                                </div>
+                                <div class="options-list">
+                                    <label class="option"><input type="checkbox" value="Flight & Maintenance Plan"> Flight & Maintenance Plan</label>
+                                    <label class="option"><input type="checkbox" value="Departure/Arrival Delay Report"> Departure/Arrival Delay Report</label>
+                                    <label class="option"><input type="checkbox" value="Flight Diversion Report"> Flight Diversion Report</label>
+                                    <label class="option"><input type="checkbox" value="Ground Time Report"> Ground Time Report</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>STATUS</label>
+                        <div class="custom-select" id="statusSelect">
+                            <div class="custom-input select-trigger">
+                                <span class="selected-value">STATUS</span>
+                                <i class="ri-arrow-down-s-line" style="color: var(--text-muted)"></i>
+                            </div>
+                            <div class="select-dropdown">
+                                <div class="options-list">
+                                    <label class="option"><input type="checkbox" value="All" id="statusAll"> All</label>
+                                    <label class="option"><input type="checkbox" value="In progress" class="status-item"> In progress</label>
+                                    <label class="option"><input type="checkbox" value="Completed" class="status-item"> Completed</label>
+                                    <label class="option"><input type="checkbox" value="Failed" class="status-item"> Failed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-outline" id="clearFilterBtn">Clear filter</button>
+                    <button class="btn btn-primary">Search</button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NO.</th>
+                            <th>REQUESTED TIME</th>
+                            <th>REPORT NAME</th>
+                            <th>STATUS</th>
+                            <th>LINK DOWNLOAD</th>
+                            <th>DOWNLOAD LINK EXPIRY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>01/06/2026 11:11</td>
+                            <td>Flight & Maintenance Plan</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Flight_Plan_010626.xlsx</a></td>
+                            <td>08/06/2026 11:11</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>01/06/2026 10:45</td>
+                            <td>Departure/Arrival Delay Report</td>
+                            <td><span class="status-badge status-inprogress">In progress</span></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>31/05/2026 09:20</td>
+                            <td>Flight Diversion Report</td>
+                            <td><span class="status-badge status-failed">Failed</span></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>25/05/2026 14:30</td>
+                            <td>Ground Time Report</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td><span class="link-expired"><i class="ri-download-2-line"></i> Ground_Time_250526.xlsx</span></td>
+                            <td>01/06/2026 14:30</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>24/05/2026 16:15</td>
+                            <td>Flight & Maintenance Plan</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td><span class="link-expired"><i class="ri-download-2-line"></i> Flight_Plan_240526.xlsx</span></td>
+                            <td>31/05/2026 16:15</td>
+                        </tr>
+                        <!-- Adding a few more rows to make it look dense like the image -->
+                        <tr>
+                            <td>6</td>
+                            <td>24/05/2026 10:00</td>
+                            <td>Departure/Arrival Delay Report</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Delay_Report_240526.xlsx</a></td>
+                            <td>31/05/2026 10:00</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>23/05/2026 08:30</td>
+                            <td>Flight & Maintenance Plan</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Flight_Plan_230526.xlsx</a></td>
+                            <td>30/05/2026 08:30</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>22/05/2026 15:45</td>
+                            <td>Ground Time Report</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Ground_Time_220526.xlsx</a></td>
+                            <td>29/05/2026 15:45</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer Pagination -->
+            <div class="table-footer">
+                <div class="total-records">Tất cả danh sách: 80</div>
+                <div class="pagination-controls">
+                    <div class="page-size">
+                        Hiển thị
+                        <select>
+                            <option>25 bản ghi</option>
+                            <option>50 bản ghi</option>
+                            <option>100 bản ghi</option>
+                        </select>
+                    </div>
+                    <div class="pages">
+                        <button class="page-btn" disabled><i class="ri-arrow-left-double-line"></i></button>
+                        <button class="page-btn" disabled><i class="ri-arrow-left-s-line"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="ri-arrow-right-s-line"></i></button>
+                        <button class="page-btn"><i class="ri-arrow-right-double-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Toggle Filter Panel
+        const toggleBtn = document.getElementById('toggleFilterBtn');
+        const filterPanel = document.getElementById('filterPanel');
+        let filterVisible = true;
+
+        toggleBtn.addEventListener('click', () => {
+            filterVisible = !filterVisible;
+            filterPanel.style.display = filterVisible ? 'flex' : 'none';
+        });
+
+        // Custom Select Logic
+        const customSelects = document.querySelectorAll('.custom-select');
+
+        customSelects.forEach(select => {
+            const trigger = select.querySelector('.select-trigger');
+            const checkboxes = select.querySelectorAll('input[type="checkbox"]');
+            const selectedValueText = select.querySelector('.selected-value');
+            const originalPlaceholder = selectedValueText.textContent;
+            const searchInput = select.querySelector('.search-box input');
+            const optionsList = select.querySelectorAll('.option');
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                customSelects.forEach(otherSelect => {
+                    if (otherSelect !== select) otherSelect.classList.remove('active');
+                });
+                select.classList.toggle('active');
+                if (searchInput && select.classList.contains('active')) searchInput.focus();
+            });
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase();
+                    optionsList.forEach(option => {
+                        const text = option.textContent.toLowerCase();
+                        option.style.display = text.includes(term) ? 'flex' : 'none';
+                    });
+                });
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    if (select.id === 'statusSelect') {
+                        const isAll = checkbox.id === 'statusAll';
+                        if (isAll && checkbox.checked) {
+                            select.querySelectorAll('.status-item').forEach(cb => cb.checked = false);
+                        } else if (!isAll && checkbox.checked) {
+                            const allCb = document.getElementById('statusAll');
+                            if (allCb) allCb.checked = false;
+                        }
+                    }
+                    updateSelectText();
+                });
+            });
+
+            function updateSelectText() {
+                const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+                if (checkedBoxes.length > 0) {
+                    const values = checkedBoxes.map(cb => cb.value);
+                    selectedValueText.textContent = values.join(', ');
+                    selectedValueText.style.color = "var(--text-main)";
+                } else {
+                    selectedValueText.textContent = originalPlaceholder;
+                    selectedValueText.style.color = "var(--text-muted)";
+                }
+            }
+        });
+
+        document.addEventListener('click', () => {
+            customSelects.forEach(select => select.classList.remove('active'));
+        });
+
+        // Clear filter
+        const clearFilterBtn = document.getElementById('clearFilterBtn');
+        if (clearFilterBtn) {
+            clearFilterBtn.addEventListener('click', () => {
+                document.querySelectorAll('.date-range input').forEach(input => input.value = '');
+                document.querySelectorAll('.custom-select input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const selectedValueText = select.querySelector('.selected-value');
+                    if (select.id === 'reportNameSelect') selectedValueText.textContent = 'REPORT NAME';
+                    else if (select.id === 'statusSelect') selectedValueText.textContent = 'STATUS';
+                    selectedValueText.style.color = "var(--text-muted)";
+                });
+            });
+        }
+    });
+    </script>
+</body>
+</html>
