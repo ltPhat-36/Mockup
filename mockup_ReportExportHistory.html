@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,17 +17,18 @@
             --bg-sidebar-secondary: #0F172A;
             --bg-surface: #131E32;
             --bg-surface-hover: #1E293B;
-            
+
             --border-color: #1E293B;
             --border-light: #334155;
-            
+
             --text-main: #F8FAFC;
             --text-muted: #94A3B8;
             --text-dark: #cbd5e1;
-            
-            --primary-color: #0EA5E9; /* Cyan/Teal accent */
+
+            --primary-color: #0EA5E9;
+            /* Cyan/Teal accent */
             --primary-bg: #0C4A6E;
-            
+
             --success-color: #10B981;
             --warning-color: #F59E0B;
             --danger-color: #EF4444;
@@ -47,7 +49,8 @@
             background-color: var(--bg-main);
             color: var(--text-main);
             font-size: 13px;
-            overflow: hidden; /* App-like feel */
+            overflow: hidden;
+            /* App-like feel */
         }
 
         .app-container {
@@ -73,11 +76,11 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .logo-container img {
             height: 24px;
         }
-        
+
         .logo-text {
             font-weight: 600;
             font-size: 16px;
@@ -111,7 +114,7 @@
 
         .nav-item:hover {
             color: var(--text-main);
-            background-color: rgba(255,255,255,0.05);
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
         .nav-item.active {
@@ -186,12 +189,14 @@
             border-radius: 12px;
             padding: 2px;
         }
+
         .theme-toggle i {
             padding: 4px;
             border-radius: 50%;
             font-size: 12px;
             cursor: pointer;
         }
+
         .theme-toggle i.active {
             background: #334155;
         }
@@ -243,7 +248,7 @@
             outline: none;
             font-size: 13px;
         }
-        
+
         .sec-search input::placeholder {
             color: var(--text-muted);
         }
@@ -264,7 +269,7 @@
         }
 
         .report-item:hover {
-            background-color: rgba(255,255,255,0.03);
+            background-color: rgba(255, 255, 255, 0.03);
             color: var(--text-main);
         }
 
@@ -419,6 +424,7 @@
             align-items: center;
             gap: 8px;
         }
+
         .date-range input {
             background: transparent;
             border: none;
@@ -427,25 +433,39 @@
             width: 100%;
             outline: none;
         }
+
         .date-range input::placeholder {
             color: var(--text-muted);
         }
 
         /* Custom Select inside dark theme */
-        .custom-select { position: relative; width: 100%; }
-        .select-trigger { cursor: pointer; }
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-trigger {
+            cursor: pointer;
+        }
+
         .select-dropdown {
             position: absolute;
-            top: 100%; left: 0; right: 0;
+            top: 100%;
+            left: 0;
+            right: 0;
             background: var(--bg-surface-hover);
             border: 1px solid var(--border-light);
             border-radius: 6px;
             margin-top: 4px;
             z-index: 100;
             display: none;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
         }
-        .custom-select.active .select-dropdown { display: block; }
+
+        .custom-select.active .select-dropdown {
+            display: block;
+        }
+
         .search-box {
             padding: 8px;
             border-bottom: 1px solid var(--border-light);
@@ -453,10 +473,21 @@
             align-items: center;
             gap: 8px;
         }
+
         .search-box input {
-            background: transparent; border: none; color: white; width: 100%; outline: none;
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
         }
-        .options-list { max-height: 150px; overflow-y: auto; padding: 4px 0; }
+
+        .options-list {
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
         .option {
             padding: 6px 12px;
             display: flex;
@@ -464,14 +495,21 @@
             gap: 8px;
             cursor: pointer;
         }
-        .option:hover { background: rgba(255,255,255,0.05); }
-        .option input { accent-color: var(--primary-color); }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .option input {
+            accent-color: var(--primary-color);
+        }
 
         .filter-actions {
             display: flex;
             justify-content: flex-end;
             gap: 12px;
         }
+
         .btn {
             padding: 8px 16px;
             border-radius: 6px;
@@ -480,8 +518,17 @@
             border: none;
             font-weight: 500;
         }
-        .btn-primary { background: var(--primary-color); color: white; }
-        .btn-outline { background: transparent; border: 1px solid var(--border-light); color: var(--text-main); }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+        }
 
         /* Table */
         .table-container {
@@ -517,7 +564,7 @@
         }
 
         tbody tr:hover {
-            background-color: rgba(255,255,255,0.02);
+            background-color: rgba(255, 255, 255, 0.02);
         }
 
         /* Status Badges */
@@ -528,14 +575,51 @@
             font-weight: 600;
             display: inline-block;
         }
-        .status-completed { color: var(--success-color); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
-        .status-inprogress { color: var(--warning-color); background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
-        .status-failed { color: var(--danger-color); background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
 
-        .link-active { color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 4px;}
-        .link-active:hover { text-decoration: underline; }
-        .link-disabled { color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
-        .link-expired { color: var(--text-muted); text-decoration: line-through; display: flex; align-items: center; gap: 4px; }
+        .status-completed {
+            color: var(--success-color);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-inprogress {
+            color: var(--warning-color);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-failed {
+            color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .link-active {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .link-active:hover {
+            text-decoration: underline;
+        }
+
+        .link-disabled {
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .link-expired {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
         /* Pagination Footer */
         .table-footer {
@@ -604,12 +688,12 @@
             color: white;
             font-weight: 600;
         }
-        
+
         .page-btn:disabled {
             color: var(--text-muted);
             cursor: not-allowed;
         }
-        
+
         /* Utility */
         .text-truncate {
             max-width: 150px;
@@ -617,9 +701,9 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
     </style>
 </head>
+
 <body>
     <div class="app-container">
         <!-- Primary Sidebar -->
@@ -627,7 +711,9 @@
             <div>
                 <div class="logo-container">
                     <!-- Placeholder for Lotus Logo -->
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#EAB308"><path d="M12 2L15 10H22L16 15L18 22L12 18L6 22L8 15L2 10H9L12 2Z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="#EAB308">
+                        <path d="M12 2L15 10H22L16 15L18 22L12 18L6 22L8 15L2 10H9L12 2Z"></path>
+                    </svg>
                     <span class="logo-text">Vietnam Airlines</span>
                 </div>
                 <nav class="primary-nav">
@@ -652,7 +738,8 @@
                             <i class="ri-sun-line"></i>
                             <i class="ri-moon-line active"></i>
                         </div>
-                        <i class="ri-logout-box-r-line" style="color: var(--text-muted); cursor: pointer; font-size: 16px;"></i>
+                        <i class="ri-logout-box-r-line"
+                            style="color: var(--text-muted); cursor: pointer; font-size: 16px;"></i>
                     </div>
                 </div>
             </div>
@@ -668,17 +755,11 @@
                 </button>
                 <div class="top-right">
                     <span class="op-date">Operating Date: 19/09/2026 15:21:42Z</span>
-                    <button class="btn-action"><i class="ri-file-excel-2-line"></i> Export excel</button>
-                    <button class="btn-action"><i class="ri-settings-3-line"></i> Table Setting</button>
                 </div>
             </div>
 
             <div class="content-header">
                 <h1 class="page-title">Report Export History</h1>
-                <div class="toggle-utc">
-                    <span class="active">UTC</span>
-                    <span>LT</span>
-                </div>
             </div>
 
             <!-- Filter Panel -->
@@ -693,7 +774,7 @@
                             <input type="text" placeholder="End time">
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>REPORT NAME</label>
                         <div class="custom-select" id="reportNameSelect">
@@ -707,10 +788,14 @@
                                     <input type="text" placeholder="Search...">
                                 </div>
                                 <div class="options-list">
-                                    <label class="option"><input type="checkbox" value="Flight & Maintenance Plan"> Flight & Maintenance Plan</label>
-                                    <label class="option"><input type="checkbox" value="Departure/Arrival Delay Report"> Departure/Arrival Delay Report</label>
-                                    <label class="option"><input type="checkbox" value="Flight Diversion Report"> Flight Diversion Report</label>
-                                    <label class="option"><input type="checkbox" value="Ground Time Report"> Ground Time Report</label>
+                                    <label class="option"><input type="checkbox" value="Flight & Maintenance Plan">
+                                        Flight & Maintenance Plan</label>
+                                    <label class="option"><input type="checkbox" value="Departure/Arrival Delay Report">
+                                        Departure/Arrival Delay Report</label>
+                                    <label class="option"><input type="checkbox" value="Flight Diversion Report"> Flight
+                                        Diversion Report</label>
+                                    <label class="option"><input type="checkbox" value="Ground Time Report"> Ground Time
+                                        Report</label>
                                 </div>
                             </div>
                         </div>
@@ -726,9 +811,12 @@
                             <div class="select-dropdown">
                                 <div class="options-list">
                                     <label class="option"><input type="checkbox" value="All" id="statusAll"> All</label>
-                                    <label class="option"><input type="checkbox" value="In progress" class="status-item"> In progress</label>
-                                    <label class="option"><input type="checkbox" value="Completed" class="status-item"> Completed</label>
-                                    <label class="option"><input type="checkbox" value="Failed" class="status-item"> Failed</label>
+                                    <label class="option"><input type="checkbox" value="In progress"
+                                            class="status-item"> In progress</label>
+                                    <label class="option"><input type="checkbox" value="Completed" class="status-item">
+                                        Completed</label>
+                                    <label class="option"><input type="checkbox" value="Failed" class="status-item">
+                                        Failed</label>
                                 </div>
                             </div>
                         </div>
@@ -759,7 +847,8 @@
                             <td>01/06/2026 11:11</td>
                             <td>Flight & Maintenance Plan</td>
                             <td><span class="status-badge status-completed">Completed</span></td>
-                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Flight_Plan_010626.xlsx</a></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i>
+                                    Flight_Plan_010626.xlsx</a></td>
                             <td>08/06/2026 11:11</td>
                         </tr>
                         <tr>
@@ -783,7 +872,8 @@
                             <td>25/05/2026 14:30</td>
                             <td>Ground Time Report</td>
                             <td><span class="status-badge status-completed">Completed</span></td>
-                            <td><span class="link-expired"><i class="ri-download-2-line"></i> Ground_Time_250526.xlsx</span></td>
+                            <td><span class="link-expired"><i class="ri-download-2-line"></i>
+                                    Ground_Time_250526.xlsx</span></td>
                             <td>01/06/2026 14:30</td>
                         </tr>
                         <tr>
@@ -791,7 +881,8 @@
                             <td>24/05/2026 16:15</td>
                             <td>Flight & Maintenance Plan</td>
                             <td><span class="status-badge status-completed">Completed</span></td>
-                            <td><span class="link-expired"><i class="ri-download-2-line"></i> Flight_Plan_240526.xlsx</span></td>
+                            <td><span class="link-expired"><i class="ri-download-2-line"></i>
+                                    Flight_Plan_240526.xlsx</span></td>
                             <td>31/05/2026 16:15</td>
                         </tr>
                         <!-- Adding a few more rows to make it look dense like the image -->
@@ -800,7 +891,8 @@
                             <td>24/05/2026 10:00</td>
                             <td>Departure/Arrival Delay Report</td>
                             <td><span class="status-badge status-completed">Completed</span></td>
-                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Delay_Report_240526.xlsx</a></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i>
+                                    Delay_Report_240526.xlsx</a></td>
                             <td>31/05/2026 10:00</td>
                         </tr>
                         <tr>
@@ -808,7 +900,8 @@
                             <td>23/05/2026 08:30</td>
                             <td>Flight & Maintenance Plan</td>
                             <td><span class="status-badge status-completed">Completed</span></td>
-                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Flight_Plan_230526.xlsx</a></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i>
+                                    Flight_Plan_230526.xlsx</a></td>
                             <td>30/05/2026 08:30</td>
                         </tr>
                         <tr>
@@ -816,7 +909,8 @@
                             <td>22/05/2026 15:45</td>
                             <td>Ground Time Report</td>
                             <td><span class="status-badge status-completed">Completed</span></td>
-                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i> Ground_Time_220526.xlsx</a></td>
+                            <td><a href="#" target="_blank" class="link-active"><i class="ri-download-2-line"></i>
+                                    Ground_Time_220526.xlsx</a></td>
                             <td>29/05/2026 15:45</td>
                         </tr>
                     </tbody>
@@ -853,94 +947,95 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Toggle Filter Panel
-        const toggleBtn = document.getElementById('toggleFilterBtn');
-        const filterPanel = document.getElementById('filterPanel');
-        let filterVisible = true;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toggle Filter Panel
+            const toggleBtn = document.getElementById('toggleFilterBtn');
+            const filterPanel = document.getElementById('filterPanel');
+            let filterVisible = true;
 
-        toggleBtn.addEventListener('click', () => {
-            filterVisible = !filterVisible;
-            filterPanel.style.display = filterVisible ? 'flex' : 'none';
-        });
-
-        // Custom Select Logic
-        const customSelects = document.querySelectorAll('.custom-select');
-
-        customSelects.forEach(select => {
-            const trigger = select.querySelector('.select-trigger');
-            const checkboxes = select.querySelectorAll('input[type="checkbox"]');
-            const selectedValueText = select.querySelector('.selected-value');
-            const originalPlaceholder = selectedValueText.textContent;
-            const searchInput = select.querySelector('.search-box input');
-            const optionsList = select.querySelectorAll('.option');
-
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                customSelects.forEach(otherSelect => {
-                    if (otherSelect !== select) otherSelect.classList.remove('active');
-                });
-                select.classList.toggle('active');
-                if (searchInput && select.classList.contains('active')) searchInput.focus();
+            toggleBtn.addEventListener('click', () => {
+                filterVisible = !filterVisible;
+                filterPanel.style.display = filterVisible ? 'flex' : 'none';
             });
 
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    const term = e.target.value.toLowerCase();
-                    optionsList.forEach(option => {
-                        const text = option.textContent.toLowerCase();
-                        option.style.display = text.includes(term) ? 'flex' : 'none';
+            // Custom Select Logic
+            const customSelects = document.querySelectorAll('.custom-select');
+
+            customSelects.forEach(select => {
+                const trigger = select.querySelector('.select-trigger');
+                const checkboxes = select.querySelectorAll('input[type="checkbox"]');
+                const selectedValueText = select.querySelector('.selected-value');
+                const originalPlaceholder = selectedValueText.textContent;
+                const searchInput = select.querySelector('.search-box input');
+                const optionsList = select.querySelectorAll('.option');
+
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    customSelects.forEach(otherSelect => {
+                        if (otherSelect !== select) otherSelect.classList.remove('active');
+                    });
+                    select.classList.toggle('active');
+                    if (searchInput && select.classList.contains('active')) searchInput.focus();
+                });
+
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        const term = e.target.value.toLowerCase();
+                        optionsList.forEach(option => {
+                            const text = option.textContent.toLowerCase();
+                            option.style.display = text.includes(term) ? 'flex' : 'none';
+                        });
+                    });
+                }
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        if (select.id === 'statusSelect') {
+                            const isAll = checkbox.id === 'statusAll';
+                            if (isAll && checkbox.checked) {
+                                select.querySelectorAll('.status-item').forEach(cb => cb.checked = false);
+                            } else if (!isAll && checkbox.checked) {
+                                const allCb = document.getElementById('statusAll');
+                                if (allCb) allCb.checked = false;
+                            }
+                        }
+                        updateSelectText();
+                    });
+                });
+
+                function updateSelectText() {
+                    const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+                    if (checkedBoxes.length > 0) {
+                        const values = checkedBoxes.map(cb => cb.value);
+                        selectedValueText.textContent = values.join(', ');
+                        selectedValueText.style.color = "var(--text-main)";
+                    } else {
+                        selectedValueText.textContent = originalPlaceholder;
+                        selectedValueText.style.color = "var(--text-muted)";
+                    }
+                }
+            });
+
+            document.addEventListener('click', () => {
+                customSelects.forEach(select => select.classList.remove('active'));
+            });
+
+            // Clear filter
+            const clearFilterBtn = document.getElementById('clearFilterBtn');
+            if (clearFilterBtn) {
+                clearFilterBtn.addEventListener('click', () => {
+                    document.querySelectorAll('.date-range input').forEach(input => input.value = '');
+                    document.querySelectorAll('.custom-select input[type="checkbox"]').forEach(cb => cb.checked = false);
+                    document.querySelectorAll('.custom-select').forEach(select => {
+                        const selectedValueText = select.querySelector('.selected-value');
+                        if (select.id === 'reportNameSelect') selectedValueText.textContent = 'REPORT NAME';
+                        else if (select.id === 'statusSelect') selectedValueText.textContent = 'STATUS';
+                        selectedValueText.style.color = "var(--text-muted)";
                     });
                 });
             }
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', (e) => {
-                    if (select.id === 'statusSelect') {
-                        const isAll = checkbox.id === 'statusAll';
-                        if (isAll && checkbox.checked) {
-                            select.querySelectorAll('.status-item').forEach(cb => cb.checked = false);
-                        } else if (!isAll && checkbox.checked) {
-                            const allCb = document.getElementById('statusAll');
-                            if (allCb) allCb.checked = false;
-                        }
-                    }
-                    updateSelectText();
-                });
-            });
-
-            function updateSelectText() {
-                const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
-                if (checkedBoxes.length > 0) {
-                    const values = checkedBoxes.map(cb => cb.value);
-                    selectedValueText.textContent = values.join(', ');
-                    selectedValueText.style.color = "var(--text-main)";
-                } else {
-                    selectedValueText.textContent = originalPlaceholder;
-                    selectedValueText.style.color = "var(--text-muted)";
-                }
-            }
         });
-
-        document.addEventListener('click', () => {
-            customSelects.forEach(select => select.classList.remove('active'));
-        });
-
-        // Clear filter
-        const clearFilterBtn = document.getElementById('clearFilterBtn');
-        if (clearFilterBtn) {
-            clearFilterBtn.addEventListener('click', () => {
-                document.querySelectorAll('.date-range input').forEach(input => input.value = '');
-                document.querySelectorAll('.custom-select input[type="checkbox"]').forEach(cb => cb.checked = false);
-                document.querySelectorAll('.custom-select').forEach(select => {
-                    const selectedValueText = select.querySelector('.selected-value');
-                    if (select.id === 'reportNameSelect') selectedValueText.textContent = 'REPORT NAME';
-                    else if (select.id === 'statusSelect') selectedValueText.textContent = 'STATUS';
-                    selectedValueText.style.color = "var(--text-muted)";
-                });
-            });
-        }
-    });
     </script>
 </body>
+
 </html>
