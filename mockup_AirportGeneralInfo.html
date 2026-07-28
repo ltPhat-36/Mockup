@@ -766,7 +766,7 @@
             left: 0;
             background: #fff;
             border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             z-index: 1000;
             width: 220px;
             display: flex;
@@ -774,22 +774,28 @@
             overflow: hidden;
             border: 1px solid #eee;
         }
+
         .picker-columns {
             display: flex;
             height: 220px;
         }
+
         .picker-col {
             flex: 1;
             overflow-y: auto;
             border-right: 1px solid #eee;
             padding: 8px 0;
         }
+
         .picker-col:last-child {
             border-right: none;
         }
+
         .picker-col::-webkit-scrollbar {
-            display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+            display: none;
+            /* Hide scrollbar for Chrome, Safari and Opera */
         }
+
         .picker-item {
             padding: 8px;
             text-align: center;
@@ -797,13 +803,16 @@
             font-size: 14px;
             color: #333;
         }
+
         .picker-item:hover {
             background: #f5f5f5;
         }
+
         .picker-item.active {
             background: #1976d2;
             color: #fff;
         }
+
         .picker-actions {
             display: flex;
             justify-content: flex-end;
@@ -811,6 +820,7 @@
             border-top: 1px solid #eee;
             gap: 16px;
         }
+
         .picker-btn {
             background: transparent;
             border: none;
@@ -820,6 +830,7 @@
             cursor: pointer;
             padding: 4px 8px;
         }
+
         .picker-btn:hover {
             background: rgba(25, 118, 210, 0.04);
         }
@@ -904,13 +915,18 @@
                 <input type="text" class="custom-input" placeholder="Search by IATA">
                 <input type="text" class="custom-input" placeholder="Search by Country">
                 <input type="text" class="custom-input" placeholder="Search by Region">
-                <div class="custom-input" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #fff; cursor: pointer;" id="curfewTimeFilterWrapper">
-                    <input type="text" id="curfewTimeFilter" placeholder="Curfew Time" style="border: none; outline: none; background: transparent; padding: 0; color: var(--text-main); font-size: inherit; font-family: inherit; width: 100%; pointer-events: none;" readonly>
+                <div class="custom-input"
+                    style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #fff; cursor: pointer;"
+                    id="curfewTimeFilterWrapper">
+                    <input type="text" id="curfewTimeFilter" placeholder="Curfew Time (UTC)"
+                        style="border: none; outline: none; background: transparent; padding: 0; color: var(--text-main); font-size: inherit; font-family: inherit; width: 100%; pointer-events: none;"
+                        readonly>
                     <i class="ri-time-line" style="color: var(--text-muted);"></i>
-                    
+
                     <!-- Fake MUI Time Picker Dropdown -->
                     <div id="muiTimePicker" class="mui-time-picker" style="display: none; cursor: default;">
-                        <div style="padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 15px; font-weight: 500;">
+                        <div
+                            style="padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 15px; font-weight: 500;">
                             12:00 AM – 12:00 AM
                         </div>
                         <div class="picker-columns">
@@ -1590,7 +1606,7 @@
             muiTimePicker.style.display = 'none';
         });
 
-        if(muiTimePickerNext) {
+        if (muiTimePickerNext) {
             muiTimePickerNext.addEventListener('click', (e) => {
                 e.stopPropagation();
                 muiTimePicker.style.display = 'none';
