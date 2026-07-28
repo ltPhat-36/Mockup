@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         :root {
             --bg-main: #F5F7F9;
@@ -757,6 +758,71 @@
             padding-bottom: 0;
             gap: 6px;
         }
+
+        /* Fake MUI Time Picker Styles */
+        .mui-time-picker {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+        .picker-columns {
+            display: flex;
+            height: 220px;
+        }
+        .picker-col {
+            flex: 1;
+            overflow-y: auto;
+            border-right: 1px solid #eee;
+            padding: 8px 0;
+        }
+        .picker-col:last-child {
+            border-right: none;
+        }
+        .picker-col::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+        }
+        .picker-item {
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+        .picker-item:hover {
+            background: #f5f5f5;
+        }
+        .picker-item.active {
+            background: #1976d2;
+            color: #fff;
+        }
+        .picker-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px;
+            border-top: 1px solid #eee;
+            gap: 16px;
+        }
+        .picker-btn {
+            background: transparent;
+            border: none;
+            color: #1976d2;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .picker-btn:hover {
+            background: rgba(25, 118, 210, 0.04);
+        }
     </style>
 </head>
 
@@ -838,6 +904,55 @@
                 <input type="text" class="custom-input" placeholder="Search by IATA">
                 <input type="text" class="custom-input" placeholder="Search by Country">
                 <input type="text" class="custom-input" placeholder="Search by Region">
+                <div class="custom-input" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #fff; cursor: pointer;" id="curfewTimeFilterWrapper">
+                    <input type="text" id="curfewTimeFilter" placeholder="Curfew Time" style="border: none; outline: none; background: transparent; padding: 0; color: var(--text-main); font-size: inherit; font-family: inherit; width: 100%; pointer-events: none;" readonly>
+                    <i class="ri-time-line" style="color: var(--text-muted);"></i>
+                    
+                    <!-- Fake MUI Time Picker Dropdown -->
+                    <div id="muiTimePicker" class="mui-time-picker" style="display: none; cursor: default;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid #eee; font-size: 15px; font-weight: 500;">
+                            12:00 AM – 12:00 AM
+                        </div>
+                        <div class="picker-columns">
+                            <div class="picker-col">
+                                <div class="picker-item active">12</div>
+                                <div class="picker-item">01</div>
+                                <div class="picker-item">02</div>
+                                <div class="picker-item">03</div>
+                                <div class="picker-item">04</div>
+                                <div class="picker-item">05</div>
+                                <div class="picker-item">06</div>
+                                <div class="picker-item">07</div>
+                                <div class="picker-item">08</div>
+                                <div class="picker-item">09</div>
+                                <div class="picker-item">10</div>
+                                <div class="picker-item">11</div>
+                            </div>
+                            <div class="picker-col">
+                                <div class="picker-item active">00</div>
+                                <div class="picker-item">05</div>
+                                <div class="picker-item">10</div>
+                                <div class="picker-item">15</div>
+                                <div class="picker-item">20</div>
+                                <div class="picker-item">25</div>
+                                <div class="picker-item">30</div>
+                                <div class="picker-item">35</div>
+                                <div class="picker-item">40</div>
+                                <div class="picker-item">45</div>
+                                <div class="picker-item">50</div>
+                                <div class="picker-item">55</div>
+                            </div>
+                            <div class="picker-col">
+                                <div class="picker-item active">AM</div>
+                                <div class="picker-item">PM</div>
+                            </div>
+                        </div>
+                        <div class="picker-actions">
+                            <button type="button" class="picker-btn" id="muiTimePickerCancel">CANCEL</button>
+                            <button type="button" class="picker-btn" id="muiTimePickerNext">NEXT</button>
+                        </div>
+                    </div>
+                </div>
                 <select class="custom-input">
                     <option value="">Maintenance Service</option>
                     <option value="yes">Yes</option>
@@ -1167,11 +1282,15 @@
                     <label style="margin-bottom: 8px; display: block;">Curfew Time (UTC)</label>
                     <div style="display: flex; gap: 24px; width: 100%;">
                         <div style="flex: 1;">
-                            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Start Time</label>
+                            <label
+                                style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Start
+                                Time</label>
                             <input type="time" class="custom-input" style="width: 100%; box-sizing: border-box;">
                         </div>
                         <div style="flex: 1;">
-                            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">End Time</label>
+                            <label
+                                style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">End
+                                Time</label>
                             <input type="time" class="custom-input" style="width: 100%; box-sizing: border-box;">
                         </div>
                     </div>
@@ -1283,7 +1402,7 @@
                 </div>
                 <div class="detail-field" style="grid-column: span 2;">
                     <span class="detail-label" style="margin-bottom: 8px;">Curfew Time (UTC)</span>
-                    
+
                     <div class="view-only" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div>
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Start Time</div>
@@ -1298,11 +1417,13 @@
                     <div class="edit-only" style="display: flex; gap: 24px; width: 100%;">
                         <div style="flex: 1;">
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Start Time</div>
-                            <input type="time" class="custom-input" value="23:00" style="width: 100%; box-sizing: border-box;">
+                            <input type="time" class="custom-input" value="23:00"
+                                style="width: 100%; box-sizing: border-box;">
                         </div>
                         <div style="flex: 1;">
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">End Time</div>
-                            <input type="time" class="custom-input" value="06:00" style="width: 100%; box-sizing: border-box;">
+                            <input type="time" class="custom-input" value="06:00"
+                                style="width: 100%; box-sizing: border-box;">
                         </div>
                     </div>
                 </div>
@@ -1448,6 +1569,40 @@
         // Close Drawer logic
         closeDrawerBtn.addEventListener('click', closeDrawer);
         drawerOverlay.addEventListener('click', closeDrawer);
+
+        // Fake MUI Time Picker Toggle Logic
+        const curfewTimeFilterWrapper = document.getElementById('curfewTimeFilterWrapper');
+        const muiTimePicker = document.getElementById('muiTimePicker');
+        const muiTimePickerCancel = document.getElementById('muiTimePickerCancel');
+        const muiTimePickerNext = document.getElementById('muiTimePickerNext');
+        const curfewTimeFilter = document.getElementById('curfewTimeFilter');
+
+        curfewTimeFilterWrapper.addEventListener('click', (e) => {
+            if (muiTimePicker.style.display === 'none') {
+                muiTimePicker.style.display = 'flex';
+            } else if (!muiTimePicker.contains(e.target)) {
+                muiTimePicker.style.display = 'none';
+            }
+        });
+
+        muiTimePickerCancel.addEventListener('click', (e) => {
+            e.stopPropagation();
+            muiTimePicker.style.display = 'none';
+        });
+
+        if(muiTimePickerNext) {
+            muiTimePickerNext.addEventListener('click', (e) => {
+                e.stopPropagation();
+                muiTimePicker.style.display = 'none';
+                curfewTimeFilter.value = '12:00 AM – 12:00 AM';
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!curfewTimeFilterWrapper.contains(e.target)) {
+                muiTimePicker.style.display = 'none';
+            }
+        });
     </script>
 </body>
 
