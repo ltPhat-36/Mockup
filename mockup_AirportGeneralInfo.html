@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport General Information - Vietnam Airlines</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #F5F7F9;
+            --bg-sidebar: #E8F0F5;
+            --bg-surface: #FFFFFF;
+
+            --border-color: #E2E8F0;
+            --border-light: #F1F5F9;
+
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+
+            --primary-color: #008899;
+            /* Teal accent */
+            --primary-bg: #E6F3F5;
+
+            --orange-color: #F59E0B;
+
+            --font-family: 'Inter', sans-serif;
+            --sidebar-w: 240px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 13px;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: linear-gradient(180deg, #FFFFFF 0%, #D8E5EF 100%);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .logo-container {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 32px;
+        }
+
+        .primary-nav {
+            flex: 1;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .nav-item.active i {
+            color: #fff;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+        }
+
+        .footer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 16px;
+            padding: 0 12px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .user-info .email {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .controls {
+            position: absolute;
+            top: -15px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            background: #fff;
+            border-radius: 12px;
+            padding: 2px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle i {
+            padding: 4px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .theme-toggle i.active {
+            background: #F1F5F9;
+            color: var(--primary-color);
+        }
+
+        .btn-collapse {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-surface);
+            overflow: hidden;
+            border-radius: 12px 0 0 0;
+            margin-top: 12px;
+            box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb {
+            padding: 16px 24px 8px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .breadcrumb span {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tabs-header {
+            display: flex;
+            padding: 0 24px;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: #F8FAFC;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .tab i {
+            color: var(--text-muted);
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        .tab.active i {
+            color: #fff;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            background-color: #F8FAFC;
+        }
+
+        .btn-filter {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-main);
+        }
+
+        .btn-orange {
+            background: var(--orange-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Filter Panel */
+        .filter-panel {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #fff;
+            flex-wrap: wrap;
+        }
+
+        .custom-input {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-size: 13px;
+            height: 36px;
+            outline: none;
+            min-width: 140px;
+        }
+
+        .custom-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Table */
+        .table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 0 24px;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            white-space: nowrap;
+            color: var(--text-main);
+        }
+
+        td.actions {
+            display: flex;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+
+        td.actions i {
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        td.actions i:hover {
+            color: var(--primary-color);
+        }
+
+        tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        /* Pagination Footer */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            background-color: #fff;
+        }
+
+        .total-records {
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-size {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+
+        .page-size select {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 4px 8px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .pages {
+            display: flex;
+            gap: 4px;
+        }
+
+        .page-btn {
+            min-width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .page-btn:hover:not(.active):not(:disabled) {
+            background: #F1F5F9;
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .page-btn:disabled {
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 8px;
+            width: 600px;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--text-main); }
+        
+        .modal-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #F8FAFC;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Drawer Styles */
+        .drawer-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: none;
+            z-index: 999;
+        }
+        .drawer-overlay.active {
+            display: block;
+        }
+        .drawer-panel {
+            position: fixed;
+            top: 0; right: -600px;
+            width: 600px;
+            max-width: 100%;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .drawer-panel.active {
+            right: 0;
+        }
+        .drawer-header {
+            padding: 20px 24px 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .drawer-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .drawer-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #10B981;
+            display: inline-block;
+        }
+        .drawer-tabs {
+            display: flex;
+            gap: 24px;
+        }
+        .drawer-tab {
+            padding-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .drawer-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .drawer-body {
+            padding: 24px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .section-header h3 {
+            font-size: 16px; font-weight: 600;
+        }
+        .drawer-close {
+            background: #F1F5F9; border: none;
+            width: 32px; height: 32px; border-radius: 6px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: var(--text-muted);
+        }
+        .drawer-close:hover { background: #E2E8F0; }
+        .history-btn {
+            background: transparent; border: 1px solid var(--border-color);
+            padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+        }
+        .detail-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .detail-value {
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* Drawer Edit Mode */
+        .edit-only { display: none !important; }
+        .drawer-body.edit-mode .edit-only { display: flex !important; }
+        .drawer-body.edit-mode input.edit-only,
+        .drawer-body.edit-mode select.edit-only { display: block !important; }
+        .drawer-body.edit-mode .view-only { display: none !important; }
+        
+        .drawer-body.edit-mode .detail-field {
+            border-bottom: none;
+            padding-bottom: 0;
+            gap: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div>
+                <div class="logo-container">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="#EAB308">
+                        <path d="M12 2L15 10H22L16 15L18 22L12 18L6 22L8 15L2 10H9L12 2Z"></path>
+                    </svg>
+                    <span style="font-weight: 600; font-size: 16px; color: #008899;">Vietnam Airlines</span>
+                </div>
+                <nav class="primary-nav">
+                    <a href="#" class="nav-item"><i class="ri-user-star-line"></i> Pilot Category</a>
+                    <a href="#" class="nav-item"><i class="ri-user-heart-line"></i> Cabin Crew Category</a>
+                    <a href="#" class="nav-item"><i class="ri-plane-line"></i> Carrier</a>
+                    <a href="#" class="nav-item"><i class="ri-earth-line"></i> Country Category</a>
+                    <a href="#" class="nav-item"><i class="ri-map-pin-line"></i> FIR Category</a>
+                    <a href="#" class="nav-item"><i class="ri-mail-line"></i> Email List</a>
+                    <a href="#" class="nav-item"><i class="ri-box-3-line"></i> ULD Category</a>
+                    <a href="#" class="nav-item"><i class="ri-list-check-2"></i> Danh sách thiết bị</a>
+                    <a href="#" class="nav-item"><i class="ri-route-line"></i> Flight Routes</a>
+                    <a href="#" class="nav-item"><i class="ri-flight-takeoff-line"></i> Flight Fleet</a>
+                    <a href="#" class="nav-item"><i class="ri-settings-4-line"></i> AC Subtype</a>
+                    <a href="#" class="nav-item"><i class="ri-plane-line"></i> Aircraft</a>
+                    <a href="#" class="nav-item active"><i class="ri-building-4-line"></i> Airport</a>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <div class="footer-nav">
+                    <a href="#" class="nav-item"><i class="ri-notification-3-line"></i> Thông báo</a>
+                    <a href="#" class="nav-item"><i class="ri-settings-3-line"></i> Cài đặt</a>
+                </div>
+                <div class="user-profile">
+                    <div class="controls">
+                        <div class="theme-toggle">
+                            <i class="ri-sun-line active"></i>
+                            <i class="ri-moon-line"></i>
+                        </div>
+                    </div>
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Admin">
+                    <div class="user-info">
+                        <span class="name">Admin</span>
+                        <span class="email">admin@viettel.com</span>
+                    </div>
+                    <button class="btn-collapse"><i class="ri-arrow-left-s-line"></i></button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="breadcrumb">
+                Home > <span>Airport</span>
+            </div>
+
+            <div class="tabs-header">
+                <div class="tab active"><i class="ri-building-4-line"></i> Airport General Information</div>
+            </div>
+
+            <div class="action-bar">
+                <button class="btn-filter" id="toggleFilterBtn">
+                    <i class="ri-filter-3-line"></i> Filter <i class="ri-arrow-down-s-line"
+                        style="font-size: 16px; font-weight: 400;"></i>
+                </button>
+                <div class="top-right">
+                    <button class="btn btn-ghost"><i class="ri-refresh-line"></i> Refresh</button>
+                    <button class="btn btn-orange"><i class="ri-file-excel-2-line"></i> Export Excel</button>
+                    <button class="btn btn-primary" id="addNewBtn"><i class="ri-add-line"></i> Add New</button>
+                </div>
+            </div>
+
+            <!-- Filter Panel -->
+            <div class="filter-panel" id="filterPanel">
+                <input type="text" class="custom-input" placeholder="Search by No.">
+                <input type="text" class="custom-input" placeholder="Search by ICAO">
+                <input type="text" class="custom-input" placeholder="Search by IATA">
+                <input type="text" class="custom-input" placeholder="Search by Country">
+                <input type="text" class="custom-input" placeholder="Search by Region">
+                <input type="text" class="custom-input" placeholder="Search by Airport Name">
+                <select class="custom-input">
+                    <option value="">Maintenance Service</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <select class="custom-input">
+                    <option value="">GPU</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <select class="custom-input">
+                    <option value="">GPS</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <select class="custom-input">
+                    <option value="">ASU</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <select class="custom-input">
+                    <option value="">PCA</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+
+                <div class="filter-actions">
+                    <button class="btn btn-primary"><i class="ri-search-line"></i> Search</button>
+                    <button class="btn btn-ghost" id="clearFilterBtn"><i class="ri-loop-left-line"></i> Clear
+                        Filter</button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>ICAO</th>
+                            <th>IATA</th>
+                            <th>Country</th>
+                            <th>Region</th>
+                            <th>Airport Name</th>
+                            <th>Curfew Time (UTC)</th>
+                            <th>Maintenance Service</th>
+                            <th>GPU</th>
+                            <th>GPS</th>
+                            <th>ASU</th>
+                            <th>PCA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>VVNB</td>
+                            <td>HAN</td>
+                            <td>VN</td>
+                            <td>Asia</td>
+                            <td>Noi Bai</td>
+                            <td>23:00 --> 06:00</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>VVTS</td>
+                            <td>SGN</td>
+                            <td>VN</td>
+                            <td>Asia</td>
+                            <td>Tan Son Nhat</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>VVDN</td>
+                            <td>DAD</td>
+                            <td>VN</td>
+                            <td>Asia</td>
+                            <td>Da Nang</td>
+                            <td>00:00 --> 05:00</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>WSSS</td>
+                            <td>SIN</td>
+                            <td>SG</td>
+                            <td>Asia</td>
+                            <td>Changi</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>VHHH</td>
+                            <td>HKG</td>
+                            <td>HK</td>
+                            <td>Asia</td>
+                            <td>Hong Kong Intl</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>RJTT</td>
+                            <td>HND</td>
+                            <td>JP</td>
+                            <td>Asia</td>
+                            <td>Haneda</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>EGLL</td>
+                            <td>LHR</td>
+                            <td>GB</td>
+                            <td>Europe</td>
+                            <td>Heathrow</td>
+                            <td>23:30 --> 06:00</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>LFPG</td>
+                            <td>CDG</td>
+                            <td>FR</td>
+                            <td>Europe</td>
+                            <td>Charles de Gaulle</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>EDDF</td>
+                            <td>FRA</td>
+                            <td>DE</td>
+                            <td>Europe</td>
+                            <td>Frankfurt</td>
+                            <td>23:00 --> 05:00</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>YSSY</td>
+                            <td>SYD</td>
+                            <td>AU</td>
+                            <td>Oceania</td>
+                            <td>Sydney</td>
+                            <td>23:00 --> 06:00</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>YMML</td>
+                            <td>MEL</td>
+                            <td>AU</td>
+                            <td>Oceania</td>
+                            <td>Melbourne</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>KSFO</td>
+                            <td>SFO</td>
+                            <td>US</td>
+                            <td>North America</td>
+                            <td>San Francisco Intl</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>KLAX</td>
+                            <td>LAX</td>
+                            <td>US</td>
+                            <td>North America</td>
+                            <td>Los Angeles Intl</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>KJFK</td>
+                            <td>JFK</td>
+                            <td>US</td>
+                            <td>North America</td>
+                            <td>John F. Kennedy</td>
+                            <td></td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer -->
+            <div class="table-footer">
+                <span class="total-records">Tất cả danh sách: 80</span>
+                <div class="pagination-controls">
+                    <div class="page-size">
+                        Hiển thị
+                        <select>
+                            <option>25 bản ghi</option>
+                            <option>50 bản ghi</option>
+                            <option>100 bản ghi</option>
+                        </select>
+                    </div>
+                    <div class="pages">
+                        <button class="page-btn"><i class="ri-arrow-left-double-line"></i></button>
+                        <button class="page-btn"><i class="ri-arrow-left-s-line"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="ri-arrow-right-s-line"></i></button>
+                        <button class="page-btn"><i class="ri-arrow-right-double-line"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add New Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Airport</h3>
+                <button class="modal-close" id="closeModalBtn"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>ICAO</label>
+                    <input type="text" class="custom-input" placeholder="Enter ICAO">
+                </div>
+                <div class="form-group">
+                    <label>IATA</label>
+                    <input type="text" class="custom-input" placeholder="Enter IATA">
+                </div>
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" class="custom-input" placeholder="Enter Country">
+                </div>
+                <div class="form-group">
+                    <label>Region</label>
+                    <input type="text" class="custom-input" placeholder="Enter Region">
+                </div>
+                <div class="form-group full-width">
+                    <label>Airport Name</label>
+                    <input type="text" class="custom-input" placeholder="Enter Airport Name">
+                </div>
+                <div class="form-group full-width">
+                    <label>Curfew Time (UTC)</label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="time" class="custom-input" style="flex: 1;">
+                        <span>-</span>
+                        <input type="time" class="custom-input" style="flex: 1;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Maintenance Service</label>
+                    <select class="custom-input">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>GPU</label>
+                    <select class="custom-input">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>GPS</label>
+                    <select class="custom-input">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>ASU</label>
+                    <select class="custom-input">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>PCA</label>
+                    <select class="custom-input">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" id="cancelModalBtn">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drawer Overlay -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    
+    <!-- Drawer Panel -->
+    <div class="drawer-panel" id="drawerPanel">
+        <div class="drawer-header">
+            <div class="drawer-title-row">
+                <div class="drawer-title">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h2>Noi Bai International Airport</h2>
+                    </div>
+                    <div style="font-size: 15px; font-weight: 600; color: var(--text-main);">VVNB - HAN</div>
+                </div>
+                <button class="drawer-close" id="closeDrawerBtn"><i class="ri-close-line"></i></button>
+            </div>
+        </div>
+        <div class="drawer-body" id="drawerBody">
+            <div class="section-header">
+                <h3>Details</h3>
+                <div class="view-only">
+                    <button class="btn btn-ghost" id="editDrawerBtn" style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i class="ri-edit-line"></i> Edit</button>
+                </div>
+                <div class="edit-only" style="gap: 12px;">
+                    <button class="btn btn-ghost" id="cancelEditBtn" style="border: 1px solid var(--border-color);">Cancel</button>
+                    <button class="btn btn-primary" id="saveEditBtn">Save</button>
+                </div>
+            </div>
+            
+            <div class="detail-grid">
+                <div class="detail-field">
+                    <span class="detail-label">ICAO Code</span>
+                    <span class="detail-value view-only">VVNB</span>
+                    <input type="text" class="custom-input edit-only" value="VVNB">
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">IATA Code</span>
+                    <span class="detail-value view-only">HAN</span>
+                    <input type="text" class="custom-input edit-only" value="HAN">
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Country</span>
+                    <span class="detail-value view-only">VN</span>
+                    <input type="text" class="custom-input edit-only" value="VN">
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Region</span>
+                    <span class="detail-value view-only">Asia</span>
+                    <input type="text" class="custom-input edit-only" value="Asia">
+                </div>
+                <div class="detail-field" style="grid-column: span 2;">
+                    <span class="detail-label">Airport Name</span>
+                    <span class="detail-value view-only">Noi Bai International Airport</span>
+                    <input type="text" class="custom-input edit-only" value="Noi Bai International Airport">
+                </div>
+                <div class="detail-field" style="grid-column: span 2;">
+                    <span class="detail-label">Curfew Time (UTC)</span>
+                    <span class="detail-value view-only">23:00 - 06:00</span>
+                    <div class="edit-only" style="align-items: center; gap: 8px;">
+                        <input type="time" class="custom-input" style="flex: 1;" value="23:00">
+                        <span>-</span>
+                        <input type="time" class="custom-input" style="flex: 1;" value="06:00">
+                    </div>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Maintenance Service</span>
+                    <span class="detail-value view-only">Yes</span>
+                    <select class="custom-input edit-only">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">GPU</span>
+                    <span class="detail-value view-only">Yes</span>
+                    <select class="custom-input edit-only">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">GPS</span>
+                    <span class="detail-value view-only">Yes</span>
+                    <select class="custom-input edit-only">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">ASU</span>
+                    <span class="detail-value view-only">Yes</span>
+                    <select class="custom-input edit-only">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">PCA</span>
+                    <span class="detail-value view-only">Yes</span>
+                    <select class="custom-input edit-only">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple JS for interaction
+        document.getElementById('toggleFilterBtn').addEventListener('click', function () {
+            const panel = document.getElementById('filterPanel');
+            const icon = this.querySelector('.ri-arrow-down-s-line') || this.querySelector('.ri-arrow-up-s-line');
+
+            if (panel.style.display === 'none') {
+                panel.style.display = 'flex';
+                if (icon) {
+                    icon.classList.remove('ri-arrow-down-s-line');
+                    icon.classList.add('ri-arrow-up-s-line');
+                }
+            } else {
+                panel.style.display = 'none';
+                if (icon) {
+                    icon.classList.remove('ri-arrow-up-s-line');
+                    icon.classList.add('ri-arrow-down-s-line');
+                }
+            }
+        });
+
+        document.getElementById('clearFilterBtn').addEventListener('click', function () {
+            const inputs = document.querySelectorAll('#filterPanel input');
+            inputs.forEach(input => input.value = '');
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('addModal');
+        const openBtn = document.getElementById('addNewBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelModalBtn');
+
+        openBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        const closeModal = () => {
+            modal.classList.remove('active');
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Close when clicking outside content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Drawer Logic
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawerPanel = document.getElementById('drawerPanel');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const tableRows = document.querySelectorAll('tbody tr');
+
+        const openDrawer = () => {
+            drawerOverlay.classList.add('active');
+            drawerPanel.classList.add('active');
+        };
+
+        const closeDrawer = () => {
+            drawerOverlay.classList.remove('active');
+            drawerPanel.classList.remove('active');
+        };
+
+        tableRows.forEach(row => {
+            row.addEventListener('click', (e) => {
+                // Ignore if clicked on action buttons (edit/delete)
+                if (e.target.closest('.actions')) return;
+                openDrawer();
+            });
+            // Add pointer cursor to indicate row is clickable
+            row.style.cursor = 'pointer';
+        });
+
+        // Drawer Edit Mode Logic
+        const editDrawerBtn = document.getElementById('editDrawerBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const drawerBody = document.getElementById('drawerBody');
+
+        editDrawerBtn.addEventListener('click', () => {
+            drawerBody.classList.add('edit-mode');
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            drawerBody.classList.remove('edit-mode');
+        });
+
+        saveEditBtn.addEventListener('click', () => {
+            // Usually you'd save data here
+            drawerBody.classList.remove('edit-mode');
+        });
+
+        // Close Drawer logic
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+    </script>
+</body>
+
+</html>
