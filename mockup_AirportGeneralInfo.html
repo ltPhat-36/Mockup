@@ -491,25 +491,31 @@
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
         }
+
         .modal-overlay.active {
             display: flex;
         }
+
         .modal-content {
             background: #fff;
             border-radius: 8px;
             width: 600px;
             max-width: 90%;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
         }
+
         .modal-header {
             padding: 16px 24px;
             border-bottom: 1px solid var(--border-color);
@@ -517,11 +523,13 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-header h3 {
             font-size: 16px;
             color: var(--text-main);
             font-weight: 600;
         }
+
         .modal-close {
             background: transparent;
             border: none;
@@ -529,31 +537,34 @@
             color: var(--text-muted);
             cursor: pointer;
         }
-        .modal-close:hover { color: var(--text-main); }
-        
+
+        .modal-close:hover {
+            color: var(--text-main);
+        }
+
         .modal-body {
             padding: 24px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
-        
+
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
-        
+
         .form-group.full-width {
             grid-column: span 2;
         }
-        
+
         .form-group label {
             font-size: 12px;
             font-weight: 500;
             color: var(--text-main);
         }
-        
+
         .modal-footer {
             padding: 16px 24px;
             border-top: 1px solid var(--border-color);
@@ -567,30 +578,38 @@
         /* Drawer Styles */
         .drawer-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.3);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
             display: none;
             z-index: 999;
         }
+
         .drawer-overlay.active {
             display: block;
         }
+
         .drawer-panel {
             position: fixed;
-            top: 0; right: -600px;
+            top: 0;
+            right: -600px;
             width: 600px;
             max-width: 100%;
             height: 100vh;
             background: #fff;
-            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             transition: right 0.3s ease;
             display: flex;
             flex-direction: column;
         }
+
         .drawer-panel.active {
             right: 0;
         }
+
         .drawer-header {
             padding: 20px 24px 0 24px;
             display: flex;
@@ -598,26 +617,33 @@
             gap: 16px;
             border-bottom: 1px solid var(--border-color);
         }
+
         .drawer-title-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
         }
+
         .drawer-title h2 {
             font-size: 20px;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 4px;
         }
+
         .status-dot {
-            width: 8px; height: 8px; border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
             background: #10B981;
             display: inline-block;
         }
+
         .drawer-tabs {
             display: flex;
             gap: 24px;
         }
+
         .drawer-tab {
             padding-bottom: 12px;
             font-size: 14px;
@@ -626,35 +652,59 @@
             cursor: pointer;
             border-bottom: 2px solid transparent;
         }
+
         .drawer-tab.active {
             color: var(--primary-color);
             border-bottom-color: var(--primary-color);
         }
+
         .drawer-body {
             padding: 24px;
             flex: 1;
             overflow-y: auto;
         }
+
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
         }
+
         .section-header h3 {
-            font-size: 16px; font-weight: 600;
+            font-size: 16px;
+            font-weight: 600;
         }
+
         .drawer-close {
-            background: #F1F5F9; border: none;
-            width: 32px; height: 32px; border-radius: 6px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 18px; color: var(--text-muted);
+            background: #F1F5F9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-muted);
         }
-        .drawer-close:hover { background: #E2E8F0; }
+
+        .drawer-close:hover {
+            background: #E2E8F0;
+        }
+
         .history-btn {
-            background: transparent; border: 1px solid var(--border-color);
-            padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
             color: var(--text-main);
         }
 
@@ -663,6 +713,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 16px 24px;
         }
+
         .detail-field {
             display: flex;
             flex-direction: column;
@@ -670,11 +721,13 @@
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border-light);
         }
+
         .detail-label {
             font-size: 12px;
             color: var(--text-muted);
             font-weight: 500;
         }
+
         .detail-value {
             font-size: 14px;
             color: var(--text-main);
@@ -682,12 +735,23 @@
         }
 
         /* Drawer Edit Mode */
-        .edit-only { display: none !important; }
-        .drawer-body.edit-mode .edit-only { display: flex !important; }
+        .edit-only {
+            display: none !important;
+        }
+
+        .drawer-body.edit-mode .edit-only {
+            display: flex !important;
+        }
+
         .drawer-body.edit-mode input.edit-only,
-        .drawer-body.edit-mode select.edit-only { display: block !important; }
-        .drawer-body.edit-mode .view-only { display: none !important; }
-        
+        .drawer-body.edit-mode select.edit-only {
+            display: block !important;
+        }
+
+        .drawer-body.edit-mode .view-only {
+            display: none !important;
+        }
+
         .drawer-body.edit-mode .detail-field {
             border-bottom: none;
             padding-bottom: 0;
@@ -769,12 +833,11 @@
 
             <!-- Filter Panel -->
             <div class="filter-panel" id="filterPanel">
-                <input type="text" class="custom-input" placeholder="Search by No.">
+                <input type="text" class="custom-input" placeholder="Search by Airport Code">
                 <input type="text" class="custom-input" placeholder="Search by ICAO">
                 <input type="text" class="custom-input" placeholder="Search by IATA">
                 <input type="text" class="custom-input" placeholder="Search by Country">
                 <input type="text" class="custom-input" placeholder="Search by Region">
-                <input type="text" class="custom-input" placeholder="Search by Airport Name">
                 <select class="custom-input">
                     <option value="">Maintenance Service</option>
                     <option value="yes">Yes</option>
@@ -813,7 +876,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>No.</th>
+                            <th>Airport Code</th>
                             <th>ICAO</th>
                             <th>IATA</th>
                             <th>Country</th>
@@ -829,13 +892,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
+                            <td>ASIA-01</td>
                             <td>VVNB</td>
                             <td>HAN</td>
                             <td>VN</td>
                             <td>Asia</td>
                             <td>Noi Bai</td>
-                            <td>23:00 --> 06:00</td>
+                            <td>11:00 PM --> 06:00 AM</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -843,7 +906,7 @@
                             <td>Yes</td>
                         </tr>
                         <tr>
-                            <td>2</td>
+                            <td>ASIA-02</td>
                             <td>VVTS</td>
                             <td>SGN</td>
                             <td>VN</td>
@@ -857,13 +920,13 @@
                             <td>Yes</td>
                         </tr>
                         <tr>
-                            <td>3</td>
+                            <td>ASIA-03</td>
                             <td>VVDN</td>
                             <td>DAD</td>
                             <td>VN</td>
                             <td>Asia</td>
                             <td>Da Nang</td>
-                            <td>00:00 --> 05:00</td>
+                            <td>11:00 PM --> 06:00 AM</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -872,7 +935,7 @@
 
                         </tr>
                         <tr>
-                            <td>4</td>
+                            <td>ASIA-04</td>
                             <td>WSSS</td>
                             <td>SIN</td>
                             <td>SG</td>
@@ -887,7 +950,7 @@
 
                         </tr>
                         <tr>
-                            <td>5</td>
+                            <td>ASIA-05</td>
                             <td>VHHH</td>
                             <td>HKG</td>
                             <td>HK</td>
@@ -902,7 +965,7 @@
 
                         </tr>
                         <tr>
-                            <td>6</td>
+                            <td>ASIA-06</td>
                             <td>RJTT</td>
                             <td>HND</td>
                             <td>JP</td>
@@ -917,13 +980,13 @@
 
                         </tr>
                         <tr>
-                            <td>7</td>
+                            <td>EUR-01</td>
                             <td>EGLL</td>
                             <td>LHR</td>
                             <td>GB</td>
                             <td>Europe</td>
                             <td>Heathrow</td>
-                            <td>23:30 --> 06:00</td>
+                            <td>11:00 PM --> 06:00 AM</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -932,7 +995,7 @@
 
                         </tr>
                         <tr>
-                            <td>8</td>
+                            <td>EUR-02</td>
                             <td>LFPG</td>
                             <td>CDG</td>
                             <td>FR</td>
@@ -947,13 +1010,13 @@
 
                         </tr>
                         <tr>
-                            <td>9</td>
+                            <td>EUR-03</td>
                             <td>EDDF</td>
                             <td>FRA</td>
                             <td>DE</td>
                             <td>Europe</td>
                             <td>Frankfurt</td>
-                            <td>23:00 --> 05:00</td>
+                            <td>11:00 PM --> 06:00 AM</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -962,13 +1025,13 @@
 
                         </tr>
                         <tr>
-                            <td>10</td>
+                            <td>OCE-01</td>
                             <td>YSSY</td>
                             <td>SYD</td>
                             <td>AU</td>
                             <td>Oceania</td>
                             <td>Sydney</td>
-                            <td>23:00 --> 06:00</td>
+                            <td>11:00 PM --> 06:00 AM</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -977,7 +1040,7 @@
 
                         </tr>
                         <tr>
-                            <td>11</td>
+                            <td>OCE-02</td>
                             <td>YMML</td>
                             <td>MEL</td>
                             <td>AU</td>
@@ -992,7 +1055,7 @@
 
                         </tr>
                         <tr>
-                            <td>12</td>
+                            <td>NA-01</td>
                             <td>KSFO</td>
                             <td>SFO</td>
                             <td>US</td>
@@ -1007,7 +1070,7 @@
 
                         </tr>
                         <tr>
-                            <td>13</td>
+                            <td>NA-02</td>
                             <td>KLAX</td>
                             <td>LAX</td>
                             <td>US</td>
@@ -1022,7 +1085,7 @@
 
                         </tr>
                         <tr>
-                            <td>14</td>
+                            <td>NA-03</td>
                             <td>KJFK</td>
                             <td>JFK</td>
                             <td>US</td>
@@ -1077,6 +1140,10 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label>Airport Code</label>
+                    <input type="text" class="custom-input" placeholder="Enter Airport Code">
+                </div>
+                <div class="form-group">
                     <label>ICAO</label>
                     <input type="text" class="custom-input" placeholder="Enter ICAO">
                 </div>
@@ -1092,16 +1159,21 @@
                     <label>Region</label>
                     <input type="text" class="custom-input" placeholder="Enter Region">
                 </div>
-                <div class="form-group full-width">
+                <div class="form-group">
                     <label>Airport Name</label>
                     <input type="text" class="custom-input" placeholder="Enter Airport Name">
                 </div>
                 <div class="form-group full-width">
-                    <label>Curfew Time (UTC)</label>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <input type="time" class="custom-input" style="flex: 1;">
-                        <span>-</span>
-                        <input type="time" class="custom-input" style="flex: 1;">
+                    <label style="margin-bottom: 8px; display: block;">Curfew Time (UTC)</label>
+                    <div style="display: flex; gap: 24px; width: 100%;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Start Time</label>
+                            <input type="time" class="custom-input" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">End Time</label>
+                            <input type="time" class="custom-input" style="width: 100%; box-sizing: border-box;">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -1149,7 +1221,7 @@
 
     <!-- Drawer Overlay -->
     <div class="drawer-overlay" id="drawerOverlay"></div>
-    
+
     <!-- Drawer Panel -->
     <div class="drawer-panel" id="drawerPanel">
         <div class="drawer-header">
@@ -1167,15 +1239,23 @@
             <div class="section-header">
                 <h3>Details</h3>
                 <div class="view-only">
-                    <button class="btn btn-ghost" id="editDrawerBtn" style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i class="ri-edit-line"></i> Edit</button>
+                    <button class="btn btn-ghost" id="editDrawerBtn"
+                        style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i
+                            class="ri-edit-line"></i> Edit</button>
                 </div>
                 <div class="edit-only" style="gap: 12px;">
-                    <button class="btn btn-ghost" id="cancelEditBtn" style="border: 1px solid var(--border-color);">Cancel</button>
+                    <button class="btn btn-ghost" id="cancelEditBtn"
+                        style="border: 1px solid var(--border-color);">Cancel</button>
                     <button class="btn btn-primary" id="saveEditBtn">Save</button>
                 </div>
             </div>
-            
+
             <div class="detail-grid">
+                <div class="detail-field">
+                    <span class="detail-label">Airport Code</span>
+                    <span class="detail-value view-only">ASIA-01</span>
+                    <input type="text" class="custom-input edit-only" value="ASIA-01">
+                </div>
                 <div class="detail-field">
                     <span class="detail-label">ICAO Code</span>
                     <span class="detail-value view-only">VVNB</span>
@@ -1196,18 +1276,34 @@
                     <span class="detail-value view-only">Asia</span>
                     <input type="text" class="custom-input edit-only" value="Asia">
                 </div>
-                <div class="detail-field" style="grid-column: span 2;">
+                <div class="detail-field">
                     <span class="detail-label">Airport Name</span>
                     <span class="detail-value view-only">Noi Bai International Airport</span>
                     <input type="text" class="custom-input edit-only" value="Noi Bai International Airport">
                 </div>
                 <div class="detail-field" style="grid-column: span 2;">
-                    <span class="detail-label">Curfew Time (UTC)</span>
-                    <span class="detail-value view-only">23:00 - 06:00</span>
-                    <div class="edit-only" style="align-items: center; gap: 8px;">
-                        <input type="time" class="custom-input" style="flex: 1;" value="23:00">
-                        <span>-</span>
-                        <input type="time" class="custom-input" style="flex: 1;" value="06:00">
+                    <span class="detail-label" style="margin-bottom: 8px;">Curfew Time (UTC)</span>
+                    
+                    <div class="view-only" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Start Time</div>
+                            <div class="detail-value">11:00 PM</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">End Time</div>
+                            <div class="detail-value">06:00 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="edit-only" style="display: flex; gap: 24px; width: 100%;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Start Time</div>
+                            <input type="time" class="custom-input" value="23:00" style="width: 100%; box-sizing: border-box;">
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">End Time</div>
+                            <input type="time" class="custom-input" value="06:00" style="width: 100%; box-sizing: border-box;">
+                        </div>
                     </div>
                 </div>
                 <div class="detail-field">
