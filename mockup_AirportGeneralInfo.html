@@ -1321,7 +1321,7 @@
     <div class="modal-overlay" id="addModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Add New Airport</h3>
+                <h3 id="modalTitle">Add New Airport</h3>
                 <button class="modal-close" id="closeModalBtn"><i class="ri-close-line"></i></button>
             </div>
             <div class="modal-body">
@@ -1573,9 +1573,19 @@
         const openBtn = document.getElementById('addNewBtn');
         const closeBtn = document.getElementById('closeModalBtn');
         const cancelBtn = document.getElementById('cancelModalBtn');
+        const modalTitle = document.getElementById('modalTitle');
+
+        const openModal = (mode = 'add') => {
+            if (mode === 'edit') {
+                modalTitle.textContent = 'Edit Airport';
+            } else {
+                modalTitle.textContent = 'Add New Airport';
+            }
+            modal.classList.add('active');
+        };
 
         openBtn.addEventListener('click', () => {
-            modal.classList.add('active');
+            openModal('add');
         });
 
         const closeModal = () => {
@@ -1634,7 +1644,7 @@
             if (pencilIcon) {
                 pencilIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    openDrawer('edit');
+                    openModal('edit');
                 });
             }
         });
