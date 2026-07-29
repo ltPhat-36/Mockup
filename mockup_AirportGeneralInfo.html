@@ -731,10 +731,12 @@
 
         .detail-field {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
-            padding-bottom: 12px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
             border-bottom: 1px solid var(--border-light);
+            gap: 16px;
         }
 
         .detail-label {
@@ -768,12 +770,24 @@
         }
 
         .drawer-body.edit-mode .detail-field {
-            border-bottom: none;
-            padding-bottom: 0;
-            gap: 6px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+            gap: 16px;
         }
 
-    </style>
+    
+        .detail-value-align {}
+        .detail-field .detail-label { flex: 1; }
+        .detail-field .detail-value, .detail-field .edit-only { flex: 1; text-align: right; }
+        .drawer-section { margin-bottom: 24px; }
+        .section-title { font-size: 13px; font-weight: 700; color: var(--primary-color); text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border-light); letter-spacing: 0.5px; }
+        .detail-column { display: flex; flex-direction: column; gap: 0; }
+        .drawer-body.edit-mode .detail-field { padding: 8px 0; border-bottom: 1px dashed var(--border-light); }
+</style>
 </head>
 <body>
 <div class="app-container">
@@ -843,7 +857,6 @@
 </div>
 <!-- Filter Panel -->
 <div class="filter-panel" id="filterPanel">
-
 <input class="custom-input" placeholder="Search by ICAO" type="text"/>
 <input class="custom-input" placeholder="Search by IATA" type="text"/>
 <input class="custom-input" placeholder="Search by Country" type="text"/>
@@ -889,7 +902,6 @@
 <table>
 <thead>
 <tr>
-
 <th>ICAO</th>
 <th>IATA</th>
 <th>Country</th>
@@ -905,7 +917,6 @@
 </tr>
 </thead>
 <tbody><tr>
-
 <td>EDDF</td>
 <td>FRA</td>
 <td>DE</td>
@@ -923,7 +934,6 @@
 </td>
 </tr>
 <tr>
-
 <td>EGLL</td>
 <td>LHR</td>
 <td>GB</td>
@@ -941,7 +951,6 @@
 </td>
 </tr>
 <tr>
-
 <td>KJFK</td>
 <td>JFK</td>
 <td>US</td>
@@ -959,7 +968,6 @@
 </td>
 </tr>
 <tr>
-
 <td>KLAX</td>
 <td>LAX</td>
 <td>US</td>
@@ -977,7 +985,6 @@
 </td>
 </tr>
 <tr>
-
 <td>KSFO</td>
 <td>SFO</td>
 <td>US</td>
@@ -995,7 +1002,6 @@
 </td>
 </tr>
 <tr>
-
 <td>LFPG</td>
 <td>CDG</td>
 <td>FR</td>
@@ -1013,7 +1019,6 @@
 </td>
 </tr>
 <tr>
-
 <td>RJTT</td>
 <td>HND</td>
 <td>JP</td>
@@ -1031,7 +1036,6 @@
 </td>
 </tr>
 <tr>
-
 <td>VHHH</td>
 <td>HKG</td>
 <td>HK</td>
@@ -1049,7 +1053,6 @@
 </td>
 </tr>
 <tr>
-
 <td>VVDN</td>
 <td>DAD</td>
 <td>VN</td>
@@ -1067,7 +1070,6 @@
 </td>
 </tr>
 <tr>
-
 <td>VVNB</td>
 <td>HAN</td>
 <td>VN</td>
@@ -1085,7 +1087,6 @@
 </td>
 </tr>
 <tr>
-
 <td>VVTS</td>
 <td>SGN</td>
 <td>VN</td>
@@ -1103,7 +1104,6 @@
 </td>
 </tr>
 <tr>
-
 <td>WSSS</td>
 <td>SIN</td>
 <td>SG</td>
@@ -1121,7 +1121,6 @@
 </td>
 </tr>
 <tr>
-
 <td>YMML</td>
 <td>MEL</td>
 <td>AU</td>
@@ -1139,7 +1138,6 @@
 </td>
 </tr>
 <tr>
-
 <td>YSSY</td>
 <td>SYD</td>
 <td>AU</td>
@@ -1194,7 +1192,6 @@
 <button class="modal-close" id="closeModalBtn"><i class="ri-close-line"></i></button>
 </div>
 <div class="modal-body">
-
 <div class="form-group">
 <label>ICAO <span style="color: red;">*</span></label>
 <input class="custom-input" placeholder="Enter ICAO" type="text"/>
@@ -1314,8 +1311,11 @@
 <button class="btn btn-primary" id="saveEditBtn">Save</button>
 </div>
 </div>
-<div class="detail-grid">
 
+<div class="drawer-section">
+<div class="section-title">AIRPORT GENERAL</div>
+<div class="detail-grid">
+<div class="detail-column">
 <div class="detail-field">
 <span class="detail-label">ICAO Code</span>
 <span class="detail-value view-only">VVNB</span>
@@ -1327,6 +1327,13 @@
 <input class="custom-input edit-only" type="text" value="HAN"/>
 </div>
 <div class="detail-field">
+<span class="detail-label">Airport Name</span>
+<span class="detail-value view-only">Noi Bai International Airport</span>
+<input class="custom-input edit-only" type="text" value="Noi Bai International Airport"/>
+</div>
+</div>
+<div class="detail-column">
+<div class="detail-field">
 <span class="detail-label">Country</span>
 <span class="detail-value view-only">VN</span>
 <input class="custom-input edit-only" type="text" value="VN"/>
@@ -1336,12 +1343,14 @@
 <span class="detail-value view-only">Asia</span>
 <input class="custom-input edit-only" type="text" value="Asia"/>
 </div>
-<div class="detail-field">
-<span class="detail-label">Airport Name</span>
-<span class="detail-value view-only">Noi Bai International Airport</span>
-<input class="custom-input edit-only" type="text" value="Noi Bai International Airport"/>
 </div>
-<div class="detail-field" style="grid-column: span 2;">
+</div>
+</div>
+<div class="drawer-section">
+<div class="section-title">CURFEW TIME</div>
+<div class="detail-grid" style="grid-template-columns: 1fr;">
+<div class="detail-column">
+<div class="detail-field" style="grid-column: span 2; flex-direction: column; align-items: stretch;">
 <span class="detail-label" style="margin-bottom: 8px;">Curfew Time (UTC)</span>
 <div class="view-only" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
 <div>
@@ -1370,6 +1379,13 @@
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="drawer-section">
+<div class="section-title">SERVICES</div>
+<div class="detail-grid">
+<div class="detail-column">
 <div class="detail-field">
 <span class="detail-label">Maintenance Service</span>
 <span class="detail-value view-only">Available</span>
@@ -1397,6 +1413,8 @@
 <option value="unknown">Unknown</option>
 </select>
 </div>
+</div>
+<div class="detail-column">
 <div class="detail-field">
 <span class="detail-label">ASU</span>
 <span class="detail-value view-only">Available</span>
@@ -1416,6 +1434,9 @@
 </select>
 </div>
 </div>
+</div>
+</div>
+
 </div>
 </div>
 <script>
@@ -1567,7 +1588,7 @@
             }
 
             const rowData = [
-                vals[0], vals[1], vals[2], vals[3], vals[4],
+                vals[0], vals[1], vals[3], vals[4], vals[2],
                 curfewTime,
                 vals[7], vals[8], vals[9], vals[10], vals[11]
             ];
@@ -1591,3 +1612,4 @@
     </script>
 </body>
 </html>
+
