@@ -576,39 +576,49 @@
             border-radius: 0 0 8px 8px;
         }
 
-        /* Drawer Styles */
+        /* Popup/Modal Styles for Details */
         .drawer-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            display: none;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease-out;
             z-index: 999;
+            backdrop-filter: blur(2px);
         }
 
         .drawer-overlay.active {
-            display: block;
+            opacity: 1;
+            visibility: visible;
         }
 
         .drawer-panel {
             position: fixed;
-            top: 0;
-            right: -600px;
-            width: 600px;
-            max-width: 100%;
-            height: 100vh;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: 650px;
+            max-width: 90%;
+            max-height: 90vh;
             background: #fff;
-            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            transition: right 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease-out;
             display: flex;
             flex-direction: column;
         }
 
         .drawer-panel.active {
-            right: 0;
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .drawer-header {
@@ -1588,9 +1598,14 @@
         const closeDrawerBtn = document.getElementById('closeDrawerBtn');
         const tableRows = document.querySelectorAll('tbody tr');
 
-        const openDrawer = () => {
+        const openDrawer = (mode = 'view') => {
             drawerOverlay.classList.add('active');
             drawerPanel.classList.add('active');
+            if (mode === 'edit') {
+                drawerBody.classList.add('edit-mode');
+            } else {
+                drawerBody.classList.remove('edit-mode');
+            }
         };
 
         const closeDrawer = () => {
@@ -1599,13 +1614,21 @@
         };
 
         tableRows.forEach(row => {
-            row.addEventListener('click', (e) => {
-                // Ignore if clicked on action buttons (edit/delete)
-                if (e.target.closest('.actions')) return;
-                openDrawer();
-            });
-            // Add pointer cursor to indicate row is clickable
-            row.style.cursor = 'pointer';
+            const eyeIcon = row.querySelector('.ri-eye-line');
+            const pencilIcon = row.querySelector('.ri-pencil-line');
+            
+            if (eyeIcon) {
+                eyeIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openDrawer('view');
+                });
+            }
+            if (pencilIcon) {
+                pencilIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openDrawer('edit');
+                });
+            }
         });
 
         // Drawer Edit Mode Logic
