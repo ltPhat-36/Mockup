@@ -1614,6 +1614,14 @@
         };
 
         tableRows.forEach(row => {
+            // Click on row to view details
+            row.addEventListener('click', (e) => {
+                // Let the pencil icon handle its own click
+                if (e.target.closest('.ri-pencil-line')) return;
+                openDrawer('view');
+            });
+            row.style.cursor = 'pointer';
+
             const eyeIcon = row.querySelector('.ri-eye-line');
             const pencilIcon = row.querySelector('.ri-pencil-line');
             
