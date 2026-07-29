@@ -945,7 +945,7 @@
                         </div>
                         <div class="picker-columns">
                             <div class="picker-col">
-                                <div class="picker-item active">12</div>
+                                <div class="picker-item active">00</div>
                                 <div class="picker-item">01</div>
                                 <div class="picker-item">02</div>
                                 <div class="picker-item">03</div>
@@ -957,6 +957,18 @@
                                 <div class="picker-item">09</div>
                                 <div class="picker-item">10</div>
                                 <div class="picker-item">11</div>
+                                <div class="picker-item">12</div>
+                                <div class="picker-item">13</div>
+                                <div class="picker-item">14</div>
+                                <div class="picker-item">15</div>
+                                <div class="picker-item">16</div>
+                                <div class="picker-item">17</div>
+                                <div class="picker-item">18</div>
+                                <div class="picker-item">19</div>
+                                <div class="picker-item">20</div>
+                                <div class="picker-item">21</div>
+                                <div class="picker-item">22</div>
+                                <div class="picker-item">23</div>
                             </div>
                             <div class="picker-col">
                                 <div class="picker-item active">00</div>
@@ -972,10 +984,7 @@
                                 <div class="picker-item">50</div>
                                 <div class="picker-item">55</div>
                             </div>
-                            <div class="picker-col">
-                                <div class="picker-item active">AM</div>
-                                <div class="picker-item">PM</div>
-                            </div>
+                            <!-- Removed AM/PM column -->
                         </div>
                         <div class="picker-actions">
                             <button type="button" class="picker-btn" id="muiTimePickerCancel">CANCEL</button>
@@ -1044,7 +1053,7 @@
                             <td>VN</td>
                             <td>Asia</td>
                             <td>Noi Bai</td>
-                            <td>11:00 PM --> 06:00 AM</td>
+                            <td>23:00 --> 06:00</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -1080,7 +1089,7 @@
                             <td>VN</td>
                             <td>Asia</td>
                             <td>Da Nang</td>
-                            <td>11:00 PM --> 06:00 AM</td>
+                            <td>23:00 --> 06:00</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -1152,7 +1161,7 @@
                             <td>GB</td>
                             <td>Europe</td>
                             <td>Heathrow</td>
-                            <td>11:00 PM --> 06:00 AM</td>
+                            <td>23:00 --> 06:00</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -1188,7 +1197,7 @@
                             <td>DE</td>
                             <td>Europe</td>
                             <td>Frankfurt</td>
-                            <td>11:00 PM --> 06:00 AM</td>
+                            <td>23:00 --> 06:00</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -1206,7 +1215,7 @@
                             <td>AU</td>
                             <td>Oceania</td>
                             <td>Sydney</td>
-                            <td>11:00 PM --> 06:00 AM</td>
+                            <td>23:00 --> 06:00</td>
                             <td>Yes</td>
                             <td>Yes</td>
                             <td>Yes</td>
@@ -1486,11 +1495,11 @@
                     <div class="view-only" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div>
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Start Time</div>
-                            <div class="detail-value">11:00 PM</div>
+                            <div class="detail-value">23:00</div>
                         </div>
                         <div>
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">End Time</div>
-                            <div class="detail-value">06:00 AM</div>
+                            <div class="detail-value">06:00</div>
                         </div>
                     </div>
 
@@ -1597,16 +1606,9 @@
 
                 if (rowData[6] && rowData[6].includes('-->')) {
                     const times = rowData[6].split('-->').map(t => t.trim());
-                    const parseTime = (tstr) => {
-                        let [t, ampm] = tstr.split(' ');
-                        let [h, m] = t.split(':');
-                        if (ampm === 'PM' && h !== '12') h = parseInt(h) + 12;
-                        if (ampm === 'AM' && h === '12') h = '00';
-                        return `${h.toString().padStart(2, '0')}:${m}`;
-                    };
                     try {
-                        modalInputs[6].value = parseTime(times[0]);
-                        modalInputs[7].value = parseTime(times[1]);
+                        modalInputs[6].value = times[0];
+                        modalInputs[7].value = times[1];
                     } catch (e) { }
                 } else {
                     modalInputs[6].value = '';
