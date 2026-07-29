@@ -1219,113 +1219,6 @@
             </div>
         </main>
     </div>
-    <!-- Add New Modal -->
-    <div class="modal-overlay" id="addModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Add New Airport</h3>
-                <button class="modal-close" id="closeModalBtn"><i class="ri-close-line"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>ICAO <span style="color: red;">*</span></label>
-                    <input class="custom-input" placeholder="Enter ICAO" type="text" />
-                </div>
-                <div class="form-group">
-                    <label>IATA <span style="color: red;">*</span></label>
-                    <input class="custom-input" placeholder="Enter IATA" type="text" />
-                </div>
-                <div class="form-group">
-                    <label>Country <span style="color: red;">*</span></label>
-                    <input class="custom-input" placeholder="Enter Country" type="text" />
-                </div>
-                <div class="form-group">
-                    <label>Region <span style="color: red;">*</span></label>
-                    <input class="custom-input" placeholder="Enter Region" type="text" />
-                </div>
-                <div class="form-group">
-                    <label>Airport Name <span style="color: red;">*</span></label>
-                    <input class="custom-input" placeholder="Enter Airport Name" type="text" />
-                </div>
-                <div class="form-group full-width">
-                    <label style="margin-bottom: 8px; display: block;">Curfew Time (UTC)</label>
-                    <div style="display: flex; gap: 24px; width: 100%;">
-                        <div style="flex: 1;">
-                            <label
-                                style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Start
-                                Time</label>
-                            <div style="position: relative;">
-                                <input class="custom-input time-picker" placeholder="HH:mm"
-                                    style="width: 100%; box-sizing: border-box; padding-right: 32px;" type="text" />
-                                <i class="ri-time-line"
-                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <label
-                                style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">End
-                                Time</label>
-                            <div style="position: relative;">
-                                <input class="custom-input time-picker" placeholder="HH:mm"
-                                    style="width: 100%; box-sizing: border-box; padding-right: 32px;" type="text" />
-                                <i class="ri-time-line"
-                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Maintenance Service <span style="color: red;">*</span></label>
-                    <select class="custom-input">
-                        <option disabled="" hidden="" selected="" value="">Select Maintenance Service</option>
-                        <option value="available">Available</option>
-                        <option value="not_available">Not Available</option>
-                        <option value="unknown">Unknown</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>GPU <span style="color: red;">*</span></label>
-                    <select class="custom-input">
-                        <option disabled="" hidden="" selected="" value="">Select GPU</option>
-                        <option value="available">Available</option>
-                        <option value="not_available">Not Available</option>
-                        <option value="unknown">Unknown</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>GPS <span style="color: red;">*</span></label>
-                    <select class="custom-input">
-                        <option disabled="" hidden="" selected="" value="">Select GPS</option>
-                        <option value="available">Available</option>
-                        <option value="not_available">Not Available</option>
-                        <option value="unknown">Unknown</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>ASU <span style="color: red;">*</span></label>
-                    <select class="custom-input">
-                        <option disabled="" hidden="" selected="" value="">Select ASU</option>
-                        <option value="available">Available</option>
-                        <option value="not_available">Not Available</option>
-                        <option value="unknown">Unknown</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>PCA <span style="color: red;">*</span></label>
-                    <select class="custom-input">
-                        <option disabled="" hidden="" selected="" value="">Select PCA</option>
-                        <option value="available">Available</option>
-                        <option value="not_available">Not Available</option>
-                        <option value="unknown">Unknown</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-ghost" id="cancelModalBtn">Cancel</button>
-                <button class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
     <!-- Drawer Overlay -->
     <div class="drawer-overlay" id="drawerOverlay"></div>
     <!-- Drawer Panel -->
@@ -1334,9 +1227,9 @@
             <div class="drawer-title-row">
                 <div class="drawer-title">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <h2>Noi Bai International Airport</h2>
+                        <h2 id="drawerTitle">Noi Bai International Airport</h2>
                     </div>
-                    <div style="font-size: 15px; font-weight: 600; color: var(--text-main);">VVNB - HAN</div>
+                    <div id="drawerSubtitle" style="font-size: 15px; font-weight: 600; color: var(--text-main);">VVNB - HAN</div>
                 </div>
                 <button class="drawer-close" id="closeDrawerBtn"><i class="ri-close-line"></i></button>
             </div>
@@ -1504,79 +1397,85 @@
             inputs.forEach(input => input.value = '');
         });
 
-        // Modal Logic
-        const modal = document.getElementById('addModal');
-        const openBtn = document.getElementById('addNewBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const cancelBtn = document.getElementById('cancelModalBtn');
-        const modalTitle = document.getElementById('modalTitle');
-
-        const openModal = (mode = 'add', rowData = null) => {
-            const modalInputs = modal.querySelectorAll('input, select');
-            if (mode === 'edit' && rowData) {
-                modalTitle.textContent = 'Edit Airport';
-                modalInputs[0].value = rowData[0]; // ICAO
-                modalInputs[1].value = rowData[1]; // IATA
-                modalInputs[2].value = rowData[2]; // Country
-                modalInputs[3].value = rowData[3]; // Region
-                modalInputs[4].value = rowData[4]; // Airport Name
-
-                if (rowData[5] && rowData[5].includes('-->')) {
-                    const times = rowData[5].split('-->').map(t => t.trim());
-                    try {
-                        modalInputs[5].value = times[0];
-                        modalInputs[6].value = times[1];
-                    } catch (e) { }
-                } else {
-                    modalInputs[5].value = '';
-                    modalInputs[6].value = '';
-                }
-
-                modalInputs[7].value = rowData[6].toLowerCase();
-                modalInputs[8].value = rowData[7].toLowerCase();
-                modalInputs[9].value = rowData[8].toLowerCase();
-                modalInputs[10].value = rowData[9].toLowerCase();
-                modalInputs[11].value = rowData[10].toLowerCase();
-            } else {
-                modalTitle.textContent = 'Add New Airport';
-                modalInputs.forEach(input => {
-                    input.value = '';
-                });
-            }
-            modal.classList.add('active');
-        };
-
-        openBtn.addEventListener('click', () => {
-            openModal('add');
-        });
-
-        const closeModal = () => {
-            modal.classList.remove('active');
-        };
-
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-
-        // Close when clicking outside content
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
         // Drawer Logic
         const drawerOverlay = document.getElementById('drawerOverlay');
         const drawerPanel = document.getElementById('drawerPanel');
         const closeDrawerBtn = document.getElementById('closeDrawerBtn');
-        const tableRows = document.querySelectorAll('tbody tr');
+        const drawerBody = document.getElementById('drawerBody');
+        const openBtn = document.getElementById('addNewBtn');
+        const drawerTitle = document.getElementById('drawerTitle');
+        const drawerSubtitle = document.getElementById('drawerSubtitle');
 
-        const openDrawer = (mode = 'view') => {
+        const openDrawer = (mode = 'view', rowData = null) => {
             drawerOverlay.classList.add('active');
             drawerPanel.classList.add('active');
-            if (mode === 'edit') {
+            
+            const inputs = drawerBody.querySelectorAll('input.edit-only, select.edit-only');
+            const viewValues = drawerBody.querySelectorAll('.detail-value');
+            
+            if (mode === 'add') {
                 drawerBody.classList.add('edit-mode');
+                if(drawerTitle) drawerTitle.textContent = 'Add New Airport';
+                if(drawerSubtitle) drawerSubtitle.textContent = '';
+                inputs.forEach(input => input.value = '');
+            } else if (mode === 'edit') {
+                drawerBody.classList.add('edit-mode');
+                if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
+                if (rowData) {
+                    if(drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
+                    // populate inputs
+                    if(inputs.length >= 12) {
+                        inputs[0].value = rowData[0]; // ICAO
+                        inputs[1].value = rowData[1]; // IATA
+                        inputs[2].value = rowData[4]; // Airport Name
+                        inputs[3].value = rowData[2]; // Country
+                        inputs[4].value = rowData[3]; // Region
+                        
+                        if (rowData[5] && rowData[5].includes('-->')) {
+                            const times = rowData[5].split('-->').map(t => t.trim());
+                            inputs[5].value = times[0] || '';
+                            inputs[6].value = times[1] || '';
+                        } else {
+                            inputs[5].value = '';
+                            inputs[6].value = '';
+                        }
+                        
+                        inputs[7].value = (rowData[6] || '').toLowerCase().replace(' ', '_'); // Maintenance
+                        inputs[8].value = (rowData[7] || '').toLowerCase().replace(' ', '_'); // GPU
+                        inputs[9].value = (rowData[8] || '').toLowerCase().replace(' ', '_'); // GPS
+                        inputs[10].value = (rowData[9] || '').toLowerCase().replace(' ', '_'); // ASU
+                        inputs[11].value = (rowData[10] || '').toLowerCase().replace(' ', '_'); // PCA
+                    }
+                }
             } else {
                 drawerBody.classList.remove('edit-mode');
+                if (rowData) {
+                    if(drawerTitle) drawerTitle.textContent = rowData[4];
+                    if(drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
+                    // populate view values
+                    if(viewValues.length >= 12) {
+                        viewValues[0].textContent = rowData[0];
+                        viewValues[1].textContent = rowData[1];
+                        viewValues[2].textContent = rowData[4];
+                        viewValues[3].textContent = rowData[2];
+                        viewValues[4].textContent = rowData[3];
+                        
+                        if (rowData[5] && rowData[5].includes('-->')) {
+                            const times = rowData[5].split('-->').map(t => t.trim());
+                            viewValues[5].textContent = times[0] || '';
+                            viewValues[6].textContent = times[1] || '';
+                        } else {
+                            viewValues[5].textContent = '';
+                            viewValues[6].textContent = '';
+                        }
+                        
+                        viewValues[7].textContent = rowData[6] || '';
+                        viewValues[8].textContent = rowData[7] || '';
+                        viewValues[9].textContent = rowData[8] || '';
+                        viewValues[10].textContent = rowData[9] || '';
+                        viewValues[11].textContent = rowData[10] || '';
+                    }
+                }
             }
         };
 
@@ -1585,12 +1484,19 @@
             drawerPanel.classList.remove('active');
         };
 
+        openBtn.addEventListener('click', () => {
+            openDrawer('add');
+        });
+
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        const tableRows = document.querySelectorAll('tbody tr');
         tableRows.forEach(row => {
-            // Click on row to view details
             row.addEventListener('click', (e) => {
-                // Let the pencil icon handle its own click
                 if (e.target.closest('.ri-pencil-line')) return;
-                openDrawer('view');
+                const tds = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
+                openDrawer('view', tds);
             });
             row.style.cursor = 'pointer';
 
@@ -1600,47 +1506,38 @@
             if (eyeIcon) {
                 eyeIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    openDrawer('view');
+                    const tds = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
+                    openDrawer('view', tds);
                 });
             }
             if (pencilIcon) {
                 pencilIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const tds = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
-                    openModal('edit', tds);
+                    openDrawer('edit', tds);
                 });
             }
         });
 
-        // Drawer Edit Mode Logic
         const editDrawerBtn = document.getElementById('editDrawerBtn');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
         const saveEditBtn = document.getElementById('saveEditBtn');
-        const drawerBody = document.getElementById('drawerBody');
 
         editDrawerBtn.addEventListener('click', () => {
-            const vals = Array.from(drawerBody.querySelectorAll('.detail-value')).map(el => el.textContent.trim());
-
-            let curfewTime = "";
-            if (vals[5] && vals[6]) {
-                curfewTime = `${vals[5]} --> ${vals[6]}`;
-            }
-
-            const rowData = [
-                vals[0], vals[1], vals[3], vals[4], vals[2],
-                curfewTime,
-                vals[7], vals[8], vals[9], vals[10], vals[11]
-            ];
-
-            closeDrawer();
-            openModal('edit', rowData);
+            drawerBody.classList.add('edit-mode');
+            if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
         });
 
-        // Close Drawer logic
-        closeDrawerBtn.addEventListener('click', closeDrawer);
-        drawerOverlay.addEventListener('click', closeDrawer);
+        cancelEditBtn.addEventListener('click', () => {
+            drawerBody.classList.remove('edit-mode');
+        });
+
+        saveEditBtn.addEventListener('click', () => {
+            drawerBody.classList.remove('edit-mode');
+            // update viewValues based on inputs if needed (mockup only)
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
         flatpickr('.time-picker', {
             enableTime: true,
@@ -1649,6 +1546,7 @@
             time_24hr: true
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 
 </html>
