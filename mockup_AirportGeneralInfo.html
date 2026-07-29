@@ -496,25 +496,35 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
         }
 
         .modal-overlay.active {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
 
         .modal-content {
-            background: #fff;
-            border-radius: 8px;
+            position: fixed;
+            top: 0;
+            right: -600px;
             width: 600px;
-            max-width: 90%;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 100%;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
+            transition: right 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active .modal-content {
+            right: 0;
         }
 
         .modal-header {
@@ -548,6 +558,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
+            flex: 1;
+            overflow-y: auto;
         }
 
         .form-group {
@@ -573,10 +585,9 @@
             justify-content: flex-end;
             gap: 12px;
             background: #F8FAFC;
-            border-radius: 0 0 8px 8px;
         }
 
-        /* Popup/Modal Styles for Details */
+        /* Drawer Styles for Details */
         .drawer-overlay {
             position: fixed;
             top: 0;
@@ -586,9 +597,8 @@
             background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.2s ease-out;
+            transition: all 0.3s ease;
             z-index: 999;
-            backdrop-filter: blur(2px);
         }
 
         .drawer-overlay.active {
@@ -598,27 +608,21 @@
 
         .drawer-panel {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
-            width: 650px;
-            max-width: 90%;
-            max-height: 90vh;
+            top: 0;
+            right: -600px;
+            width: 600px;
+            max-width: 100%;
+            height: 100vh;
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s ease-out;
+            transition: right 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
         .drawer-panel.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
+            right: 0;
         }
 
         .drawer-header {
