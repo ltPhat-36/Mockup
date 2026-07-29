@@ -1575,11 +1575,49 @@
         const cancelBtn = document.getElementById('cancelModalBtn');
         const modalTitle = document.getElementById('modalTitle');
 
-        const openModal = (mode = 'add') => {
-            if (mode === 'edit') {
+        const openModal = (mode = 'add', rowData = null) => {
+            const modalInputs = modal.querySelectorAll('input, select');
+            if (mode === 'edit' && rowData) {
                 modalTitle.textContent = 'Edit Airport';
+                modalInputs[0].value = rowData[0]; // Airport Code
+                modalInputs[1].value = rowData[1]; // ICAO
+                modalInputs[2].value = rowData[2]; // IATA
+                modalInputs[3].value = rowData[3]; // Country
+                modalInputs[4].value = rowData[4]; // Region
+                modalInputs[5].value = rowData[5]; // Airport Name
+                
+                if (rowData[6] && rowData[6].includes('-->')) {
+                    const times = rowData[6].split('-->').map(t => t.trim());
+                    const parseTime = (tstr) => {
+                        let [t, ampm] = tstr.split(' ');
+                        let [h, m] = t.split(':');
+                        if (ampm === 'PM' && h !== '12') h = parseInt(h) + 12;
+                        if (ampm === 'AM' && h === '12') h = '00';
+                        return `${h.toString().padStart(2, '0')}:${m}`;
+                    };
+                    try {
+                        modalInputs[6].value = parseTime(times[0]);
+                        modalInputs[7].value = parseTime(times[1]);
+                    } catch(e) {}
+                } else {
+                    modalInputs[6].value = '';
+                    modalInputs[7].value = '';
+                }
+
+                modalInputs[8].value = rowData[7].toLowerCase();
+                modalInputs[9].value = rowData[8].toLowerCase();
+                modalInputs[10].value = rowData[9].toLowerCase();
+                modalInputs[11].value = rowData[10].toLowerCase();
+                modalInputs[12].value = rowData[11].toLowerCase();
             } else {
                 modalTitle.textContent = 'Add New Airport';
+                modalInputs.forEach(input => {
+                    if(input.tagName === 'SELECT') {
+                        input.value = 'yes';
+                    } else {
+                        input.value = '';
+                    }
+                });
             }
             modal.classList.add('active');
         };
@@ -1644,7 +1682,8 @@
             if (pencilIcon) {
                 pencilIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    openModal('edit');
+                    const tds = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
+                    openModal('edit', tds);
                 });
             }
         });
