@@ -1369,6 +1369,7 @@
                 <div class="form-group">
                     <label>Maintenance Service</label>
                     <select class="custom-input">
+                        <option value="" disabled selected hidden>Select Maintenance Service</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -1376,6 +1377,7 @@
                 <div class="form-group">
                     <label>GPU</label>
                     <select class="custom-input">
+                        <option value="" disabled selected hidden>Select GPU</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -1383,6 +1385,7 @@
                 <div class="form-group">
                     <label>GPS</label>
                     <select class="custom-input">
+                        <option value="" disabled selected hidden>Select GPS</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -1390,6 +1393,7 @@
                 <div class="form-group">
                     <label>ASU</label>
                     <select class="custom-input">
+                        <option value="" disabled selected hidden>Select ASU</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -1397,6 +1401,7 @@
                 <div class="form-group">
                     <label>PCA</label>
                     <select class="custom-input">
+                        <option value="" disabled selected hidden>Select PCA</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -1427,7 +1432,7 @@
         </div>
         <div class="drawer-body" id="drawerBody">
             <div class="section-header">
-                <h3>Details</h3>
+                <h3>Details Airport</h3>
                 <div class="view-only">
                     <button class="btn btn-ghost" id="editDrawerBtn"
                         style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i
@@ -1585,7 +1590,7 @@
                 modalInputs[3].value = rowData[3]; // Country
                 modalInputs[4].value = rowData[4]; // Region
                 modalInputs[5].value = rowData[5]; // Airport Name
-                
+
                 if (rowData[6] && rowData[6].includes('-->')) {
                     const times = rowData[6].split('-->').map(t => t.trim());
                     const parseTime = (tstr) => {
@@ -1598,7 +1603,7 @@
                     try {
                         modalInputs[6].value = parseTime(times[0]);
                         modalInputs[7].value = parseTime(times[1]);
-                    } catch(e) {}
+                    } catch (e) { }
                 } else {
                     modalInputs[6].value = '';
                     modalInputs[7].value = '';
@@ -1612,11 +1617,7 @@
             } else {
                 modalTitle.textContent = 'Add New Airport';
                 modalInputs.forEach(input => {
-                    if(input.tagName === 'SELECT') {
-                        input.value = 'yes';
-                    } else {
-                        input.value = '';
-                    }
+                    input.value = '';
                 });
             }
             modal.classList.add('active');
@@ -1672,7 +1673,7 @@
 
             const eyeIcon = row.querySelector('.ri-eye-line');
             const pencilIcon = row.querySelector('.ri-pencil-line');
-            
+
             if (eyeIcon) {
                 eyeIcon.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -1696,12 +1697,12 @@
 
         editDrawerBtn.addEventListener('click', () => {
             const vals = Array.from(drawerBody.querySelectorAll('.detail-value')).map(el => el.textContent.trim());
-            
+
             let curfewTime = "";
             if (vals[6] && vals[7]) {
                 curfewTime = `${vals[6]} --> ${vals[7]}`;
             }
-            
+
             const rowData = [
                 vals[0], vals[1], vals[2], vals[3], vals[4], vals[5],
                 curfewTime,
