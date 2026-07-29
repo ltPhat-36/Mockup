@@ -1695,16 +1695,21 @@
         const drawerBody = document.getElementById('drawerBody');
 
         editDrawerBtn.addEventListener('click', () => {
-            drawerBody.classList.add('edit-mode');
-        });
+            const vals = Array.from(drawerBody.querySelectorAll('.detail-value')).map(el => el.textContent.trim());
+            
+            let curfewTime = "";
+            if (vals[6] && vals[7]) {
+                curfewTime = `${vals[6]} --> ${vals[7]}`;
+            }
+            
+            const rowData = [
+                vals[0], vals[1], vals[2], vals[3], vals[4], vals[5],
+                curfewTime,
+                vals[8], vals[9], vals[10], vals[11], vals[12]
+            ];
 
-        cancelEditBtn.addEventListener('click', () => {
-            drawerBody.classList.remove('edit-mode');
-        });
-
-        saveEditBtn.addEventListener('click', () => {
-            // Usually you'd save data here
-            drawerBody.classList.remove('edit-mode');
+            closeDrawer();
+            openModal('edit', rowData);
         });
 
         // Close Drawer logic
