@@ -1369,13 +1369,13 @@
                             <label
                                 style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Start
                                 Time</label>
-                            <input type="time" class="custom-input" style="width: 100%; box-sizing: border-box;">
+                            <input type="text" class="custom-input time-picker" style="width: 100%; box-sizing: border-box;" placeholder="00:00">
                         </div>
                         <div style="flex: 1;">
                             <label
                                 style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">End
                                 Time</label>
-                            <input type="time" class="custom-input" style="width: 100%; box-sizing: border-box;">
+                            <input type="text" class="custom-input time-picker" style="width: 100%; box-sizing: border-box;" placeholder="00:00">
                         </div>
                     </div>
                 </div>
@@ -1506,12 +1506,12 @@
                     <div class="edit-only" style="display: flex; gap: 24px; width: 100%;">
                         <div style="flex: 1;">
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Start Time</div>
-                            <input type="time" class="custom-input" value="23:00"
+                            <input type="text" class="custom-input time-picker" value="23:00"
                                 style="width: 100%; box-sizing: border-box;">
                         </div>
                         <div style="flex: 1;">
                             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">End Time</div>
-                            <input type="time" class="custom-input" value="06:00"
+                            <input type="text" class="custom-input time-picker" value="06:00"
                                 style="width: 100%; box-sizing: border-box;">
                         </div>
                     </div>
@@ -1757,6 +1757,17 @@
             }
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr('.time-picker', {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        });
+    </script>
 </body>
 
 </html>
+
+
