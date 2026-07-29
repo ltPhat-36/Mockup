@@ -736,9 +736,10 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border-light);
             gap: 16px;
+            box-sizing: border-box;
         }
 
         .detail-label {
@@ -772,13 +773,8 @@
         }
 
         .drawer-body.edit-mode .detail-field {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-light);
-            gap: 16px;
+            padding: 2px 0;
+            border-bottom: 1px dashed var(--border-light);
         }
 
 
@@ -795,7 +791,8 @@
 
         .detail-field .detail-value,
         .detail-field .edit-only {
-            flex: 1;
+            flex: 0 0 180px;
+            width: 180px;
             text-align: left;
         }
 
@@ -821,7 +818,7 @@
         }
 
         .drawer-body.edit-mode .detail-field {
-            padding: 8px 0;
+            padding: 2px 0;
             border-bottom: 1px dashed var(--border-light);
         }
     </style>
@@ -1295,7 +1292,7 @@
                         <div class="detail-field">
                             <span class="detail-label">Start Time</span>
                             <span class="detail-value view-only">23:00</span>
-                            <div class="edit-only" style="position: relative; width: 120px;">
+                            <div class="edit-only" style="position: relative;">
                                 <input class="custom-input time-picker" placeholder="HH:mm"
                                     style="width: 100%; box-sizing: border-box; padding-right: 32px;"
                                     type="text" value="" />
@@ -1308,7 +1305,7 @@
                         <div class="detail-field">
                             <span class="detail-label">End Time</span>
                             <span class="detail-value view-only">06:00</span>
-                            <div class="edit-only" style="position: relative; width: 120px;">
+                            <div class="edit-only" style="position: relative;">
                                 <input class="custom-input time-picker" placeholder="HH:mm"
                                     style="width: 100%; box-sizing: border-box; padding-right: 32px;"
                                     type="text" value="" />
