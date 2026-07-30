@@ -628,11 +628,10 @@
         }
 
         .drawer-header {
-            padding: 20px 24px;
+            padding: 20px 24px 0 24px;
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 16px;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -760,26 +759,26 @@
             display: none !important;
         }
 
-        .drawer-panel.edit-mode .edit-only {
+        .drawer-body.edit-mode .edit-only {
             display: flex !important;
         }
 
-        .drawer-panel.edit-mode input.edit-only,
-        .drawer-panel.edit-mode select.edit-only {
+        .drawer-body.edit-mode input.edit-only,
+        .drawer-body.edit-mode select.edit-only {
             display: block !important;
         }
 
-        .drawer-panel.edit-mode .view-only {
+        .drawer-body.edit-mode .view-only {
             display: none !important;
         }
 
-        .drawer-panel.edit-mode .detail-field {
+        .drawer-body.edit-mode .detail-field {
             padding: 2px 0;
             border-bottom: 1px dashed var(--border-light);
         }
 
 
-        
+
         .detail-field .detail-value {
             padding-left: 12px;
             box-sizing: border-box;
@@ -818,16 +817,16 @@
             gap: 0;
         }
 
-        .drawer-panel.edit-mode .detail-field {
+        .drawer-body.edit-mode .detail-field {
             padding: 2px 0;
             border-bottom: 1px dashed var(--border-light);
         }
-    
-        .drawer-panel.edit-mode .detail-label.mandatory::after {
+
+        .drawer-body.edit-mode .detail-label.mandatory::after {
             content: " *";
             color: red;
         }
-</style>
+    </style>
 </head>
 
 <body>
@@ -942,263 +941,263 @@
             <!-- Table -->
             <div class="table-container">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>ICAO</th>
-                            <th>IATA</th>
-                            <th>Country</th>
-                            <th>Region</th>
-                            <th>Airport Name</th>
-                            <th>Curfew Time (UTC)</th>
-                            <th>Maintenance Service</th>
-                            <th>GPU</th>
-                            <th>GPS</th>
-                            <th>ASU</th>
-                            <th>PCA</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>EDDF</td>
-                            <td>FRA</td>
-                            <td>DE</td>
-                            <td>Europe</td>
-                            <td>Frankfurt</td>
-                            <td>23:00 --&gt; 06:00</td>
-                            <td>Unknown</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Unknown</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>EGLL</td>
-                            <td>LHR</td>
-                            <td>GB</td>
-                            <td>Europe</td>
-                            <td>Heathrow</td>
-                            <td>23:00 --&gt; 06:00</td>
-                            <td>Available</td>
-                            <td>Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>KJFK</td>
-                            <td>JFK</td>
-                            <td>US</td>
-                            <td>North America</td>
-                            <td>John F. Kennedy</td>
-                            <td></td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Not Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>KLAX</td>
-                            <td>LAX</td>
-                            <td>US</td>
-                            <td>North America</td>
-                            <td>Los Angeles Intl</td>
-                            <td></td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>KSFO</td>
-                            <td>SFO</td>
-                            <td>US</td>
-                            <td>North America</td>
-                            <td>San Francisco Intl</td>
-                            <td></td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td>Available</td>
-                            <td>Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>LFPG</td>
-                            <td>CDG</td>
-                            <td>FR</td>
-                            <td>Europe</td>
-                            <td>Charles de Gaulle</td>
-                            <td></td>
-                            <td>Not Available</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Unknown</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>RJTT</td>
-                            <td>HND</td>
-                            <td>JP</td>
-                            <td>Asia</td>
-                            <td>Haneda</td>
-                            <td></td>
-                            <td>Not Available</td>
-                            <td>Available</td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>VHHH</td>
-                            <td>HKG</td>
-                            <td>HK</td>
-                            <td>Asia</td>
-                            <td>Hong Kong Intl</td>
-                            <td></td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Unknown</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>VVDN</td>
-                            <td>DAD</td>
-                            <td>VN</td>
-                            <td>Asia</td>
-                            <td>Da Nang</td>
-                            <td>23:00 --&gt; 06:00</td>
-                            <td>Unknown</td>
-                            <td>Unknown</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>VVNB</td>
-                            <td>HAN</td>
-                            <td>VN</td>
-                            <td>Asia</td>
-                            <td>Noi Bai</td>
-                            <td>23:00 --&gt; 06:00</td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td>Not Available</td>
-                            <td>Unknown</td>
-                            <td>Not Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>VVTS</td>
-                            <td>SGN</td>
-                            <td>VN</td>
-                            <td>Asia</td>
-                            <td>Tan Son Nhat</td>
-                            <td></td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>WSSS</td>
-                            <td>SIN</td>
-                            <td>SG</td>
-                            <td>Asia</td>
-                            <td>Changi</td>
-                            <td></td>
-                            <td>Unknown</td>
-                            <td>Not Available</td>
-                            <td>Not Available</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>YMML</td>
-                            <td>MEL</td>
-                            <td>AU</td>
-                            <td>Oceania</td>
-                            <td>Melbourne</td>
-                            <td></td>
-                            <td>Available</td>
-                            <td>Not Available</td>
-                            <td>Unknown</td>
-                            <td>Available</td>
-                            <td>Unknown</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>YSSY</td>
-                            <td>SYD</td>
-                            <td>AU</td>
-                            <td>Oceania</td>
-                            <td>Sydney</td>
-                            <td>23:00 --&gt; 06:00</td>
-                            <td>Unknown</td>
-                            <td>Not Available</td>
-                            <td>Available</td>
-                            <td>Not Available</td>
-                            <td>Available</td>
-                            <td class="actions">
-                                <i class="ri-eye-line" title="View Details"></i>
-                                <i class="ri-pencil-line" title="Edit"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<thead>
+<tr>
+<th>ICAO</th>
+<th>IATA</th><th>Airport Name</th>
+<th>Country</th>
+<th>Region</th>
+
+<th>Curfew Time (UTC)</th>
+<th>Maintenance Service</th>
+<th>GPU</th>
+<th>GPS</th>
+<th>ASU</th>
+<th>PCA</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EDDF</td>
+<td>FRA</td><td>Frankfurt</td>
+<td>DE</td>
+<td>Europe</td>
+
+<td>23:00 --&gt; 06:00</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>EGLL</td>
+<td>LHR</td><td>Heathrow</td>
+<td>GB</td>
+<td>Europe</td>
+
+<td>23:00 --&gt; 06:00</td>
+<td>Available</td>
+<td>Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>KJFK</td>
+<td>JFK</td><td>John F. Kennedy</td>
+<td>US</td>
+<td>North America</td>
+
+<td></td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Not Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>KLAX</td>
+<td>LAX</td><td>Los Angeles Intl</td>
+<td>US</td>
+<td>North America</td>
+
+<td></td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>KSFO</td>
+<td>SFO</td><td>San Francisco Intl</td>
+<td>US</td>
+<td>North America</td>
+
+<td></td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Available</td>
+<td>Available</td>
+<td>Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>LFPG</td>
+<td>CDG</td><td>Charles de Gaulle</td>
+<td>FR</td>
+<td>Europe</td>
+
+<td></td>
+<td>Not Available</td>
+<td>Unknown</td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>RJTT</td>
+<td>HND</td><td>Haneda</td>
+<td>JP</td>
+<td>Asia</td>
+
+<td></td>
+<td>Not Available</td>
+<td>Available</td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>VHHH</td>
+<td>HKG</td><td>Hong Kong Intl</td>
+<td>HK</td>
+<td>Asia</td>
+
+<td></td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Unknown</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>VVDN</td>
+<td>DAD</td><td>Da Nang</td>
+<td>VN</td>
+<td>Asia</td>
+
+<td>23:00 --&gt; 06:00</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>VVNB</td>
+<td>HAN</td><td>Noi Bai</td>
+<td>VN</td>
+<td>Asia</td>
+
+<td>23:00 --&gt; 06:00</td>
+<td>Available</td>
+<td>Unknown</td>
+<td>Not Available</td>
+<td>Unknown</td>
+<td>Not Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>VVTS</td>
+<td>SGN</td><td>Tan Son Nhat</td>
+<td>VN</td>
+<td>Asia</td>
+
+<td></td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>WSSS</td>
+<td>SIN</td><td>Changi</td>
+<td>SG</td>
+<td>Asia</td>
+
+<td></td>
+<td>Unknown</td>
+<td>Not Available</td>
+<td>Not Available</td>
+<td>Unknown</td>
+<td>Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>YMML</td>
+<td>MEL</td><td>Melbourne</td>
+<td>AU</td>
+<td>Oceania</td>
+
+<td></td>
+<td>Available</td>
+<td>Not Available</td>
+<td>Unknown</td>
+<td>Available</td>
+<td>Unknown</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+<tr>
+<td>YSSY</td>
+<td>SYD</td><td>Sydney</td>
+<td>AU</td>
+<td>Oceania</td>
+
+<td>23:00 --&gt; 06:00</td>
+<td>Unknown</td>
+<td>Not Available</td>
+<td>Available</td>
+<td>Not Available</td>
+<td>Available</td>
+<td class="actions">
+<i class="ri-eye-line" title="View Details"></i>
+<i class="ri-pencil-line" title="Edit"></i>
+</td>
+</tr>
+</tbody>
+</table>
             </div>
             <!-- Footer -->
             <div class="table-footer">
@@ -1232,20 +1231,25 @@
     <!-- Drawer Panel -->
     <div class="drawer-panel" id="drawerPanel">
         <div class="drawer-header">
-            <h2 id="drawerTitle" style="font-size: 18px; margin: 0; color: var(--primary-color);">Airport Details</h2>
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div class="view-only">
-                    <button class="btn btn-ghost" id="editDrawerBtn" style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i class="ri-edit-line"></i> Edit</button>
+            <div class="drawer-title-row">
+                <div class="drawer-title">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h2 id="drawerTitle">Noi Bai International Airport</h2>
+                    </div>
+                    <div id="drawerSubtitle" style="font-size: 15px; font-weight: 600; color: var(--text-main);">VVNB -
+                        HAN</div>
                 </div>
-                <div class="edit-only" style="gap: 12px; display: none;">
-                    <button class="btn btn-ghost" id="cancelEditBtn" style="border: 1px solid var(--border-color);">Cancel</button>
-                    <button class="btn btn-primary" id="saveEditBtn">Save</button>
-                </div>
-                <div style="width: 1px; height: 24px; background-color: var(--border-color);"></div>
-                <button class="drawer-close" id="closeDrawerBtn" style="background: none; border: none; cursor: pointer; font-size: 20px; color: var(--text-light);"><i class="ri-close-line"></i></button>
+                <button class="drawer-close" id="closeDrawerBtn"><i class="ri-close-line"></i></button>
             </div>
         </div>
         <div class="drawer-body" id="drawerBody">
+            <div class="section-header">
+                <h3>Details Airport</h3>
+                <div class="view-only">
+                    <button class="btn btn-ghost" id="editDrawerBtn"
+                        style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i
+                            class="ri-edit-line"></i> Edit</button>
+                </div>
                 <div class="edit-only" style="gap: 12px;">
                     <button class="btn btn-ghost" id="cancelEditBtn"
                         style="border: 1px solid var(--border-color);">Cancel</button>
@@ -1270,7 +1274,8 @@
                         <div class="detail-field">
                             <span class="detail-label mandatory">Airport Name</span>
                             <span class="detail-value view-only">Noi Bai </span>
-                            <input class="custom-input edit-only" type="text" value="Noi Bai International Airport" placeholder="Enter Airport Name" />
+                            <input class="custom-input edit-only" type="text" value="Noi Bai International Airport"
+                                placeholder="Enter Airport Name" />
                         </div>
                     </div>
                     <div class="detail-column">
@@ -1296,8 +1301,8 @@
                             <span class="detail-value view-only">23:00</span>
                             <div class="edit-only" style="position: relative;">
                                 <input class="custom-input time-picker" placeholder="hh:mm"
-                                    style="width: 100%; box-sizing: border-box; padding-right: 32px;"
-                                    type="text" value="" />
+                                    style="width: 100%; box-sizing: border-box; padding-right: 32px;" type="text"
+                                    value="" />
                                 <i class="ri-time-line"
                                     style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
                             </div>
@@ -1309,8 +1314,8 @@
                             <span class="detail-value view-only">06:00</span>
                             <div class="edit-only" style="position: relative;">
                                 <input class="custom-input time-picker" placeholder="hh:mm"
-                                    style="width: 100%; box-sizing: border-box; padding-right: 32px;"
-                                    type="text" value="" />
+                                    style="width: 100%; box-sizing: border-box; padding-right: 32px;" type="text"
+                                    value="" />
                                 <i class="ri-time-line"
                                     style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
                             </div>
@@ -1420,28 +1425,28 @@
             currentMode = mode;
             drawerOverlay.classList.add('active');
             drawerPanel.classList.add('active');
-            
+
             const inputs = drawerBody.querySelectorAll('input.edit-only, select.edit-only');
             const viewValues = drawerBody.querySelectorAll('.detail-value');
-            
+
             if (mode === 'add') {
-                drawerPanel.classList.add('edit-mode');
-                if(drawerTitle) drawerTitle.textContent = 'Add New Airport';
-                if(drawerSubtitle) drawerSubtitle.textContent = '';
+                drawerBody.classList.add('edit-mode');
+                if (drawerTitle) drawerTitle.textContent = 'Add New Airport';
+                if (drawerSubtitle) drawerSubtitle.textContent = '';
                 inputs.forEach(input => input.value = '');
             } else if (mode === 'edit') {
-                drawerPanel.classList.add('edit-mode');
-                if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
+                drawerBody.classList.add('edit-mode');
+                if (drawerTitle) drawerTitle.textContent = 'Edit Airport';
                 if (rowData) {
-                    if(drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
+                    if (drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
                     // populate inputs
-                    if(inputs.length >= 12) {
+                    if (inputs.length >= 12) {
                         inputs[0].value = rowData[0]; // ICAO
                         inputs[1].value = rowData[1]; // IATA
-                        inputs[2].value = rowData[4]; // Airport Name
-                        inputs[3].value = rowData[2]; // Country
-                        inputs[4].value = rowData[3]; // Region
-                        
+                        inputs[2].value = rowData[2]; // Airport Name
+                        inputs[3].value = rowData[3]; // Country
+                        inputs[4].value = rowData[4]; // Region
+
                         if (rowData[5] && rowData[5].includes('-->')) {
                             const times = rowData[5].split('-->').map(t => t.trim());
                             inputs[5].value = times[0] || '';
@@ -1450,7 +1455,7 @@
                             inputs[5].value = '';
                             inputs[6].value = '';
                         }
-                        
+
                         inputs[7].value = (rowData[6] || '').toLowerCase().replace(' ', '_'); // Maintenance
                         inputs[8].value = (rowData[7] || '').toLowerCase().replace(' ', '_'); // GPU
                         inputs[9].value = (rowData[8] || '').toLowerCase().replace(' ', '_'); // GPS
@@ -1459,18 +1464,18 @@
                     }
                 }
             } else {
-                drawerPanel.classList.remove('edit-mode');
+                drawerBody.classList.remove('edit-mode');
                 if (rowData) {
-                    if(drawerTitle) drawerTitle.textContent = rowData[4];
-                    if(drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
+                    if (drawerTitle) drawerTitle.textContent = rowData[2];
+                    if (drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
                     // populate view values
-                    if(viewValues.length >= 12) {
+                    if (viewValues.length >= 12) {
                         viewValues[0].textContent = rowData[0];
                         viewValues[1].textContent = rowData[1];
-                        viewValues[2].textContent = rowData[4];
-                        viewValues[3].textContent = rowData[2];
-                        viewValues[4].textContent = rowData[3];
-                        
+                        viewValues[2].textContent = rowData[2];
+                        viewValues[3].textContent = rowData[3];
+                        viewValues[4].textContent = rowData[4];
+
                         if (rowData[5] && rowData[5].includes('-->')) {
                             const times = rowData[5].split('-->').map(t => t.trim());
                             viewValues[5].textContent = times[0] || '';
@@ -1479,7 +1484,7 @@
                             viewValues[5].textContent = '';
                             viewValues[6].textContent = '';
                         }
-                        
+
                         viewValues[7].textContent = rowData[6] || '';
                         viewValues[8].textContent = rowData[7] || '';
                         viewValues[9].textContent = rowData[8] || '';
@@ -1535,20 +1540,20 @@
         const saveEditBtn = document.getElementById('saveEditBtn');
 
         editDrawerBtn.addEventListener('click', () => {
-            drawerPanel.classList.add('edit-mode');
-            if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
+            drawerBody.classList.add('edit-mode');
+            if (drawerTitle) drawerTitle.textContent = 'Edit Airport';
         });
 
         cancelEditBtn.addEventListener('click', () => {
             if (currentMode === 'add') {
                 closeDrawer();
             } else {
-                drawerPanel.classList.remove('edit-mode');
+                drawerBody.classList.remove('edit-mode');
             }
         });
 
         saveEditBtn.addEventListener('click', () => {
-            drawerPanel.classList.remove('edit-mode');
+            drawerBody.classList.remove('edit-mode');
             // update viewValues based on inputs if needed (mockup only)
         });
     </script>
