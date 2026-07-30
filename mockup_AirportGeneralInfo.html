@@ -628,10 +628,11 @@
         }
 
         .drawer-header {
-            padding: 20px 24px 0 24px;
+            padding: 20px 24px;
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -759,20 +760,20 @@
             display: none !important;
         }
 
-        .drawer-body.edit-mode .edit-only {
+        .drawer-panel.edit-mode .edit-only {
             display: flex !important;
         }
 
-        .drawer-body.edit-mode input.edit-only,
-        .drawer-body.edit-mode select.edit-only {
+        .drawer-panel.edit-mode input.edit-only,
+        .drawer-panel.edit-mode select.edit-only {
             display: block !important;
         }
 
-        .drawer-body.edit-mode .view-only {
+        .drawer-panel.edit-mode .view-only {
             display: none !important;
         }
 
-        .drawer-body.edit-mode .detail-field {
+        .drawer-panel.edit-mode .detail-field {
             padding: 2px 0;
             border-bottom: 1px dashed var(--border-light);
         }
@@ -817,12 +818,12 @@
             gap: 0;
         }
 
-        .drawer-body.edit-mode .detail-field {
+        .drawer-panel.edit-mode .detail-field {
             padding: 2px 0;
             border-bottom: 1px dashed var(--border-light);
         }
     
-        .drawer-body.edit-mode .detail-label.mandatory::after {
+        .drawer-panel.edit-mode .detail-label.mandatory::after {
             content: " *";
             color: red;
         }
@@ -1231,24 +1232,20 @@
     <!-- Drawer Panel -->
     <div class="drawer-panel" id="drawerPanel">
         <div class="drawer-header">
-            <div class="drawer-title-row">
-                <div class="drawer-title">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <h2 id="drawerTitle">Noi Bai International Airport</h2>
-                    </div>
-                    <div id="drawerSubtitle" style="font-size: 15px; font-weight: 600; color: var(--text-main);">VVNB - HAN</div>
+            <h2 id="drawerTitle" style="font-size: 18px; margin: 0; color: var(--primary-color);">Airport Details</h2>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div class="view-only">
+                    <button class="btn btn-ghost" id="editDrawerBtn" style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i class="ri-edit-line"></i> Edit</button>
                 </div>
-                <button class="drawer-close" id="closeDrawerBtn"><i class="ri-close-line"></i></button>
+                <div class="edit-only" style="gap: 12px; display: none;">
+                    <button class="btn btn-ghost" id="cancelEditBtn" style="border: 1px solid var(--border-color);">Cancel</button>
+                    <button class="btn btn-primary" id="saveEditBtn">Save</button>
+                </div>
+                <div style="width: 1px; height: 24px; background-color: var(--border-color);"></div>
+                <button class="drawer-close" id="closeDrawerBtn" style="background: none; border: none; cursor: pointer; font-size: 20px; color: var(--text-light);"><i class="ri-close-line"></i></button>
             </div>
         </div>
         <div class="drawer-body" id="drawerBody">
-            <div class="section-header">
-                <h3>Details Airport</h3>
-                <div class="view-only">
-                    <button class="btn btn-ghost" id="editDrawerBtn"
-                        style="border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 6px; font-weight: 500;"><i
-                            class="ri-edit-line"></i> Edit</button>
-                </div>
                 <div class="edit-only" style="gap: 12px;">
                     <button class="btn btn-ghost" id="cancelEditBtn"
                         style="border: 1px solid var(--border-color);">Cancel</button>
@@ -1428,12 +1425,12 @@
             const viewValues = drawerBody.querySelectorAll('.detail-value');
             
             if (mode === 'add') {
-                drawerBody.classList.add('edit-mode');
+                drawerPanel.classList.add('edit-mode');
                 if(drawerTitle) drawerTitle.textContent = 'Add New Airport';
                 if(drawerSubtitle) drawerSubtitle.textContent = '';
                 inputs.forEach(input => input.value = '');
             } else if (mode === 'edit') {
-                drawerBody.classList.add('edit-mode');
+                drawerPanel.classList.add('edit-mode');
                 if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
                 if (rowData) {
                     if(drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
@@ -1462,7 +1459,7 @@
                     }
                 }
             } else {
-                drawerBody.classList.remove('edit-mode');
+                drawerPanel.classList.remove('edit-mode');
                 if (rowData) {
                     if(drawerTitle) drawerTitle.textContent = rowData[4];
                     if(drawerSubtitle) drawerSubtitle.textContent = rowData[0] + ' - ' + rowData[1];
@@ -1538,7 +1535,7 @@
         const saveEditBtn = document.getElementById('saveEditBtn');
 
         editDrawerBtn.addEventListener('click', () => {
-            drawerBody.classList.add('edit-mode');
+            drawerPanel.classList.add('edit-mode');
             if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
         });
 
@@ -1546,12 +1543,12 @@
             if (currentMode === 'add') {
                 closeDrawer();
             } else {
-                drawerBody.classList.remove('edit-mode');
+                drawerPanel.classList.remove('edit-mode');
             }
         });
 
         saveEditBtn.addEventListener('click', () => {
-            drawerBody.classList.remove('edit-mode');
+            drawerPanel.classList.remove('edit-mode');
             // update viewValues based on inputs if needed (mockup only)
         });
     </script>
