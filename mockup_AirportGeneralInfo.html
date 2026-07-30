@@ -1401,7 +1401,13 @@
 
         document.getElementById('clearFilterBtn').addEventListener('click', function () {
             const inputs = document.querySelectorAll('#filterPanel input');
-            inputs.forEach(input => input.value = '');
+            inputs.forEach(input => {
+                    if (input.tagName === 'SELECT') {
+                        input.value = 'available';
+                    } else {
+                        input.value = '';
+                    }
+                });
         });
 
         // Drawer Logic
@@ -1413,7 +1419,9 @@
         const drawerTitle = document.getElementById('drawerTitle');
         const drawerSubtitle = document.getElementById('drawerSubtitle');
 
+        let currentMode = 'view';
         const openDrawer = (mode = 'view', rowData = null) => {
+            currentMode = mode;
             drawerOverlay.classList.add('active');
             drawerPanel.classList.add('active');
             
@@ -1424,7 +1432,13 @@
                 drawerBody.classList.add('edit-mode');
                 if(drawerTitle) drawerTitle.textContent = 'Add New Airport';
                 if(drawerSubtitle) drawerSubtitle.textContent = '';
-                inputs.forEach(input => input.value = '');
+                inputs.forEach(input => {
+                    if (input.tagName === 'SELECT') {
+                        input.value = 'available';
+                    } else {
+                        input.value = '';
+                    }
+                });
             } else if (mode === 'edit') {
                 drawerBody.classList.add('edit-mode');
                 if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
@@ -1536,7 +1550,11 @@
         });
 
         cancelEditBtn.addEventListener('click', () => {
-            drawerBody.classList.remove('edit-mode');
+            if (currentMode === 'add') {
+                closeDrawer();
+            } else {
+                drawerBody.classList.remove('edit-mode');
+            }
         });
 
         saveEditBtn.addEventListener('click', () => {
