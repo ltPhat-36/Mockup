@@ -1263,29 +1263,29 @@
                         <div class="detail-field">
                             <span class="detail-label mandatory">ICAO Code</span>
                             <span class="detail-value view-only">VVNB</span>
-                            <input class="custom-input edit-only" type="text" value="VVNB" />
+                            <input class="custom-input edit-only" type="text" value="VVNB" placeholder="Enter ICAO" />
                         </div>
                         <div class="detail-field">
                             <span class="detail-label mandatory">IATA Code</span>
                             <span class="detail-value view-only">HAN</span>
-                            <input class="custom-input edit-only" type="text" value="HAN" />
+                            <input class="custom-input edit-only" type="text" value="HAN" placeholder="Enter IATA" />
                         </div>
                         <div class="detail-field">
                             <span class="detail-label mandatory">Airport Name</span>
                             <span class="detail-value view-only">Noi Bai </span>
-                            <input class="custom-input edit-only" type="text" value="Noi Bai International Airport" />
+                            <input class="custom-input edit-only" type="text" value="Noi Bai International Airport" placeholder="Enter Airport Name" />
                         </div>
                     </div>
                     <div class="detail-column">
                         <div class="detail-field">
                             <span class="detail-label mandatory">Country</span>
                             <span class="detail-value view-only">VN</span>
-                            <input class="custom-input edit-only" type="text" value="VN" />
+                            <input class="custom-input edit-only" type="text" value="VN" placeholder="Enter Country" />
                         </div>
                         <div class="detail-field">
                             <span class="detail-label mandatory">Region</span>
                             <span class="detail-value view-only">Asia</span>
-                            <input class="custom-input edit-only" type="text" value="Asia" />
+                            <input class="custom-input edit-only" type="text" value="Asia" placeholder="Enter Region" />
                         </div>
                     </div>
                 </div>
@@ -1298,7 +1298,7 @@
                             <span class="detail-label">Start Time</span>
                             <span class="detail-value view-only">23:00</span>
                             <div class="edit-only" style="position: relative;">
-                                <input class="custom-input time-picker" placeholder="HH:mm"
+                                <input class="custom-input time-picker" placeholder="hh:mm"
                                     style="width: 100%; box-sizing: border-box; padding-right: 32px;"
                                     type="text" value="" />
                                 <i class="ri-time-line"
@@ -1311,7 +1311,7 @@
                             <span class="detail-label">End Time</span>
                             <span class="detail-value view-only">06:00</span>
                             <div class="edit-only" style="position: relative;">
-                                <input class="custom-input time-picker" placeholder="HH:mm"
+                                <input class="custom-input time-picker" placeholder="hh:mm"
                                     style="width: 100%; box-sizing: border-box; padding-right: 32px;"
                                     type="text" value="" />
                                 <i class="ri-time-line"
@@ -1329,6 +1329,7 @@
                             <span class="detail-label mandatory">Maintenance Service</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
+                                <option value="" disabled hidden>Select Availability</option>
                                 <option selected="" value="available">Available</option>
                                 <option value="not_available">Not Available</option>
                                 <option value="unknown">Unknown</option>
@@ -1338,6 +1339,7 @@
                             <span class="detail-label mandatory">GPU</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
+                                <option value="" disabled hidden>Select Availability</option>
                                 <option selected="" value="available">Available</option>
                                 <option value="not_available">Not Available</option>
                                 <option value="unknown">Unknown</option>
@@ -1347,6 +1349,7 @@
                             <span class="detail-label mandatory">GPS</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
+                                <option value="" disabled hidden>Select Availability</option>
                                 <option selected="" value="available">Available</option>
                                 <option value="not_available">Not Available</option>
                                 <option value="unknown">Unknown</option>
@@ -1358,6 +1361,7 @@
                             <span class="detail-label mandatory">ASU</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
+                                <option value="" disabled hidden>Select Availability</option>
                                 <option selected="" value="available">Available</option>
                                 <option value="not_available">Not Available</option>
                                 <option value="unknown">Unknown</option>
@@ -1367,6 +1371,7 @@
                             <span class="detail-label mandatory">PCA</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
+                                <option value="" disabled hidden>Select Availability</option>
                                 <option selected="" value="available">Available</option>
                                 <option value="not_available">Not Available</option>
                                 <option value="unknown">Unknown</option>
@@ -1401,13 +1406,7 @@
 
         document.getElementById('clearFilterBtn').addEventListener('click', function () {
             const inputs = document.querySelectorAll('#filterPanel input');
-            inputs.forEach(input => {
-                    if (input.tagName === 'SELECT') {
-                        input.value = 'available';
-                    } else {
-                        input.value = '';
-                    }
-                });
+            inputs.forEach(input => input.value = '');
         });
 
         // Drawer Logic
@@ -1432,13 +1431,7 @@
                 drawerBody.classList.add('edit-mode');
                 if(drawerTitle) drawerTitle.textContent = 'Add New Airport';
                 if(drawerSubtitle) drawerSubtitle.textContent = '';
-                inputs.forEach(input => {
-                    if (input.tagName === 'SELECT') {
-                        input.value = 'available';
-                    } else {
-                        input.value = '';
-                    }
-                });
+                inputs.forEach(input => input.value = '');
             } else if (mode === 'edit') {
                 drawerBody.classList.add('edit-mode');
                 if(drawerTitle) drawerTitle.textContent = 'Edit Airport';
