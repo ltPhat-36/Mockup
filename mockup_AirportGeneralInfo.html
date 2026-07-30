@@ -821,7 +821,12 @@
             padding: 2px 0;
             border-bottom: 1px dashed var(--border-light);
         }
-    </style>
+    
+        .drawer-body.edit-mode .detail-label.mandatory::after {
+            content: " *";
+            color: red;
+        }
+</style>
 </head>
 
 <body>
@@ -1256,29 +1261,29 @@
                 <div class="detail-grid">
                     <div class="detail-column">
                         <div class="detail-field">
-                            <span class="detail-label">ICAO Code</span>
+                            <span class="detail-label mandatory">ICAO Code</span>
                             <span class="detail-value view-only">VVNB</span>
                             <input class="custom-input edit-only" type="text" value="VVNB" />
                         </div>
                         <div class="detail-field">
-                            <span class="detail-label">IATA Code</span>
+                            <span class="detail-label mandatory">IATA Code</span>
                             <span class="detail-value view-only">HAN</span>
                             <input class="custom-input edit-only" type="text" value="HAN" />
                         </div>
                         <div class="detail-field">
-                            <span class="detail-label">Airport Name</span>
+                            <span class="detail-label mandatory">Airport Name</span>
                             <span class="detail-value view-only">Noi Bai </span>
                             <input class="custom-input edit-only" type="text" value="Noi Bai International Airport" />
                         </div>
                     </div>
                     <div class="detail-column">
                         <div class="detail-field">
-                            <span class="detail-label">Country</span>
+                            <span class="detail-label mandatory">Country</span>
                             <span class="detail-value view-only">VN</span>
                             <input class="custom-input edit-only" type="text" value="VN" />
                         </div>
                         <div class="detail-field">
-                            <span class="detail-label">Region</span>
+                            <span class="detail-label mandatory">Region</span>
                             <span class="detail-value view-only">Asia</span>
                             <input class="custom-input edit-only" type="text" value="Asia" />
                         </div>
@@ -1321,7 +1326,7 @@
                 <div class="detail-grid">
                     <div class="detail-column">
                         <div class="detail-field">
-                            <span class="detail-label">Maintenance Service</span>
+                            <span class="detail-label mandatory">Maintenance Service</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
                                 <option selected="" value="available">Available</option>
@@ -1330,7 +1335,7 @@
                             </select>
                         </div>
                         <div class="detail-field">
-                            <span class="detail-label">GPU</span>
+                            <span class="detail-label mandatory">GPU</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
                                 <option selected="" value="available">Available</option>
@@ -1339,7 +1344,7 @@
                             </select>
                         </div>
                         <div class="detail-field">
-                            <span class="detail-label">GPS</span>
+                            <span class="detail-label mandatory">GPS</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
                                 <option selected="" value="available">Available</option>
@@ -1350,7 +1355,7 @@
                     </div>
                     <div class="detail-column">
                         <div class="detail-field">
-                            <span class="detail-label">ASU</span>
+                            <span class="detail-label mandatory">ASU</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
                                 <option selected="" value="available">Available</option>
@@ -1359,7 +1364,7 @@
                             </select>
                         </div>
                         <div class="detail-field">
-                            <span class="detail-label">PCA</span>
+                            <span class="detail-label mandatory">PCA</span>
                             <span class="detail-value view-only">Available</span>
                             <select class="custom-input edit-only">
                                 <option selected="" value="available">Available</option>
