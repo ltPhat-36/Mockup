@@ -1,0 +1,3040 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TOSS Operations Monitoring - Complete Mockup V2</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg: #06101b;
+            --side: #030a12;
+            --panel: #0b1827;
+            --panel2: #102033;
+            --panel3: #14283c;
+            --line: #263a50;
+            --line2: #1b2d40;
+            --text: #eef6fd;
+            --muted: #8fa5b8;
+            --cyan: #00a9c8;
+            --red: #ff5f68;
+            --amber: #f3aa37;
+            --violet: #a88cff;
+            --green: #27c17e;
+            --input: #15263a;
+            --blue: #4ea1ff
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--text);
+            font: 12px Arial, sans-serif
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+            color: inherit
+        }
+
+        .app {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 176px 1fr
+        }
+
+        .sidebar {
+            background: var(--side);
+            border-right: 1px solid #122134
+        }
+
+        .brand {
+            height: 55px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 800;
+            border-bottom: 1px solid #142236
+        }
+
+        .brand b {
+            color: #f6c400;
+            margin-right: 5px
+        }
+
+        .nav {
+            padding: 8px
+        }
+
+        .nav div {
+            padding: 10px;
+            border-radius: 4px;
+            color: #c8d5e2;
+            font-weight: 700;
+            margin-bottom: 3px
+        }
+
+        .nav .active {
+            background: #07364a;
+            border-left: 3px solid var(--cyan)
+        }
+
+        .main {
+            min-width: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        .top {
+            height: 55px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            padding: 0 14px
+        }
+
+        .module {
+            background: var(--cyan);
+            border: 0;
+            border-radius: 5px;
+            padding: 8px 14px;
+            font-weight: 800
+        }
+
+        .tabs {
+            height: 43px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            gap: 28px;
+            padding-left: 20px
+        }
+
+        .tab {
+            border: 0;
+            background: none;
+            color: var(--muted);
+            font-weight: 800;
+            border-bottom: 3px solid transparent
+        }
+
+        .tab.active {
+            color: #fff;
+            border-bottom-color: var(--cyan)
+        }
+
+        .workspace {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 34% 66%;
+            gap: 10px;
+            padding: 10px
+        }
+
+        .block {
+            min-width: 0;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            display: flex;
+            flex-direction: column
+        }
+
+        .head {
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .head h3 {
+            margin: 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .count {
+            min-width: 22px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            background: #22354b;
+            display: grid;
+            place-items: center;
+            font-size: 10px
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px
+        }
+
+        .btn {
+            height: 31px;
+            padding: 0 11px;
+            border: 1px solid #37506a;
+            background: #16283b;
+            color: #fff;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px
+        }
+
+        .btn i {
+            width: 14px
+        }
+
+        .btn.primary {
+            background: var(--cyan);
+            border-color: var(--cyan)
+        }
+
+        .btn.warn {
+            background: #6b4615;
+            border-color: #9a681c
+        }
+
+        .filters {
+            padding: 9px;
+            border-bottom: 1px solid var(--line);
+            display: grid;
+            grid-template-columns: 1.2fr .85fr .75fr auto auto;
+            gap: 6px
+        }
+
+        .control {
+            height: 30px;
+            border: 1px solid #34495f;
+            background: var(--input);
+            color: #fff;
+            border-radius: 4px;
+            padding: 0 8px;
+            min-width: 0
+        }
+
+        .scroll {
+            flex: 1;
+            min-height: 0;
+            overflow: auto
+        }
+
+        .alert-list {
+            padding: 8px;
+            display: grid;
+            gap: 8px
+        }
+
+        .alert {
+            position: relative;
+            border: 1px solid var(--line2);
+            background: #0e1c2b;
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            cursor: pointer;
+            min-height: 105px
+        }
+
+        .alert:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--amber)
+        }
+
+        .alert.critical:before {
+            background: var(--red)
+        }
+
+        .alert.vip:before {
+            background: var(--violet)
+        }
+
+        .alert-icon {
+            display: grid;
+            place-items: center;
+            border-right: 1px solid var(--line2);
+            margin-left: 4px
+        }
+
+        .alert-icon span {
+            width: 31px;
+            height: 31px;
+            border: 1px solid #405870;
+            border-radius: 8px;
+            display: grid;
+            place-items: center
+        }
+
+        .critical .alert-icon span {
+            color: #ff9299;
+            background: #342029;
+            border-color: #68303a
+        }
+
+        .vip .alert-icon span {
+            color: #cfb9ff;
+            background: #2d2440;
+            border-color: #554574
+        }
+
+        .alert-content {
+            padding: 9px 10px
+        }
+
+        .alert-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px
+        }
+
+        .alert-title {
+            font-weight: 800;
+            line-height: 1.35
+        }
+
+        .level {
+            height: 18px;
+            padding: 0 6px;
+            border-radius: 9px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 800
+        }
+
+        .level.critical {
+            background: #4f222a;
+            color: #ff9ba3
+        }
+
+        .level.high {
+            background: #513918;
+            color: #ffc96b
+        }
+
+        .level.vip {
+            background: #3d2d58;
+            color: #d6c4ff
+        }
+
+        .alert-desc {
+            color: #a9bbcc;
+            margin-top: 5px;
+            line-height: 1.35
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 7px
+        }
+
+        .chip {
+            height: 21px;
+            padding: 0 7px;
+            border: 1px solid #31485f;
+            background: #132337;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            border-radius: 3px
+        }
+
+        .chip i {
+            width: 11px
+        }
+
+        .ago {
+            margin-left: auto;
+            color: #8fa5ba;
+            font-size: 9px;
+            text-align: right
+        }
+
+        .ago strong {
+            display: block;
+            color: #c8d6e4;
+            font-size: 10px
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed
+        }
+
+        .task-table th {
+            height: 34px;
+            background: #091423;
+            text-align: left;
+            padding: 0 7px;
+            border-bottom: 1px solid var(--line);
+            font-size: 10px;
+            white-space: nowrap
+        }
+
+        .task-table td {
+            padding: 9px 7px;
+            border-bottom: 1px solid var(--line2);
+            vertical-align: middle
+        }
+
+        .task-row {
+            cursor: pointer
+        }
+
+        .task-row:hover {
+            background: #112236
+        }
+
+        .task-code {
+            font-weight: 800;
+            color: #8edff0
+        }
+
+        .task-name {
+            font-weight: 800;
+            margin-top: 3px;
+            line-height: 1.3
+        }
+
+        .source-badge {
+            display: inline-flex;
+            height: 18px;
+            padding: 0 7px;
+            align-items: center;
+            gap: 5px;
+            border-radius: 9px;
+            font-size: 9px;
+            font-weight: 800;
+            border: 1px solid transparent;
+            white-space: nowrap
+        }
+
+        .source-badge:before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor
+        }
+
+        .source-badge.source-alert {
+            background: rgba(241, 170, 62, .10);
+            border-color: rgba(241, 170, 62, .35);
+            color: #ffc767
+        }
+
+        .source-badge.manual {
+            background: rgba(83, 167, 255, .10);
+            border-color: rgba(83, 167, 255, .32);
+            color: #70d8eb
+        }
+
+        .impact-tag,
+        .status-tag {
+            display: inline-flex;
+            height: 21px;
+            padding: 0 7px;
+            align-items: center;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 800
+        }
+
+        .impact-delay {
+            background: #47351c;
+            color: #ffc66f
+        }
+
+        .impact-change {
+            background: #203857;
+            color: #80baff
+        }
+
+        .impact-cancel {
+            background: #4b222a;
+            color: #ff9aa1
+        }
+
+        .impact-hold {
+            background: #302a48;
+            color: #c6b4ff
+        }
+
+        .status-open {
+            background: #143a50;
+            color: #65d8eb
+        }
+
+        .status-progress {
+            background: #4b3519;
+            color: #ffc767
+        }
+
+        .status-done {
+            background: #153c2c;
+            color: #72dda6
+        }
+
+        .party-wrap {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .party-pill {
+            padding: 3px 6px;
+            border-radius: 3px;
+            background: #233348;
+            color: #c5d5e4;
+            font-size: 9px;
+            white-space: nowrap
+        }
+
+        .party-more {
+            position: relative;
+            padding: 3px 7px;
+            border-radius: 10px;
+            border: 1px solid #496078;
+            background: #15283b;
+            color: #9fdff0;
+            font-size: 9px;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        .party-pop {
+            position: absolute;
+            right: 0;
+            top: 24px;
+            width: 260px;
+            background: #0d1b2a;
+            border: 1px solid #40546b;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+            padding: 8px;
+            display: none;
+            z-index: 50
+        }
+
+        .party-more.open .party-pop {
+            display: block
+        }
+
+        .pop-title {
+            font-weight: 800;
+            margin-bottom: 6px
+        }
+
+        .pop-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 6px 4px;
+            border-top: 1px solid #1d3044
+        }
+
+        .state.done {
+            color: #72dda6
+        }
+
+        .state.progress {
+            color: #ffc767
+        }
+
+        .state.pending {
+            color: #b8c8d7
+        }
+
+        .progress strong {
+            display: block;
+            font-size: 10px;
+            margin-bottom: 5px
+        }
+
+        .bar {
+            height: 4px;
+            background: #243446;
+            border-radius: 3px;
+            overflow: hidden
+        }
+
+        .bar span {
+            display: block;
+            height: 100%;
+            background: var(--cyan)
+        }
+
+        .more-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #3b4c60;
+            background: #172536;
+            border-radius: 4px;
+            display: grid;
+            place-items: center;
+            cursor: pointer
+        }
+
+        .menu {
+            position: fixed;
+            min-width: 155px;
+            background: #101d2c;
+            border: 1px solid #40536a;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .42);
+            display: none;
+            z-index: 70
+        }
+
+        .menu.open {
+            display: block
+        }
+
+        .menu button {
+            width: 100%;
+            height: 34px;
+            border: 0;
+            background: transparent;
+            text-align: left;
+            padding: 0 11px;
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .menu button:hover {
+            background: #1b2c3f
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .58);
+            opacity: 0;
+            visibility: hidden;
+            transition: .15s;
+            z-index: 20
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .drawer {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 72vw;
+            min-width: 980px;
+            background: #081523;
+            border-left: 1px solid #34495f;
+            transform: translateX(100%);
+            transition: .18s;
+            z-index: 21;
+            display: flex;
+            flex-direction: column
+        }
+
+        .drawer.show {
+            transform: translateX(0)
+        }
+
+        .drawer-head {
+            height: 63px;
+            flex: none;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px
+        }
+
+        .drawer-title {
+            display: flex;
+            gap: 11px;
+            align-items: center
+        }
+
+        .drawer-title h2 {
+            margin: 0;
+            font-size: 17px
+        }
+
+        .drawer-title p {
+            margin: 4px 0 0;
+            color: var(--muted)
+        }
+
+        .hero-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            border: 1px solid #65323b;
+            background: #332029;
+            color: #ff8d95;
+            display: grid;
+            place-items: center
+        }
+
+        .drawer-tools {
+            display: flex;
+            gap: 7px;
+            align-items: center
+        }
+
+        .drawer-body {
+            flex: 1;
+            overflow: auto;
+            padding: 12px
+        }
+
+        .section {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            margin-bottom: 11px
+        }
+
+        .section-title {
+            min-height: 37px;
+            background: #102033;
+            padding: 0 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 800
+        }
+
+        .section-body {
+            padding: 11px
+        }
+
+        .hero {
+            border: 1px solid #5b2d35;
+            background: linear-gradient(90deg, #241923, #101b2a);
+            display: grid;
+            grid-template-columns: 54px 1fr auto;
+            gap: 13px;
+            align-items: center;
+            padding: 14px;
+            margin-bottom: 11px
+        }
+
+        .hero-alert {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #4b2028;
+            border: 1px solid #a63d49;
+            color: #ff858e;
+            display: grid;
+            place-items: center
+        }
+
+        .hero h2 {
+            font-size: 19px;
+            margin: 0
+        }
+
+        .hero p {
+            margin: 7px 0 0;
+            color: #c3d0dc;
+            line-height: 1.55;
+            max-width: 790px
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(120px, 1fr));
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .stat {
+            border-left: 1px solid #33485d;
+            padding-left: 10px
+        }
+
+        .stat label {
+            display: block;
+            color: var(--muted);
+            margin-bottom: 4px
+        }
+
+        .stat strong {
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .stat i {
+            width: 14px;
+            color: #86dceb
+        }
+
+        .flight-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .flight-table th,
+        .flight-table td {
+            border-bottom: 1px solid var(--line2);
+            padding: 8px 7px;
+            text-align: left
+        }
+
+        .flight-table th {
+            font-size: 10px;
+            color: #9fb1c2
+        }
+
+        .route {
+            color: #74c8ff;
+            background: #15365c;
+            padding: 3px 7px;
+            border-radius: 4px;
+            display: inline-flex
+        }
+
+        .pager {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 9px;
+            color: var(--muted)
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 9px
+        }
+
+        .field {
+            min-width: 0
+        }
+
+        .field.full {
+            grid-column: 1/-1
+        }
+
+        .field.span2 {
+            grid-column: span 2
+        }
+
+        .field label {
+            display: block;
+            color: #9fb1c2;
+            margin-bottom: 5px
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            border: 1px solid #385069;
+            background: var(--input);
+            border-radius: 4px;
+            padding: 8px
+        }
+
+        .field textarea {
+            min-height: 68px;
+            resize: vertical
+        }
+
+        .req:after {
+            content: ' *';
+            color: #ff6767
+        }
+
+        .task-form {
+            border: 1px dashed #2f91a8;
+            background: #091725;
+            padding: 11px;
+            margin-top: 11px
+        }
+
+        .task-form.hidden {
+            display: none
+        }
+
+        .party-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            margin: 12px 0 7px
+        }
+
+        .party-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: #21364b;
+            border: 1px solid #294058
+        }
+
+        .party-row {
+            display: grid;
+            grid-template-columns: 18px 130px minmax(0, 1fr);
+            gap: 7px;
+            align-items: center;
+            background: #0e1c2b;
+            padding: 7px;
+            min-height: 42px
+        }
+
+        .party-row.selected {
+            background: #103345
+        }
+
+        .party-row input[type=text] {
+            height: 29px;
+            border: 1px solid #385069;
+            background: #15263a;
+            border-radius: 3px;
+            padding: 0 7px;
+            opacity: .45
+        }
+
+        .party-row.selected input[type=text] {
+            opacity: 1
+        }
+
+        .task-foot {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 10px
+        }
+
+        .criteria-toolbar {
+            display: grid;
+            grid-template-columns: 1.3fr .8fr auto;
+            gap: 8px;
+            margin-bottom: 9px
+        }
+
+        .criteria-list {
+            display: grid;
+            gap: 7px
+        }
+
+        .criterion {
+            display: grid;
+            grid-template-columns: 165px 140px minmax(0, 1fr) 30px;
+            gap: 7px;
+            align-items: center
+        }
+
+        .criterion .control {
+            width: 100%
+        }
+
+        .remove {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #40536a;
+            background: #172536;
+            border-radius: 4px;
+            cursor: pointer
+        }
+
+        .logic-banner {
+            padding: 9px 10px;
+            border-left: 3px solid var(--cyan);
+            background: #10243a;
+            color: #b9cad9;
+            line-height: 1.45;
+            margin-top: 8px
+        }
+
+        .result-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px
+        }
+
+        .search {
+            width: 230px
+        }
+
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 11px
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 13px 20px
+        }
+
+        .kv label {
+            display: block;
+            color: var(--muted);
+            margin-bottom: 5px
+        }
+
+        .kv strong {
+            display: block
+        }
+
+        .role-banner {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            padding: 9px 10px;
+            background: #10243a;
+            border: 1px solid #27506c;
+            margin-bottom: 10px
+        }
+
+        .handler-list {
+            display: grid;
+            gap: 8px
+        }
+
+        .handler {
+            display: grid;
+            grid-template-columns: 34px 1fr auto;
+            gap: 10px;
+            align-items: center;
+            border: 1px solid var(--line2);
+            background: #0e1c2b;
+            padding: 10px;
+            border-left: 3px solid #6c7f93
+        }
+
+        .handler.done {
+            border-left-color: var(--green)
+        }
+
+        .handler.progress {
+            border-left-color: var(--amber)
+        }
+
+        .handler-step {
+            width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #192a3c;
+            font-weight: 800
+        }
+
+        .handler.done .handler-step {
+            background: #153c2c;
+            color: #72dda6
+        }
+
+        .handler.progress .handler-step {
+            background: #4a3518;
+            color: #ffc767
+        }
+
+        .handler-name {
+            font-weight: 800
+        }
+
+        .handler-assignee {
+            margin-top: 3px
+        }
+
+        .handler-meta {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 10px
+        }
+
+        .handler-actions {
+            position: relative
+        }
+
+        .handler-menu {
+            position: absolute;
+            right: 0;
+            top: 34px;
+            min-width: 150px;
+            background: #101d2c;
+            border: 1px solid #40536a;
+            display: none;
+            z-index: 20
+        }
+
+        .handler-actions.open .handler-menu {
+            display: block
+        }
+
+        .handler-menu button {
+            width: 100%;
+            height: 31px;
+            border: 0;
+            background: transparent;
+            text-align: left;
+            padding: 0 9px
+        }
+
+        .notes-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px
+        }
+
+        .notes-tabs button {
+            height: 29px;
+            border: 1px solid #3a5067;
+            background: #122338;
+            border-radius: 3px
+        }
+
+        .notes-tabs button.active {
+            background: #1b4660
+        }
+
+        .note-groups {
+            display: grid;
+            gap: 8px
+        }
+
+        .note-group {
+            border: 1px solid var(--line2);
+            background: #0d1a29
+        }
+
+        .note-group-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 10px;
+            background: #102033;
+            cursor: pointer
+        }
+
+        .note-group-body {
+            padding: 9px 10px;
+            display: none
+        }
+
+        .note-group.open .note-group-body {
+            display: block
+        }
+
+        .activity {
+            border-left: 1px solid #36516d;
+            margin-left: 6px;
+            padding-left: 15px
+        }
+
+        .activity-item {
+            position: relative;
+            padding-bottom: 11px
+        }
+
+        .activity-item:before {
+            content: "";
+            position: absolute;
+            left: -19px;
+            top: 3px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan)
+        }
+
+        .activity-time {
+            font-size: 10px;
+            color: #8fa5ba;
+            margin-bottom: 4px
+        }
+
+        .toast {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            background: #153a2d;
+            border: 1px solid #2f8b67;
+            padding: 11px 14px;
+            border-radius: 4px;
+            display: none;
+            z-index: 100
+        }
+
+        .toast.show {
+            display: block
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        .rule-box {
+            margin-top: 9px;
+            padding: 9px 10px;
+            background: #10243a;
+            border-left: 3px solid var(--cyan);
+            color: #b7c8d7;
+            line-height: 1.45
+        }
+
+        .handler-menu button {
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .handler-menu button i {
+            width: 14px
+        }
+
+        .notes-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 9px
+        }
+
+        .note-summary {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .note-sub {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 3px
+        }
+
+        .note-badge {
+            min-width: 22px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            background: #20384f;
+            display: grid;
+            place-items: center;
+            font-size: 9px
+        }
+
+        .activity-kind {
+            display: inline-flex;
+            height: 18px;
+            padding: 0 6px;
+            align-items: center;
+            border-radius: 9px;
+            background: #15384b;
+            color: #7dddf0;
+            font-size: 9px;
+            margin-left: 5px
+        }
+
+        .activity-kind.system {
+            background: #293648;
+            color: #b9c6d2
+        }
+
+        .party-label {
+            display: inline-flex;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #1a3550;
+            color: #9edcf0;
+            font-size: 9px;
+            margin-left: 5px
+        }
+
+        .all-activity {
+            padding-top: 2px
+        }
+
+        .note-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .66);
+            z-index: 120;
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .note-modal.show {
+            display: flex
+        }
+
+        .note-modal-box {
+            width: 520px;
+            background: #0c1928;
+            border: 1px solid #40556d;
+            box-shadow: 0 20px 55px rgba(0, 0, 0, .5)
+        }
+
+        .note-modal-head {
+            height: 48px;
+            padding: 0 14px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #112236
+        }
+
+        .note-modal-body {
+            padding: 14px
+        }
+
+        .note-modal-foot {
+            height: 56px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 0 14px
+        }
+
+        .icon-close {
+            width: 30px;
+            height: 30px;
+            border: 0;
+            background: #18283a;
+            border-radius: 4px;
+            display: grid;
+            place-items: center
+        }
+
+        .char-count {
+            text-align: right;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 4px
+        }
+
+        .required:after {
+            content: ' *';
+            color: var(--red)
+        }
+
+        /* SIMPLIFIED MANUAL TASK */
+        .manual-setup {
+            display: grid;
+            grid-template-columns: 1.55fr .65fr .65fr .75fr;
+            gap: 10px
+        }
+
+        .scope-search-card {
+            margin-top: 12px;
+            border: 1px solid #2f455d;
+            background: linear-gradient(180deg, #102033, #0d1b2a);
+            border-radius: 6px;
+            padding: 12px
+        }
+
+        .scope-search-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px
+        }
+
+        .scope-search-head strong {
+            font-size: 13px
+        }
+
+        .scope-search-head span {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .scope-line {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 9px;
+            align-items: end
+        }
+
+        .scope-field label {
+            display: block;
+            color: var(--muted);
+            margin-bottom: 5px
+        }
+
+        .scope-field select,
+        .scope-field input {
+            width: 100%;
+            height: 34px;
+            background: var(--input);
+            border: 1px solid #3b4c60;
+            border-radius: 4px;
+            padding: 0 9px
+        }
+
+        .scope-find {
+            height: 34px;
+            padding: 0 15px;
+            white-space: nowrap
+        }
+
+        .scope-note {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 9px;
+            color: #8fa5ba;
+            font-size: 10px
+        }
+
+        .scope-note i {
+            width: 13px;
+            color: var(--cyan)
+        }
+
+        .result-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px
+        }
+
+        .result-summary .found {
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .result-summary .found i {
+            width: 15px;
+            color: var(--cyan)
+        }
+
+        /* MANUAL TASK UX REFINEMENT */
+        .manual-core .section-body {
+            padding: 14px
+        }
+
+        .manual-setup.refined {
+            grid-template-columns: 1.7fr .75fr .72fr .8fr;
+            gap: 10px;
+            margin-bottom: 12px
+        }
+
+        .readonly-wrap {
+            position: relative
+        }
+
+        .readonly-wrap input {
+            padding-right: 90px
+        }
+
+        .readonly-wrap span {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 9px;
+            color: #7f95a9;
+            background: #14263a;
+            padding: 3px 6px;
+            border-radius: 9px
+        }
+
+        .manual-flight-workspace {
+            display: grid;
+            grid-template-columns: 360px minmax(0, 1fr);
+            gap: 12px
+        }
+
+        .flight-scope-panel,
+        .flight-result-panel {
+            border: 1px solid #2c4259;
+            background: linear-gradient(180deg, #102033, #0c1927);
+            border-radius: 7px;
+            overflow: hidden
+        }
+
+        .workspace-head {
+            min-height: 50px;
+            padding: 10px 12px;
+            background: #12253a;
+            border-bottom: 1px solid #263d53;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .workspace-head strong {
+            font-size: 13px
+        }
+
+        .workspace-head>i {
+            width: 17px;
+            color: #77d9e9
+        }
+
+        .time-window-card {
+            display: grid;
+            grid-template-columns: 1fr 24px 1fr;
+            gap: 7px;
+            align-items: end;
+            margin: 12px;
+            padding: 11px;
+            border: 1px solid #2b455e;
+            background: #0f1d2c;
+            border-radius: 6px
+        }
+
+        .time-arrow {
+            height: 34px;
+            display: grid;
+            place-items: center;
+            color: #6fcfe0
+        }
+
+        .time-arrow i {
+            width: 15px
+        }
+
+        .scope-filter-grid {
+            display: grid;
+            gap: 8px;
+            padding: 0 12px
+        }
+
+        .scope-field label {
+            display: flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .scope-field label i {
+            width: 13px;
+            color: #6fd5e5
+        }
+
+        .active-scope {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding: 11px 12px 8px
+        }
+
+        .active-scope-label {
+            font-size: 9px;
+            color: #7890a5;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-right: 2px
+        }
+
+        .scope-pill {
+            height: 23px;
+            padding: 0 7px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 11px;
+            background: #14364a;
+            border: 1px solid #2c6172;
+            color: #bfeef5;
+            font-size: 9px
+        }
+
+        .scope-pill i {
+            width: 11px
+        }
+
+        .scope-find-wide {
+            width: calc(100% - 24px);
+            height: 36px;
+            margin: 0 12px 12px;
+            justify-content: center
+        }
+
+        .flight-result-panel {
+            min-height: 315px
+        }
+
+        .result-count {
+            height: 23px;
+            padding: 0 8px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            background: #12384a;
+            color: #75dce9;
+            font-size: 9px;
+            font-weight: 800
+        }
+
+        .result-summary.compact {
+            padding: 10px 12px 0;
+            margin: 0
+        }
+
+        .result-empty {
+            min-height: 225px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #8399ad
+        }
+
+        .result-empty strong {
+            color: #c6d4e1
+        }
+
+        .result-empty span {
+            font-size: 10px
+        }
+
+        .empty-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #13283c;
+            border: 1px solid #2c455e;
+            color: #6fd5e5
+        }
+
+        .empty-icon i {
+            width: 19px
+        }
+
+        .flight-result-panel .flight-table {
+            margin-top: 8px
+        }
+
+        .flight-result-panel .flight-table th,
+        .flight-result-panel .flight-table td {
+            padding: 8px 9px
+        }
+
+        .flight-result-panel .pager {
+            padding: 9px 11px
+        }
+
+        .manual-core+.section {
+            margin-top: 12px
+        }
+
+        @media(max-width:1050px) {
+            .manual-flight-workspace {
+                grid-template-columns: 1fr
+            }
+
+            .manual-setup.refined {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .flight-scope-panel {
+                min-height: auto
+            }
+        }
+
+        .result-badges {
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .found-count {
+            background: #103548;
+            color: #73d9ea
+        }
+
+        .included-count {
+            background: #173d2d;
+            color: #7be3a9
+        }
+
+        .flight-select-toolbar {
+            height: 42px;
+            margin: 10px 12px 0;
+            padding: 0 10px;
+            border: 1px solid #2b435a;
+            border-radius: 5px;
+            background: #0e1c2b;
+            display: flex;
+            align-items: center;
+            gap: 16px
+        }
+
+        .select-all-control {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: 700
+        }
+
+        .select-all-control input {
+            accent-color: var(--cyan)
+        }
+
+        .link-btn {
+            border: 0;
+            background: transparent;
+            color: #c5d6e4;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer
+        }
+
+        .link-btn:hover {
+            color: #76dbea
+        }
+
+        .link-btn i {
+            width: 14px
+        }
+
+        .included-table td:first-child,
+        .included-table th:first-child {
+            text-align: center
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 18px
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0
+        }
+
+        .toggle span {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            background: #34465a;
+            cursor: pointer;
+            transition: .16s
+        }
+
+        .toggle span:before {
+            content: "";
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            left: 2px;
+            top: 2px;
+            border-radius: 50%;
+            background: #dce7ef;
+            transition: .16s
+        }
+
+        .toggle input:checked+span {
+            background: #31b85b
+        }
+
+        .toggle input:checked+span:before {
+            transform: translateX(16px);
+            background: #fff
+        }
+
+        .smart-pager {
+            border-top: 1px solid #21364a;
+            margin-top: 0
+        }
+
+        .page-active {
+            display: inline-grid;
+            place-items: center;
+            width: 24px;
+            height: 24px;
+            border: 1px solid #1e8ca7;
+            border-radius: 4px;
+            color: #77e5f2;
+            background: #102c3c
+        }
+
+        .flight-result-panel .route {
+            display: inline-flex;
+            padding: 3px 7px;
+            border-radius: 4px;
+            background: #143152;
+            color: #79c7ff;
+            border: 1px solid #23517b
+        }
+
+        .scope-find-wide {
+            margin-top: 12px
+        }
+
+        /* DAILY NOTES */
+        .workspace {
+            grid-template-rows: auto minmax(0, 1fr)
+        }
+
+        .daily-notes-strip {
+            grid-column: 1/-1;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, #0d1d2d, #0a1725);
+            border-radius: 6px;
+            overflow: hidden
+        }
+
+        .daily-notes-head {
+            height: 40px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .daily-notes-head h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px
+        }
+
+        .daily-notes-head small {
+            color: var(--muted);
+            font-weight: 400
+        }
+
+        .daily-view-all {
+            border: 0;
+            background: transparent;
+            color: #73d7e8;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .daily-note-cards {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            padding: 9px
+        }
+
+        .daily-note-card {
+            position: relative;
+            min-height: 82px;
+            border: 1px solid #2a4057;
+            background: #102033;
+            border-radius: 6px;
+            padding: 10px 11px 9px 48px;
+            cursor: pointer;
+            transition: .15s;
+            overflow: hidden
+        }
+
+        .daily-note-card:hover {
+            transform: translateY(-1px);
+            border-color: #4b6a87;
+            background: #12263a
+        }
+
+        .daily-note-card:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--amber)
+        }
+
+        .daily-note-card.apu:before {
+            background: var(--red)
+        }
+
+        .daily-note-card.weather:before {
+            background: var(--blue)
+        }
+
+        .daily-note-card.vip:before {
+            background: var(--violet)
+        }
+
+        .daily-note-icon {
+            position: absolute;
+            left: 11px;
+            top: 13px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 1px solid #455d75;
+            background: #14283b
+        }
+
+        .daily-note-icon i {
+            width: 15px
+        }
+
+        .daily-note-card.apu .daily-note-icon {
+            color: #ff8e97;
+            border-color: #6a3540;
+            background: #34212a
+        }
+
+        .daily-note-card.weather .daily-note-icon {
+            color: #80c4ff;
+            border-color: #315a7a;
+            background: #172d43
+        }
+
+        .daily-note-card.vip .daily-note-icon {
+            color: #d0bbff;
+            border-color: #574873;
+            background: #2d2440
+        }
+
+        .daily-note-title {
+            font-weight: 800
+        }
+
+        .daily-note-main {
+            display: flex;
+            align-items: baseline;
+            gap: 7px;
+            margin-top: 4px
+        }
+
+        .daily-note-main strong {
+            font-size: 22px
+        }
+
+        .daily-note-main span {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .daily-note-sub {
+            color: #a9bdcf;
+            font-size: 10px;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .daily-note-updated {
+            margin-top: 7px;
+            padding-top: 6px;
+            border-top: 1px solid #24384d;
+            color: #8298ac;
+            font-size: 9px
+        }
+
+        .daily-drawer {
+            width: 46vw;
+            min-width: 650px
+        }
+
+        .daily-filter-tabs {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 10px
+        }
+
+        .daily-filter-tab {
+            height: 28px;
+            border: 1px solid #344b62;
+            background: #132438;
+            color: #9fb3c5;
+            border-radius: 14px;
+            padding: 0 10px;
+            cursor: pointer
+        }
+
+        .daily-filter-tab.active {
+            background: #0d4354;
+            border-color: #17758b;
+            color: #dffaff
+        }
+
+        .daily-note-list {
+            display: grid;
+            gap: 8px
+        }
+
+        .daily-detail-card {
+            border: 1px solid var(--line);
+            background: #0e1c2b;
+            border-radius: 6px;
+            padding: 11px;
+            cursor: pointer
+        }
+
+        .daily-detail-card:hover {
+            border-color: #45647f
+        }
+
+        .daily-detail-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px
+        }
+
+        .daily-detail-title {
+            font-weight: 800
+        }
+
+        .daily-active {
+            height: 19px;
+            padding: 0 7px;
+            border-radius: 10px;
+            background: #4a2029;
+            color: #ff9aa1;
+            display: inline-flex;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 800
+        }
+
+        .daily-detail-desc {
+            color: #a9bdcf;
+            margin-top: 5px;
+            line-height: 1.4
+        }
+
+        .daily-detail-meta {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px
+        }
+
+        .daily-empty {
+            padding: 28px;
+            text-align: center;
+            color: var(--muted)
+        }
+
+        @media(max-width:1100px) {
+            .daily-note-cards {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand"><b>✦</b>VietnamAirlines</div>
+            <div class="nav">
+                <div class="active">Live Operations</div>
+                <div>Flight Dispatch</div>
+                <div>Flight Load Control</div>
+                <div>Station Manager</div>
+                <div>Report</div>
+            </div>
+        </aside>
+        <main class="main">
+            <div class="top"><button class="module">Live Operations</button></div>
+            <div class="tabs"><button class="tab active">Operations Monitoring</button><button class="tab">Duty
+                    Logs</button><button class="tab">Daily Report</button></div>
+            <div class="workspace">
+
+                <section class="daily-notes-strip">
+                    <div class="daily-notes-head">
+                        <h3><i data-lucide="notebook-tabs"></i>Daily Notes <small>Key operational notes for
+                                today</small></h3><button class="daily-view-all" id="viewDailyNotes">View all notes
+                            →</button>
+                    </div>
+                    <div class="daily-note-cards">
+                        <article class="daily-note-card apu" data-note-type="apu">
+                            <div class="daily-note-icon"><i data-lucide="plane"></i></div>
+                            <div class="daily-note-title">APU INOP Aircraft</div>
+                            <div class="daily-note-main"><strong>03</strong><span>active notes</span></div>
+                            <div class="daily-note-sub">2 aircraft · 5 affected flights</div>
+                            <div class="daily-note-updated">Updated 14:20 UTC</div>
+                        </article>
+                        <article class="daily-note-card" data-note-type="ground">
+                            <div class="daily-note-icon"><i data-lucide="wrench"></i></div>
+                            <div class="daily-note-title">Ground Support Unavailable</div>
+                            <div class="daily-note-main"><strong>02</strong><span>airports</span></div>
+                            <div class="daily-note-sub">DIN: GPU/ASU · VCL: GPU</div>
+                            <div class="daily-note-updated">Updated 13:45 UTC</div>
+                        </article>
+                        <article class="daily-note-card weather" data-note-type="weather">
+                            <div class="daily-note-icon"><i data-lucide="cloud-lightning"></i></div>
+                            <div class="daily-note-title">Weather Conditions</div>
+                            <div class="daily-note-main"><strong>04</strong><span>active areas</span></div>
+                            <div class="daily-note-sub">SGN · HAN · DAD</div>
+                            <div class="daily-note-updated">Updated 14:10 UTC</div>
+                        </article>
+                        <article class="daily-note-card vip" data-note-type="vip">
+                            <div class="daily-note-icon"><i data-lucide="badge-check"></i></div>
+                            <div class="daily-note-title">VIP/CIP Flights</div>
+                            <div class="daily-note-main"><strong>01</strong><span>flight</span></div>
+                            <div class="daily-note-sub">VN221 · HAN → SGN</div>
+                            <div class="daily-note-updated">Updated 12:20 UTC</div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="block">
+                    <div class="head">
+                        <h3><i data-lucide="bell-ring"></i>Realtime Alerts <span class="count">4</span></h3><button
+                            class="btn"><i data-lucide="list-filter"></i>Filter</button>
+                    </div>
+                    <div class="filters" style="grid-template-columns:1fr 1fr auto auto"><select class="control">
+                            <option>Alert type</option>
+                            <option>APU INOP</option>
+                            <option>Weather</option>
+                            <option>VIP/CIP</option>
+                            <option>Ground Support</option>
+                        </select><select class="control">
+                            <option>Level</option>
+                            <option>Critical</option>
+                            <option>High</option>
+                            <option>VIP</option>
+                        </select><button class="btn primary">Search</button><button class="btn">Clear</button></div>
+                    <div class="scroll">
+                        <div class="alert-list">
+                            <article class="alert critical" data-alert="apu">
+                                <div class="alert-icon"><span><i data-lucide="battery-warning"></i></span></div>
+                                <div class="alert-content">
+                                    <div class="alert-top">
+                                        <div class="alert-title">No GPU/ASU Support at DIN for 5 APU INOP Flights</div>
+                                        <span class="level critical">Critical</span>
+                                    </div>
+                                    <div class="alert-desc">5 APU INOP flights are scheduled to arrive at DIN. GPU/ASU
+                                        support is currently unavailable.</div>
+                                    <div class="meta"><span class="chip"><i data-lucide="map-pin"></i>DIN</span><span
+                                            class="chip"><i data-lucide="plane"></i>5 Flights</span><span
+                                            class="chip"><i data-lucide="clock-3"></i>10:20–18:40 UTC</span><span
+                                            class="ago"><strong>2 min ago</strong>28 JUL · 14:05</span></div>
+                                </div>
+                            </article>
+                            <article class="alert">
+                                <div class="alert-icon"><span><i data-lucide="cloud-lightning"></i></span></div>
+                                <div class="alert-content">
+                                    <div class="alert-top">
+                                        <div class="alert-title">Thunderstorms at SGN – 8 Flights Affected</div><span
+                                            class="level high">High</span>
+                                    </div>
+                                    <div class="alert-desc">Thunderstorms expected at SGN from 15:00–17:30 UTC.</div>
+                                    <div class="meta"><span class="chip"><i data-lucide="map-pin"></i>SGN</span><span
+                                            class="chip"><i data-lucide="plane"></i>8 Flights</span><span
+                                            class="chip"><i data-lucide="clock-3"></i>15:00–17:30 UTC</span><span
+                                            class="ago"><strong>22 min ago</strong>28 JUL · 13:45</span></div>
+                                </div>
+                            </article>
+                            <article class="alert vip">
+                                <div class="alert-icon"><span><i data-lucide="badge-check"></i></span></div>
+                                <div class="alert-content">
+                                    <div class="alert-top">
+                                        <div class="alert-title">VIP/CIP on Flight VN221</div><span
+                                            class="level vip">VIP</span>
+                                    </div>
+                                    <div class="alert-desc">VIP/CIP passengers on the HAN–SGN route.</div>
+                                    <div class="meta"><span class="chip"><i data-lucide="plane"></i>VN221</span><span
+                                            class="chip"><i data-lucide="route"></i>HAN → SGN</span><span
+                                            class="chip"><i data-lucide="clock-3"></i>13:40–15:20 UTC</span><span
+                                            class="ago"><strong>1 hr ago</strong>28 JUL · 12:20</span></div>
+                                </div>
+                            </article>
+                            <article class="alert">
+                                <div class="alert-icon"><span><i data-lucide="wrench"></i></span></div>
+                                <div class="alert-content">
+                                    <div class="alert-top">
+                                        <div class="alert-title">Required Ground Support Unavailable at VCL</div><span
+                                            class="level high">High</span>
+                                    </div>
+                                    <div class="alert-desc">Required ground support is currently unavailable at VCL.
+                                    </div>
+                                    <div class="meta"><span class="chip"><i data-lucide="map-pin"></i>VCL</span><span
+                                            class="chip"><i data-lucide="plane"></i>7 Flights</span><span
+                                            class="chip"><i data-lucide="clock-3"></i>08:45–18:00 UTC</span><span
+                                            class="ago"><strong>2 hr ago</strong>28 JUL · 11:45</span></div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+                <section class="block">
+                    <div class="head">
+                        <h3><i data-lucide="list-checks"></i>Task List <span class="count">4</span></h3>
+                        <div class="actions"><button class="btn"><i data-lucide="list-filter"></i>Filter</button><button
+                                class="btn primary" id="manualBtn"><i data-lucide="plus"></i>Create Manual Task</button>
+                        </div>
+                    </div>
+                    <div class="filters" style="grid-template-columns:1.2fr .7fr .75fr .7fr auto auto"><input
+                            class="control" placeholder="Task ID, title"><select class="control">
+                            <option>Status</option>
+                        </select><select class="control">
+                            <option>Responsible party</option>
+                        </select><select class="control">
+                            <option>Source</option>
+                        </select><button class="btn primary">Search</button><button class="btn">Clear</button></div>
+                    <div class="scroll">
+                        <table class="task-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:9%">Task ID</th>
+                                    <th style="width:18%">Task Name</th>
+                                    <th style="width:9%">Source</th>
+                                    <th style="width:8%">Affected Flights</th>
+                                    <th style="width:10%">Impact Type</th>
+                                    <th style="width:18%">Responsible Parties</th>
+                                    <th style="width:10%">Progress</th>
+                                    <th style="width:9%">Updated</th>
+                                    <th style="width:8%">Status</th>
+                                    <th style="width:38px"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="taskBody">
+                                <tr class="task-row" data-task="TK-050">
+                                    <td>
+                                        <div class="task-code">TK-050</div>
+                                    </td>
+                                    <td>
+                                        <div class="task-name">Handle weather impact at SGN</div>
+                                    </td>
+                                    <td><span class="source-badge source-alert">Alert</span></td>
+                                    <td>3 Flights</td>
+                                    <td><span class="impact-tag impact-delay">Delayed</span></td>
+                                    <td>
+                                        <div class="party-wrap"><span class="party-pill">Duty Manager</span><span
+                                                class="party-pill">Dispatch</span><span
+                                                class="party-pill">Technical</span><span class="party-more">+9<div
+                                                    class="party-pop">
+                                                    <div class="pop-title">Responsible Parties · 12</div>
+                                                    <div class="pop-row"><span>Duty Manager</span><span
+                                                            class="state done">Done</span></div>
+                                                    <div class="pop-row"><span>Duty Manager Assistant</span><span
+                                                            class="state progress">In Progress</span></div>
+                                                    <div class="pop-row"><span>Dispatch</span><span
+                                                            class="state done">Done</span></div>
+                                                    <div class="pop-row"><span>Technical</span><span
+                                                            class="state progress">In Progress</span></div>
+                                                    <div class="pop-row"><span>Commercial</span><span
+                                                            class="state pending">Pending</span></div>
+                                                    <div class="pop-row"><span>Ground Services</span><span
+                                                            class="state pending">Pending</span></div>
+                                                    <div class="pop-row"><span>Flight Crew Control</span><span
+                                                            class="state pending">Pending</span></div>
+                                                    <div class="pop-row"><span>Cabin Crew Control</span><span
+                                                            class="state pending">Pending</span></div>
+                                                    <div class="pop-row"><span>Schedule Planning</span><span
+                                                            class="state done">Done</span></div>
+                                                    <div class="pop-row"><span>Flight Permit</span><span
+                                                            class="state pending">Pending</span></div>
+                                                    <div class="pop-row"><span>Cargo</span><span
+                                                            class="state done">Done</span></div>
+                                                    <div class="pop-row"><span>CLC / VIAGS</span><span
+                                                            class="state done">Done</span></div>
+                                                </div></span></div>
+                                    </td>
+                                    <td>
+                                        <div class="progress"><strong>5/12 Done</strong>
+                                            <div class="bar"><span style="width:42%"></span></div>
+                                        </div>
+                                    </td>
+                                    <td>27 JUL<div class="sub">14:20</div>
+                                    </td>
+                                    <td><span class="status-tag status-progress">In Progress</span></td>
+                                    <td><button class="more-btn"><i data-lucide="ellipsis"></i></button></td>
+                                </tr>
+                                <tr class="task-row" data-task="TK-051">
+                                    <td>
+                                        <div class="task-code">TK-051</div>
+                                    </td>
+                                    <td>
+                                        <div class="task-name">Prepare VIP/CIP handling</div>
+                                    </td>
+                                    <td><span class="source-badge source-alert">Alert</span></td>
+                                    <td>1 Flight</td>
+                                    <td><span class="impact-tag impact-change">Aircraft Change</span></td>
+                                    <td>
+                                        <div class="party-wrap"><span class="party-pill">Commercial</span><span
+                                                class="party-pill">Ground Services</span></div>
+                                    </td>
+                                    <td>
+                                        <div class="progress"><strong>2/2 Done</strong>
+                                            <div class="bar"><span style="width:100%"></span></div>
+                                        </div>
+                                    </td>
+                                    <td>27 JUL<div class="sub">13:57</div>
+                                    </td>
+                                    <td><span class="status-tag status-done">Done</span></td>
+                                    <td><button class="more-btn"><i data-lucide="ellipsis"></i></button></td>
+                                </tr>
+                                <tr class="task-row" data-task="TK-052">
+                                    <td>
+                                        <div class="task-code">TK-052</div>
+                                    </td>
+                                    <td>
+                                        <div class="task-name">Confirm technical support at SGN</div>
+                                    </td>
+                                    <td><span class="source-badge manual">Manual</span></td>
+                                    <td>7 Flights</td>
+                                    <td><span class="impact-tag impact-cancel">Cancelled</span></td>
+                                    <td>
+                                        <div class="party-wrap"><span class="party-pill">Technical</span><span
+                                                class="party-pill">Dispatch</span><span class="party-pill">Duty
+                                                Manager</span></div>
+                                    </td>
+                                    <td>
+                                        <div class="progress"><strong>1/3 Done</strong>
+                                            <div class="bar"><span style="width:33%"></span></div>
+                                        </div>
+                                    </td>
+                                    <td>27 JUL<div class="sub">13:40</div>
+                                    </td>
+                                    <td><span class="status-tag status-open">Open</span></td>
+                                    <td><button class="more-btn"><i data-lucide="ellipsis"></i></button></td>
+                                </tr>
+                                <tr class="task-row" data-task="TK-053">
+                                    <td>
+                                        <div class="task-code">TK-053</div>
+                                    </td>
+                                    <td>
+                                        <div class="task-name">Confirm technical support at SGN</div>
+                                    </td>
+                                    <td><span class="source-badge manual">Manual</span></td>
+                                    <td>4 Flights</td>
+                                    <td><span class="impact-tag impact-hold">Holding</span></td>
+                                    <td>
+                                        <div class="party-wrap"><span class="party-pill">Duty Manager
+                                                Assistant</span><span class="party-pill">Flight Permit</span></div>
+                                    </td>
+                                    <td>
+                                        <div class="progress"><strong>0/2 Done</strong>
+                                            <div class="bar"><span style="width:0%"></span></div>
+                                        </div>
+                                    </td>
+                                    <td>27 JUL<div class="sub">12:55</div>
+                                    </td>
+                                    <td><span class="status-tag status-open">Open</span></td>
+                                    <td><button class="more-btn"><i data-lucide="ellipsis"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <aside class="drawer daily-drawer" id="dailyNotesDrawer">
+        <div class="drawer-head">
+            <div class="drawer-title">
+                <div class="hero-icon" style="color:#73d7e8;border-color:#2e6070;background:#123140"><i
+                        data-lucide="notebook-tabs"></i></div>
+                <div>
+                    <h2>Daily Notes</h2>
+                    <p>Operational notes for 28 JUL 2026</p>
+                </div>
+            </div><button class="btn closeDailyNotes"><i data-lucide="x"></i>Close</button>
+        </div>
+        <div class="drawer-body">
+            <div class="daily-filter-tabs"><button class="daily-filter-tab active" data-daily-filter="all">All
+                    (10)</button><button class="daily-filter-tab" data-daily-filter="apu">APU INOP (3)</button><button
+                    class="daily-filter-tab" data-daily-filter="ground">Ground Support (2)</button><button
+                    class="daily-filter-tab" data-daily-filter="weather">Weather (4)</button><button
+                    class="daily-filter-tab" data-daily-filter="vip">VIP/CIP (1)</button></div>
+            <div class="daily-note-list" id="dailyNoteList">
+                <div class="daily-detail-card" data-daily-kind="apu">
+                    <div class="daily-detail-top">
+                        <div class="daily-detail-title">VN-A612 APU INOP</div><span class="daily-active">Active</span>
+                    </div>
+                    <div class="daily-detail-desc">Aircraft VN-A612 is operating with APU INOP and requires ground
+                        support coordination.</div>
+                    <div class="daily-detail-meta"><span class="chip"><i data-lucide="plane"></i>3 flights</span><span
+                            class="chip"><i data-lucide="clock-3"></i>10:20–18:40 UTC</span></div>
+                </div>
+                <div class="daily-detail-card" data-daily-kind="apu">
+                    <div class="daily-detail-top">
+                        <div class="daily-detail-title">VN-A350 APU INOP</div><span class="daily-active">Active</span>
+                    </div>
+                    <div class="daily-detail-desc">Two flights require GPU/ASU support during the active rotation.</div>
+                    <div class="daily-detail-meta"><span class="chip"><i data-lucide="plane"></i>2 flights</span><span
+                            class="chip"><i data-lucide="clock-3"></i>11:30–19:10 UTC</span></div>
+                </div>
+                <div class="daily-detail-card" data-daily-kind="ground">
+                    <div class="daily-detail-top">
+                        <div class="daily-detail-title">Ground support unavailable at DIN</div><span
+                            class="daily-active">Active</span>
+                    </div>
+                    <div class="daily-detail-desc">GPU/ASU support is unavailable for arrivals at DIN.</div>
+                    <div class="daily-detail-meta"><span class="chip"><i data-lucide="map-pin"></i>DIN</span><span
+                            class="chip"><i data-lucide="plane"></i>5 flights</span><span class="chip"><i
+                                data-lucide="clock-3"></i>10:20–18:40 UTC</span></div>
+                </div>
+                <div class="daily-detail-card" data-daily-kind="weather">
+                    <div class="daily-detail-top">
+                        <div class="daily-detail-title">Thunderstorms at SGN</div><span class="daily-active"
+                            style="background:#193b57;color:#82c8ff">Monitoring</span>
+                    </div>
+                    <div class="daily-detail-desc">Thunderstorms may affect arriving and departing flights.</div>
+                    <div class="daily-detail-meta"><span class="chip"><i data-lucide="map-pin"></i>SGN</span><span
+                            class="chip"><i data-lucide="plane"></i>8 flights</span><span class="chip"><i
+                                data-lucide="clock-3"></i>15:00–17:30 UTC</span></div>
+                </div>
+                <div class="daily-detail-card" data-daily-kind="vip">
+                    <div class="daily-detail-top">
+                        <div class="daily-detail-title">VIP/CIP on Flight VN221</div><span class="daily-active"
+                            style="background:#392a54;color:#d0bbff">Active</span>
+                    </div>
+                    <div class="daily-detail-desc">Special handling is required on the HAN–SGN route.</div>
+                    <div class="daily-detail-meta"><span class="chip"><i data-lucide="plane"></i>VN221</span><span
+                            class="chip"><i data-lucide="route"></i>HAN → SGN</span><span class="chip"><i
+                                data-lucide="clock-3"></i>13:40–15:20 UTC</span></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="menu" id="menu"><button id="markDone"><i data-lucide="circle-check"></i>Mark Done</button></div>
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="alertDrawer">
+        <div class="drawer-head">
+            <div class="drawer-title">
+                <div class="hero-icon"><i data-lucide="triangle-alert"></i></div>
+                <div>
+                    <h2>Alert Detail</h2>
+                    <p>AL-0144 · Airport-based operational alert</p>
+                </div>
+            </div>
+            <div class="drawer-tools"><button class="btn warn">Skip Alert</button><button class="btn primary"
+                    id="createFromAlert"><i data-lucide="plus"></i>Create Task</button><button
+                    class="btn closeDrawer"><i data-lucide="x"></i>Close</button></div>
+        </div>
+        <div class="drawer-body">
+            <div class="hero">
+                <div class="hero-alert"><i data-lucide="triangle-alert"></i></div>
+                <div><span class="level critical">Critical</span>
+                    <h2>No GPU/ASU Support at DIN for 5 APU INOP Flights</h2>
+                    <p>5 APU INOP flights are scheduled to arrive at DIN. GPU/ASU support is currently unavailable.
+                        Please review and coordinate to ensure operational readiness.</p>
+                    <div class="hero-stats">
+                        <div class="stat"><label>Arrival Airport</label><strong><i
+                                    data-lucide="map-pin"></i>DIN</strong></div>
+                        <div class="stat"><label>Impact Window</label><strong><i data-lucide="clock-3"></i>10:20–18:40
+                                UTC</strong></div>
+                        <div class="stat"><label>Affected Flights</label><strong><i data-lucide="plane"></i>5
+                                Flights</strong></div>
+                        <div class="stat"><label>Detected At</label><strong><i
+                                    data-lucide="calendar-clock"></i>28/07/2026 14:05</strong></div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">Affected Flights (5)</div>
+                <div class="section-body">
+                    <table class="flight-table">
+                        <thead>
+                            <tr>
+                                <th>FLT NO</th>
+                                <th>ROUTE</th>
+                                <th>ETD (UTC)</th>
+                                <th>ETA (UTC)</th>
+                                <th>AC REG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>VN225</td>
+                                <td><span class="route">HAN → DIN</span></td>
+                                <td>10:20</td>
+                                <td>13:05</td>
+                                <td>VN-A612</td>
+                            </tr>
+                            <tr>
+                                <td>VN218</td>
+                                <td><span class="route">SGN → DIN</span></td>
+                                <td>11:45</td>
+                                <td>14:30</td>
+                                <td>VN-A359</td>
+                            </tr>
+                            <tr>
+                                <td>VN551</td>
+                                <td><span class="route">BKK → DIN</span></td>
+                                <td>13:20</td>
+                                <td>15:50</td>
+                                <td>VN-A350</td>
+                            </tr>
+                            <tr>
+                                <td>VN222</td>
+                                <td><span class="route">SIN → DIN</span></td>
+                                <td>16:30</td>
+                                <td>18:10</td>
+                                <td>VN-A321</td>
+                            </tr>
+                            <tr>
+                                <td>VN226</td>
+                                <td><span class="route">DIN → HAN</span></td>
+                                <td>18:40</td>
+                                <td>20:05</td>
+                                <td>VN-A612</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pager"><span>Rows per page: 10</span><span>1–5 of 5</span></div>
+                </div>
+            </div>
+            <div class="task-form hidden" id="alertTaskForm">
+                <div class="section-title"><span>Create Task from Alert</span><button class="btn"
+                        id="collapseForm">Collapse</button></div>
+                <div class="section-body">
+                    <div class="form-grid">
+                        <div class="field span2"><label class="req">Task Title</label><input
+                                value="Coordinate GPU/ASU support for APU INOP flights to DIN"></div>
+                        <div class="field"><label>Task ID</label><input value="TK-20260728-0001" readonly></div>
+                        <div class="field"><label class="req">Priority</label><select>
+                                <option selected>Critical</option>
+                                <option>High</option>
+                                <option>Medium</option>
+                            </select></div>
+                        <div class="field"><label class="req">Impact Type</label><select>
+                                <option>Delayed</option>
+                                <option>Holding</option>
+                                <option>Cancelled</option>
+                                <option selected>Aircraft Change</option>
+                                <option>Other</option>
+                            </select></div>
+                        <div class="field"><label class="req">Apply to Flights</label><select>
+                                <option selected>Apply to all affected flights</option>
+                                <option>Set per flight</option>
+                            </select></div>
+                    </div>
+                    <div class="party-head">
+                        <div><strong>Responsible Parties *</strong>
+                            <div class="sub">Select parties and enter the assignment reason for each selected party.
+                            </div>
+                        </div><span class="sub" id="alertPartyCount">1 selected</span>
+                    </div>
+                    <div class="party-grid" id="alertParties"></div>
+                    <div class="task-foot"><button class="btn" id="cancelAlertTask">Cancel</button><button
+                            class="btn primary" id="submitAlertTask">Create Task</button></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <aside class="drawer" id="manualDrawer">
+        <div class="drawer-head">
+            <div class="drawer-title">
+                <div class="hero-icon" style="background:#113343;border-color:#26647a;color:#6ce3f3"><i
+                        data-lucide="clipboard-plus"></i></div>
+                <div>
+                    <h2>Create Manual Task</h2>
+                    <p>Enter task information, select a flight scope, then assign responsible parties.</p>
+                </div>
+            </div>
+            <div class="drawer-tools"><button class="btn closeDrawer"><i data-lucide="x"></i>Close</button></div>
+        </div>
+        <div class="drawer-body">
+            <div class="section manual-core">
+                <div class="section-title">Task Setup</div>
+                <div class="section-body">
+                    <div class="manual-setup refined">
+                        <div class="field title-field"><label class="req">Task Title</label><input
+                                value="Coordinate operational impact"></div>
+                        <div class="field"><label>Task ID</label>
+                            <div class="readonly-wrap"><input value="TK-20260729-0002"
+                                    readonly><span>Auto-generated</span></div>
+                        </div>
+                        <div class="field"><label class="req">Priority</label><select>
+                                <option>Critical</option>
+                                <option selected>High</option>
+                                <option>Medium</option>
+                            </select></div>
+                        <div class="field"><label class="req">Impact Type</label><select>
+                                <option selected>Delayed</option>
+                                <option>Holding</option>
+                                <option>Cancelled</option>
+                                <option>Aircraft Change</option>
+                                <option>Other</option>
+                            </select></div>
+                    </div>
+                    <div class="manual-flight-workspace">
+                        <div class="flight-scope-panel">
+                            <div class="workspace-head">
+                                <div><strong>Flight Scope</strong>
+                                    <div class="sub">Choose a time window and any relevant flight data.</div>
+                                </div><i data-lucide="sliders-horizontal"></i>
+                            </div>
+                            <div class="time-window-card">
+                                <div class="scope-field"><label class="req">From (UTC)</label><input
+                                        type="datetime-local" value="2026-07-29T15:00"></div>
+                                <div class="time-arrow"><i data-lucide="arrow-right"></i></div>
+                                <div class="scope-field"><label class="req">To (UTC)</label><input type="datetime-local"
+                                        value="2026-07-29T20:00"></div>
+                            </div>
+                            <div class="scope-filter-grid">
+                                <div class="scope-field"><label><i data-lucide="map-pin"></i>Airport</label><select
+                                        id="scopeAirport">
+                                        <option value="">Any airport</option>
+                                        <option selected>SGN</option>
+                                        <option>HAN</option>
+                                        <option>DIN</option>
+                                        <option>VCL</option>
+                                    </select></div>
+                                <div class="scope-field"><label><i data-lucide="plane"></i>Flight No.</label><select
+                                        id="scopeFlight">
+                                        <option value="">Any flight</option>
+                                        <option>VN221</option>
+                                        <option>VN225</option>
+                                        <option>VN1468</option>
+                                    </select></div>
+                                <div class="scope-field"><label><i data-lucide="badge"></i>Aircraft</label><select
+                                        id="scopeAircraft">
+                                        <option value="">Any aircraft</option>
+                                        <option>VN-A612</option>
+                                        <option>VN-A605</option>
+                                        <option>VN-A399</option>
+                                    </select></div>
+                            </div>
+                            <button class="btn primary scope-find-wide" id="findFlights"><i
+                                    data-lucide="search"></i>Preview Flights</button>
+                        </div>
+                        <div class="flight-result-panel">
+                            <div class="workspace-head">
+                                <div><strong>Affected Flights</strong>
+                                    <div class="sub">Review the results and exclude only flights that should not be
+                                        included.</div>
+                                </div>
+                                <div class="result-badges"><span class="result-count found-count" id="foundBadge">0
+                                        found</span><span class="result-count included-count" id="resultCountBadge">0
+                                        included</span></div>
+                            </div>
+                            <div id="manualResults" class="result-empty">
+                                <div class="empty-icon"><i data-lucide="search"></i></div><strong>No flights
+                                    loaded</strong><span>Choose the flight scope, then preview the matching
+                                    flights.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">Responsible Parties</div>
+                <div class="section-body">
+                    <div class="party-head">
+                        <div><strong>Responsible Parties *</strong>
+                            <div class="sub">Select a party to enter its assignment reason.</div>
+                        </div><span class="sub" id="manualPartyCount">1 selected</span>
+                    </div>
+                    <div class="party-grid" id="manualParties"></div>
+                    <div class="task-foot"><button class="btn closeDrawer">Cancel</button><button class="btn primary"
+                            id="submitManual">Create Task</button></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <aside class="drawer" id="taskDrawer">
+        <div class="drawer-head">
+            <div class="drawer-title">
+                <div class="hero-icon" style="background:#103345;border-color:#24647a;color:#7ce8f2"><i
+                        data-lucide="clipboard-check"></i></div>
+                <div>
+                    <h2>Task Detail · <span id="detailTaskId">TK-050</span></h2>
+                    <p>Source: Alert AL-0135</p>
+                </div>
+            </div>
+            <div class="drawer-tools"><button class="btn closeDrawer"><i data-lucide="x"></i>Close</button></div>
+        </div>
+        <div class="drawer-body">
+            <div class="role-banner"><i data-lucide="shield-check"></i>
+                <div><strong>Current role: Duty Manager</strong>
+                    <div class="sub">Can mark assigned work Done and add notes.</div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">Task Information</div>
+                <div class="section-body info-grid">
+                    <div class="kv"><label>Task Title</label><strong>Handle weather impact at SGN</strong></div>
+                    <div class="kv"><label>Impact Type</label><strong>Delayed / Holding</strong></div>
+                    <div class="kv"><label>Status</label><strong id="taskDetailStatus" style="color:#ffc767">In
+                            Progress</strong></div>
+                    <div class="kv"><label>Created At</label><strong>28/07/2026 13:48</strong></div>
+                    <div class="kv"><label>Created By</label><strong>Nguyễn Văn A</strong></div>
+                    <div class="kv"><label>Last Updated</label><strong id="taskLastUpdated">28/07/2026 14:18</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-layout">
+                <div>
+                    <div class="section">
+                        <div class="section-title">Affected Flights</div>
+                        <div class="section-body">
+                            <table class="flight-table">
+                                <thead>
+                                    <tr>
+                                        <th>FLT NO</th>
+                                        <th>ROUTE</th>
+                                        <th>ETD</th>
+                                        <th>ETA</th>
+                                        <th>AC REG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>VN217</td>
+                                        <td>HAN → SGN</td>
+                                        <td>15:20</td>
+                                        <td>17:30</td>
+                                        <td>VN-A612</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VN221</td>
+                                        <td>DAD → SGN</td>
+                                        <td>15:40</td>
+                                        <td>17:10</td>
+                                        <td>VN-A605</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VN225</td>
+                                        <td>SGN → HAN</td>
+                                        <td>17:00</td>
+                                        <td>19:10</td>
+                                        <td>VN-A399</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="section-title"><span>Responsible Parties</span><span class="sub"
+                                id="completionText">2/3 completed · Task auto Done when all parties are Done</span>
+                        </div>
+                        <div class="section-body">
+                            <div class="handler-list" id="handlerList">
+                                <div class="handler done" data-party="Dispatch">
+                                    <div class="handler-step">✓</div>
+                                    <div>
+                                        <div class="handler-name">Dispatch <span class="state done">Done</span></div>
+                                        <div class="handler-assignee">Trần Minh B</div>
+                                        <div class="handler-meta">Completed at 14:18 · Note saved in Activity</div>
+                                    </div>
+                                </div>
+                                <div class="handler done" data-party="Station SGN">
+                                    <div class="handler-step">✓</div>
+                                    <div>
+                                        <div class="handler-name">Station SGN <span class="state done">Done</span></div>
+                                        <div class="handler-assignee">Station Duty</div>
+                                        <div class="handler-meta">Completed at 14:05 · Note saved in Activity</div>
+                                    </div>
+                                </div>
+                                <div class="handler" data-party="Technical">
+                                    <div class="handler-step">3</div>
+                                    <div>
+                                        <div class="handler-name">Technical <span class="state pending">Pending</span>
+                                        </div>
+                                        <div class="handler-assignee">Tech Duty HAN</div>
+                                        <div class="handler-meta">Assigned at 13:48 · Not completed</div>
+                                    </div>
+                                    <div class="handler-actions"><button class="more-btn handlerMore"
+                                            title="More actions"><i data-lucide="ellipsis"></i></button>
+                                        <div class="handler-menu"><button class="doneWork"><i
+                                                    data-lucide="circle-check"></i>Mark Done</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rule-box">The ellipsis is shown only for work that can still be completed.
+                                Completed parties have no action menu.</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="section notes-section">
+                        <div class="section-title"><span>Notes & Activity</span><button class="btn primary"
+                                id="addNote"><i data-lucide="message-square-plus"></i>Add Note</button></div>
+                        <div class="section-body">
+                            <div class="notes-toolbar">
+                                <div class="notes-tabs"><button id="byPartyTab" class="active">By Responsible
+                                        Party</button><button id="allActivityTab">All Activity</button></div><span
+                                    class="note-summary" id="noteSummary">3 parties · 7 updates</span>
+                            </div>
+                            <div id="byPartyView" class="note-groups">
+                                <div class="note-group open" data-note-party="Dispatch">
+                                    <div class="note-group-head">
+                                        <div><strong>Dispatch · Trần Minh B</strong>
+                                            <div class="note-sub">Done · Last update 14:18</div>
+                                        </div><span class="note-badge">2</span>
+                                    </div>
+                                    <div class="note-group-body">
+                                        <div class="activity">
+                                            <div class="activity-item">
+                                                <div class="activity-time">14:18 · Trần Minh B <span
+                                                        class="activity-kind">Note</span></div>
+                                                <div>Reviewed slot and delay options for VN217/VN221.</div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">14:12 · System <span
+                                                        class="activity-kind system">Status</span></div>
+                                                <div>Dispatch marked assigned work as Done.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="note-group open" data-note-party="Station SGN">
+                                    <div class="note-group-head">
+                                        <div><strong>Station SGN · Station Duty</strong>
+                                            <div class="note-sub">Done · Last update 14:05</div>
+                                        </div><span class="note-badge">3</span>
+                                    </div>
+                                    <div class="note-group-body">
+                                        <div class="activity">
+                                            <div class="activity-item">
+                                                <div class="activity-time">14:05 · Station Duty <span
+                                                        class="activity-kind">Note</span></div>
+                                                <div>Stand B4 confirmed for the affected arrival bank.</div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">13:58 · Station Duty <span
+                                                        class="activity-kind">Note</span></div>
+                                                <div>Checking stand availability during thunderstorms.</div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">13:55 · System <span
+                                                        class="activity-kind system">Status</span></div>
+                                                <div>Station SGN started processing assigned work.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="note-group open" data-note-party="Task General">
+                                    <div class="note-group-head">
+                                        <div><strong>Task General</strong>
+                                            <div class="note-sub">Information shared across the whole task</div>
+                                        </div><span class="note-badge">2</span>
+                                    </div>
+                                    <div class="note-group-body">
+                                        <div class="activity">
+                                            <div class="activity-item">
+                                                <div class="activity-time">14:02 · Current User <span
+                                                        class="activity-kind">Note</span></div>
+                                                <div>Monitor the weather update every 30 minutes.</div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-time">13:48 · Nguyễn Văn A <span
+                                                        class="activity-kind system">Created</span></div>
+                                                <div>Task created from alert AL-0143.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="allActivityView" class="all-activity hidden">
+                                <div class="activity">
+                                    <div class="activity-item">
+                                        <div class="activity-time">14:18 · Trần Minh B <span
+                                                class="party-label">Dispatch</span><span
+                                                class="activity-kind">Note</span></div>
+                                        <div>Reviewed slot and delay options for VN217/VN221.</div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-time">14:12 · System <span
+                                                class="party-label">Dispatch</span><span
+                                                class="activity-kind system">Status</span></div>
+                                        <div>Dispatch marked assigned work as Done.</div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-time">14:05 · Station Duty <span
+                                                class="party-label">Station SGN</span><span
+                                                class="activity-kind">Note</span></div>
+                                        <div>Stand B4 confirmed for the affected arrival bank.</div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-time">14:02 · Current User <span class="party-label">Task
+                                                General</span><span class="activity-kind">Note</span></div>
+                                        <div>Monitor the weather update every 30 minutes.</div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-time">13:58 · Station Duty <span
+                                                class="party-label">Station SGN</span><span
+                                                class="activity-kind">Note</span></div>
+                                        <div>Checking stand availability during thunderstorms.</div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-time">13:55 · System <span class="party-label">Station
+                                                SGN</span><span class="activity-kind system">Status</span></div>
+                                        <div>Station SGN started processing assigned work.</div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-time">13:48 · Nguyễn Văn A <span class="party-label">Task
+                                                General</span><span class="activity-kind system">Created</span></div>
+                                        <div>Task created from alert AL-0143.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <div class="note-modal" id="noteModal">
+        <div class="note-modal-box">
+            <div class="note-modal-head"><strong>Add Note</strong><button class="icon-close" id="closeNoteModal"><i
+                        data-lucide="x"></i></button></div>
+            <div class="note-modal-body">
+                <div class="field"><label>Note for</label><select id="notePartySelect">
+                        <option>Task General</option>
+                        <option>Dispatch</option>
+                        <option>Station SGN</option>
+                        <option>Technical</option>
+                    </select></div>
+                <div class="field" style="margin-top:10px"><label class="required">Note</label><textarea id="noteInput"
+                        maxlength="500" placeholder="Enter an update, decision, or handling result"></textarea>
+                    <div class="char-count"><span id="noteChars">0</span>/500</div>
+                </div>
+            </div>
+            <div class="note-modal-foot"><button class="btn" id="cancelNote">Cancel</button><button class="btn primary"
+                    id="saveNote"><i data-lucide="plus"></i>Add Note</button></div>
+        </div>
+    </div>
+    <div class="toast" id="toast">Updated successfully.</div>
+    <script>
+        lucide.createIcons();
+        const overlay = document.getElementById('overlay'), alertDrawer = document.getElementById('alertDrawer'), manualDrawer = document.getElementById('manualDrawer'), taskDrawer = document.getElementById('taskDrawer'), menu = document.getElementById('menu'); let activeRow = null;
+        function openDrawer(d) { overlay.classList.add('show'); d.classList.add('show') } function closeAll() { overlay.classList.remove('show'); document.querySelectorAll('.drawer').forEach(x => x.classList.remove('show')); menu.classList.remove('open') } document.querySelectorAll('.closeDrawer').forEach(b => b.onclick = closeAll); overlay.onclick = closeAll;
+
+        const dailyNotesDrawer = document.getElementById('dailyNotesDrawer');
+        function openDailyNotes(filter = 'all') {
+            document.querySelectorAll('.daily-filter-tab').forEach(b => b.classList.toggle('active', b.dataset.dailyFilter === filter));
+            document.querySelectorAll('[data-daily-kind]').forEach(c => c.style.display = (filter === 'all' || c.dataset.dailyKind === filter) ? 'block' : 'none');
+            openDrawer(dailyNotesDrawer);
+        }
+        document.getElementById('viewDailyNotes').onclick = () => openDailyNotes('all');
+        document.querySelectorAll('.daily-note-card').forEach(c => c.onclick = () => openDailyNotes(c.dataset.noteType));
+        document.querySelectorAll('.closeDailyNotes').forEach(b => b.onclick = closeAll);
+        document.querySelectorAll('.daily-filter-tab').forEach(b => b.onclick = () => openDailyNotes(b.dataset.dailyFilter));
+
+        document.querySelectorAll('.alert').forEach(a => a.onclick = () => openDrawer(alertDrawer)); document.getElementById('manualBtn').onclick = () => openDrawer(manualDrawer);
+        document.getElementById('createFromAlert').onclick = () => { document.getElementById('alertTaskForm').classList.remove('hidden'); document.getElementById('alertTaskForm').scrollIntoView({ behavior: 'smooth', block: 'start' }) }; document.getElementById('collapseForm').onclick = () => document.getElementById('alertTaskForm').classList.add('hidden'); document.getElementById('cancelAlertTask').onclick = () => document.getElementById('alertTaskForm').classList.add('hidden');
+        const parties = ['Duty Manager', 'Duty Manager Assistant', 'Commercial', 'Technical', 'Ground Services', 'Flight Crew Control', 'Cabin Crew Control', 'Dispatch', 'CLC / VIAGS', 'Schedule Planning', 'Flight Permit', 'Cargo'];
+        function renderParties(id, countId) { document.getElementById(id).innerHTML = parties.map((p, i) => `<label class="party-row ${i === 0 ? 'selected' : ''}"><input type="checkbox" ${i === 0 ? 'checked' : ''}><span>${p}</span><input type="text" placeholder="Reason for assignment" ${i === 0 ? 'value="Coordinate operational handling"' : ''}></label>`).join(''); const checks = [...document.querySelectorAll('#' + id + ' .party-row input[type=checkbox]')]; checks.forEach(c => c.onchange = () => { const row = c.closest('.party-row'); row.classList.toggle('selected', c.checked); row.querySelector('input[type=text]').disabled = !c.checked; document.getElementById(countId).textContent = checks.filter(x => x.checked).length + ' selected' }); checks.forEach(c => c.closest('.party-row').querySelector('input[type=text]').disabled = !c.checked) } renderParties('alertParties', 'alertPartyCount'); renderParties('manualParties', 'manualPartyCount');
+        document.querySelectorAll('.party-more').forEach(x => x.onclick = e => { e.stopPropagation(); document.querySelectorAll('.party-more').forEach(y => y !== x && y.classList.remove('open')); x.classList.toggle('open') }); document.addEventListener('click', e => { if (!e.target.closest('.party-more')) document.querySelectorAll('.party-more').forEach(x => x.classList.remove('open')); if (!e.target.closest('.handler-actions')) document.querySelectorAll('.handler-actions').forEach(x => x.classList.remove('open')) });
+        function openTaskDetail(row) {
+            activeRow = row;
+            document.getElementById('detailTaskId').textContent = row?.dataset.task || 'TK-050';
+            openDrawer(taskDrawer);
+        }
+        // Click anywhere on a task row to open Task Detail.
+        document.querySelectorAll('.task-row').forEach(row => {
+            row.addEventListener('click', e => {
+                if (e.target.closest('.more-btn') || e.target.closest('.party-more') || e.target.closest('.party-pop')) return;
+                openTaskDetail(row);
+            });
+        });
+        // The ellipsis button opens the compact Action menu.
+        document.querySelectorAll('.more-btn:not(.handlerMore)').forEach(b => b.onclick = e => {
+            e.stopPropagation();
+            activeRow = b.closest('.task-row');
+            const r = b.getBoundingClientRect();
+            menu.style.left = Math.min(r.right - 155, window.innerWidth - 165) + 'px';
+            menu.style.top = Math.min(r.bottom + 4, window.innerHeight - 80) + 'px';
+            menu.classList.add('open');
+        });
+        document.getElementById('markDone').onclick = e => {
+            e.stopPropagation();
+            menu.classList.remove('open');
+            if (activeRow) {
+                const status = activeRow.querySelector('.status-tag');
+                status.className = 'status-tag status-done';
+                status.textContent = 'Done';
+            }
+            showToast('Task marked Done.');
+        };
+
+        document.getElementById('findFlights').onclick = () => { const flights = [['VN134', 'HAN → SGN', '13:20', '15:20', 'VN-A861'], ['VN202', 'DAD → SGN', '14:10', '16:05', 'VN-A359'], ['VN206', 'BKK → SGN', '14:25', '16:45', 'VN-A350'], ['VN224', 'SIN → SGN', '15:00', '17:15', 'VN-A321'], ['VN248', 'PVG → SGN', '15:40', '18:10', 'VN-A870'], ['VN252', 'KUL → SGN', '16:00', '19:00', 'VN-A330'], ['VN126', 'HAN → SGN', '16:10', '18:15', 'VN-A871'], ['VN216', 'DAD → SGN', '16:20', '18:25', 'VN-A320'], ['VN288', 'HKG → SGN', '16:45', '19:10', 'VN-A359'], ['VN290', 'ICN → SGN', '17:00', '19:25', 'VN-A330']]; document.getElementById('foundBadge').textContent = '12 found'; document.getElementById('resultCountBadge').textContent = '12 included'; document.getElementById('manualResults').className = ''; document.getElementById('manualResults').innerHTML = `<div class="flight-select-toolbar"><label class="select-all-control"><input id="selectAllFlights" type="checkbox" checked> Select all</label><button class="link-btn" id="deselectAllFlights"><i data-lucide="circle-off"></i>Deselect all</button></div><table class="flight-table included-table"><thead><tr><th style="width:70px">Included</th><th>FLT NO</th><th>ROUTE</th><th>ETD (UTC)</th><th>ETA (UTC)</th><th>AC REG</th></tr></thead><tbody>${flights.map((r, i) => `<tr><td><label class="toggle"><input class="flightInclude" type="checkbox" checked><span></span></label></td><td><strong>${r[0]}</strong></td><td><span class="route">${r[1]}</span></td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}</tbody></table><div class="pager smart-pager"><span>Rows per page: <strong>10</strong></span><span>1–10 of 12 &nbsp;&nbsp; ‹ &nbsp;<b class="page-active">1</b>&nbsp; 2 &nbsp;›</span></div>`; lucide.createIcons(); const update = () => { const all = [...document.querySelectorAll('.flightInclude')], n = all.filter(x => x.checked).length; document.getElementById('resultCountBadge').textContent = n + ' included'; document.getElementById('selectAllFlights').checked = n === all.length; document.getElementById('selectAllFlights').indeterminate = n > 0 && n < all.length }; document.querySelectorAll('.flightInclude').forEach(x => x.onchange = update); document.getElementById('selectAllFlights').onchange = e => { document.querySelectorAll('.flightInclude').forEach(x => x.checked = e.target.checked); update() }; document.getElementById('deselectAllFlights').onclick = () => { document.querySelectorAll('.flightInclude').forEach(x => x.checked = false); update() } };
+
+
+        function refreshCompletion() {
+            const handlers = [...document.querySelectorAll('#handlerList .handler')];
+            const done = handlers.filter(h => h.classList.contains('done')).length;
+            document.getElementById('completionText').textContent = `${done}/${handlers.length} completed · Task auto Done when all parties are Done`;
+            if (done === handlers.length) {
+                const st = document.getElementById('taskDetailStatus'); st.textContent = 'Done'; st.style.color = '#72dda6';
+            }
+        }
+        function addActivityEntry(party, text, kind = 'Note') {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const all = document.querySelector('#allActivityView .activity');
+            all.insertAdjacentHTML('afterbegin', `<div class="activity-item"><div class="activity-time">${time} · Current User <span class="party-label">${party}</span><span class="activity-kind">${kind}</span></div><div>${text}</div></div>`);
+            let group = [...document.querySelectorAll('[data-note-party]')].find(g => g.dataset.noteParty === party);
+            if (!group) {
+                document.getElementById('byPartyView').insertAdjacentHTML('beforeend', `<div class="note-group open" data-note-party="${party}"><div class="note-group-head"><div><strong>${party}</strong><div class="note-sub">Updated just now</div></div><span class="note-badge">0</span></div><div class="note-group-body"><div class="activity"></div></div></div>`);
+                group = [...document.querySelectorAll('[data-note-party]')].find(g => g.dataset.noteParty === party);
+                bindNoteGroups();
+            }
+            group.querySelector('.activity').insertAdjacentHTML('afterbegin', `<div class="activity-item"><div class="activity-time">${time} · Current User <span class="activity-kind">${kind}</span></div><div>${text}</div></div>`);
+            const badge = group.querySelector('.note-badge'); badge.textContent = Number(badge.textContent || 0) + 1;
+            group.classList.add('open');
+            const total = document.querySelectorAll('#allActivityView .activity-item').length;
+            const groups = document.querySelectorAll('[data-note-party]').length;
+            document.getElementById('noteSummary').textContent = `${groups} parties · ${total} updates`;
+        }
+        function bindHandlerMenus() {
+            document.querySelectorAll('.handlerMore').forEach(b => b.onclick = e => { e.stopPropagation(); document.querySelectorAll('.handler-actions').forEach(x => x !== b.closest('.handler-actions') && x.classList.remove('open')); b.closest('.handler-actions').classList.toggle('open') });
+            document.querySelectorAll('.doneWork').forEach(b => b.onclick = e => {
+                e.stopPropagation(); const h = b.closest('.handler'); const party = h.dataset.party;
+                h.className = 'handler done'; h.querySelector('.handler-step').textContent = '✓'; h.querySelector('.state').className = 'state done'; h.querySelector('.state').textContent = 'Done'; h.querySelector('.handler-meta').textContent = 'Completed just now · Note saved in Activity';
+                h.querySelector('.handler-actions')?.remove(); addActivityEntry(party, `${party} marked assigned work as Done.`, 'Status'); refreshCompletion(); showToast('Assigned work marked Done.'); lucide.createIcons();
+            });
+        }
+        function bindNoteGroups() { document.querySelectorAll('.note-group-head').forEach(h => h.onclick = () => h.closest('.note-group').classList.toggle('open')) }
+        bindHandlerMenus(); bindNoteGroups(); refreshCompletion();
+        const byPartyTab = document.getElementById('byPartyTab'), allActivityTab = document.getElementById('allActivityTab'), byPartyView = document.getElementById('byPartyView'), allActivityView = document.getElementById('allActivityView');
+        byPartyTab.onclick = () => { byPartyTab.classList.add('active'); allActivityTab.classList.remove('active'); byPartyView.classList.remove('hidden'); allActivityView.classList.add('hidden') };
+        allActivityTab.onclick = () => { allActivityTab.classList.add('active'); byPartyTab.classList.remove('active'); allActivityView.classList.remove('hidden'); byPartyView.classList.add('hidden') };
+        const noteModal = document.getElementById('noteModal'), noteInput = document.getElementById('noteInput');
+        document.getElementById('addNote').onclick = () => { noteInput.value = ''; document.getElementById('noteChars').textContent = '0'; noteModal.classList.add('show'); noteInput.focus() };
+        function closeNote() { noteModal.classList.remove('show') }
+        document.getElementById('closeNoteModal').onclick = closeNote; document.getElementById('cancelNote').onclick = closeNote; noteModal.onclick = e => { if (e.target === noteModal) closeNote() }; noteInput.oninput = () => document.getElementById('noteChars').textContent = noteInput.value.length;
+        document.getElementById('saveNote').onclick = () => { const text = noteInput.value.trim(); if (!text) { alert('Please enter a note.'); return } const party = document.getElementById('notePartySelect').value; addActivityEntry(party, text); closeNote(); showToast('Note added successfully.'); allActivityTab.click() };
+        function showToast(t) { const x = document.getElementById('toast'); x.textContent = t; x.classList.add('show'); setTimeout(() => x.classList.remove('show'), 1800) } document.getElementById('submitAlertTask').onclick = () => { document.getElementById('alertTaskForm').classList.add('hidden'); showToast('Task created from alert successfully.') }; document.getElementById('submitManual').onclick = () => { closeAll(); showToast('Manual task created successfully.') };
+    </script>
+</body>
+
+</html>
