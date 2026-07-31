@@ -1814,158 +1814,84 @@
         .daily-notes-strip {
             grid-column: 1/-1;
             border: 1px solid var(--line);
-            background: linear-gradient(180deg, #0d1d2d, #0a1725);
+            background: #0c1928;
             border-radius: 6px;
-            overflow: hidden
-        }
-
-        .daily-notes-head {
-            height: 40px;
-            padding: 0 12px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--line)
+            padding: 0 10px;
+            cursor: pointer;
+            transition: .15s
         }
 
-        .daily-notes-head h3 {
-            margin: 0;
+        .daily-notes-strip:hover {
+            border-color: #46647e;
+            background: #102236
+        }
+
+        .daily-notes-summary {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px
+            min-width: 0
         }
 
-        .daily-notes-head small {
-            color: var(--muted);
-            font-weight: 400
-        }
-
-        .daily-view-all {
-            border: 0;
-            background: transparent;
-            color: #73d7e8;
-            font-weight: 700;
-            cursor: pointer
-        }
-
-        .daily-note-cards {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 8px;
-            padding: 9px
-        }
-
-        .daily-note-card {
-            position: relative;
-            min-height: 82px;
-            border: 1px solid #2a4057;
-            background: #102033;
+        .daily-notes-icon {
+            width: 26px;
+            height: 26px;
             border-radius: 6px;
-            padding: 10px 11px 9px 48px;
-            cursor: pointer;
-            transition: .15s;
-            overflow: hidden
-        }
-
-        .daily-note-card:hover {
-            transform: translateY(-1px);
-            border-color: #4b6a87;
-            background: #12263a
-        }
-
-        .daily-note-card:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--amber)
-        }
-
-        .daily-note-card.apu:before {
-            background: var(--red)
-        }
-
-        .daily-note-card.weather:before {
-            background: var(--blue)
-        }
-
-        .daily-note-card.vip:before {
-            background: var(--violet)
-        }
-
-        .daily-note-icon {
-            position: absolute;
-            left: 11px;
-            top: 13px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
             display: grid;
             place-items: center;
-            border: 1px solid #455d75;
-            background: #14283b
+            background: #123140;
+            border: 1px solid #2e6070;
+            color: #73d7e8;
+            flex: none
         }
 
-        .daily-note-icon i {
-            width: 15px
+        .daily-notes-icon i {
+            width: 14px
         }
 
-        .daily-note-card.apu .daily-note-icon {
-            color: #ff8e97;
-            border-color: #6a3540;
-            background: #34212a
+        .daily-notes-copy {
+            min-width: 0
         }
 
-        .daily-note-card.weather .daily-note-icon {
-            color: #80c4ff;
-            border-color: #315a7a;
-            background: #172d43
-        }
-
-        .daily-note-card.vip .daily-note-icon {
-            color: #d0bbff;
-            border-color: #574873;
-            background: #2d2440
-        }
-
-        .daily-note-title {
+        .daily-notes-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
             font-weight: 800
         }
 
-        .daily-note-main {
+        .daily-notes-desc,
+        .daily-notes-kinds {
+            display: none
+        }
+
+        .daily-view-all {
+            height: 26px;
+            border: 0;
+            background: transparent;
+            color: #8fd8e6;
+            border-radius: 4px;
+            padding: 0 6px;
+            font-weight: 700;
+            cursor: pointer;
             display: flex;
-            align-items: baseline;
-            gap: 7px;
-            margin-top: 4px
+            align-items: center;
+            gap: 4px;
+            flex: none
         }
 
-        .daily-note-main strong {
-            font-size: 22px
+        .daily-view-all:hover {
+            background: #123140;
+            color: #dffaff
         }
 
-        .daily-note-main span {
-            font-size: 10px;
-            color: var(--muted)
-        }
-
-        .daily-note-sub {
-            color: #a9bdcf;
-            font-size: 10px;
-            margin-top: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis
-        }
-
-        .daily-note-updated {
-            margin-top: 7px;
-            padding-top: 6px;
-            border-top: 1px solid #24384d;
-            color: #8298ac;
-            font-size: 9px
+        .daily-view-all i {
+            width: 13px
         }
 
         .daily-drawer {
@@ -1973,27 +1899,61 @@
             min-width: 650px
         }
 
-        .daily-filter-tabs {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            margin-bottom: 10px
+        .daily-filter-toolbar {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid var(--line);
+            background: #0d1a29;
+            border-radius: 6px
         }
 
-        .daily-filter-tab {
-            height: 28px;
+        .daily-search-wrap {
+            position: relative
+        }
+
+        .daily-search-wrap i {
+            position: absolute;
+            left: 9px;
+            top: 8px;
+            width: 14px;
+            color: #7891a8
+        }
+
+        .daily-filter-control {
+            width: 100%;
+            height: 32px;
             border: 1px solid #344b62;
             background: #132438;
-            color: #9fb3c5;
-            border-radius: 14px;
-            padding: 0 10px;
-            cursor: pointer
+            color: #dce9f4;
+            border-radius: 4px;
+            padding: 0 9px
         }
 
-        .daily-filter-tab.active {
-            background: #0d4354;
-            border-color: #17758b;
-            color: #dffaff
+        .daily-search-wrap .daily-filter-control {
+            padding-left: 30px
+        }
+
+        .daily-filter-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 0 2px 9px;
+            color: #91a6ba;
+            font-size: 10px
+        }
+
+        .daily-filter-summary strong {
+            color: #dce9f4
+        }
+
+        .daily-clear-filter {
+            border: 0;
+            background: transparent;
+            color: #75d7e7;
+            cursor: pointer;
+            padding: 0
         }
 
         .daily-note-list {
@@ -2050,9 +2010,13 @@
         }
 
         .daily-empty {
+            display: none;
             padding: 28px;
             text-align: center;
-            color: var(--muted)
+            color: var(--muted);
+            border: 1px dashed #344b62;
+            border-radius: 6px;
+            background: #0d1a29
         }
 
         @media(max-width:1100px) {
@@ -2081,42 +2045,16 @@
                     Logs</button><button class="tab">Daily Report</button></div>
             <div class="workspace">
 
-                <section class="daily-notes-strip">
-                    <div class="daily-notes-head">
-                        <h3><i data-lucide="notebook-tabs"></i>Daily Notes <small>Key operational notes for
-                                today</small></h3><button class="daily-view-all" id="viewDailyNotes">View all notes
-                            →</button>
+                <section class="daily-notes-strip" id="dailyNotesEntry" role="button" tabindex="0"
+                    aria-label="Open Daily Notes">
+                    <div class="daily-notes-summary">
+                        <div class="daily-notes-icon"><i data-lucide="notebook-tabs"></i></div>
+                        <div class="daily-notes-copy">
+                            <div class="daily-notes-title">Daily Notes <span class="count">10</span></div>
+                        </div>
                     </div>
-                    <div class="daily-note-cards">
-                        <article class="daily-note-card apu" data-note-type="apu">
-                            <div class="daily-note-icon"><i data-lucide="plane"></i></div>
-                            <div class="daily-note-title">APU INOP Aircraft</div>
-                            <div class="daily-note-main"><strong>03</strong><span>active notes</span></div>
-                            <div class="daily-note-sub">2 aircraft · 5 affected flights</div>
-                            <div class="daily-note-updated">Updated 14:20 UTC</div>
-                        </article>
-                        <article class="daily-note-card" data-note-type="ground">
-                            <div class="daily-note-icon"><i data-lucide="wrench"></i></div>
-                            <div class="daily-note-title">Ground Support Unavailable</div>
-                            <div class="daily-note-main"><strong>02</strong><span>airports</span></div>
-                            <div class="daily-note-sub">DIN: GPU/ASU · VCL: GPU</div>
-                            <div class="daily-note-updated">Updated 13:45 UTC</div>
-                        </article>
-                        <article class="daily-note-card weather" data-note-type="weather">
-                            <div class="daily-note-icon"><i data-lucide="cloud-lightning"></i></div>
-                            <div class="daily-note-title">Weather Conditions</div>
-                            <div class="daily-note-main"><strong>04</strong><span>active areas</span></div>
-                            <div class="daily-note-sub">SGN · HAN · DAD</div>
-                            <div class="daily-note-updated">Updated 14:10 UTC</div>
-                        </article>
-                        <article class="daily-note-card vip" data-note-type="vip">
-                            <div class="daily-note-icon"><i data-lucide="badge-check"></i></div>
-                            <div class="daily-note-title">VIP/CIP Flights</div>
-                            <div class="daily-note-main"><strong>01</strong><span>flight</span></div>
-                            <div class="daily-note-sub">VN221 · HAN → SGN</div>
-                            <div class="daily-note-updated">Updated 12:20 UTC</div>
-                        </article>
-                    </div>
+                    <button class="daily-view-all" id="viewDailyNotes"><span>View Notes</span><i
+                            data-lucide="chevron-right"></i></button>
                 </section>
 
                 <section class="block">
@@ -2376,11 +2314,12 @@
             </div><button class="btn closeDailyNotes"><i data-lucide="x"></i>Close</button>
         </div>
         <div class="drawer-body">
-            <div class="daily-filter-tabs"><button class="daily-filter-tab active" data-daily-filter="all">All
-                    (10)</button><button class="daily-filter-tab" data-daily-filter="apu">APU INOP (3)</button><button
-                    class="daily-filter-tab" data-daily-filter="ground">Ground Support (2)</button><button
-                    class="daily-filter-tab" data-daily-filter="weather">Weather (4)</button><button
-                    class="daily-filter-tab" data-daily-filter="vip">VIP/CIP (1)</button></div>
+            <div class="daily-filter-toolbar">
+                <div class="daily-search-wrap"><i data-lucide="search"></i><input class="daily-filter-control"
+                        id="dailyNoteSearch" placeholder="Search title, flight, airport..."></div>
+            </div>
+            <div class="daily-filter-summary"><span><strong id="dailyVisibleCount">5</strong> notes shown</span><button
+                    class="daily-clear-filter" id="clearDailyFilters">Clear filters</button></div>
             <div class="daily-note-list" id="dailyNoteList">
                 <div class="daily-detail-card" data-daily-kind="apu">
                     <div class="daily-detail-top">
@@ -2428,6 +2367,10 @@
                     <div class="daily-detail-meta"><span class="chip"><i data-lucide="plane"></i>VN221</span><span
                             class="chip"><i data-lucide="route"></i>HAN → SGN</span><span class="chip"><i
                                 data-lucide="clock-3"></i>13:40–15:20 UTC</span></div>
+                </div>
+                <div class="daily-empty" id="dailyEmptyState"><i data-lucide="search-x"></i>
+                    <div style="margin-top:7px;font-weight:700">No matching notes</div>
+                    <div style="margin-top:4px">Try another keyword, type, or date range.</div>
                 </div>
             </div>
         </div>
@@ -2940,15 +2883,32 @@
         function openDrawer(d) { overlay.classList.add('show'); d.classList.add('show') } function closeAll() { overlay.classList.remove('show'); document.querySelectorAll('.drawer').forEach(x => x.classList.remove('show')); menu.classList.remove('open') } document.querySelectorAll('.closeDrawer').forEach(b => b.onclick = closeAll); overlay.onclick = closeAll;
 
         const dailyNotesDrawer = document.getElementById('dailyNotesDrawer');
-        function openDailyNotes(filter = 'all') {
-            document.querySelectorAll('.daily-filter-tab').forEach(b => b.classList.toggle('active', b.dataset.dailyFilter === filter));
-            document.querySelectorAll('[data-daily-kind]').forEach(c => c.style.display = (filter === 'all' || c.dataset.dailyKind === filter) ? 'block' : 'none');
+        const dailyNoteSearch = document.getElementById('dailyNoteSearch');
+        const dailyVisibleCount = document.getElementById('dailyVisibleCount');
+        const dailyEmptyState = document.getElementById('dailyEmptyState');
+        function applyDailyNoteFilters() {
+            const keyword = (dailyNoteSearch.value || '').trim().toLowerCase();
+            let visible = 0;
+            document.querySelectorAll('[data-daily-kind]').forEach(card => {
+                const matchesText = !keyword || card.textContent.toLowerCase().includes(keyword);
+                const show = matchesText;
+                card.style.display = show ? 'block' : 'none';
+                if (show) visible++;
+            });
+            dailyVisibleCount.textContent = visible;
+            dailyEmptyState.style.display = visible ? 'none' : 'block';
+        }
+        function openDailyNotes() {
+            applyDailyNoteFilters();
             openDrawer(dailyNotesDrawer);
         }
-        document.getElementById('viewDailyNotes').onclick = () => openDailyNotes('all');
-        document.querySelectorAll('.daily-note-card').forEach(c => c.onclick = () => openDailyNotes(c.dataset.noteType));
+        document.getElementById('viewDailyNotes').onclick = (e) => { e.stopPropagation(); openDailyNotes() };
+        const dailyNotesEntry = document.getElementById('dailyNotesEntry');
+        dailyNotesEntry.onclick = () => openDailyNotes();
+        dailyNotesEntry.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDailyNotes() } };
         document.querySelectorAll('.closeDailyNotes').forEach(b => b.onclick = closeAll);
-        document.querySelectorAll('.daily-filter-tab').forEach(b => b.onclick = () => openDailyNotes(b.dataset.dailyFilter));
+        dailyNoteSearch.oninput = applyDailyNoteFilters;
+        document.getElementById('clearDailyFilters').onclick = () => { dailyNoteSearch.value = ''; applyDailyNoteFilters() };
 
         document.querySelectorAll('.alert').forEach(a => a.onclick = () => openDrawer(alertDrawer)); document.getElementById('manualBtn').onclick = () => openDrawer(manualDrawer);
         document.getElementById('createFromAlert').onclick = () => { document.getElementById('alertTaskForm').classList.remove('hidden'); document.getElementById('alertTaskForm').scrollIntoView({ behavior: 'smooth', block: 'start' }) }; document.getElementById('collapseForm').onclick = () => document.getElementById('alertTaskForm').classList.add('hidden'); document.getElementById('cancelAlertTask').onclick = () => document.getElementById('alertTaskForm').classList.add('hidden');
