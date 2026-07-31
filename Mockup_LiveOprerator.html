@@ -1183,21 +1183,99 @@
             margin-bottom: 4px
         }
 
+
         .toast {
             position: fixed;
             right: 18px;
             bottom: 18px;
-            background: #153a2d;
-            border: 1px solid #2f8b67;
-            padding: 11px 14px;
-            border-radius: 4px;
+            background: rgba(82, 82, 82, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 14px;
+            border-radius: 8px;
             display: none;
-            z-index: 100
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 320px;
         }
 
         .toast.show {
-            display: block
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideInToast 0.3s ease-out forwards;
         }
+
+        @keyframes slideInToast {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .toast-icon i {
+            width: 14px;
+            height: 14px;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .toast-desc {
+            color: #d1d5db;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .toast-desc a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .toast-desc a:hover {
+            text-decoration: underline;
+        }
+
+        .toast-close {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            margin-left: 8px;
+        }
+
+        .toast-close:hover {
+            color: #f3f4f6;
+        }
+
 
         .hidden {
             display: none !important
@@ -2022,6 +2100,18 @@
         @media(max-width:1100px) {
             .daily-note-cards {
                 grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -2880,7 +2970,17 @@
     <script>
         lucide.createIcons();
         const overlay = document.getElementById('overlay'), alertDrawer = document.getElementById('alertDrawer'), manualDrawer = document.getElementById('manualDrawer'), taskDrawer = document.getElementById('taskDrawer'), menu = document.getElementById('menu'); let activeRow = null;
-        function openDrawer(d) { overlay.classList.add('show'); d.classList.add('show') } function closeAll() { overlay.classList.remove('show'); document.querySelectorAll('.drawer').forEach(x => x.classList.remove('show')); menu.classList.remove('open') } document.querySelectorAll('.closeDrawer').forEach(b => b.onclick = closeAll); overlay.onclick = closeAll;
+        let autoAlertTimer = null;
+        function openDrawer(d) {
+            overlay.classList.add('show');
+            d.classList.add('show');
+            clearTimeout(autoAlertTimer);
+            autoAlertTimer = setTimeout(() => {
+                if (typeof triggerSimulateAlert === 'function') {
+                    triggerSimulateAlert();
+                }
+            }, 2500);
+        } function closeAll() { overlay.classList.remove('show'); document.querySelectorAll('.drawer').forEach(x => x.classList.remove('show')); menu.classList.remove('open') } document.querySelectorAll('.closeDrawer').forEach(b => b.onclick = closeAll); overlay.onclick = closeAll;
 
         const dailyNotesDrawer = document.getElementById('dailyNotesDrawer');
         const dailyNoteSearch = document.getElementById('dailyNoteSearch');
@@ -2993,7 +3093,94 @@
         function closeNote() { noteModal.classList.remove('show') }
         document.getElementById('closeNoteModal').onclick = closeNote; document.getElementById('cancelNote').onclick = closeNote; noteModal.onclick = e => { if (e.target === noteModal) closeNote() }; noteInput.oninput = () => document.getElementById('noteChars').textContent = noteInput.value.length;
         document.getElementById('saveNote').onclick = () => { const text = noteInput.value.trim(); if (!text) { alert('Please enter a note.'); return } const party = document.getElementById('notePartySelect').value; addActivityEntry(party, text); closeNote(); showToast('Note added successfully.'); allActivityTab.click() };
-        function showToast(t) { const x = document.getElementById('toast'); x.textContent = t; x.classList.add('show'); setTimeout(() => x.classList.remove('show'), 1800) } document.getElementById('submitAlertTask').onclick = () => { document.getElementById('alertTaskForm').classList.add('hidden'); showToast('Task created from alert successfully.') }; document.getElementById('submitManual').onclick = () => { closeAll(); showToast('Manual task created successfully.') };
+        function showToast(title, desc = '') {
+            const x = document.getElementById('toast');
+            let descHTML = desc ? `<div class="toast-desc">${desc}</div>` : '';
+            x.innerHTML = `
+                <div class="toast-icon"><i data-lucide="check"></i></div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    ${descHTML}
+                </div>
+                <button class="toast-close" onclick="document.getElementById('toast').classList.remove('show')"><i data-lucide="x" style="width:14px"></i></button>
+            `;
+            x.classList.add('show');
+            lucide.createIcons();
+            if (x.hideTimeout) clearTimeout(x.hideTimeout);
+            x.hideTimeout = setTimeout(() => x.classList.remove('show'), 4000);
+        } document.getElementById('submitAlertTask').onclick = () => { document.getElementById('alertTaskForm').classList.add('hidden'); showToast('Task created from alert successfully.') }; document.getElementById('submitManual').onclick = () => { closeAll(); showToast('Manual task created successfully.') };
+
+        const sampleAlerts = [
+            {
+                levelClass: 'critical',
+                levelText: 'Critical',
+                icon: '<i data-lucide="battery-warning"></i>',
+                title: 'No GPU/ASU Support at DAD for 2 APU INOP Flights',
+                desc: '2 APU INOP flights are scheduled to arrive at DAD. GPU/ASU support is currently unavailable.',
+                tags: '<span class="chip"><i data-lucide="map-pin"></i>DAD</span><span class="chip"><i data-lucide="plane"></i>2 Flights</span><span class="chip"><i data-lucide="clock-3"></i>11:00–14:00 UTC</span>',
+                timeInfo: '<strong>Just now</strong>'
+            },
+            {
+                levelClass: 'high',
+                levelText: 'High',
+                icon: '<i data-lucide="cloud-lightning"></i>',
+                title: 'Heavy Rain at HAN – 12 Flights Affected',
+                desc: 'Forecast: Heavy Rain at HAN from 08:00–12:30 UTC.',
+                tags: '<span class="chip"><i data-lucide="map-pin"></i>HAN</span><span class="chip"><i data-lucide="plane"></i>12 Flights</span><span class="chip"><i data-lucide="clock-3"></i>08:00–12:30 UTC</span>',
+                timeInfo: '<strong>Just now</strong>'
+            },
+            {
+                levelClass: 'vip',
+                levelText: 'VIP',
+                icon: '<i data-lucide="badge-check"></i>',
+                title: 'VIP/CIP Passenger on Flight VN555',
+                desc: 'Flight VN555 is carrying VIP/CIP passengers on the SGN-PQC route.',
+                tags: '<span class="chip"><i data-lucide="plane"></i>VN555</span><span class="chip"><i data-lucide="route"></i>SGN → PQC</span><span class="chip"><i data-lucide="clock-3"></i>09:00–10:15 UTC</span>',
+                timeInfo: '<strong>Just now</strong>'
+            }
+        ];
+
+        let alertToggle = 0;
+        function triggerSimulateAlert() {
+            const data = sampleAlerts[alertToggle % sampleAlerts.length];
+            alertToggle++;
+
+            const newAlertHTML = `
+                <article class="alert ${data.levelClass}" style="animation: slideIn 0.3s ease-out; cursor: pointer;">
+                    <div class="alert-icon"><span>${data.icon}</span></div>
+                    <div class="alert-content">
+                        <div class="alert-top">
+                            <div class="alert-title">${data.title}</div>
+                            <span class="level ${data.levelClass}">${data.levelText}</span>
+                        </div>
+                        <div class="alert-desc">${data.desc}</div>
+                        <div class="meta">
+                            ${data.tags}
+                            <span class="ago">${data.timeInfo}</span>
+                        </div>
+                    </div>
+                </article>
+            `;
+
+            const alertList = document.querySelector('.alert-list');
+            if (alertList) {
+                alertList.insertAdjacentHTML('afterbegin', newAlertHTML);
+                lucide.createIcons();
+
+                // Also update badge if it exists
+                const badge = document.querySelector('.head h3 .count');
+                if (badge) {
+                    badge.textContent = parseInt(badge.textContent || '0') + 1;
+                }
+
+                // Add click handler to the newly created alert
+                const newAlert = alertList.firstElementChild;
+                newAlert.onclick = () => openDrawer(document.getElementById('alertDrawer'));
+
+                showToast('Realtime Alert generated', 'You have a new real-time alert: <a href="#">' + data.title + '</a>');
+            }
+        }
+
     </script>
 </body>
 
