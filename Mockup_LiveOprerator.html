@@ -3165,7 +3165,7 @@
 
             const alertList = document.querySelector('.alert-list');
             if (alertList) {
-                alertList.insertAdjacentHTML('afterbegin', newAlertHTML);
+                alertList.insertAdjacentHTML('beforeend', newAlertHTML);
                 lucide.createIcons();
 
                 // Also update badge if it exists
@@ -3175,7 +3175,7 @@
                 }
 
                 // Add click handler to the newly created alert
-                const newAlert = alertList.firstElementChild;
+                const newAlert = alertList.lastElementChild;
                 newAlert.onclick = () => openDrawer(document.getElementById('alertDrawer'));
 
                 showToast('Realtime Alert generated', 'You have a new real-time alert: <a href="#" onclick="openDrawer(document.getElementById(\'alertDrawer\')); document.getElementById(\'toast\').classList.remove(\'show\'); return false;">' + data.title + '</a>');
