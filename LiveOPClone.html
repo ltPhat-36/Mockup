@@ -50,8 +50,7 @@
         .app {
             height: 100vh;
             display: grid;
-            grid-template-columns: 176px 1fr;
-            overflow: hidden;
+            grid-template-columns: 176px 1fr
         }
 
         .sidebar {
@@ -94,8 +93,7 @@
         .main {
             min-width: 0;
             display: flex;
-            flex-direction: column;
-            min-height: 0;
+            flex-direction: column
         }
 
         .top {
@@ -103,8 +101,7 @@
             border-bottom: 1px solid var(--line);
             display: flex;
             align-items: center;
-            padding: 0 14px;
-            flex-shrink: 0;
+            padding: 0 14px
         }
 
         .module {
@@ -141,14 +138,12 @@
             min-height: 0;
             display: grid;
             grid-template-columns: 34% 66%;
-            grid-template-rows: auto 1fr;
             gap: 10px;
             padding: 10px
         }
 
         .block {
             min-width: 0;
-            min-height: 0;
             border: 1px solid var(--line);
             background: var(--panel);
             display: flex;
@@ -252,9 +247,9 @@
             border: 1px solid var(--line2);
             background: #0e1c2b;
             display: grid;
-            grid-template-columns: 64px 1fr;
+            grid-template-columns: 44px 1fr;
             cursor: pointer;
-            min-height: 160px;
+            min-height: 105px
         }
 
         .alert:before {
@@ -279,56 +274,32 @@
             display: grid;
             place-items: center;
             border-right: 1px solid var(--line2);
-            margin-left: 4px;
+            margin-left: 4px
         }
 
         .alert-icon span {
-            width: 42px;
-            height: 42px;
+            width: 31px;
+            height: 31px;
             border: 1px solid #405870;
             border-radius: 8px;
             display: grid;
-            place-items: center;
-        }
-
-        .alert-icon span i {
-            width: 20px;
-            height: 20px;
+            place-items: center
         }
 
         .critical .alert-icon span {
-            width: 42px;
-            height: 42px;
-            border: 1px solid #405870;
-            border-radius: 8px;
-            display: grid;
-            place-items: center;
-        }
-
-        .alert-icon span i {
-            width: 20px;
-            height: 20px;
+            color: #ff9299;
+            background: #342029;
+            border-color: #68303a
         }
 
         .vip .alert-icon span {
-            width: 42px;
-            height: 42px;
-            border: 1px solid #405870;
-            border-radius: 8px;
-            display: grid;
-            place-items: center;
-        }
-
-        .alert-icon span i {
-            width: 20px;
-            height: 20px;
+            color: #cfb9ff;
+            background: #2d2440;
+            border-color: #554574
         }
 
         .alert-content {
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 9px 10px
         }
 
         .alert-top {
@@ -340,18 +311,17 @@
 
         .alert-title {
             font-weight: 800;
-            line-height: 1.4;
-            font-size: 15px;
+            line-height: 1.35
         }
 
         .level {
-            height: 22px;
-            padding: 0 8px;
-            border-radius: 11px;
+            height: 18px;
+            padding: 0 6px;
+            border-radius: 9px;
             display: inline-flex;
             align-items: center;
-            font-size: 11px;
-            font-weight: 800;
+            font-size: 9px;
+            font-weight: 800
         }
 
         .level.critical {
@@ -370,36 +340,29 @@
         }
 
         .alert-desc {
-            color: var(--muted);
-            line-height: 1.5;
-            margin: 12px 0 16px 0;
-            font-size: 13px;
+            color: #a9bbcc;
+            margin-top: 5px;
+            line-height: 1.35
         }
 
         .meta {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-top: auto;
+            margin-top: 7px
         }
 
         .chip {
-            background: #112236;
-            border: 1px solid var(--line);
-            height: 26px;
-            padding: 0 8px;
+            height: 21px;
+            padding: 0 7px;
+            border: 1px solid #31485f;
+            background: #132337;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .chip i {
-            width: 14px;
-            height: 14px;
+            gap: 4px;
+            font-size: 9px;
+            border-radius: 3px
         }
 
         .chip i {
@@ -777,72 +740,46 @@
             border: 1px solid #5b2d35;
             background: linear-gradient(90deg, #241923, #101b2a);
             display: grid;
-            grid-template-columns: 72px 1fr auto;
-            gap: 20px;
+            grid-template-columns: 54px 1fr auto;
+            gap: 13px;
             align-items: center;
-            padding: 24px;
-            margin-bottom: 16px;
+            padding: 14px;
+            margin-bottom: 11px
         }
 
         .hero-alert {
-            width: 64px;
-            height: 64px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: #4b2028;
             border: 1px solid #a63d49;
             color: #ff858e;
             display: grid;
-            place-items: center;
-        }
-
-        .hero-alert i {
-            width: 28px;
-            height: 28px;
+            place-items: center
         }
 
         .hero h2 {
-            font-size: 24px;
-            margin: 6px 0 0 0;
-            line-height: 1.3;
+            font-size: 19px;
+            margin: 0
         }
 
         .hero p {
-            margin: 12px 0 0;
+            margin: 7px 0 0;
             color: #c3d0dc;
-            line-height: 1.6;
-            font-size: 15px;
-            max-width: 100%;
+            line-height: 1.55;
+            max-width: 790px
         }
 
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(4, minmax(120px, 1fr));
-            gap: 16px;
-            margin-top: 24px;
+            gap: 8px;
+            margin-top: 12px
         }
 
         .stat {
             border-left: 1px solid #33485d;
-            padding-left: 16px;
-        }
-
-        .stat label {
-            display: block;
-            color: var(--muted);
-            margin-bottom: 6px;
-            font-size: 13px;
-        }
-
-        .stat strong {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 15px;
-        }
-
-        .stat strong i {
-            width: 16px;
-            height: 16px;
+            padding-left: 10px
         }
 
         .stat label {
@@ -1246,7 +1183,7 @@
             margin-bottom: 4px
         }
 
-
+        
         .toast {
             position: fixed;
             right: 18px;
@@ -1258,7 +1195,7 @@
             border-radius: 8px;
             display: none;
             z-index: 100;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             min-width: 320px;
         }
 
@@ -1270,15 +1207,8 @@
         }
 
         @keyframes slideInToast {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .toast-icon {
@@ -1334,7 +1264,7 @@
             display: flex;
             margin-left: 8px;
         }
-
+        
         .toast-close:hover {
             color: #f3f4f6;
         }
@@ -2165,63 +2095,12 @@
                 grid-template-columns: repeat(2, 1fr)
             }
         }
-
+    
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 36px;
-            height: 20px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #37506a;
-            transition: .3s;
-            border-radius: 20px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        .toggle-switch input:checked+.toggle-slider {
-            background-color: var(--green);
-        }
-
-        .toggle-switch input:checked+.toggle-slider:before {
-            transform: translateX(16px);
-        }
+        
     </style>
 </head>
 
@@ -2614,7 +2493,6 @@
                     <table class="flight-table">
                         <thead>
                             <tr>
-                                <th>Included</th>
                                 <th>FLT NO</th>
                                 <th>ROUTE</th>
                                 <th>ETD (UTC)</th>
@@ -2624,8 +2502,6 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><label class="toggle-switch"><input type="checkbox" checked><span
-                                            class="toggle-slider"></span></label></td>
                                 <td>VN225</td>
                                 <td><span class="route">HAN → DIN</span></td>
                                 <td>10:20</td>
@@ -2633,8 +2509,6 @@
                                 <td>VN-A612</td>
                             </tr>
                             <tr>
-                                <td><label class="toggle-switch"><input type="checkbox" checked><span
-                                            class="toggle-slider"></span></label></td>
                                 <td>VN218</td>
                                 <td><span class="route">SGN → DIN</span></td>
                                 <td>11:45</td>
@@ -2642,8 +2516,6 @@
                                 <td>VN-A359</td>
                             </tr>
                             <tr>
-                                <td><label class="toggle-switch"><input type="checkbox" checked><span
-                                            class="toggle-slider"></span></label></td>
                                 <td>VN551</td>
                                 <td><span class="route">BKK → DIN</span></td>
                                 <td>13:20</td>
@@ -2651,8 +2523,6 @@
                                 <td>VN-A350</td>
                             </tr>
                             <tr>
-                                <td><label class="toggle-switch"><input type="checkbox" checked><span
-                                            class="toggle-slider"></span></label></td>
                                 <td>VN222</td>
                                 <td><span class="route">SIN → DIN</span></td>
                                 <td>16:30</td>
@@ -2660,8 +2530,6 @@
                                 <td>VN-A321</td>
                             </tr>
                             <tr>
-                                <td><label class="toggle-switch"><input type="checkbox" checked><span
-                                            class="toggle-slider"></span></label></td>
                                 <td>VN226</td>
                                 <td><span class="route">DIN → HAN</span></td>
                                 <td>18:40</td>
@@ -2697,8 +2565,6 @@
                                 <option selected>Apply to all affected flights</option>
                                 <option>Set per flight</option>
                             </select></div>
-                        <div class="field full"><label>Note</label><textarea
-                                placeholder="Enter any additional notes here..."></textarea></div>
                     </div>
                     <div class="party-head">
                         <div><strong>Responsible Parties *</strong>
@@ -2812,6 +2678,9 @@
             <div class="section">
                 <div class="section-title">Responsible Parties</div>
                 <div class="section-body">
+                    <div class="form-grid" style="margin-bottom: 12px;">
+                        <div class="field full"><label>Note</label><textarea placeholder="Enter any additional notes here..."></textarea></div>
+                    </div>
                     <div class="party-head">
                         <div><strong>Responsible Parties *</strong>
                             <div class="sub">Select a party to enter its assignment reason.</div>
@@ -2834,9 +2703,7 @@
                     <p>Source: Alert AL-0135</p>
                 </div>
             </div>
-            <div class="drawer-tools"><button class="btn primary" id="taskDrawerMarkDone"><i
-                        data-lucide="check"></i>Mark Done</button><button class="btn closeDrawer"><i
-                        data-lucide="x"></i>Close</button></div>
+            <div class="drawer-tools"><button class="btn primary" id="taskDrawerMarkDone"><i data-lucide="check"></i>Mark Done</button><button class="btn closeDrawer"><i data-lucide="x"></i>Close</button></div>
         </div>
         <div class="drawer-body">
             <div class="role-banner"><i data-lucide="shield-check"></i>
@@ -3094,10 +2961,9 @@
         lucide.createIcons();
         const overlay = document.getElementById('overlay'), alertDrawer = document.getElementById('alertDrawer'), manualDrawer = document.getElementById('manualDrawer'), taskDrawer = document.getElementById('taskDrawer'), menu = document.getElementById('menu'); let activeRow = null;
         let autoAlertTimer = null;
-        function openDrawer(d) {
-            document.querySelectorAll('.drawer').forEach(x => x.classList.remove('show'));
-            overlay.classList.add('show');
-            d.classList.add('show');
+        function openDrawer(d) { 
+            overlay.classList.add('show'); 
+            d.classList.add('show'); 
             clearTimeout(autoAlertTimer);
             autoAlertTimer = setTimeout(() => {
                 if (typeof triggerSimulateAlert === 'function') {
@@ -3172,6 +3038,18 @@
             document.getElementById('taskDetailStatus').textContent = 'Done';
             showToast('Task marked Done.');
         };
+        document.getElementById('taskDrawerMarkDone').onclick = () => {
+            if (activeRow) {
+                const status = activeRow.querySelector('.status-tag');
+                if (status) {
+                    status.className = 'status-tag status-done';
+                    status.textContent = 'Done';
+                }
+            }
+            document.getElementById('taskDetailStatus').style.color = 'var(--green)';
+            document.getElementById('taskDetailStatus').textContent = 'Done';
+            showToast('Task marked Done.');
+        };
         document.getElementById('markDone').onclick = e => {
             e.stopPropagation();
             menu.classList.remove('open');
@@ -3229,8 +3107,8 @@
         function closeNote() { noteModal.classList.remove('show') }
         document.getElementById('closeNoteModal').onclick = closeNote; document.getElementById('cancelNote').onclick = closeNote; noteModal.onclick = e => { if (e.target === noteModal) closeNote() }; noteInput.oninput = () => document.getElementById('noteChars').textContent = noteInput.value.length;
         document.getElementById('saveNote').onclick = () => { const text = noteInput.value.trim(); if (!text) { alert('Please enter a note.'); return } const party = document.getElementById('notePartySelect').value; addActivityEntry(party, text); closeNote(); showToast('Note added successfully.'); allActivityTab.click() };
-        function showToast(title, desc = '') {
-            const x = document.getElementById('toast');
+        function showToast(title, desc = '') { 
+            const x = document.getElementById('toast'); 
             let descHTML = desc ? `<div class="toast-desc">${desc}</div>` : '';
             x.innerHTML = `
                 <div class="toast-icon"><i data-lucide="check"></i></div>
@@ -3240,12 +3118,12 @@
                 </div>
                 <button class="toast-close" onclick="document.getElementById('toast').classList.remove('show')"><i data-lucide="x" style="width:14px"></i></button>
             `;
-            x.classList.add('show');
+            x.classList.add('show'); 
             lucide.createIcons();
             if (x.hideTimeout) clearTimeout(x.hideTimeout);
             x.hideTimeout = setTimeout(() => x.classList.remove('show'), 4000);
         } document.getElementById('submitAlertTask').onclick = () => { document.getElementById('alertTaskForm').classList.add('hidden'); showToast('Task created from alert successfully.') }; document.getElementById('submitManual').onclick = () => { closeAll(); showToast('Manual task created successfully.') };
-
+    
         const sampleAlerts = [
             {
                 levelClass: 'critical',
@@ -3300,9 +3178,9 @@
 
             const alertList = document.querySelector('.alert-list');
             if (alertList) {
-                alertList.insertAdjacentHTML('beforeend', newAlertHTML);
+                alertList.insertAdjacentHTML('afterbegin', newAlertHTML);
                 lucide.createIcons();
-
+                
                 // Also update badge if it exists
                 const badge = document.querySelector('.head h3 .count');
                 if (badge) {
@@ -3310,11 +3188,10 @@
                 }
 
                 // Add click handler to the newly created alert
-                const newAlert = alertList.lastElementChild;
+                const newAlert = alertList.firstElementChild;
                 newAlert.onclick = () => openDrawer(document.getElementById('alertDrawer'));
 
-
-                showToast('Realtime Alert generated', 'You have a new real-time alert: <a href="#" onclick="openDrawer(document.getElementById(\'alertDrawer\')); document.getElementById(\'toast\').classList.remove(\'show\'); return false;">' + data.title + '</a>');
+                showToast('Realtime Alert generated', 'You have a new real-time alert: <a href="#">' + data.title + '</a>');
             }
         }
 
