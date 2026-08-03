@@ -2972,6 +2972,7 @@
         const overlay = document.getElementById('overlay'), alertDrawer = document.getElementById('alertDrawer'), manualDrawer = document.getElementById('manualDrawer'), taskDrawer = document.getElementById('taskDrawer'), menu = document.getElementById('menu'); let activeRow = null;
         let autoAlertTimer = null;
         function openDrawer(d) {
+            document.querySelectorAll('.drawer').forEach(x => x.classList.remove('show'));
             overlay.classList.add('show');
             d.classList.add('show');
             clearTimeout(autoAlertTimer);
