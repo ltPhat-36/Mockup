@@ -3177,7 +3177,7 @@
                 const newAlert = alertList.firstElementChild;
                 newAlert.onclick = () => openDrawer(document.getElementById('alertDrawer'));
 
-                showToast('Realtime Alert generated', 'You have a new real-time alert: <a href="#">' + data.title + '</a>');
+                showToast('Realtime Alert generated', 'You have a new real-time alert: <a href="#" onclick="openDrawer(document.getElementById(\'alertDrawer\')); document.getElementById(\'toast\').classList.remove(\'show\'); return false;">' + data.title + '</a>');
             }
         }
 
