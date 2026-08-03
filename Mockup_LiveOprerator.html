@@ -2608,9 +2608,64 @@
                     </div>
                 </div>
             </div>
-            <div class="section">
-                <div class="section-title">Affected Flights (5)</div>
-                <div class="section-body">
+            <div class="manual-flight-workspace">
+                <div class="flight-scope-panel">
+                    <div class="workspace-head">
+                        <div><strong>Flight Scope</strong>
+                            <div class="sub">Choose a time window and any relevant flight data.</div>
+                        </div><i data-lucide="sliders-horizontal"></i>
+                    </div>
+                    <div class="time-window-card">
+                        <div class="scope-field"><label class="req">From (UTC)</label><input type="datetime-local"
+                                value="2026-07-28T10:00"></div>
+                        <div class="time-arrow"><i data-lucide="arrow-right"></i></div>
+                        <div class="scope-field"><label class="req">To (UTC)</label><input type="datetime-local"
+                                value="2026-07-28T22:00"></div>
+                    </div>
+                    <div class="scope-filter-grid">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <div class="scope-field"><label><i data-lucide="plane-takeoff"></i>DEP</label><select id="alertScopeDep">
+                                        <option value="">Any</option>
+                                        <option>DIN</option>
+                                        <option>SGN</option>
+                                        <option>HAN</option>
+                                        <option>VCL</option>
+                                    </select></div>
+                                    <div class="scope-field"><label><i data-lucide="plane-landing"></i>ARR</label><select id="alertScopeArr">
+                                        <option value="">Any</option>
+                                        <option>DIN</option>
+                                        <option>SGN</option>
+                                        <option>HAN</option>
+                                        <option>VCL</option>
+                                    </select></div>
+                                </div>
+                        <div class="scope-field"><label><i data-lucide="plane"></i>Flight No.</label><select
+                                id="alertScopeFlight">
+                                <option value="">Any flight</option>
+                                <option>VN225</option>
+                                <option>VN218</option>
+                                <option>VN551</option>
+                            </select></div>
+                        <div class="scope-field"><label><i data-lucide="badge"></i>Aircraft</label><select
+                                id="alertScopeAircraft">
+                                <option value="">Any aircraft</option>
+                                <option>VN-A612</option>
+                                <option>VN-A359</option>
+                            </select></div>
+                    </div>
+                    <button class="btn primary scope-find-wide" id="alertFindFlights"><i
+                            data-lucide="search"></i>Preview Flights</button>
+                </div>
+                <div class="flight-result-panel">
+                    <div class="workspace-head">
+                        <div><strong>Affected Flights</strong>
+                            <div class="sub">Review the results and exclude only flights that should not be
+                                included.</div>
+                        </div>
+                        <div class="result-badges"><span class="result-count found-count">5 found</span><span
+                                class="result-count included-count">5 included</span></div>
+                    </div>
+
                     <table class="flight-table">
                         <thead>
                             <tr>
@@ -2670,8 +2725,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="pager"><span>Rows per page: 10</span><span>1–5 of 5</span></div>
+                    <div class="pager"><span>Rows per page: 10</span><span>1–5 of 5</span> </div>
                 </div>
+
             </div>
             <div class="task-form hidden" id="alertTaskForm">
                 <div class="section-title"><span>Create Task from Alert</span><button class="btn"
@@ -2697,9 +2753,16 @@
                                 <option selected>Apply to all affected flights</option>
                                 <option>Set per flight</option>
                             </select></div>
-                        <div class="field full"><label>Note</label><textarea
-                                placeholder="Enter any additional notes here..."></textarea></div>
                     </div>
+
+                    <div class="party-head" style="margin-top: 15px;">
+                        <div><strong>Note</strong></div>
+                    </div>
+                    <div class="form-grid" style="margin-bottom: 15px;">
+                        <div class="field full"><textarea placeholder="Enter any additional notes here..."></textarea>
+                        </div>
+                    </div>
+
                     <div class="party-head">
                         <div><strong>Responsible Parties *</strong>
                             <div class="sub">Select parties and enter the assignment reason for each selected party.
@@ -2748,7 +2811,7 @@
                                 <option>Aircraft Change</option>
                                 <option>Other</option>
                             </select></div>
-                        <div class="field full"><label>Note</label><textarea placeholder="Enter note..."></textarea></div>
+
                     </div>
                     <div class="manual-flight-workspace">
                         <div class="flight-scope-panel">
@@ -2765,14 +2828,22 @@
                                         value="2026-07-29T20:00"></div>
                             </div>
                             <div class="scope-filter-grid">
-                                <div class="scope-field"><label><i data-lucide="map-pin"></i>Airport</label><select
-                                        id="scopeAirport">
-                                        <option value="">Any airport</option>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <div class="scope-field"><label><i data-lucide="plane-takeoff"></i>DEP</label><select id="scopeDep">
+                                        <option value="">Any</option>
                                         <option selected>SGN</option>
                                         <option>HAN</option>
                                         <option>DIN</option>
                                         <option>VCL</option>
                                     </select></div>
+                                    <div class="scope-field"><label><i data-lucide="plane-landing"></i>ARR</label><select id="scopeArr">
+                                        <option value="">Any</option>
+                                        <option>SGN</option>
+                                        <option>HAN</option>
+                                        <option>DIN</option>
+                                        <option>VCL</option>
+                                    </select></div>
+                                </div>
                                 <div class="scope-field"><label><i data-lucide="plane"></i>Flight No.</label><select
                                         id="scopeFlight">
                                         <option value="">Any flight</option>
@@ -2806,6 +2877,15 @@
                                     loaded</strong><span>Choose the flight scope, then preview the matching
                                     flights.</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">Note</div>
+                <div class="section-body">
+                    <div class="form-grid">
+                        <div class="field full"><textarea placeholder="Enter any additional notes here..."></textarea>
                         </div>
                     </div>
                 </div>
