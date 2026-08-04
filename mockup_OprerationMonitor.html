@@ -2360,6 +2360,7 @@
 
         .note-content {
             min-width: 0;
+            min-height: 0;
             display: flex;
             flex-direction: column
         }
@@ -4769,38 +4770,113 @@
                             <div class="panel-title">
                                 <h3>Thời tiết</h3><span>Theo TAF phát lúc 06:00 LT ngày 11 JUN 2025</span>
                             </div>
-                            <div class="cards">
-                                <div class="card" data-editable="true">
-                                    <h4>North</h4>
-                                    <p>VVCI 21:00–07:00+ LT TSRA<br />VVDH 07:00–10:00 LT &amp; 13:00–16:00 LT
-                                        TSRA<br />VVNB 03:00+–07:00+ LT TSRA<br />VVVD 21:00–07:00+ LT TSRA<br />VVVH
-                                        16:00–19:00 LT &amp; 01:00+–07:00+ LT TSRA</p>
+                            <div
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 15px; align-items: stretch;">
+                                <div class="section-card" style="display: flex; flex-direction: column;">
+                                    <div class="section-head"
+                                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                                        <span>Quốc nội</span>
+                                    </div>
+                                    <div class="section-body"
+                                        style="display: flex; flex-direction: column; gap: 15px; flex: 1;">
+                                        <div class="weather-info"
+                                            style="font-size: 13px; line-height: 1.6; color: var(--text);">
+                                            <p style="margin-top: 0;"><strong>Theo TAF phát lúc 0600LT ngày 11JUN2025,
+                                                    lưu ý các sân bay sau:</strong></p>
+
+                                            <p><strong>Miền Bắc</strong><br>
+                                                VVCI: 2100-0700+LT TSRA<br>
+                                                VVDH: 0700-1000LT &amp; 1300-1600LT TSRA<br>
+                                                VVNB: 0300+-0700+LT TSRA<br>
+                                                VVVD: 2100-0700+LT TSRA<br>
+                                                VVVH: 1600-1900LT TSRA &amp; 0100+-0700+LT TSRA</p>
+
+                                            <p><strong>Miền Trung</strong><br>
+                                                VVCA: 0700-1600LT TSRA<br>
+                                                VVDN: 0700-0700+LT TSRA<br>
+                                                VVPB: 0700-0700+LT TSRA</p>
+
+                                            <p><strong>Miền Nam</strong><br>
+                                                VVBM: 1300-1800LT TSRA<br>
+                                                VVCM: 0800-1400LT TSRA<br>
+                                                VVCS: 0700-1600LT TSRA<br>
+                                                VVCT: 0800-1500LT TSRA<br>
+                                                VVDL: 1100-1700LT TSRA<br>
+                                                VVPQ: 0700-1400LT TSRA<br>
+                                                VVRG: 0700-1600LT TSRA<br>
+                                                VVTS: 0900-2000 LT TSRA</p>
+
+                                            <p style="color: var(--amber); margin-bottom: 0;">*** Áp thấp nhiệt đới 01W
+                                                ngoài Biển Đông di chuyển 10km/h theo hướng Tây Tây Bắc cách sân bay
+                                                VVDN 200Nm. Tiếp tục theo dõi và update.</p>
+                                        </div>
+
+                                        <div class="note-input"
+                                            style="border-top: 1px solid var(--line); padding-top: 15px; margin-top: auto;">
+                                            <div
+                                                style="display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;">
+                                                <strong style="font-size: 12px; color: var(--muted);"><i
+                                                        data-lucide="edit-3"
+                                                        style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>Ghi
+                                                    chú thủ công</strong>
+                                                <button class="btn primary"
+                                                    style="padding: 4px 12px; font-size: 12px; border-radius: 4px;"
+                                                    onclick="showToast('Thời tiết', 'Đã lưu ghi chú thời tiết Quốc nội')">Save</button>
+                                            </div>
+                                            <textarea
+                                                style="width: 100%; height: 80px; background: rgba(0,0,0,0.2); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 10px; resize: vertical; font-family: inherit; font-size: 13px; outline: none; box-sizing: border-box;"
+                                                placeholder="Nhập ghi chú hoặc đánh giá thêm..."></textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card" data-editable="true">
-                                    <h4>Central</h4>
-                                    <p>VVCA 07:00–16:00 LT TSRA<br />VVDN 07:00–07:00+ LT TSRA<br />VVPB 07:00–07:00+ LT
-                                        TSRA</p>
-                                </div>
-                                <div class="card" data-editable="true">
-                                    <h4>South</h4>
-                                    <p>VVBM 13:00–18:00 LT TSRA<br />VVCM 08:00–14:00 LT TSRA<br />VVCS 07:00–16:00 LT
-                                        TSRA<br />VVCT 08:00–15:00 LT TSRA<br />VVDL 11:00–17:00 LT TSRA<br />VVPQ
-                                        07:00–14:00 LT TSRA<br />VVRG 07:00–16:00 LT TSRA<br />VVTS 09:00–20:00 LT TSRA
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="section-card" style="margin-top:10px">
-                                <div class="section-head">Hiện tượng thời tiết đáng chú ý</div>
-                                <div class="section-body" data-editable="true">
-                                    <ul class="note-list">
-                                        <li>Tropical depression 01W is moving west-northwest at 10 km/h, approximately
-                                            200 NM from VVDN. Continue monitoring and update as required.</li>
-                                        <li>Khách QT stations SFO, LHR, CDG, FRA, SYD, MEL, HND, NRT, KIX, NGO, ICN,
-                                            PUS, PVG, TPE, HYD, KHH, HKG, CAN, PKX, DEL, BOM, SIN, KUL, CGK, BKK, VTE,
-                                            PNH, SAI and MNL are generally acceptable for operations.</li>
-                                        <li>VIP weather windows: VN1201 HAN-VCA 23:45/02:00Z · VN1202 VCA-HAN
-                                            07:05/09:20Z · VN1 ORY-ARN 13:30/15:55Z.</li>
-                                    </ul>
+
+                                <div class="section-card" style="display: flex; flex-direction: column;">
+                                    <div class="section-head"
+                                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                                        <span>Quốc ngoại</span>
+                                    </div>
+                                    <div class="section-body"
+                                        style="display: flex; flex-direction: column; gap: 15px; flex: 1;">
+                                        <div class="weather-info"
+                                            style="font-size: 13px; line-height: 1.6; color: var(--text);">
+                                            <p style="margin-top: 0;"><strong>Đánh giá chung tình hình thời tiết các sân
+                                                    bay Quốc tế</strong><br>
+                                                SFO/LHR/CDG/FRA/SYD/MEL/HND/NRT/KIX/NGO/ICN/PUS/PVG/TPE/HYD/<br>
+                                                /KHH/HKG/CAN/PKX/DEL/BOM/SIN/KUL/CGK/BKK/VTE/PNH/SAI/MNL: Đủ điều kiện
+                                                khai thác.<br>
+                                                BKK: TSRA</p>
+
+                                            <p><strong>VIP:</strong><br>
+                                                VN1201 HAN-VCA: 2345/0200Z<br>
+                                                VN1202 VCA-HAN: 0705/0920Z<br>
+                                                VN1 ORY-ARN : 1330/1555Z</p>
+
+                                            <p
+                                                style="font-family: monospace; font-size: 12px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 4px; margin-bottom: 0; white-space: pre-wrap; word-break: break-all;">
+                                                TAF LFPO 102300Z 1100/1206 03005KT CAVOK BECMG 1110/1112 09010KT=
+
+                                                TAF ESSA 102330Z 1100/1124 14005KT 9999 SCT015 BKN040 PROB40 1100/1106
+                                                2000 -RA BR BKN008 TEMPO 1106/1118 4000 SHRA BKN012 BKN030CB BECMG
+                                                1114/1116 32010KT PROB40 1118/1121 BKN008=</p>
+                                        </div>
+
+                                        <div class="note-input"
+                                            style="border-top: 1px solid var(--line); padding-top: 15px; margin-top: auto;">
+                                            <div
+                                                style="display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;">
+                                                <strong style="font-size: 12px; color: var(--muted);"><i
+                                                        data-lucide="edit-3"
+                                                        style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>Ghi
+                                                    chú thủ công</strong>
+                                                <button class="btn primary"
+                                                    style="padding: 4px 12px; font-size: 12px; border-radius: 4px;"
+                                                    onclick="showToast('Thời tiết', 'Đã lưu ghi chú thời tiết Quốc ngoại')">Save</button>
+                                            </div>
+                                            <textarea
+                                                style="width: 100%; height: 80px; background: rgba(0,0,0,0.2); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 10px; resize: vertical; font-family: inherit; font-size: 13px; outline: none; box-sizing: border-box;"
+                                                placeholder="Nhập ghi chú hoặc đánh giá thêm..."></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
