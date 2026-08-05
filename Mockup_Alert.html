@@ -11651,6 +11651,10 @@
             display: flex !important
         }
 
+        #pane-dutylogs .dlx-detail-panel.alert-mode #dlxDetailNote {
+            display: none !important
+        }
+
         #pane-dutylogs .dlx-detail-panel.task-mode .dlx-detail-main-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             align-items: start !important
@@ -12598,9 +12602,11 @@
                                     <h3 id="dlxDetailTitle">Task Detail - TK-052</h3>
                                     <div class="dlx-detail-desc" id="dlxDetailDesc"></div>
                                     <div class="dlx-badges" id="dlxDetailBadges" style="margin-top: 10px;"></div>
-                                    <div class="report-field" style="margin-top: 15px;">
+                                    <div class="report-field" id="dlxDetailNote" style="margin-top: 15px;">
                                         <label>Note</label>
-                                        <textarea placeholder="Enter any additional notes here..."></textarea>
+                                        <div style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
+                                            The dispatcher has assigned tasks to the departments and requested that they coordinate smoothly to resolve the tasks.
+                                        </div>
                                     </div>
                                     <div class="dlx-detail-meta" id="dlxDetailMeta"></div>
                                 </div>
@@ -14374,11 +14380,8 @@
                 <section class="td-hero">
                     <div class="td-hero-main">
                         <h1 id="tdTitle">Handle weather impact at SGN</h1>
-                        <div class="td-content-details">
-                            <label>Content details</label>
-                            <p id="tdContentDetails">Coordinate operational response, monitor weather development and
-                                update handling actions for all affected flights.</p>
-                        </div>
+                        <p id="tdContentDetails" style="margin-bottom: 15px; line-height: 1.4; color: #e2e8f0;">Coordinate operational response, monitor weather development and
+                            update handling actions for all affected flights.</p>
                         <div class="td-hero-badges">
                             <span class="td-badge source" id="tdSourceType">Alert</span>
                             <span class="td-badge impact" id="tdImpact">Delayed</span>
@@ -14402,7 +14405,9 @@
                         </div>
                         <div class="report-field" style="margin-top: 15px;">
                             <label>Note</label>
-                            <textarea placeholder="Enter any additional notes here..."></textarea>
+                            <div style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
+                                The dispatcher has assigned tasks to the departments and requested that they coordinate smoothly to resolve the tasks.
+                            </div>
                         </div>
                         <div class="td-completion-note" id="tdHeroProgressText">Assigned work progress across all
                             responsible parties.</div>
