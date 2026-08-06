@@ -12604,8 +12604,10 @@
                                     <div class="dlx-badges" id="dlxDetailBadges" style="margin-top: 10px;"></div>
                                     <div class="report-field" id="dlxDetailNote" style="margin-top: 15px;">
                                         <label>Note</label>
-                                        <div style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
-                                            The dispatcher has assigned tasks to the departments and requested that they coordinate smoothly to resolve the tasks.
+                                        <div
+                                            style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
+                                            The dispatcher has assigned tasks to the departments and requested that they
+                                            coordinate smoothly to resolve the tasks.
                                         </div>
                                     </div>
                                     <div class="dlx-detail-meta" id="dlxDetailMeta"></div>
@@ -14380,7 +14382,8 @@
                 <section class="td-hero">
                     <div class="td-hero-main">
                         <h1 id="tdTitle">Handle weather impact at SGN</h1>
-                        <p id="tdContentDetails" style="margin-bottom: 15px; line-height: 1.4; color: #e2e8f0;">Coordinate operational response, monitor weather development and
+                        <p id="tdContentDetails" style="margin-bottom: 15px; line-height: 1.4; color: #e2e8f0;">
+                            Coordinate operational response, monitor weather development and
                             update handling actions for all affected flights.</p>
                         <div class="td-hero-badges">
                             <span class="td-badge source" id="tdSourceType">Alert</span>
@@ -14405,8 +14408,10 @@
                         </div>
                         <div class="report-field" style="margin-top: 15px;">
                             <label>Note</label>
-                            <div style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
-                                The dispatcher has assigned tasks to the departments and requested that they coordinate smoothly to resolve the tasks.
+                            <div
+                                style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
+                                The dispatcher has assigned tasks to the departments and requested that they coordinate
+                                smoothly to resolve the tasks.
                             </div>
                         </div>
                         <div class="td-completion-note" id="tdHeroProgressText">Assigned work progress across all
@@ -14914,14 +14919,10 @@
                     const current = options.some(o => o[0] === filter) ? filter : 'all';
                     detailNodes.partyFilter.innerHTML = options.map(([v, l]) => `<option value="${v}" ${v === current ? 'selected' : ''}>${l}</option>`).join('');
                 }
-                const ordered = ['Task General', ...task.parties.map(p => p.group)];
-                const visibleGroups = filter === 'all' ? ordered : ordered.filter(g => g === filter);
-                const groups = visibleGroups.map(group => {
-                    const items = notes.filter(n => n.group === group);
-                    const party = task.parties.find(p => p.group === group);
-                    return { name: group, label: group === 'Task General' ? 'Task General' : `${group} · ${party?.assignee || group}`, items };
-                });
-                detailNodes.notesContent.innerHTML = `<div class="td-group-list">${groups.map((g, idx) => `<article class="td-group-card ${idx === 0 ? 'expanded' : ''}" data-note-group="${g.name}"><button type="button" class="td-group-head td-group-toggle" aria-expanded="${idx === 0 ? 'true' : 'false'}"><div><h4>${g.label}</h4><small>${g.name === 'Task General' ? 'Information shared across the whole task' : `Updates from ${g.name}`}</small></div><span class="td-group-actions"><span class="td-group-count">${g.items.length}</span><span class="td-chevron">⌄</span></span></button><div class="td-group-body">${g.items.length ? `<div class="td-activity-list">${g.items.map(n => `<div class="td-activity-item"><div class="td-activity-meta">${n.time} · ${n.author}<span class="badge-mini">${n.kind === 'status' ? 'Status' : n.kind === 'created' ? 'Created' : 'Note'}</span></div><div class="td-activity-text">${n.text}</div></div>`).join('')}</div>` : '<div class="td-empty">No updates yet.</div>'}</div></article>`).join('')}</div>`;
+                const visibleNotes = filter === 'all' ? notes : notes.filter(n => n.group === filter);
+                detailNodes.notesContent.innerHTML = visibleNotes.length 
+                    ? `<div class="td-activity-list" style="padding-top:10px;">${visibleNotes.map(n => `<div class="td-activity-item" data-note-group="${n.group}"><div class="td-activity-meta">${n.time} · ${n.author}<span class="badge-mini">${n.kind === 'status' ? 'Status' : n.kind === 'created' ? 'Created' : 'Note'}</span></div><div class="td-activity-text">${n.text}</div></div>`).join('')}</div>`
+                    : '<div class="td-empty" style="padding-top:10px;">No updates yet.</div>';
             }
             function renderParties(task) {
                 const progress = computeProgress(task); detailNodes.progress.textContent = `${progress.done}/${progress.total} completed · Task auto-completes when all parties are Done`;
@@ -15179,13 +15180,37 @@
                 if (title.includes('hoàn thành') || title.includes('done') || title.includes('đóng')) return { cls: 'status', label: 'Status' };
                 return { cls: 'note', label: 'Note' };
             };
+            function parseActivityTime(tStr) {
+                if (!tStr) return 0;
+                const match = tStr.match(/(\d{2}):(\d{2}).*?(\d{2})\/(\d{2})/);
+                if (!match) return 0;
+                return new Date(2026, parseInt(match[4], 10)-1, parseInt(match[3], 10), parseInt(match[1], 10), parseInt(match[2], 10)).getTime();
+            }
             function renderActivityGroup(title, subtitle, items = [], key = 'general', expanded = false) {
-                return `<div class="dlx-activity-group ${expanded ? 'expanded' : ''}" data-party-key="${escapeAttr(key)}"><button type="button" class="dlx-activity-group-head dlx-activity-group-toggle" aria-expanded="${expanded ? 'true' : 'false'}"><div><strong>${title}</strong><span>${subtitle}</span></div><div class="dlx-activity-head-actions"><div class="dlx-activity-count">${items.length}</div><span class="dlx-activity-chevron">⌄</span></div></button><div class="dlx-activity-stream">${items.map(item => { const tag = activityTagFor(item); return `<div class="dlx-activity-item ${tag.cls}"><div class="dlx-activity-line"><span>${item.meta || ''}</span><span class="dlx-activity-tag ${tag.cls}">${item.label || tag.label}</span></div><p>${item.text || ''}</p></div>`; }).join('') || '<div class="dlx-empty-note">No updates yet.</div>'}</div></div>`;
+                return ''; // Deprecated, items are flattened in renderActivityShell
             }
             function renderActivityShell(groupLabel, metaText, groups) {
                 const options = [`<option value="all">All responsible parties</option>`, ...groups.map(g => `<option value="${escapeAttr(g.key)}">${g.optionLabel || g.title}</option>`)].join('');
-                const groupedHtml = groups.map((g, i) => renderActivityGroup(g.title, g.subtitle, g.items, g.key, i === 0)).join('');
-                return `<div class="dlx-activity-toolbar"><div class="dlx-activity-tabs"><select class="control dlx-activity-party-filter" aria-label="Filter by responsible party">${options}</select></div><div class="dlx-activity-meta">${metaText}</div></div><div class="dlx-activity-panels"><div class="dlx-activity-panel active" data-activity-panel="group">${groupedHtml}</div></div>`;
+                
+                let allItems = [];
+                groups.forEach(g => {
+                    g.items.forEach(item => {
+                        allItems.push({ item, groupKey: g.key });
+                    });
+                });
+                
+                // Sort items by time descending
+                allItems.sort((a, b) => parseActivityTime(b.item.meta) - parseActivityTime(a.item.meta));
+
+                let allItemsHtml = '';
+                allItems.forEach(({ item, groupKey }) => {
+                    const tag = activityTagFor(item); 
+                    allItemsHtml += `<div class="dlx-activity-item ${tag.cls}" data-party-key="${escapeAttr(groupKey)}"><div class="dlx-activity-line"><span>${item.meta || ''}</span><span class="dlx-activity-tag ${tag.cls}">${item.label || tag.label}</span></div><p>${item.text || ''}</p></div>`; 
+                });
+
+                if (!allItemsHtml) allItemsHtml = '<div class="dlx-empty-note">No updates yet.</div>';
+                const flatHtml = `<div class="dlx-activity-stream" style="padding-top: 15px;">${allItemsHtml}</div>`;
+                return `<div class="dlx-activity-toolbar"><div class="dlx-activity-tabs"><select class="control dlx-activity-party-filter" aria-label="Filter by responsible party">${options}</select></div><div class="dlx-activity-meta">${metaText}</div></div><div class="dlx-activity-panels"><div class="dlx-activity-panel active" data-activity-panel="group">${flatHtml}</div></div>`;
             }
             function renderTaskActivity(task) {
                 const generalItems = task.history.map(h => ({ meta: h.time.replace(/\n/g, ' · '), label: activityTagFor(h).label, text: h.desc, title: h.title, type: h.type }));
