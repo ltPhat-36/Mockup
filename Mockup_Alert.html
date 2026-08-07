@@ -1968,8 +1968,6 @@
    khác nhau (#071a2b/#0b1d2f/#0a1a2a/#11243a) gây cảm giác chia vùng lộn xộn dù đều là tông
    xanh navy. Giữ nguyên các khối màu có ý nghĩa trạng thái (found/included, toggle bật/tắt). */
         .mt-section {
-            display: grid;
-            grid-template-columns: 200px 1fr;
             border: 1px solid #214159;
             background: #0b1b2b;
             border-radius: 6px;
@@ -1978,10 +1976,13 @@
         }
 
         .mt-section-head {
-            padding: 12px;
+            height: 32px;
+            padding: 0 12px;
             background: #10253a;
-            border-right: 1px solid var(--line);
-            display: block;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between
         }
 
         .mt-section-head h3 {
@@ -1999,8 +2000,8 @@
         .mt-setup-grid {
             padding: 10px;
             display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 16px;
+            grid-template-columns: 2.2fr 1fr 0.95fr 1fr;
+            gap: 8px
         }
 
         .mt-field label {
@@ -14256,7 +14257,12 @@
                                 <option>VIP/CIP</option>
                                 <option>Technical service</option>
                             </select></div>
-
+                        <div class="mt-field"><label>Priority <span class="req">*</span></label><select class="control"
+                                id="mtPriority">
+                                <option>Critical</option>
+                                <option selected>High</option>
+                                <option>Medium</option>
+                            </select></div>
                     </div>
                     <input type="hidden" id="mtId">
                 </section>
