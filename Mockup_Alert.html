@@ -7242,32 +7242,51 @@
         }
 
         .dlx-ribbon {
-            display: grid !important;
-            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            align-items: flex-start !important;
             gap: 8px !important
         }
 
+        .dlx-ribbon .dlx-head-tools {
+            flex-shrink: 0 !important;
+        }
+
         .dlx-ribbon-card {
-            min-height: 60px !important;
-            padding: 8px 10px 8px 12px !important;
-            border-radius: 7px !important
+            flex: 1 1 160px !important;
+            min-width: 160px !important;
+            min-height: 40px !important;
+            padding: 8px 12px !important;
+            border-radius: 7px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important
         }
 
         .dlx-ribbon-card span {
-            font-size: 8px !important
+            font-size: 9px !important;
+            font-weight: 600 !important;
         }
 
         .dlx-ribbon-card strong {
-            font-size: 22px !important
+            font-size: 18px !important;
+            line-height: 1 !important;
+        }
+
+        .dlx-ribbon-card .dlx-card-foot {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            margin-top: 0 !important;
         }
 
         .dlx-ribbon-card small {
-            font-size: 8px !important;
-            line-height: 1.25 !important
+            display: none !important;
         }
 
         .dlx-ribbon-card .dlx-card-mark {
-            font-size: 16px !important;
+            font-size: 14px !important;
             opacity: .18 !important
         }
 
@@ -10874,9 +10893,9 @@
         }
 
         .manual-task-panel .party-item {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: 180px 1fr !important;
             row-gap: 5px !important;
-            align-items: start !important;
+            align-items: center !important;
             padding: 8px 10px !important
         }
 
@@ -12547,46 +12566,50 @@
                     <header class="dlx-header">
                         <div class="dlx-header-main">
                             <div class="dlx-header-title">
-                                <h2>Duty Logs</h2>
-                                <small>Post-operation review of completed tasks, source alerts, and handling history by
-                                    duty date.</small>
+                                <h2 style="font-size: 24px !important;">Duty Overview</h2>
                             </div>
-                            <div class="dlx-head-tools">
-                                <div class="dlx-inline-filters">
-                                    <label class="dlx-mini-field">
-                                        <span>Duty date</span>
-                                        <input class="control" id="dlxDate" type="date" value="2026-07-28">
-                                    </label>
-                                </div>
-                                <button class="dlx-refresh-btn" id="dlxRefreshBtn" type="button"><i>↻</i>
-                                    Refresh</button>
-                            </div>
+                            <div class="dlx-head-tools" style="display: none;"></div>
                         </div>
                         <div class="dlx-ribbon" id="dlxRibbon">
-                            <div class="dlx-ribbon-card alerts"><span>Total alerts</span>
-                                <div class="dlx-card-foot"><strong id="dlxMetricAlerts">12</strong><em
-                                        class="dlx-card-mark">!</em></div><small>Total alerts generated during the
-                                    selected duty date.</small>
+                            <div class="dlx-ribbon-col"
+                                style="display: flex; flex-direction: column; gap: 8px; flex: 1 1 160px;">
+                                <div class="dlx-ribbon-card alerts" style="flex: 0 0 40px !important; width: 100%;">
+                                    <span>Total alerts</span>
+                                    <div class="dlx-card-foot"><strong id="dlxMetricAlerts">12</strong><em
+                                            class="dlx-card-mark">!</em></div>
+                                </div>
+                                <div class="dlx-head-tools" style="margin-top: 0; display: flex; gap: 8px;">
+                                    <div class="dlx-inline-filters" style="flex: 1;">
+                                        <div style="display: flex; gap: 4px; width: 100%;">
+                                            <select class="control" id="dlxDateMode"
+                                                style="height: 38px; border-radius: 6px; flex: 0 0 70px; padding: 0 8px; font-size: 12px; cursor: pointer;">
+                                                <option value="utc">UTC</option>
+                                                <option value="local">Local</option>
+                                            </select>
+                                            <input class="control" id="dlxDate" type="date" value="2026-07-28"
+                                                style="height: 38px; border-radius: 6px; flex: 1; cursor: pointer;">
+                                        </div>
+                                    </div>
+                                    <button class="dlx-refresh-btn" id="dlxRefreshBtn" type="button"
+                                        style="height: 38px;"><i>↻</i>
+                                        Refresh</button>
+                                </div>
                             </div>
                             <div class="dlx-ribbon-card from-alert"><span>Tasks from alert</span>
                                 <div class="dlx-card-foot"><strong id="dlxMetricAlertTasks">6</strong><em
-                                        class="dlx-card-mark">↗</em></div><small>Number of tasks created from
-                                    alerts.</small>
+                                        class="dlx-card-mark">↗</em></div>
                             </div>
                             <div class="dlx-ribbon-card manual"><span>Manual tasks</span>
                                 <div class="dlx-card-foot"><strong id="dlxMetricManualTasks">2</strong><em
-                                        class="dlx-card-mark">✎</em></div><small>Tasks created manually by the duty team
-                                    for ad-hoc handling.</small>
+                                        class="dlx-card-mark">✎</em></div>
                             </div>
                             <div class="dlx-ribbon-card skipped"><span>Skipped alerts</span>
                                 <div class="dlx-card-foot"><strong id="dlxMetricSkippedAlerts">3</strong><em
-                                        class="dlx-card-mark">↷</em></div><small>Alerts skipped after duty team
-                                    review.</small>
+                                        class="dlx-card-mark">↷</em></div>
                             </div>
                             <div class="dlx-ribbon-card notask"><span>Alerts without task</span>
                                 <div class="dlx-card-foot"><strong id="dlxMetricNoTaskAlerts">3</strong><em
-                                        class="dlx-card-mark">○</em></div><small>Alerts still under monitoring and not
-                                    yet converted to tasks.</small>
+                                        class="dlx-card-mark">○</em></div>
                             </div>
                         </div>
                     </header>
@@ -13214,6 +13237,8 @@
 
         </div>
     </div>
+
+
 
 
     <div class="daily-note-layer" id="dailyNoteLayer" aria-hidden="true">
@@ -14257,12 +14282,7 @@
                                 <option>VIP/CIP</option>
                                 <option>Technical service</option>
                             </select></div>
-                        <div class="mt-field"><label>Priority <span class="req">*</span></label><select class="control"
-                                id="mtPriority">
-                                <option>Critical</option>
-                                <option selected>High</option>
-                                <option>Medium</option>
-                            </select></div>
+
                     </div>
                     <input type="hidden" id="mtId">
                 </section>
@@ -14334,7 +14354,8 @@
                     style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px;">
                     <div class="mt-field" style="width: 40%; margin-bottom: 0;">
                         <label>Impact Type <span class="req">*</span></label><select class="control" id="mtImpact">
-                            <option selected>Delayed</option>
+                            <option value="" selected disabled>Select Impact</option>
+                            <option>Delayed</option>
                             <option>Holding</option>
                             <option>Aircraft Change</option>
                             <option>Cancelled</option>
@@ -14393,6 +14414,175 @@
             </div>
         </section>
     </div>
+
+
+    <div class="manual-task-view" id="alertTaskView" aria-hidden="true">
+        <section class="manual-task-panel">
+            <header class="mt-head">
+                <div class="mt-head-icon">＋</div>
+                <div class="mt-title">
+                    <h2>Create Task from Alert</h2>
+                    <p>Enter task information, select a flight scope, then assign responsible parties.</p>
+                </div>
+                <div class="mt-head-actions">
+                    <button class="btn" id="closeAlertTaskBtn">✕ Close</button>
+                </div>
+            </header>
+            <div class="mt-body">
+                <section class="mt-section">
+                    <div class="mt-section-head">
+                        <div>
+                            <h3>Task Setup</h3>
+                        </div>
+                    </div>
+                    <div class="mt-setup-grid">
+                        <div class="mt-field"><label>Task Title <span class="req">*</span></label><input class="control"
+                                id="atTitle" value="Coordinate operational impact"></div>
+                        <div class="mt-field"><label>Alert Type <span class="req">*</span></label><select
+                                class="control" id="atAlertType">
+                                <option>APU INOP / GPU - ASU</option>
+                                <option selected>Weather</option>
+                                <option>VIP/CIP</option>
+                                <option>Technical service</option>
+                            </select></div>
+                        <div class="mt-field" style="grid-column: 1 / -1;">
+                            <label>Detail Content</label>
+                            <textarea class="control" id="atDetailContent"
+                                style="height: 60px; padding-top: 8px; resize: vertical;"
+                                placeholder="Enter detail content..."></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" id="atId">
+                </section>
+
+                <section class="mt-section">
+                    <!-- [v29] Bỏ tiêu đề "Responsible Parties" lặp lại lần 2 ở mt-party-top (đã có ở
+             mt-section-head ngay trên) — chỉ giữ 1 tiêu đề duy nhất, dấu * bắt buộc chuyển
+             lên tiêu đề chính, phần còn lại chỉ là mô tả phụ + số đã chọn. -->
+                    <div class="mt-section-head">
+                        <div>
+                            <h3>Responsible Parties <span style="color:#ff6f78">*</span></h3>
+                        </div>
+                    </div>
+                    <div class="mt-party-wrap">
+                        <div class="mt-party-top"><small>Select a party to enter its assignment reason.</small><span
+                                class="mt-party-count" id="atSelectedCount">0 selected</span></div>
+                        <div class="party-grid" id="atPartyGrid">
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Duty Manager">Duty Manager</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Duty Manager Assistant">Duty Manager Assistant</label><input
+                                    class="party-reason" placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Dispatch">Dispatch</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Technical">Technical</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Commercial">Commercial</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Ground Services">Ground Services</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Flight Crew Control">Flight Crew Control</label><input
+                                    class="party-reason" placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Cabin Crew Control">Cabin Crew Control</label><input
+                                    class="party-reason" placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Schedule Planning">Schedule Planning</label><input
+                                    class="party-reason" placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Flight Permit">Flight Permit</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="Cargo">Cargo</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                            <div class="party-item"><label class="party-check"><input type="checkbox"
+                                        data-party="CLC / VIAGS">CLC / VIAGS</label><input class="party-reason"
+                                    placeholder="Reason for assignment" disabled></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mt-section">
+                    <div class="mt-section-head">
+                        <div>
+                            <h3>Note</h3>
+                        </div>
+                    </div>
+                    <div class="mt-note-box"><textarea id="atNote"
+                            placeholder="Enter any additional notes here..."></textarea></div>
+                </section>
+
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px;">
+                    <div class="mt-field" style="width: 40%; margin-bottom: 0;">
+                        <label>Impact Type <span class="req">*</span></label><select class="control" id="atImpact">
+                            <option selected>Delayed</option>
+                            <option>Holding</option>
+                            <option>Aircraft Change</option>
+                            <option>Cancelled</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="mt-actions" style="margin-top: 0; padding-top: 0; border-top: none;">
+                        <button class="btn" id="alertTaskCancelBtn">Cancel</button>
+                        <button class="btn primary" id="alertTaskCreateBtn">Create Task</button>
+                    </div>
+                </div>
+                <section class="mt-section" style="margin-top: 24px;">
+                    <div class="mt-grid">
+                        <aside class="mt-scope-box">
+                            <div class="mt-scope-head">
+                                <div>
+                                    <h4>Flight Scope</h4><small>Choose a time window and any relevant flight
+                                        data.</small>
+                                </div><span style="color:#8fb1c8">☷</span>
+                            </div>
+                            <div class="mt-scope-row">
+                                <div class="mt-field"><label>From (UTC) <span class="req">*</span></label><input
+                                        id="atFrom" class="control" type="datetime-local" step="300"></div>
+                                <div class="arrow">→</div>
+                                <div class="mt-field"><label>To (UTC) <span class="req">*</span></label><input id="atTo"
+                                        class="control" type="datetime-local" step="300"></div>
+                            </div>
+                            <div class="mt-two-col">
+                                <div class="mt-field"><label>🛫 DEP</label><select id="atDep" class="control"></select>
+                                </div>
+                                <div class="mt-field"><label>🛬 ARR</label><select id="atArr" class="control"></select>
+                                </div>
+                            </div>
+                            <div class="mt-field" style="margin-top:8px"><label>✈ Flight No.</label><select
+                                    id="atFlight" class="control"></select></div>
+                            <div class="mt-field" style="margin-top:8px"><label>◯ Aircraft</label><select
+                                    id="atAircraft" class="control"></select></div>
+                            <button class="btn primary mt-preview-btn" id="atPreviewBtn">⌕ Preview Flights</button>
+                        </aside>
+                        <section class="mt-flight-panel">
+                            <div class="mt-panel-head">
+                                <div>
+                                    <h4>Affected Flights</h4><small>Review the results and exclude only flights that
+                                        should not be included.</small>
+                                </div>
+                                <div class="mt-counts"><span class="mt-pill found" id="atFoundCount">0 found</span><span
+                                        class="mt-pill included" id="atIncludedCount">0 included</span></div>
+                            </div>
+                            <div class="mt-flight-wrap" id="atFlightWrap"></div>
+                            <div class="mt-flight-footer"><span>Rows per page: 10</span><span id="atFlightRange">0 of
+                                    0</span></div>
+                        </section>
+                    </div>
+                </section>
+
+            </div>
+        </section>
+    </div>
+
+
 
 
     <div class="task-detail-view" id="taskDetailView" aria-hidden="true">
@@ -14635,16 +14825,47 @@
             ['scopeDep', 'scopeArr', 'scopeFlight', 'scopeAircraft'].forEach(id => document.getElementById(id).addEventListener('change', filterFlights));
             const createTaskPanel = document.getElementById('createTaskPanel');
             document.getElementById('detailCreateTaskBtn').addEventListener('click', () => {
-                createTaskPanel.classList.add('show');
-                const alertTitle = document.getElementById('adTitle').textContent;
-                const airport = document.getElementById('adAirport').textContent;
-                document.getElementById('ctTitle').value = /GPU\/ASU|APU INOP/i.test(alertTitle) ? `Coordinate GPU/ASU support for APU INOP flights to ${airport}` : `Coordinate handling for ${alertTitle}`;
-                const priority = /Critical/i.test(activeAlert?.priority || '') || /GPU\/ASU|APU INOP/i.test(alertTitle) ? 'Critical' : 'High';
-                // document.getElementById('ctPriority').value = priority;
-                const sourceAlertCode = (document.getElementById('adCode').textContent.split('·')[0] || 'AL-0000').trim();
-                const sourceAlertInput = document.getElementById('ctSourceAlert'); if (sourceAlertInput) sourceAlertInput.value = sourceAlertCode;
-                document.getElementById('ctId').value = `TK-20260728-${String(taskSequence).padStart(4, '0')}`;
-                createTaskPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                closeDetail();
+                if (window.openAlertTaskView) {
+                    window.openAlertTaskView();
+                    const view = document.getElementById('alertTaskView');
+                    if (view) {
+                        const h2 = view.querySelector('.mt-title h2');
+                        if (h2) h2.textContent = 'Create Task from Alert';
+                        const alertTitle = document.getElementById('adTitle').textContent;
+                        const airport = document.getElementById('adAirport').textContent;
+                        document.getElementById('atTitle').value = /GPU\/ASU|APU INOP/i.test(alertTitle) ? `Coordinate GPU/ASU support for APU INOP flights to ${airport}` : `Coordinate handling for ${alertTitle}`;
+
+                        // Fill additional fields from activeAlert
+                        if (typeof activeAlert !== 'undefined' && activeAlert) {
+                            const priority = /Critical/i.test(activeAlert.priority) || /GPU\/ASU|APU INOP/i.test(alertTitle) ? 'Critical' : 'High';
+                            if (document.getElementById('atPriority')) {
+                                document.getElementById('atPriority').value = priority;
+                            }
+
+                            if (document.getElementById('atAlertType')) {
+                                document.getElementById('atAlertType').value = activeAlert.type || 'Weather';
+                            }
+
+                            if (activeAlert.win) {
+                                const times = activeAlert.win.replace(' UTC', '').split('–');
+                                if (times.length >= 2) {
+                                    document.getElementById('atFrom').value = toDateTimeLocal(times[0]);
+                                    document.getElementById('atTo').value = toDateTimeLocal(times[1]);
+                                }
+                            }
+
+
+                            document.getElementById('atArr').value = activeAlert.isVip ? '' : activeAlert.airport;
+                            document.getElementById('atDep').value = '';
+                            document.getElementById('atFlight').value = activeAlert.isVip ? 'VN221' : '';
+
+                            // Trigger flight preview to update the table
+                            const previewBtn = document.getElementById('atPreviewBtn');
+                            if (previewBtn) previewBtn.click();
+                        }
+                    }
+                }
             });
             document.getElementById('collapseCreateTaskBtn').addEventListener('click', () => createTaskPanel.classList.remove('show'));
             document.getElementById('cancelInlineTaskBtn').addEventListener('click', () => createTaskPanel.classList.remove('show'));
@@ -14765,7 +14986,7 @@
 
             const el = {
                 openBtn: document.getElementById('createTaskBtn'), closeBtn: document.getElementById('closeManualTaskBtn'), cancelBtn: document.getElementById('manualTaskCancelBtn'), createBtn: document.getElementById('manualTaskCreateBtn'),
-                title: document.getElementById('mtTitle'), alertType: document.getElementById('mtAlertType'), id: document.getElementById('mtId'), priority: document.getElementById('mtPriority'), impact: document.getElementById('mtImpact'), note: document.getElementById('mtNote'),
+                title: document.getElementById('mtTitle'), detailContent: document.getElementById('mtDetailContent'), alertType: document.getElementById('mtAlertType'), id: document.getElementById('mtId'), priority: document.getElementById('mtPriority'), impact: document.getElementById('mtImpact'), note: document.getElementById('mtNote'),
                 from: document.getElementById('mtFrom'), to: document.getElementById('mtTo'), dep: document.getElementById('mtDep'), arr: document.getElementById('mtArr'), flight: document.getElementById('mtFlight'), aircraft: document.getElementById('mtAircraft'),
                 preview: document.getElementById('mtPreviewBtn'), wrap: document.getElementById('mtFlightWrap'), found: document.getElementById('mtFoundCount'), included: document.getElementById('mtIncludedCount'), range: document.getElementById('mtFlightRange'),
                 partyGrid: document.getElementById('mtPartyGrid'), selectedCount: document.getElementById('mtSelectedCount')
@@ -14784,9 +15005,128 @@
             }
             function setDefaults() {
                 fillSelects();
+                el.title.value = '';
+                if (el.detailContent) el.detailContent.value = '';
+                if (el.alertType) el.alertType.value = '';
+                if (el.priority) el.priority.value = '';
+                el.impact.value = '';
+                el.note.value = '';
+                el.from.value = '';
+                el.to.value = '';
+                el.dep.value = ''; el.arr.value = ''; el.flight.value = ''; el.aircraft.value = '';
+                el.id.value = nextTaskId();
+                el.partyGrid.querySelectorAll('.party-item').forEach((item, i) => { const cb = item.querySelector('input[type="checkbox"]'); const reason = item.querySelector('.party-reason'); cb.checked = false; reason.disabled = true; reason.value = ''; });
+
+                updateSelectedCount();
+                previewFlights();
+            }
+            function updateSelectedCount() {
+                const count = [...el.partyGrid.querySelectorAll('input[type="checkbox"]')].filter(x => x.checked).length; el.selectedCount.textContent = `${count} selected`;
+            }
+            function flightRow(f) {
+                return `<tr data-key="${f.key}"><td><label class="toggle-switch"><input type="checkbox" class="mt-include" ${includedKeys.has(f.key) ? 'checked' : ''}><span class="toggle-slider"></span></label></td><td>${f.flight}</td><td class="route"><span>${f.route.replace(' → ', ' → ')}</span></td><td>${f.etd}</td><td>${f.eta}</td><td>${f.acReg}</td></tr>`;
+            }
+            function renderFlights(rows) {
+                currentRows = rows.slice(); includedKeys = new Set(rows.map(r => r.key));
+                el.found.textContent = `${rows.length} found`; el.included.textContent = `${rows.length} included`; el.range.textContent = rows.length ? `1–${rows.length} of ${rows.length}` : '0 of 0';
+                if (!rows.length) {
+                    el.wrap.innerHTML = `<div class="mt-empty"><div class="glass">⌕</div><strong>No flights loaded</strong><div>Choose the flight scope, then preview the matching flights.</div></div>`; return;
+                }
+                el.wrap.innerHTML = `<table class="mt-flight-table"><thead><tr><th style="width:90px">Included</th><th style="width:90px">FLT NO</th><th style="width:180px">ROUTE</th><th>ETD (UTC)</th><th>ETA (UTC)</th><th>AC REG</th></tr></thead><tbody>${rows.map(flightRow).join('')}</tbody></table>`;
+                el.wrap.querySelectorAll('.mt-include').forEach(box => box.addEventListener('change', e => { const key = e.target.closest('tr').dataset.key; if (e.target.checked) includedKeys.add(key); else includedKeys.delete(key); el.included.textContent = `${includedKeys.size} included`; }));
+            }
+            function previewFlights() {
+                const dep = el.dep.value, arr = el.arr.value, flight = el.flight.value, aircraft = el.aircraft.value;
+                const from = (el.from.value.split('T')[1] || '00:00').slice(0, 5); const to = (el.to.value.split('T')[1] || '23:59').slice(0, 5);
+                const rows = uniq.filter(f => (!dep || f.dep === dep) && (!arr || f.arr === arr) && (!flight || f.flight === flight) && (!aircraft || f.acReg === aircraft) && f.etd >= from && f.etd <= to);
+                renderFlights(rows);
+                showToast(`${rows.length} matching flight${rows.length === 1 ? '' : 's'} found.`);
+            }
+            function openView() {
+                view.classList.add('show');
+                view.setAttribute('aria-hidden', 'false');
+                const h2 = view.querySelector('.mt-title h2');
+                if (h2) h2.textContent = 'Create Manual Task';
+                setDefaults();
+            }
+            window.openManualTaskView = openView;
+            function closeView() { view.classList.remove('show'); view.setAttribute('aria-hidden', 'true'); }
+
+            function makePartyStack(parties) {
+                const chips = parties.slice(0, 3).map(p => `<span class="party-chip assigned" title="${p} — Assigned">${p}</span>`).join('');
+                const more = parties.length > 3 ? `<button type="button" class="party-more" title="View all responsible parties" data-parties="${parties.map(p => `${p}|assigned`).join(',')}">+${parties.length - 3}</button>` : '';
+                return `<div class="party-stack">${chips}${more}</div>`;
+            }
+            function addTaskToList() {
+                const included = currentRows.filter(r => includedKeys.has(r.key));
+                if (!el.title.value.trim()) return showToast('Task Title is required.');
+                if (!included.length) return showToast('Please include at least one affected flight.');
+                const selected = [...el.partyGrid.querySelectorAll('input[type="checkbox"]:checked')];
+                if (!selected.length) return showToast('Please select at least one responsible party.');
+                const parties = [];
+                for (const cb of selected) { const name = cb.dataset.party; const reason = cb.closest('.party-item').querySelector('.party-reason').value.trim(); if (!reason) return showToast(`Please enter a reason for ${name}.`); parties.push(name); }
+                const impact = el.impact.value; const impactClass = { Delayed: 'delay', 'Aircraft Change': 'change', Cancelled: 'cancel', Holding: 'hold', Other: 'change' }[impact] || 'change';
+                const taskId = el.id.value; const title = el.title.value.trim();
+                const dateParts = (el.from.value || '2026-07-29T15:00').slice(0, 10).split('-'); const stamp = `<strong>${dateParts[2]} ${['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'][Number(dateParts[1]) - 1]}</strong><br>${(el.from.value.split('T')[1] || '00:00').slice(0, 5)}`;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td class="task-code">${taskId}</td><td class="task-name">${title}</td><td><span class="badge manual">● Manual</span></td><td>${included.length} Flight${included.length === 1 ? '' : 's'}</td><td><span class="impact ${impactClass}">${impact}</span></td><td>${makePartyStack(parties)}</td><td><div class="progress-text">0/${parties.length} Done</div><div class="bar"><span style="width:0%"></span></div></td><td>${stamp}</td><td><span class="status open">Open</span></td>`;
+                document.getElementById('taskTableBody').prepend(tr);
+                document.getElementById('taskCount').textContent = String(Number(document.getElementById('taskCount').textContent) + 1);
+                taskSeed++; el.id.value = nextTaskId();
+                closeView(); showToast(`${taskId} created and added to Task List.`);
+            }
+
+            // Replace original button to remove old drawer listener
+            const freshBtn = el.openBtn.cloneNode(true); el.openBtn.replaceWith(freshBtn); el.openBtn = freshBtn;
+            el.openBtn.addEventListener('click', openView);
+            el.closeBtn.addEventListener('click', closeView); el.cancelBtn.addEventListener('click', closeView); el.preview.addEventListener('click', previewFlights); el.createBtn.addEventListener('click', addTaskToList);
+            view.addEventListener('click', e => { if (e.target === view) closeView(); });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape' && view.classList.contains('show')) closeView(); });
+            el.partyGrid.querySelectorAll('.party-item input[type="checkbox"]').forEach(cb => cb.addEventListener('change', () => { const reason = cb.closest('.party-item').querySelector('.party-reason'); reason.disabled = !cb.checked; if (cb.checked) { if (!reason.value) reason.value = ''; reason.focus(); } else reason.value = ''; updateSelectedCount(); }));
+        })();
+
+        (() => {
+            const view = document.getElementById('alertTaskView');
+            if (!view) return;
+            const toast = document.getElementById('toast');
+            const showToast = (m) => { if (!toast) return; toast.textContent = m; toast.classList.add('show'); clearTimeout(showToast._t); showToast._t = setTimeout(() => toast.classList.remove('show'), 2200) };
+
+            const flightsByArea = {
+                DIN: [['VN225', 'HAN → DIN', '10:20', '13:05', 'VN-A612'], ['VN218', 'SGN → DIN', '11:45', '14:30', 'VN-A359'], ['VN551', 'BKK → DIN', '13:20', '15:50', 'VN-A350'], ['VN222', 'SIN → DIN', '16:30', '18:10', 'VN-A321'], ['VN226', 'DIN → HAN', '18:40', '20:05', 'VN-A612']],
+                SGN: [['VN211', 'HAN → SGN', '15:00', '17:10', 'VN-A867'], ['VN231', 'DAD → SGN', '15:20', '16:45', 'VN-A321'], ['VN607', 'BKK → SGN', '15:35', '17:05', 'VN-A359'], ['VN139', 'HAN → SGN', '16:00', '18:10', 'VN-A868'], ['VN142', 'SGN → HAN', '16:30', '18:35', 'VN-A350'], ['VN773', 'VCL → SGN', '16:55', '18:05', 'VN-A321'], ['VN127', 'HAN → SGN', '17:10', '19:20', 'VN-A867'], ['VN605', 'SGN → BKK', '17:30', '19:00', 'VN-A359']],
+                VCL: [['VN1641', 'HAN → VCL', '08:45', '10:10', 'VN-A321'], ['VN1640', 'VCL → HAN', '10:45', '12:10', 'VN-A321'], ['VN1421', 'SGN → VCL', '11:20', '12:45', 'VN-A350'], ['VN1420', 'VCL → SGN', '13:20', '14:45', 'VN-A350'], ['VN1643', 'HAN → VCL', '14:10', '15:35', 'VN-A612'], ['VN1642', 'VCL → HAN', '16:00', '17:25', 'VN-A612'], ['VN1423', 'SGN → VCL', '18:00', '19:25', 'VN-A359']],
+                DAD: [['VN123', 'HAN → DAD', '11:00', '12:25', 'VN-A321'], ['VN132', 'DAD → SGN', '12:30', '13:55', 'VN-A359']],
+                HAN: [['VN210', 'SGN → HAN', '16:00', '18:10', 'VN-A867'], ['VN154', 'DAD → HAN', '16:15', '17:35', 'VN-A321'], ['VN221', 'HAN → SGN', '16:30', '18:40', 'VN-A350'], ['VN615', 'BKK → HAN', '16:45', '18:35', 'VN-A359'], ['VN185', 'HAN → DAD', '17:00', '18:20', 'VN-A612'], ['VN284', 'SGN → HAN', '17:10', '19:20', 'VN-A868'], ['VN417', 'ICN → HAN', '17:20', '21:10', 'VN-A867'], ['VN156', 'DAD → HAN', '17:30', '18:50', 'VN-A321'], ['VN602', 'HAN → BKK', '17:40', '19:35', 'VN-A359'], ['VN223', 'HAN → SGN', '18:00', '20:10', 'VN-A350'], ['VN311', 'NRT → HAN', '18:20', '22:10', 'VN-A867'], ['VN1855', 'HAN → VCL', '19:00', '20:25', 'VN-A612']],
+                VN221: [['VN221', 'HAN → SGN', '13:40', '15:20', 'VN-A350']]
+            };
+            const uniq = []; const seen = new Set();
+            Object.values(flightsByArea).flat().forEach(row => { const key = row.join('|'); if (seen.has(key)) return; seen.add(key); const [flight, route, etd, eta, acReg] = row; const parts = route.split('→').map(s => s.trim()); uniq.push({ flight, route, dep: parts[0], arr: parts[1], etd, eta, acReg, key }); });
+            uniq.sort((a, b) => a.etd.localeCompare(b.etd));
+
+            const el = {
+                openBtn: null, closeBtn: document.getElementById('closeAlertTaskBtn'), cancelBtn: document.getElementById('alertTaskCancelBtn'), createBtn: document.getElementById('alertTaskCreateBtn'),
+                title: document.getElementById('atTitle'), detailContent: document.getElementById('atDetailContent'), alertType: document.getElementById('atAlertType'), id: document.getElementById('atId'), priority: document.getElementById('atPriority'), impact: document.getElementById('atImpact'), note: document.getElementById('atNote'),
+                from: document.getElementById('atFrom'), to: document.getElementById('atTo'), dep: document.getElementById('atDep'), arr: document.getElementById('atArr'), flight: document.getElementById('atFlight'), aircraft: document.getElementById('atAircraft'),
+                preview: document.getElementById('atPreviewBtn'), wrap: document.getElementById('atFlightWrap'), found: document.getElementById('atFoundCount'), included: document.getElementById('atIncludedCount'), range: document.getElementById('atFlightRange'),
+                partyGrid: document.getElementById('atPartyGrid'), selectedCount: document.getElementById('atSelectedCount')
+            };
+            let taskSeed = [...document.querySelectorAll('#taskTableBody .task-code')].length + 50;
+            let currentRows = []; let includedKeys = new Set();
+
+            function optionHtml(values, placeholder) { return [`<option value="">${placeholder}</option>`].concat(values.map(v => `<option value="${v}">${v}</option>`)).join(''); }
+            function fillSelects() {
+                const deps = [...new Set(uniq.map(f => f.dep))].sort(); const arrs = [...new Set(uniq.map(f => f.arr))].sort(); const flights = [...new Set(uniq.map(f => f.flight))].sort(); const aircraft = [...new Set(uniq.map(f => f.acReg))].sort();
+                el.dep.innerHTML = optionHtml(deps, 'Any'); el.arr.innerHTML = optionHtml(arrs, 'Any'); el.flight.innerHTML = optionHtml(flights, 'Any flight'); el.aircraft.innerHTML = optionHtml(aircraft, 'Any aircraft');
+            }
+            function nextTaskId() {
+                const d = (el.from.value || '2026-07-29T15:00').slice(0, 10).replaceAll('-', '');
+                return `TK-${d}-${String(taskSeed).padStart(4, '0')}`;
+            }
+            function setDefaults() {
+                fillSelects();
                 el.title.value = 'Coordinate operational impact';
                 if (el.alertType) el.alertType.value = 'Weather';
-                el.priority.value = 'High';
+                if (el.priority) el.priority.value = 'High';
                 el.impact.value = 'Delayed';
                 el.note.value = '';
                 el.from.value = '2026-07-29T15:00';
@@ -14820,7 +15160,14 @@
                 renderFlights(rows);
                 showToast(`${rows.length} matching flight${rows.length === 1 ? '' : 's'} found.`);
             }
-            function openView() { view.classList.add('show'); view.setAttribute('aria-hidden', 'false'); setDefaults(); }
+            function openView() {
+                view.classList.add('show');
+                view.setAttribute('aria-hidden', 'false');
+                const h2 = view.querySelector('.mt-title h2');
+                if (h2) h2.textContent = 'Create Task from Alert';
+                setDefaults();
+            }
+            window.openAlertTaskView = openView;
             function closeView() { view.classList.remove('show'); view.setAttribute('aria-hidden', 'true'); }
 
             function makePartyStack(parties) {
@@ -14848,8 +15195,8 @@
             }
 
             // Replace original button to remove old drawer listener
-            const freshBtn = el.openBtn.cloneNode(true); el.openBtn.replaceWith(freshBtn); el.openBtn = freshBtn;
-            el.openBtn.addEventListener('click', openView);
+
+
             el.closeBtn.addEventListener('click', closeView); el.cancelBtn.addEventListener('click', closeView); el.preview.addEventListener('click', previewFlights); el.createBtn.addEventListener('click', addTaskToList);
             view.addEventListener('click', e => { if (e.target === view) closeView(); });
             document.addEventListener('keydown', e => { if (e.key === 'Escape' && view.classList.contains('show')) closeView(); });
