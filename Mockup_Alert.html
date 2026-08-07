@@ -1677,11 +1677,20 @@
 
         .ct-head h3 {
             margin: 0;
-            font-size: 9px
+            font-size: 14px
         }
 
         .ct-head .btn {
-            margin-left: auto
+            margin-left: auto;
+            height: 28px;
+            padding: 0 12px;
+            font-size: 11px;
+        }
+
+        .ct-actions .btn {
+            height: 32px;
+            padding: 0 16px;
+            font-size: 13px;
         }
 
         .ct-body {
@@ -1690,7 +1699,7 @@
 
         .ct-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr;
             gap: 8px
         }
 
@@ -1701,8 +1710,8 @@
 
         .ct-field label {
             display: block;
-            font-size: 8px;
-            font-weight: 800;
+            font-size: 12px;
+            font-weight: 600;
             margin-bottom: 4px
         }
 
@@ -1712,7 +1721,9 @@
 
         .ct-field .control {
             width: 100%;
-            height: 25px
+            height: 32px;
+            font-size: 13px;
+            padding: 0 8px;
         }
 
         .ct-note {
@@ -1721,14 +1732,15 @@
 
         .ct-note textarea {
             width: 100%;
-            min-height: 50px;
+            min-height: 60px;
             resize: vertical;
             border: 1px solid #3c5870;
             border-radius: 2px;
             background: #12283d;
             color: #fff;
             padding: 7px;
-            font: inherit;
+            font-size: 13px;
+            font-family: inherit;
             outline: none
         }
 
@@ -1740,45 +1752,45 @@
 
         .ct-parties-title h4 {
             margin: 0;
-            font-size: 8px
+            font-size: 13px
         }
 
         .ct-parties-title small {
             display: block;
             color: var(--muted);
-            font-size: 7px;
+            font-size: 11px;
             margin-top: 2px
         }
 
         .ct-selected {
             margin-left: auto;
             color: #9eb4c6;
-            font-size: 7px
+            font-size: 11px
         }
 
         .party-grid {
             margin-top: 6px;
             border: 1px solid var(--line);
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr))
+            grid-template-columns: repeat(2, minmax(0, 1fr))
         }
 
         .party-item {
-            min-height: 34px;
+            min-height: 38px;
             padding: 6px 8px;
             border-right: 1px solid var(--line-soft);
             border-bottom: 1px solid var(--line-soft);
             display: grid;
-            grid-template-columns: 110px minmax(0, 1fr);
+            grid-template-columns: 160px minmax(0, 1fr);
             gap: 7px;
             align-items: center
         }
 
-        .party-item:nth-child(3n) {
+        .party-item:nth-child(2n) {
             border-right: 0
         }
 
-        .party-item:nth-last-child(-n+3) {
+        .party-item:nth-last-child(-n+2) {
             border-bottom: 0
         }
 
@@ -1786,8 +1798,8 @@
             display: flex;
             align-items: center;
             gap: 7px;
-            font-size: 7px;
-            font-weight: 800;
+            font-size: 11px;
+            font-weight: 600;
             white-space: nowrap
         }
 
@@ -1797,14 +1809,14 @@
         }
 
         .party-reason {
-            height: 22px;
+            height: 28px;
             width: 100%;
             border: 1px solid #29445c;
             border-radius: 2px;
             background: #0c1e2f;
             color: #fff;
-            padding: 0 6px;
-            font-size: 7px;
+            padding: 0 8px;
+            font-size: 12px;
             outline: none
         }
 
@@ -1956,6 +1968,8 @@
    khác nhau (#071a2b/#0b1d2f/#0a1a2a/#11243a) gây cảm giác chia vùng lộn xộn dù đều là tông
    xanh navy. Giữ nguyên các khối màu có ý nghĩa trạng thái (found/included, toggle bật/tắt). */
         .mt-section {
+            display: grid;
+            grid-template-columns: 200px 1fr;
             border: 1px solid #214159;
             background: #0b1b2b;
             border-radius: 6px;
@@ -1964,13 +1978,10 @@
         }
 
         .mt-section-head {
-            height: 32px;
-            padding: 0 12px;
+            padding: 12px;
             background: #10253a;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between
+            border-right: 1px solid var(--line);
+            display: block;
         }
 
         .mt-section-head h3 {
@@ -1988,8 +1999,8 @@
         .mt-setup-grid {
             padding: 10px;
             display: grid;
-            grid-template-columns: 2.2fr 1fr 0.95fr 1fr;
-            gap: 8px
+            grid-template-columns: 3fr 1fr;
+            gap: 16px;
         }
 
         .mt-field label {
@@ -3255,20 +3266,30 @@
 
         .td-hero-meta {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
             margin-top: 16px;
             padding-top: 14px;
             border-top: 1px solid #18364d
         }
 
-        .td-meta-item label {
+        .td-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .td-meta-item.td-meta-progress {
             display: block;
+        }
+
+        .td-meta-item label {
+            display: inline-block;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: .04em;
             color: #89a4b7;
-            margin-bottom: 5px
+            margin-bottom: 0
         }
 
         .td-meta-item strong {
@@ -11887,13 +11908,18 @@
         }
 
         .alert-detail-view .scope-field {
-            margin-bottom: 9px !important
+            margin-bottom: 9px !important;
+            display: grid !important;
+            grid-template-columns: 100px 1fr !important;
+            align-items: center !important;
+            gap: 10px !important
         }
 
         .alert-detail-view .scope-field label {
-            font-size: 10px !important;
+            font-size: 11px !important;
             color: #a7bac8 !important;
-            margin-bottom: 5px !important
+            margin-bottom: 0 !important;
+            white-space: nowrap !important
         }
 
         .alert-detail-view .scope-field .control {
@@ -13042,70 +13068,6 @@
                                 14:05</span></strong></div>
                 </div>
             </section>
-            <section class="ad-grid">
-                <aside class="ad-panel">
-                    <div class="ad-panel-head">
-                        <div>
-                            <h3>Flight Scope</h3><small>Refine and search within the affected flights.</small>
-                        </div>
-                    </div>
-                    <div class="scope-body">
-                        <div class="scope-box">
-                            <div class="scope-row">
-                                <div class="scope-field"><label>From (UTC) *</label><input id="scopeFrom"
-                                        class="control" type="datetime-local" step="300"></div>
-                                <div class="scope-field"><label>To (UTC) *</label><input id="scopeTo" class="control"
-                                        type="datetime-local" step="300"></div>
-                            </div>
-                            <div class="scope-row">
-                                <div class="scope-field"><label>🛫 DEP</label><select id="scopeDep" class="control">
-                                        <option>Any</option>
-                                    </select></div>
-                                <div class="scope-field"><label>🛬 ARR</label><select id="scopeArr" class="control">
-                                        <option>Any</option>
-                                    </select></div>
-                            </div>
-                            <div class="scope-field"><label>✈ Flight No.</label><select id="scopeFlight"
-                                    class="control">
-                                    <option>Any flight</option>
-                                </select></div>
-                            <div class="scope-field"><label>◯ Aircraft</label><select id="scopeAircraft"
-                                    class="control">
-                                    <option value="">Any aircraft</option>
-                                </select></div>
-                            <button class="btn primary preview-btn" id="previewFlightsBtn">⌕ Search Flights</button>
-                        </div>
-                    </div>
-                </aside>
-                <section class="ad-panel">
-                    <div class="ad-panel-head">
-                        <div>
-                            <h3>Affected Flights</h3><small>Review the affected flights and turn inclusion on or
-                                off.</small>
-                        </div>
-                        <div class="panel-counts"><span class="pill-count found" id="foundCount">5 found</span><span
-                                class="pill-count included" id="includedCount">5 included</span></div>
-                    </div>
-                    <div style="overflow:auto">
-                        <table class="flight-table">
-                            <thead>
-                                <tr>
-                                    <th style="width:100px">Included</th>
-                                    <th style="width:90px">FLT NO.</th>
-                                    <th style="width:160px">ROUTE</th>
-                                    <th>ETD (UTC)</th>
-                                    <th>ETA (UTC)</th>
-                                    <th>AC REG</th>
-                                </tr>
-                            </thead>
-                            <tbody id="flightRows"></tbody>
-                        </table>
-                    </div>
-                    <div class="flight-footer"><span>Rows per page: 10</span><span id="flightRange">1–5 of 5</span>
-                    </div>
-                </section>
-            </section>
-
             <section class="create-task-panel" id="createTaskPanel">
                 <div class="ct-head">
                     <h3>Create Task from Alert</h3><button class="btn" id="collapseCreateTaskBtn">Collapse</button>
@@ -13116,26 +13078,11 @@
                                 id="ctTitle" value="Coordinate GPU/ASU support for APU INOP flights to DIN"></div>
                         <div class="ct-field"><label>Source Alert</label><input class="control" id="ctSourceAlert"
                                 value="AL-0144" readonly></div>
-                        <div class="ct-field"><label>Priority <span class="req">*</span></label><select class="control"
-                                id="ctPriority">
-                                <option>Critical</option>
-                                <option>High</option>
-                                <option>Medium</option>
-                            </select></div>
+
                     </div>
                     <input type="hidden" id="ctId" value="TK-20260728-0001">
-                    <div class="ct-grid second">
-                        <div class="ct-field"><label>Impact Type <span class="req">*</span></label><select
-                                class="control">
-                                <option>Aircraft Change</option>
-                                <option>Delayed</option>
-                                <option>Holding</option>
-                                <option>Cancelled</option>
-                                <option>Other</option>
-                            </select></div>
-                    </div>
-                    <div class="ct-note ct-field"><label>Note</label><textarea
-                            placeholder="Enter any additional notes here..."></textarea></div>
+
+
                     <div class="ct-parties-title">
                         <div>
                             <h4>Responsible Parties <span style="color:#ff6f78">*</span></h4><small>Select parties and
@@ -13178,10 +13125,92 @@
                                 VIAGS</label><input class="party-reason" disabled placeholder="Reason for assignment">
                         </div>
                     </div>
-                    <div class="ct-actions"><button class="btn" id="cancelInlineTaskBtn">Cancel</button><button
-                            class="btn primary" id="submitInlineTaskBtn">Create Task</button></div>
+                    <div class="ct-note ct-field"><label>Note</label><textarea
+                            placeholder="Enter any additional notes here..."></textarea></div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px;">
+                        <div class="ct-grid second" style="margin-top: 0; width: 40%; display: block;">
+                            <div class="ct-field" style="margin-bottom: 0;"><label>Impact Type <span
+                                        class="req">*</span></label><select class="control">
+                                    <option>Aircraft Change</option>
+                                    <option>Delayed</option>
+                                    <option>Holding</option>
+                                    <option>Cancelled</option>
+                                    <option>Other</option>
+                                </select></div>
+                        </div>
+                        <div class="ct-actions" style="margin-top: 0;"><button class="btn"
+                                id="cancelInlineTaskBtn">Cancel</button><button class="btn primary"
+                                id="submitInlineTaskBtn">Create Task</button></div>
+                    </div>
                 </div>
             </section>
+            <section class="ad-grid">
+                <aside class="ad-panel">
+                    <div class="ad-panel-head">
+                        <div>
+                            <h3>Flight Scope</h3><small>Refine and search within the affected flights.</small>
+                        </div>
+                    </div>
+                    <div class="scope-body">
+                        <div class="scope-box">
+                            <div class="scope-field"><label>From (UTC) *</label><input id="scopeFrom" class="control"
+                                    type="datetime-local" step="300"></div>
+                            <div class="scope-field"><label>To (UTC) *</label><input id="scopeTo" class="control"
+                                    type="datetime-local" step="300"></div>
+                            <div class="scope-field"><label>🛫 DEP</label><select id="scopeDep" class="control">
+                                    <option>Any</option>
+                                </select></div>
+                            <div class="scope-field"><label>🛬 ARR</label><select id="scopeArr" class="control">
+                                    <option>Any</option>
+                                </select></div>
+                            <div class="scope-field"><label>✈ Flight No.</label><select id="scopeFlight"
+                                    class="control">
+                                    <option>Any flight</option>
+                                </select></div>
+                            <div class="scope-field"><label>◯ Aircraft</label><select id="scopeAircraft"
+                                    class="control">
+                                    <option value="">Any aircraft</option>
+                                </select></div>
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                                <button class="btn" id="clearFlightsBtn"
+                                    style="flex: 1; height: 36px; border-radius: 5px; font-size: 11px;">Clear</button>
+                                <button class="btn primary preview-btn" id="previewFlightsBtn"
+                                    style="flex: 2; margin-top: 0 !important; width: auto !important;">⌕ Search
+                                    Flights</button>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <section class="ad-panel">
+                    <div class="ad-panel-head">
+                        <div>
+                            <h3>Affected Flights</h3><small>Review the affected flights and turn inclusion on or
+                                off.</small>
+                        </div>
+                        <div class="panel-counts"><span class="pill-count found" id="foundCount">5 found</span><span
+                                class="pill-count included" id="includedCount">5 included</span></div>
+                    </div>
+                    <div style="overflow:auto">
+                        <table class="flight-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:100px">Included</th>
+                                    <th style="width:90px">FLT NO.</th>
+                                    <th style="width:160px">ROUTE</th>
+                                    <th>ETD (UTC)</th>
+                                    <th>ETA (UTC)</th>
+                                    <th>AC REG</th>
+                                </tr>
+                            </thead>
+                            <tbody id="flightRows"></tbody>
+                        </table>
+                    </div>
+                    <div class="flight-footer"><span>Rows per page: 10</span><span id="flightRange">1–5 of 5</span>
+                    </div>
+                </section>
+            </section>
+
         </div>
     </div>
 
@@ -14227,76 +14256,9 @@
                                 <option>VIP/CIP</option>
                                 <option>Technical service</option>
                             </select></div>
-                        <div class="mt-field"><label>Priority <span class="req">*</span></label><select class="control"
-                                id="mtPriority">
-                                <option>Critical</option>
-                                <option selected>High</option>
-                                <option>Medium</option>
-                            </select></div>
-                        <div class="mt-field"><label>Impact Type <span class="req">*</span></label><select
-                                class="control" id="mtImpact">
-                                <option selected>Delayed</option>
-                                <option>Holding</option>
-                                <option>Aircraft Change</option>
-                                <option>Cancelled</option>
-                                <option>Other</option>
-                            </select></div>
+
                     </div>
                     <input type="hidden" id="mtId">
-                </section>
-
-                <section class="mt-section">
-                    <div class="mt-grid">
-                        <aside class="mt-scope-box">
-                            <div class="mt-scope-head">
-                                <div>
-                                    <h4>Flight Scope</h4><small>Choose a time window and any relevant flight
-                                        data.</small>
-                                </div><span style="color:#8fb1c8">☷</span>
-                            </div>
-                            <div class="mt-scope-row">
-                                <div class="mt-field"><label>From (UTC) <span class="req">*</span></label><input
-                                        id="mtFrom" class="control" type="datetime-local" step="300"></div>
-                                <div class="arrow">→</div>
-                                <div class="mt-field"><label>To (UTC) <span class="req">*</span></label><input id="mtTo"
-                                        class="control" type="datetime-local" step="300"></div>
-                            </div>
-                            <div class="mt-two-col">
-                                <div class="mt-field"><label>🛫 DEP</label><select id="mtDep" class="control"></select>
-                                </div>
-                                <div class="mt-field"><label>🛬 ARR</label><select id="mtArr" class="control"></select>
-                                </div>
-                            </div>
-                            <div class="mt-field" style="margin-top:8px"><label>✈ Flight No.</label><select
-                                    id="mtFlight" class="control"></select></div>
-                            <div class="mt-field" style="margin-top:8px"><label>◯ Aircraft</label><select
-                                    id="mtAircraft" class="control"></select></div>
-                            <button class="btn primary mt-preview-btn" id="mtPreviewBtn">⌕ Preview Flights</button>
-                        </aside>
-                        <section class="mt-flight-panel">
-                            <div class="mt-panel-head">
-                                <div>
-                                    <h4>Affected Flights</h4><small>Review the results and exclude only flights that
-                                        should not be included.</small>
-                                </div>
-                                <div class="mt-counts"><span class="mt-pill found" id="mtFoundCount">0 found</span><span
-                                        class="mt-pill included" id="mtIncludedCount">0 included</span></div>
-                            </div>
-                            <div class="mt-flight-wrap" id="mtFlightWrap"></div>
-                            <div class="mt-flight-footer"><span>Rows per page: 10</span><span id="mtFlightRange">0 of
-                                    0</span></div>
-                        </section>
-                    </div>
-                </section>
-
-                <section class="mt-section">
-                    <div class="mt-section-head">
-                        <div>
-                            <h3>Note</h3>
-                        </div>
-                    </div>
-                    <div class="mt-note-box"><textarea id="mtNote"
-                            placeholder="Enter any additional notes here..."></textarea></div>
                 </section>
 
                 <section class="mt-section">
@@ -14351,10 +14313,77 @@
                         </div>
                     </div>
                 </section>
-                <div class="mt-actions">
-                    <button class="btn" id="manualTaskCancelBtn">Cancel</button>
-                    <button class="btn primary" id="manualTaskCreateBtn">Create Task</button>
+                <section class="mt-section">
+                    <div class="mt-section-head">
+                        <div>
+                            <h3>Note</h3>
+                        </div>
+                    </div>
+                    <div class="mt-note-box"><textarea id="mtNote"
+                            placeholder="Enter any additional notes here..."></textarea></div>
+                </section>
+
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px;">
+                    <div class="mt-field" style="width: 40%; margin-bottom: 0;">
+                        <label>Impact Type <span class="req">*</span></label><select class="control" id="mtImpact">
+                            <option selected>Delayed</option>
+                            <option>Holding</option>
+                            <option>Aircraft Change</option>
+                            <option>Cancelled</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="mt-actions" style="margin-top: 0; padding-top: 0; border-top: none;">
+                        <button class="btn" id="manualTaskCancelBtn">Cancel</button>
+                        <button class="btn primary" id="manualTaskCreateBtn">Create Task</button>
+                    </div>
                 </div>
+                <section class="mt-section" style="margin-top: 24px;">
+                    <div class="mt-grid">
+                        <aside class="mt-scope-box">
+                            <div class="mt-scope-head">
+                                <div>
+                                    <h4>Flight Scope</h4><small>Choose a time window and any relevant flight
+                                        data.</small>
+                                </div><span style="color:#8fb1c8">☷</span>
+                            </div>
+                            <div class="mt-scope-row">
+                                <div class="mt-field"><label>From (UTC) <span class="req">*</span></label><input
+                                        id="mtFrom" class="control" type="datetime-local" step="300"></div>
+                                <div class="arrow">→</div>
+                                <div class="mt-field"><label>To (UTC) <span class="req">*</span></label><input id="mtTo"
+                                        class="control" type="datetime-local" step="300"></div>
+                            </div>
+                            <div class="mt-two-col">
+                                <div class="mt-field"><label>🛫 DEP</label><select id="mtDep" class="control"></select>
+                                </div>
+                                <div class="mt-field"><label>🛬 ARR</label><select id="mtArr" class="control"></select>
+                                </div>
+                            </div>
+                            <div class="mt-field" style="margin-top:8px"><label>✈ Flight No.</label><select
+                                    id="mtFlight" class="control"></select></div>
+                            <div class="mt-field" style="margin-top:8px"><label>◯ Aircraft</label><select
+                                    id="mtAircraft" class="control"></select></div>
+                            <button class="btn primary mt-preview-btn" id="mtPreviewBtn">⌕ Preview Flights</button>
+                        </aside>
+                        <section class="mt-flight-panel">
+                            <div class="mt-panel-head">
+                                <div>
+                                    <h4>Affected Flights</h4><small>Review the results and exclude only flights that
+                                        should not be included.</small>
+                                </div>
+                                <div class="mt-counts"><span class="mt-pill found" id="mtFoundCount">0 found</span><span
+                                        class="mt-pill included" id="mtIncludedCount">0 included</span></div>
+                            </div>
+                            <div class="mt-flight-wrap" id="mtFlightWrap"></div>
+                            <div class="mt-flight-footer"><span>Rows per page: 10</span><span id="mtFlightRange">0 of
+                                    0</span></div>
+                        </section>
+                    </div>
+                </section>
+
             </div>
         </section>
     </div>
@@ -14380,42 +14409,49 @@
            trên (id="tdTaskId") — giảm 1 lớp khối viền lồng nhau + hết trùng thông tin, hero dùng
            toàn bộ chiều rộng panel thay vì bị chẻ đôi với 1 cột phụ chật hẹp. -->
                 <section class="td-hero">
-                    <div class="td-hero-main">
-                        <h1 id="tdTitle">Handle weather impact at SGN</h1>
-                        <p id="tdContentDetails" style="margin-bottom: 15px; line-height: 1.4; color: #e2e8f0;">
-                            Coordinate operational response, monitor weather development and
-                            update handling actions for all affected flights.</p>
-                        <div class="td-hero-badges">
-                            <span class="td-badge source" id="tdSourceType">Alert</span>
-                            <span class="td-badge impact" id="tdImpact">Delayed</span>
-                            <span class="td-badge neutral"><span id="tdAffectedFlightsCount">3</span> affected
-                                flights</span>
-                            <span class="td-badge status" id="tdStatus">In Progress</span>
-                        </div>
-                        <div class="td-hero-meta">
-                            <div class="td-meta-item"><label>Created by</label><strong id="tdCreatedBy">Nguyễn Văn
-                                    A</strong></div>
-                            <div class="td-meta-item"><label>Created at</label><strong id="tdCreatedAt">28/07/2026
-                                    13:48</strong></div>
-                            <div class="td-meta-item"><label>Last updated</label><strong id="tdUpdatedAt">28/07/2026
-                                    14:18</strong></div>
-                            <div class="td-meta-item td-meta-progress">
-                                <label>Completion</label>
-                                <strong id="tdHeroProgressCount">5/12</strong>
-                                <div class="td-completion-bar"><span id="tdHeroProgressBar" style="width:42%"></span>
+                    <div class="td-hero-main" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div class="td-hero-left">
+                            <h1 id="tdTitle">Handle weather impact at SGN</h1>
+                            <p id="tdContentDetails" style="margin-bottom: 15px; line-height: 1.4; color: #e2e8f0;">
+                                Coordinate operational response, monitor weather development and
+                                update handling actions for all affected flights.</p>
+                            <div class="report-field" style="margin-top: 15px;">
+                                <label>Note</label>
+                                <div
+                                    style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
+                                    The dispatcher has assigned tasks to the departments and requested that they
+                                    coordinate
+                                    smoothly to resolve the tasks.
                                 </div>
                             </div>
                         </div>
-                        <div class="report-field" style="margin-top: 15px;">
-                            <label>Note</label>
-                            <div
-                                style="background: #0b2033; border: 1px solid #33506a; border-radius: 4px; color: #fff; padding: 10px; line-height: 1.5; font-size: 11px;">
-                                The dispatcher has assigned tasks to the departments and requested that they coordinate
-                                smoothly to resolve the tasks.
+                        <div class="td-hero-right">
+                            <div class="td-hero-badges">
+                                <span class="td-badge source" id="tdSourceType">Alert</span>
+                                <span class="td-badge impact" id="tdImpact">Delayed</span>
+                                <span class="td-badge neutral"><span id="tdAffectedFlightsCount">3</span> affected
+                                    flights</span>
+                                <span class="td-badge status" id="tdStatus">In Progress</span>
+                            </div>
+                            <div class="td-hero-meta">
+                                <div class="td-meta-item"><label>Created by:</label><strong id="tdCreatedBy">Nguyễn Văn
+                                        A</strong></div>
+                                <div class="td-meta-item"><label>Last updated:</label><strong
+                                        id="tdUpdatedAt">28/07/2026
+                                        14:18</strong></div>
+                                <div class="td-meta-item"><label>Created at:</label><strong id="tdCreatedAt">28/07/2026
+                                        13:48</strong></div>
+                                <div class="td-meta-item td-meta-progress">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <label style="margin-bottom: 0;">Completion:</label>
+                                        <strong id="tdHeroProgressCount">5/12</strong>
+                                    </div>
+                                    <div class="td-completion-bar" style="margin-top: 6px;"><span id="tdHeroProgressBar"
+                                            style="width:42%"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="td-completion-note" id="tdHeroProgressText">Assigned work progress across all
-                            responsible parties.</div>
                     </div>
                 </section>
 
@@ -14598,7 +14634,7 @@
                 const airport = document.getElementById('adAirport').textContent;
                 document.getElementById('ctTitle').value = /GPU\/ASU|APU INOP/i.test(alertTitle) ? `Coordinate GPU/ASU support for APU INOP flights to ${airport}` : `Coordinate handling for ${alertTitle}`;
                 const priority = /Critical/i.test(activeAlert?.priority || '') || /GPU\/ASU|APU INOP/i.test(alertTitle) ? 'Critical' : 'High';
-                document.getElementById('ctPriority').value = priority;
+                // document.getElementById('ctPriority').value = priority;
                 const sourceAlertCode = (document.getElementById('adCode').textContent.split('·')[0] || 'AL-0000').trim();
                 const sourceAlertInput = document.getElementById('ctSourceAlert'); if (sourceAlertInput) sourceAlertInput.value = sourceAlertCode;
                 document.getElementById('ctId').value = `TK-20260728-${String(taskSequence).padStart(4, '0')}`;
@@ -14920,8 +14956,8 @@
                     detailNodes.partyFilter.innerHTML = options.map(([v, l]) => `<option value="${v}" ${v === current ? 'selected' : ''}>${l}</option>`).join('');
                 }
                 const visibleNotes = filter === 'all' ? notes : notes.filter(n => n.group === filter);
-                detailNodes.notesContent.innerHTML = visibleNotes.length 
-                    ? `<div class="td-activity-list" style="padding-top:10px;">${visibleNotes.map(n => `<div class="td-activity-item" data-note-group="${n.group}"><div class="td-activity-meta">${n.time} · ${n.author}<span class="badge-mini">${n.kind === 'status' ? 'Status' : n.kind === 'created' ? 'Created' : 'Note'}</span></div><div class="td-activity-text">${n.text}</div></div>`).join('')}</div>`
+                detailNodes.notesContent.innerHTML = visibleNotes.length
+                    ? `<div class="td-activity-list" style="padding-top:10px;">${visibleNotes.map(n => `<div class="td-activity-item" data-note-group="${n.group}"><div class="td-activity-meta">${n.time} · ${n.author}<span class="badge-mini">${n.kind === 'status' ? (n.text.toLowerCase().includes('done') ? 'Done' : (n.text.toLowerCase().includes('started') || n.text.toLowerCase().includes('progress')) ? 'In Progress' : 'Open') : n.kind === 'created' ? 'Created' : 'Note'}</span></div><div class="td-activity-text">${n.text}</div></div>`).join('')}</div>`
                     : '<div class="td-empty" style="padding-top:10px;">No updates yet.</div>';
             }
             function renderParties(task) {
@@ -15184,28 +15220,28 @@
                 if (!tStr) return 0;
                 const match = tStr.match(/(\d{2}):(\d{2}).*?(\d{2})\/(\d{2})/);
                 if (!match) return 0;
-                return new Date(2026, parseInt(match[4], 10)-1, parseInt(match[3], 10), parseInt(match[1], 10), parseInt(match[2], 10)).getTime();
+                return new Date(2026, parseInt(match[4], 10) - 1, parseInt(match[3], 10), parseInt(match[1], 10), parseInt(match[2], 10)).getTime();
             }
             function renderActivityGroup(title, subtitle, items = [], key = 'general', expanded = false) {
                 return ''; // Deprecated, items are flattened in renderActivityShell
             }
             function renderActivityShell(groupLabel, metaText, groups) {
                 const options = [`<option value="all">All responsible parties</option>`, ...groups.map(g => `<option value="${escapeAttr(g.key)}">${g.optionLabel || g.title}</option>`)].join('');
-                
+
                 let allItems = [];
                 groups.forEach(g => {
                     g.items.forEach(item => {
                         allItems.push({ item, groupKey: g.key });
                     });
                 });
-                
+
                 // Sort items by time descending
                 allItems.sort((a, b) => parseActivityTime(b.item.meta) - parseActivityTime(a.item.meta));
 
                 let allItemsHtml = '';
                 allItems.forEach(({ item, groupKey }) => {
-                    const tag = activityTagFor(item); 
-                    allItemsHtml += `<div class="dlx-activity-item ${tag.cls}" data-party-key="${escapeAttr(groupKey)}"><div class="dlx-activity-line"><span>${item.meta || ''}</span><span class="dlx-activity-tag ${tag.cls}">${item.label || tag.label}</span></div><p>${item.text || ''}</p></div>`; 
+                    const tag = activityTagFor(item);
+                    allItemsHtml += `<div class="dlx-activity-item ${tag.cls}" data-party-key="${escapeAttr(groupKey)}"><div class="dlx-activity-line"><span>${item.meta || ''}</span><span class="dlx-activity-tag ${tag.cls}">${item.label || tag.label}</span></div><p>${item.text || ''}</p></div>`;
                 });
 
                 if (!allItemsHtml) allItemsHtml = '<div class="dlx-empty-note">No updates yet.</div>';
