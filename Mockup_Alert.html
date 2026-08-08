@@ -13169,57 +13169,21 @@
                     </div>
                 </div>
             </section>
-            <section class="ad-grid">
-                <aside class="ad-panel">
-                    <div class="ad-panel-head">
-                        <div>
-                            <h3>Flight Scope</h3><small>Refine and search within the affected flights.</small>
-                        </div>
-                    </div>
-                    <div class="scope-body">
-                        <div class="scope-box">
-                            <div class="scope-field"><label>From (UTC) *</label><input id="scopeFrom" class="control"
-                                    type="datetime-local" step="300"></div>
-                            <div class="scope-field"><label>To (UTC) *</label><input id="scopeTo" class="control"
-                                    type="datetime-local" step="300"></div>
-                            <div class="scope-field"><label>🛫 DEP</label><select id="scopeDep" class="control">
-                                    <option>Any</option>
-                                </select></div>
-                            <div class="scope-field"><label>🛬 ARR</label><select id="scopeArr" class="control">
-                                    <option>Any</option>
-                                </select></div>
-                            <div class="scope-field"><label>✈ Flight No.</label><select id="scopeFlight"
-                                    class="control">
-                                    <option>Any flight</option>
-                                </select></div>
-                            <div class="scope-field"><label>◯ Aircraft</label><select id="scopeAircraft"
-                                    class="control">
-                                    <option value="">Any aircraft</option>
-                                </select></div>
-                            <div style="display: flex; gap: 8px; margin-top: 12px;">
-                                <button class="btn" id="clearFlightsBtn"
-                                    style="flex: 1; height: 36px; border-radius: 5px; font-size: 11px;">Clear</button>
-                                <button class="btn primary preview-btn" id="previewFlightsBtn"
-                                    style="flex: 2; margin-top: 0 !important; width: auto !important;">⌕ Search
-                                    Flights</button>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
+            <section class="ad-grid" style="grid-template-columns: 1fr !important;">
+
                 <section class="ad-panel">
                     <div class="ad-panel-head">
                         <div>
                             <h3>Affected Flights</h3><small>Review the affected flights and turn inclusion on or
                                 off.</small>
                         </div>
-                        <div class="panel-counts"><span class="pill-count found" id="foundCount">5 found</span><span
-                                class="pill-count included" id="includedCount">5 included</span></div>
+                        <div class="panel-counts"><span class="pill-count found" id="foundCount">5 found</span></div>
                     </div>
                     <div style="overflow:auto">
                         <table class="flight-table">
                             <thead>
                                 <tr>
-                                    <th style="width:100px">Included</th>
+
                                     <th style="width:90px">FLT NO.</th>
                                     <th style="width:160px">ROUTE</th>
                                     <th>ETD (UTC)</th>
@@ -13243,16 +13207,16 @@
 
     <div class="daily-note-layer" id="dailyNoteLayer" aria-hidden="true">
         <section class="daily-note-panel dn-premium" role="dialog" aria-modal="true" aria-labelledby="dailyNoteTitle">
-            <header class="dn-head dn-head-v2 dn-ref-head">
+            <header class="dn-head dn-head-v2 dn-ref-head" style="align-items: center !important;">
                 <div class="dn-head-left">
                     <div class="dn-title-row">
                         <div class="dn-head-icon">▤</div>
                         <div class="dn-title">
-                            <h2 id="dailyNoteTitle">Daily Operational Note</h2>
+                            <h2 id="dailyNoteTitle" style="font-size: 24px !important;">Daily Operational Note</h2>
                         </div>
                     </div>
-                    <div class="dn-date-row"><span>Duty date</span><input class="dn-date" id="dnDate" type="date"
-                            value="2026-07-28"></div>
+                    <div class="dn-date-row" style="display: none;"><span>Duty date</span><input class="dn-date"
+                            id="dnDate" type="date" value="2026-07-28"></div>
                 </div>
                 <div class="dn-head-actions dn-ref-actions">
                     <button class="btn" id="dnRefreshBtn" type="button">↻ Refresh</button>
@@ -13263,11 +13227,11 @@
             <div class="dn-layout">
                 <aside class="dn-nav dn-ref-tabs">
                     <button class="dn-tab active" data-dn="dnOverview">Overview</button>
-                    <button class="dn-tab" data-dn="dnFigures">Operating Figures</button>
+
                     <button class="dn-tab" data-dn="dnFlights">Flights to Watch</button>
-                    <button class="dn-tab" data-dn="dnApu">Cabin / APU</button>
+                    <button class="dn-tab" data-dn="dnApu">Cabin Temp</button>
                     <button class="dn-tab" data-dn="dnTechnical">AOG &amp; Defects</button>
-                    <button class="dn-tab" data-dn="dnWeather">Weather / NOTAM</button>
+                    <button class="dn-tab" data-dn="dnWeather">Weather</button>
                     <button class="dn-tab" data-dn="dnFleet">Appendix</button>
                 </aside>
                 <main class="dn-main">
@@ -13590,6 +13554,10 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="dn-user-note" style="margin-bottom: 24px;"><label>VIP A notes</label><textarea
+                                    data-note-key="vip-a-notes"
+                                    placeholder="Nhập ghi chú điều phối, đầu mối phối hợp hoặc cập nhật mới..."></textarea>
+                            </div>
                             <div class="dn-card">
                                 <div class="dn-card-head">Other VIP/CIP</div>
                                 <div class="dn-card-body">
@@ -13643,6 +13611,10 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="dn-user-note" style="margin-bottom: 24px;"><label>Other VIP/CIP
+                                    notes</label><textarea data-note-key="other-vip-notes"
+                                    placeholder="Nhập ghi chú điều phối, đầu mối phối hợp hoặc cập nhật mới..."></textarea>
+                            </div>
                             <div class="dn-card">
                                 <div class="dn-card-head">Charter / Ferry and other flights to watch</div>
                                 <div class="dn-card-body">
@@ -13690,236 +13662,11 @@
                             </div>
                         </section>
                         <section class="dn-pane" id="dnApu">
-                            <div class="dn-pane-title">
-                                <h3>Cabin / APU</h3><span>Cabin temperature control and airport support
-                                    capability</span>
-                            </div>
-                            <div class="dn-card">
-                                <div class="dn-card-head">Aircraft requiring support</div>
-                                <div class="dn-card-body">
-                                    <table class="dn-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Aircraft</th>
-                                                <th>Requirement</th>
-                                                <th>Rotation / Flights</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="dn-dot red"></span>APU INOP</td>
-                                                <td><b>A396</b></td>
-                                                <td>ASU, ACU, GPU</td>
-                                                <td>VN243/601/600/7348/7349/813/812/1835/1834</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="dn-dot red"></span>APU GEN INOP</td>
-                                                <td><b>A601</b></td>
-                                                <td>GPU</td>
-                                                <td>VN1176/1177/7827/7826/140/180</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="dn-dot red"></span>APU INOP</td>
-                                                <td><b>A616</b></td>
-                                                <td>ASU, ACU, GPU</td>
-                                                <td>VN646/163/164/169/170/7229/7228/7179</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="dn-dot amber"></span>PACK weak</td>
-                                                <td><b>A604</b></td>
-                                                <td>Cabin temperature monitoring</td>
-                                                <td>VN1380/1381/7829/7828/1827/1826/570</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="dn-card">
-                                <div class="dn-card-head">Airports with missing or unavailable support equipment</div>
-                                <div class="dn-card-body">
-                                    <table class="dn-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Airport</th>
-                                                <th>ASU</th>
-                                                <th>Cooling vehicle</th>
-                                                <th>GPU / power cart</th>
-                                                <th>Note</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>THD</td>
-                                                <td>No</td>
-                                                <td>No</td>
-                                                <td>—</td>
-                                                <td>Monitor APU aircraft</td>
-                                            </tr>
-                                            <tr>
-                                                <td>DIN</td>
-                                                <td>No</td>
-                                                <td>No</td>
-                                                <td>—</td>
-                                                <td>Monitor APU aircraft</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TBB</td>
-                                                <td>No</td>
-                                                <td>No</td>
-                                                <td>—</td>
-                                                <td>Monitor APU aircraft</td>
-                                            </tr>
-                                            <tr>
-                                                <td>PXU</td>
-                                                <td>No</td>
-                                                <td>No</td>
-                                                <td>—</td>
-                                                <td>Monitor APU aircraft</td>
-                                            </tr>
-                                            <tr>
-                                                <td>BMV</td>
-                                                <td>—</td>
-                                                <td>No</td>
-                                                <td>Damaged since 10 Mar 2025</td>
-                                                <td>Power support unavailable</td>
-                                            </tr>
-                                            <tr>
-                                                <td>VCA</td>
-                                                <td>Damaged since 17 May 2024</td>
-                                                <td>Damaged since 30 Sep 2024</td>
-                                                <td>—</td>
-                                                <td>High attention</td>
-                                            </tr>
-                                            <tr>
-                                                <td>LPQ</td>
-                                                <td>Damaged since 22 Sep 2023</td>
-                                                <td>—</td>
-                                                <td>—</td>
-                                                <td>ASU issue</td>
-                                            </tr>
-                                            <tr>
-                                                <td>VTE</td>
-                                                <td>Damaged since 18 Feb 2025</td>
-                                                <td>—</td>
-                                                <td>—</td>
-                                                <td>02 ASU repaired from 10 Jun 2025</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="dn-user-note"><label>Cabin / APU notes</label><textarea data-note-key="apu"
+                            <div class="dn-user-note"><label>Cabin Temp notes</label><textarea data-note-key="apu"
                                     placeholder="Nhập cập nhật hỗ trợ mặt đất, phương án đổi tàu hoặc lưu ý cabin..."></textarea>
                             </div>
                         </section>
                         <section class="dn-pane" id="dnTechnical">
-                            <div class="dn-pane-title">
-                                <h3>AOG & Defect</h3><span>Technical defects and restrictions directly affecting
-                                    operations</span>
-                            </div>
-                            <div class="dn-card">
-                                <div class="dn-card-head">AOG aircraft</div>
-                                <div class="dn-card-body">
-                                    <table class="dn-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Priority</th>
-                                                <th>Reg</th>
-                                                <th>Location</th>
-                                                <th>Detail</th>
-                                                <th>Estimated RTS</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="dn-badge critical">Critical</span></td>
-                                                <td>A893</td>
-                                                <td>HAN</td>
-                                                <td>RH AILERON EHA FAULT</td>
-                                                <td>11:00 · 11 JUN</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="dn-badge high">Monitor</span></td>
-                                                <td>A887</td>
-                                                <td>HAN</td>
-                                                <td>A03-A06 + C01 + Y03 + install ENG 1 + RTS</td>
-                                                <td>17:00 · 11 JUN</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="dn-badge high">Monitor</span></td>
-                                                <td>A886</td>
-                                                <td>HAN</td>
-                                                <td>Install ENG 1,2 + A03+A04+A05+A06+C01 + RTS</td>
-                                                <td>23:00 · 30 JUN</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="dn-badge high">Monitor</span></td>
-                                                <td>A863</td>
-                                                <td>SGN</td>
-                                                <td>A07</td>
-                                                <td>22:00 · 11 JUN</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="dn-grid-3">
-                                <div class="dn-card">
-                                    <div class="dn-card-head">PACK</div>
-                                    <div class="dn-card-body">PACK INOP: NIL<br>PACK weak: A604</div>
-                                </div>
-                                <div class="dn-card">
-                                    <div class="dn-card-head">APU</div>
-                                    <div class="dn-card-body">APU bad smell: NIL<br>APU/APU BLEED/APU GEN INOP: A396,
-                                        A601, A616</div>
-                                </div>
-                                <div class="dn-card">
-                                    <div class="dn-card-head">Cargo affected</div>
-                                    <div class="dn-card-body">A332, A356, A625, A861, A872</div>
-                                </div>
-                            </div>
-                            <div class="dn-card">
-                                <div class="dn-card-head">Technical items to watch</div>
-                                <div class="dn-card-body">
-                                    <table class="dn-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Reg</th>
-                                                <th>Location</th>
-                                                <th>Work / defect</th>
-                                                <th>Window</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>A888</td>
-                                                <td>HAN</td>
-                                                <td>EHA-ELEV RPL</td>
-                                                <td>12:00–19:00 · 11/06</td>
-                                            </tr>
-                                            <tr>
-                                                <td>A898</td>
-                                                <td>HAN</td>
-                                                <td>Inspect fuel nozzle manifold of ENG #1</td>
-                                                <td>22:00–07:00+ · 11/06</td>
-                                            </tr>
-                                            <tr>
-                                                <td>A397</td>
-                                                <td>SGN</td>
-                                                <td>BSI HPT BLADES ENG #2</td>
-                                                <td>21:00–07:00+ · 11/06</td>
-                                            </tr>
-                                            <tr>
-                                                <td>A625</td>
-                                                <td>SGN</td>
-                                                <td>Yellow ENG pump indication show wrong on HYD SD page</td>
-                                                <td>01:00–07:00 · 12/06</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                             <div class="dn-user-note"><label>AOG & Defect notes</label><textarea
                                     data-note-key="technical"
                                     placeholder="Nhập đánh giá ảnh hưởng, phương án điều chỉnh hoặc cập nhật RTS..."></textarea>
@@ -13945,66 +13692,174 @@
                                     <table class="dn-table weather-airport-table">
                                         <thead>
                                             <tr>
-                                                <th>Airport</th>
-                                                <th>Weather condition</th>
-                                                <th>Impact window (LT)</th>
-                                                <th>Severity</th>
+                                                <th style="width: 25%;">Airport</th>
+                                                <th style="width: 45%;">Weather condition</th>
+                                                <th>Impact Period</th>
+                                                <th style="width: 40px; text-align: center;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td><b>HAN</b><small>Noi Bai</small></td>
-                                                <td>Thunderstorms, CB, and localized reduced visibility</td>
+                                                <td>TSRA SCT015 BKN020CB TEMPO 0307 3000 +TSRA BKN010CB</td>
                                                 <td>03:00–07:00+</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>HPH</b><small>Cat Bi</small></td>
-                                                <td>TSRA, gusty wind in thunderstorms</td>
+                                                <td>TSRA SCT015 FEW025CB TEMPO 2107 4000 TSRA</td>
                                                 <td>21:00–07:00+</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>VII</b><small>Vinh</small></td>
-                                                <td>Showers and intermittent thunderstorms</td>
+                                                <td>SHRA VCTS SCT020 BKN030CB TEMPO 1619 4000 SHRA</td>
                                                 <td>16:00–19:00; 01:00+–07:00+</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>DAD</b><small>Da Nang</small></td>
-                                                <td>TSRA, CB around the airport</td>
+                                                <td>VCTS SCT020 FEW025CB TEMPO 0712 5000 TSRA</td>
                                                 <td>07:00–07:00+</td>
-                                                <td><span class="dn-badge critical">Attention required</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>HUI</b><small>Phu Bai</small></td>
-                                                <td>Localized thunderstorms</td>
+                                                <td>VCTS SCT020 FEW030CB PROB40 TEMPO 0712 4000 TSRA</td>
                                                 <td>07:00–07:00+</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>SGN</b><small>Tan Son Nhat</small></td>
-                                                <td>TSRA, localized heavy rain, gusty wind</td>
+                                                <td>TSRA SCT012 FEW027CB TEMPO 0920 4000 +SHRA SCT010 FEW025TCU</td>
                                                 <td>09:00–20:00</td>
-                                                <td><span class="dn-badge critical">Attention required</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>CXR</b><small>Cam Ranh</small></td>
-                                                <td>Showers, possible nearby CB</td>
+                                                <td>SHRA VCTS SCT020 FEW030CB</td>
                                                 <td>08:00–14:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>DLI</b><small>Lien Khuong</small></td>
-                                                <td>Thunderstorms and low ceiling at times</td>
+                                                <td>TSRA BKN010CB TEMPO 1016 3000 +TSRA OVC005</td>
                                                 <td>11:00–17:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>PQC</b><small>Phu Quoc</small></td>
-                                                <td>TSRA, moderate to heavy rain</td>
+                                                <td>TSRA SCT015 FEW025CB TEMPO 1218 3000 +SHRA</td>
                                                 <td>07:00–14:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -14029,69 +13884,156 @@
                                     <table class="dn-table weather-airport-table">
                                         <thead>
                                             <tr>
-                                                <th>Airport</th>
-                                                <th>Country / region</th>
-                                                <th>Weather condition</th>
-                                                <th>Impact window (airport LT)</th>
-                                                <th>Severity</th>
+                                                <th style="width: 25%;">Airport</th>
+                                                <th style="width: 45%;">Weather condition</th>
+                                                <th>Impact Period</th>
+                                                <th style="width: 40px; text-align: center;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td><b>BKK</b><small>Suvarnabhumi</small></td>
-                                                <td>Thailand</td>
-                                                <td>TSRA, localized heavy rain, gusty wind</td>
+                                                <td>TSRA SCT012 FEW027CB TEMPO 0920 4000 +SHRA SCT010 FEW025TCU</td>
                                                 <td>15:00–19:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>SIN</b><small>Changi</small></td>
-                                                <td>Singapore</td>
-                                                <td>SHRA/TSRA, short-term reduced visibility</td>
+                                                <td>SHRA VCTS SCT015 FEW020CB TEMPO 1318 4000 TSRA</td>
                                                 <td>13:00–18:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>HKG</b><small>Hong Kong</small></td>
-                                                <td>Hong Kong</td>
-                                                <td>Showers with occasional strong crosswind</td>
+                                                <td>SHRA SCT020 15020G30KT TEMPO 1016 5000 SHRA</td>
                                                 <td>10:00–16:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>ICN</b><small>Incheon</small></td>
-                                                <td>Korea</td>
-                                                <td>Light morning mist, low ceiling</td>
+                                                <td>BR OVC005 TEMPO 0509 2000 BR OVC002</td>
                                                 <td>05:00–09:00</td>
-                                                <td><span class="dn-badge normal">Stable</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>NRT</b><small>Narita</small></td>
-                                                <td>Japan</td>
-                                                <td>Crosswind 12–18 kt, no significant rain</td>
+                                                <td>15015G20KT CAVOK</td>
                                                 <td>14:00–20:00</td>
-                                                <td><span class="dn-badge normal">Stable</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>PVG</b><small>Pudong</small></td>
-                                                <td>China</td>
-                                                <td>Localized thunderstorms, nearby CB</td>
+                                                <td>VCTS SCT020 FEW030CB TEMPO 1621 4000 TSRA</td>
                                                 <td>16:00–21:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>CDG</b><small>Charles de Gaulle</small></td>
-                                                <td>France</td>
-                                                <td>Light rain, low ceiling at times</td>
+                                                <td>-RA BR OVC005 TEMPO 0711 3000 -RA OVC002</td>
                                                 <td>07:00–11:00</td>
-                                                <td><span class="dn-badge normal">Stable</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>SYD</b><small>Kingsford Smith</small></td>
-                                                <td>Australia</td>
-                                                <td>Strong wind, possible crosswind</td>
+                                                <td>22025G35KT CAVOK</td>
                                                 <td>12:00–18:00</td>
-                                                <td><span class="dn-badge high">Monitor</span></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" title="View details"
+                                                        style="background: transparent; border: none; color: #8aabc4; cursor: pointer;"
+                                                        onclick="showWeatherPopup(event)">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                            </path>
+                                                            <circle cx="12" cy="12" r="3"></circle>
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -14160,88 +14102,55 @@
                             </div>
                         </section>
                         <section class="dn-pane" id="dnFleet">
-                            <div class="dn-pane-title">
-                                <h3>Fleet notes</h3><span>Operational restrictions, transit checks, and NTC items to
-                                    monitor</span>
-                            </div>
-                            <div class="dn-card">
-                                <div class="dn-card-head">Fleet notes requiring OCC follow-up</div>
-                                <div class="dn-card-body">
-                                    <table class="dn-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Fleet / Reg</th>
-                                                <th>Operational note</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>All A321NEO</td>
-                                                <td>Schedule at least 6 hours downtime for Weekly Check at HAN/SGN.</td>
-                                                <td><span class="dn-badge high">OCC note</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>All fleets</td>
-                                                <td>Operate domestic sectors only for 03 days or 07 FC after BQDB
-                                                    removal.</td>
-                                                <td><span class="dn-badge high">OCC note</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>A321</td>
-                                                <td>Avoid two consecutive night stops at HPH.</td>
-                                                <td><span class="dn-badge high">OCC note</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>A321 N/S KHH</td>
-                                                <td>Prefer A321CEO for overnight parking at KHH until further notice.
-                                                </td>
-                                                <td><span class="dn-badge high">OCC note</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>B787</td>
-                                                <td>For APU INOP aircraft, avoid airports without technical staff.</td>
-                                                <td><span class="dn-badge critical">Important</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>A873</td>
-                                                <td>Manufacturer allows operation for 50 FC after VN307 NRT–SGN on
-                                                    04/06, then re-check.</td>
-                                                <td><span class="dn-badge critical">Monitor</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>A507</td>
-                                                <td>Operate domestic routes to airports with CRS B through 11 JUN 2025.
-                                                </td>
-                                                <td><span class="dn-badge critical">Monitor</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>A615</td>
-                                                <td>Operate only at airports with sufficient GPU and ASU to monitor APU
-                                                    auto shutdown issue.</td>
-                                                <td><span class="dn-badge critical">Monitor</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div class="dn-pane-title"
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <div>
+                                    <h3>Work Orders</h3><span>PDF viewer for manual reference files</span>
+                                </div>
+                                <div>
+                                    <label for="pdfUploadBtn"
+                                        style="background: #1e293b; color: #f8fafc; padding: 6px 12px; border-radius: 4px; cursor: pointer; border: 1px solid #334155; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;"
+                                        onmouseover="this.style.background='#334155'"
+                                        onmouseout="this.style.background='#1e293b'">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        Upload File
+                                    </label>
+                                    <input type="file" id="pdfUploadBtn" accept="application/pdf, image/*"
+                                        style="display: none;" onchange="handleAppendixUpload(event)">
                                 </div>
                             </div>
-                            <div class="dn-grid-2">
-                                <div class="dn-card">
-                                    <div class="dn-card-head">Transit check note</div>
-                                    <div class="dn-card-body">B1 maintenance available at HAN, HPH, VII, THD, DAD, CXR,
-                                        BMV, SGN, PQC, DLI, VCA, HUI, PXU.<br><br>B2 maintenance available at HPH, HAN,
-                                        VII, DAD, CXR, UIH, HUI, BMV, SGN, PQC, VDO.</div>
-                                </div>
-                                <div class="dn-card">
-                                    <div class="dn-card-head">NTC highlights</div>
-                                    <div class="dn-card-body">A621: ENG 1 off-idle stall issue<br>A865: APU start in
-                                        flight<br>A888: ENG 1 oil quantity indication<br>A889: ENG 2 oil quantity
-                                        indication<br>A890: APU start in flight</div>
+
+                            <div class="dn-card"
+                                style="height: calc(100vh - 200px); min-height: 500px; display: flex; flex-direction: column; overflow: hidden;">
+                                <div id="pdfViewerContainer"
+                                    style="flex: 1; background: #0f172a; display: flex; justify-content: center; align-items: center; overflow: auto; position: relative;">
+                                    <img src="appendix.png" style="max-width: 100%; object-fit: contain;">
                                 </div>
                             </div>
-                            <div class="dn-user-note"><label>Fleet notes</label><textarea data-note-key="fleet"
-                                    placeholder="Enter transit check updates, NTC items, or operating restrictions..."></textarea>
-                            </div>
+
+                            <script>
+                                function handleAppendixUpload(event) {
+                                    const file = event.target.files[0];
+                                    if (!file) return;
+
+                                    const container = document.getElementById('pdfViewerContainer');
+                                    const fileUrl = URL.createObjectURL(file);
+
+                                    if (file.type.startsWith('image/')) {
+                                        container.innerHTML = '<img src="' + fileUrl + '" style="max-width: 100%; max-height: 100%; object-fit: contain;">';
+                                    } else if (file.type === 'application/pdf') {
+                                        container.innerHTML = '<embed src="' + fileUrl + '#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" width="100%" height="100%">';
+                                    } else {
+                                        alert('Unsupported file format. Please upload a PDF or an image.');
+                                    }
+                                }
+                            </script>
                         </section>
                     </div>
                 </main>
@@ -14777,22 +14686,8 @@
             }
             function renderFlights(items) {
                 const rows = document.getElementById('flightRows'); rows.innerHTML = '';
-                items.forEach((f, i) => { const tr = document.createElement('tr'); tr.dataset.flight = f[0]; tr.innerHTML = `<td><span class="toggle" data-i="${i}"></span></td><td>${f[0]}</td><td><span class="route-badge">${f[1]}</span></td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td>`; rows.appendChild(tr) });
-                const update = () => { const included = rows.querySelectorAll('.toggle:not(.off)').length; document.getElementById('includedCount').textContent = `${included} included` };
-                rows.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', () => { t.classList.toggle('off'); update() }));
-                document.getElementById('foundCount').textContent = `${items.length} found`; document.getElementById('includedCount').textContent = `${items.length} included`; document.getElementById('flightRange').textContent = items.length ? `1–${items.length} of ${items.length}` : '0 of 0';
-            }
-            function refreshFlightOptions(items, defaults = {}) {
-                populateSelect(document.getElementById('scopeDep'), unique(items.map(f => routeParts(f[1])[0])), 'Any', defaults.dep || '');
-                populateSelect(document.getElementById('scopeArr'), unique(items.map(f => routeParts(f[1])[1])), 'Any', defaults.arr || '');
-                populateSelect(document.getElementById('scopeFlight'), unique(items.map(f => f[0])), 'Any flight', defaults.flight || '');
-                populateSelect(document.getElementById('scopeAircraft'), unique(items.map(f => f[4])), 'Any aircraft', defaults.aircraft || '');
-            }
-            function filterFlights() {
-                const dep = document.getElementById('scopeDep').value, arr = document.getElementById('scopeArr').value, flight = document.getElementById('scopeFlight').value, aircraft = document.getElementById('scopeAircraft').value;
-                const from = (document.getElementById('scopeFrom').value.split('T')[1] || '00:00').slice(0, 5), to = (document.getElementById('scopeTo').value.split('T')[1] || '23:59').slice(0, 5);
-                const result = activeFlightPool.filter(f => { const [rDep, rArr] = routeParts(f[1]); return (!dep || rDep === dep) && (!arr || rArr === arr) && (!flight || f[0] === flight) && (!aircraft || f[4] === aircraft) && f[2] >= from && f[2] <= to });
-                renderFlights(result); showToast(`${result.length} matching flight${result.length === 1 ? '' : 's'} found.`);
+                items.forEach((f, i) => { const tr = document.createElement('tr'); tr.dataset.flight = f[0]; tr.innerHTML = `<td>${f[0]}</td><td><span class="route-badge">${f[1]}</span></td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td>`; rows.appendChild(tr) });
+                document.getElementById('foundCount').textContent = `${items.length} found`; document.getElementById('flightRange').textContent = items.length ? `1–${items.length} of ${items.length}` : '0 of 0';
             }
             function openAlertDetail(card) {
                 const a = parseAlert(card); activeAlert = a; let items = (flightSets[a.key] || []).slice();
@@ -14801,8 +14696,7 @@
                 document.getElementById('adDescription').textContent = a.desc + (a.desc.endsWith('.') ? '' : ' .') + ' Please review and coordinate to ensure operational readiness.';
                 document.getElementById('adAirportLabel').textContent = a.isVip ? 'Flight' : 'Arrival Airport'; document.getElementById('adAirport').textContent = a.isVip ? 'VN221' : a.airport;
                 document.getElementById('adWindow').textContent = a.win; document.getElementById('adFlightCount').textContent = a.countText.replace(/^✈\s*/, ''); document.getElementById('adDetected').textContent = '28/07/2026 14:05';
-                const times = a.win.replace(' UTC', '').split('–'); document.getElementById('scopeFrom').value = toDateTimeLocal(times[0]); document.getElementById('scopeTo').value = toDateTimeLocal(times[1]);
-                const defaults = a.isVip ? { flight: 'VN221' } : { arr: a.airport }; refreshFlightOptions(items, defaults);
+                document.getElementById('adWindow').textContent = a.win; document.getElementById('adFlightCount').textContent = a.countText.replace(/^✈\s*/, ''); document.getElementById('adDetected').textContent = '28/07/2026 14:05';
                 renderFlights(items); detail.classList.add('show'); detail.setAttribute('aria-hidden', 'false');
             }
             function closeDetail() { detail.classList.remove('show'); detail.setAttribute('aria-hidden', 'true'); document.getElementById('createTaskPanel').classList.remove('show') }
@@ -14821,8 +14715,7 @@
             document.querySelectorAll('.alert-card').forEach(card => { card.style.cursor = 'pointer'; card.addEventListener('click', () => openAlertDetail(card)) });
             document.getElementById('closeAlertDetailBtn').addEventListener('click', closeDetail);
             document.getElementById('skipAlertBtn').addEventListener('click', () => { closeDetail(); showToast('Alert skipped.') });
-            document.getElementById('previewFlightsBtn').addEventListener('click', filterFlights);
-            ['scopeDep', 'scopeArr', 'scopeFlight', 'scopeAircraft'].forEach(id => document.getElementById(id).addEventListener('change', filterFlights));
+
             const createTaskPanel = document.getElementById('createTaskPanel');
             document.getElementById('detailCreateTaskBtn').addEventListener('click', () => {
                 closeDetail();
@@ -15032,8 +14925,9 @@
                 if (!rows.length) {
                     el.wrap.innerHTML = `<div class="mt-empty"><div class="glass">⌕</div><strong>No flights loaded</strong><div>Choose the flight scope, then preview the matching flights.</div></div>`; return;
                 }
-                el.wrap.innerHTML = `<table class="mt-flight-table"><thead><tr><th style="width:90px">Included</th><th style="width:90px">FLT NO</th><th style="width:180px">ROUTE</th><th>ETD (UTC)</th><th>ETA (UTC)</th><th>AC REG</th></tr></thead><tbody>${rows.map(flightRow).join('')}</tbody></table>`;
-                el.wrap.querySelectorAll('.mt-include').forEach(box => box.addEventListener('change', e => { const key = e.target.closest('tr').dataset.key; if (e.target.checked) includedKeys.add(key); else includedKeys.delete(key); el.included.textContent = `${includedKeys.size} included`; }));
+                el.wrap.innerHTML = `<table class="mt-flight-table"><thead><tr><th style="width:110px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#8fa8ba;font-weight:700">Included</span><label class="toggle-switch" style="margin:0"><input type="checkbox" class="mt-toggle-all" checked><span class="toggle-slider"></span></label></div></th><th style="width:90px">FLT NO</th><th style="width:180px">ROUTE</th><th>ETD (UTC)</th><th>ETA (UTC)</th><th>AC REG</th></tr></thead><tbody>${rows.map(flightRow).join('')}</tbody></table>`;
+                el.wrap.querySelectorAll('.mt-include').forEach(box => box.addEventListener('change', e => { const key = e.target.closest('tr').dataset.key; if (e.target.checked) includedKeys.add(key); else includedKeys.delete(key); el.included.textContent = `${includedKeys.size} included`; const allChecked = [...el.wrap.querySelectorAll('.mt-include')].every(b => b.checked); const ta = el.wrap.querySelector('.mt-toggle-all'); if (ta) ta.checked = allChecked; }));
+                const ta = el.wrap.querySelector('.mt-toggle-all'); if (ta) ta.addEventListener('change', e => { const checked = e.target.checked; el.wrap.querySelectorAll('.mt-include').forEach(box => { box.checked = checked; const key = box.closest('tr').dataset.key; if (checked) includedKeys.add(key); else includedKeys.delete(key); }); el.included.textContent = `${includedKeys.size} included`; });
             }
             function previewFlights() {
                 const dep = el.dep.value, arr = el.arr.value, flight = el.flight.value, aircraft = el.aircraft.value;
@@ -15150,8 +15044,9 @@
                 if (!rows.length) {
                     el.wrap.innerHTML = `<div class="mt-empty"><div class="glass">⌕</div><strong>No flights loaded</strong><div>Choose the flight scope, then preview the matching flights.</div></div>`; return;
                 }
-                el.wrap.innerHTML = `<table class="mt-flight-table"><thead><tr><th style="width:90px">Included</th><th style="width:90px">FLT NO</th><th style="width:180px">ROUTE</th><th>ETD (UTC)</th><th>ETA (UTC)</th><th>AC REG</th></tr></thead><tbody>${rows.map(flightRow).join('')}</tbody></table>`;
-                el.wrap.querySelectorAll('.mt-include').forEach(box => box.addEventListener('change', e => { const key = e.target.closest('tr').dataset.key; if (e.target.checked) includedKeys.add(key); else includedKeys.delete(key); el.included.textContent = `${includedKeys.size} included`; }));
+                el.wrap.innerHTML = `<table class="mt-flight-table"><thead><tr><th style="width:110px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#8fa8ba;font-weight:700">Included</span><label class="toggle-switch" style="margin:0"><input type="checkbox" class="mt-toggle-all" checked><span class="toggle-slider"></span></label></div></th><th style="width:90px">FLT NO</th><th style="width:180px">ROUTE</th><th>ETD (UTC)</th><th>ETA (UTC)</th><th>AC REG</th></tr></thead><tbody>${rows.map(flightRow).join('')}</tbody></table>`;
+                el.wrap.querySelectorAll('.mt-include').forEach(box => box.addEventListener('change', e => { const key = e.target.closest('tr').dataset.key; if (e.target.checked) includedKeys.add(key); else includedKeys.delete(key); el.included.textContent = `${includedKeys.size} included`; const allChecked = [...el.wrap.querySelectorAll('.mt-include')].every(b => b.checked); const ta = el.wrap.querySelector('.mt-toggle-all'); if (ta) ta.checked = allChecked; }));
+                const ta = el.wrap.querySelector('.mt-toggle-all'); if (ta) ta.addEventListener('change', e => { const checked = e.target.checked; el.wrap.querySelectorAll('.mt-include').forEach(box => { box.checked = checked; const key = box.closest('tr').dataset.key; if (checked) includedKeys.add(key); else includedKeys.delete(key); }); el.included.textContent = `${includedKeys.size} included`; });
             }
             function previewFlights() {
                 const dep = el.dep.value, arr = el.arr.value, flight = el.flight.value, aircraft = el.aircraft.value;
@@ -15884,6 +15779,56 @@
             setFilterOptions(); renderTabs(); renderTable();
         })();
     </script>
+
+
+    <script>
+        function showWeatherPopup(event) {
+            event.stopPropagation();
+            var text = "TAF VVCI 070500Z 0706/0806 32005KT 9999 SCT020 TEMPO 0706/0712 3500 TSRA SCT012 FEW027CB TEMPO 0715/0721 4000 SHRA SCT010 FEW025TCU=\nTAF VVGL NIL=";
+            var popup = document.getElementById('weatherPopup');
+            document.getElementById('weatherPopupContent').textContent = text;
+
+            popup.style.display = 'flex';
+            var btnRect = event.currentTarget.getBoundingClientRect();
+            var popupRect = popup.getBoundingClientRect();
+
+            var topPos = btnRect.bottom + 8;
+            var leftPos = btnRect.right - popupRect.width;
+
+            if (topPos + popupRect.height > window.innerHeight) {
+                topPos = btnRect.top - popupRect.height - 8;
+            }
+            if (leftPos < 10) { leftPos = 10; }
+
+            popup.style.top = topPos + 'px';
+            popup.style.left = leftPos + 'px';
+        }
+
+        document.addEventListener('click', function (event) {
+            var popup = document.getElementById('weatherPopup');
+            if (popup && popup.style.display !== 'none' && !popup.contains(event.target)) {
+                popup.style.display = 'none';
+            }
+        });
+    </script>
+    <div id="weatherPopup"
+        style="display: none; position: fixed; background: #111e2f; border: 1px solid #334155; padding: 16px; border-radius: 8px; max-width: 400px; width: max-content; color: #f8fafc; font-family: 'Inter', sans-serif; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3); z-index: 10000; flex-direction: column;">
+        <button type="button" onclick="document.getElementById('weatherPopup').style.display='none'"
+            style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: #94a3b8; cursor: pointer; transition: color 0.2s; padding: 0;"
+            onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#94a3b8'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <h4
+            style="margin-top: 0; margin-bottom: 12px; color: #e2e8f0; font-size: 14px; font-weight: 600; padding-right: 20px;">
+            TAF Details</h4>
+        <div id="weatherPopupContent"
+            style="overflow-y: auto; max-height: 300px; font-family: monospace; font-size: 12px; line-height: 1.5; white-space: pre-wrap; color: #cbd5e1; background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
+        </div>
+    </div>
 
 </body>
 
