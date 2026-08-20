@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OTP-OSP Destination - Vietnam Airlines</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-main: #F5F7F9;
+            --bg-sidebar: #E8F0F5;
+            --bg-surface: #FFFFFF;
+
+            --border-color: #E2E8F0;
+            --border-light: #F1F5F9;
+
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+
+            --primary-color: #008899;
+            /* Teal accent */
+            --primary-bg: #E6F3F5;
+
+            --orange-color: #F59E0B;
+
+            --font-family: 'Inter', sans-serif;
+            --sidebar-w: 240px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 13px;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: linear-gradient(180deg, #FFFFFF 0%, #D8E5EF 100%);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .logo-container {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 32px;
+        }
+
+        .primary-nav {
+            flex: 1;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .nav-item.active i {
+            color: #fff;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+        }
+
+        .footer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 16px;
+            padding: 0 12px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .user-info .email {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .controls {
+            position: absolute;
+            top: -15px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            background: #fff;
+            border-radius: 12px;
+            padding: 2px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle i {
+            padding: 4px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .theme-toggle i.active {
+            background: #F1F5F9;
+            color: var(--primary-color);
+        }
+
+        .btn-collapse {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-surface);
+            overflow: hidden;
+            border-radius: 12px 0 0 0;
+            margin-top: 12px;
+            box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb {
+            padding: 16px 24px 8px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .breadcrumb span {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tabs-header {
+            display: flex;
+            padding: 0 24px;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: #F8FAFC;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .tab i {
+            color: var(--text-muted);
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        .tab.active i {
+            color: #fff;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            background-color: #F8FAFC;
+        }
+
+        .btn-filter {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-main);
+        }
+
+        .btn-orange {
+            background: var(--orange-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Filter Panel */
+        .filter-panel {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #fff;
+            flex-wrap: wrap;
+        }
+
+        .custom-input {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-main);
+            font-size: 13px;
+            height: 36px;
+            outline: none;
+            min-width: 140px;
+        }
+
+        .custom-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Table */
+        .table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 0 24px;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #fff;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            white-space: nowrap;
+            color: var(--text-main);
+        }
+
+        td.actions {
+            display: flex;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+
+        td.actions i {
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        td.actions i:hover {
+            color: var(--primary-color);
+        }
+
+        tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        /* Pagination Footer */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            background-color: #fff;
+        }
+
+        .total-records {
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-size {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+
+        .page-size select {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 4px 8px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .pages {
+            display: flex;
+            gap: 4px;
+        }
+
+        .page-btn {
+            min-width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .page-btn:hover:not(.active):not(:disabled) {
+            background: #F1F5F9;
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .page-btn:disabled {
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            position: fixed;
+            top: 0;
+            right: -600px;
+            width: 600px;
+            max-width: 100%;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active .modal-content {
+            right: 0;
+        }
+
+        .modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--text-main);
+        }
+
+        .modal-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #F8FAFC;
+        }
+
+        /* Drawer Styles for Details */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-panel {
+            position: fixed;
+            top: 0;
+            right: -600px;
+            width: 600px;
+            max-width: 100%;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer-panel.active {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 20px 24px 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .drawer-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .drawer-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            display: inline-block;
+        }
+
+        .drawer-tabs {
+            display: flex;
+            gap: 24px;
+        }
+
+        .drawer-tab {
+            padding-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .drawer-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .drawer-body {
+            padding: 24px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .drawer-close {
+            background: #F1F5F9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .drawer-close:hover {
+            background: #E2E8F0;
+        }
+
+        .history-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+        }
+
+        .detail-field {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+            gap: 16px;
+            box-sizing: border-box;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* Drawer Edit Mode */
+        .edit-only {
+            display: none !important;
+        }
+
+        .drawer-body.edit-mode .edit-only {
+            display: flex !important;
+        }
+
+        .drawer-body.edit-mode input.edit-only,
+        .drawer-body.edit-mode select.edit-only {
+            display: block !important;
+        }
+
+        .drawer-body.edit-mode .view-only {
+            display: none !important;
+        }
+
+        .drawer-body.edit-mode .detail-field {
+            padding: 2px 0;
+            border-bottom: 1px dashed var(--border-light);
+        }
+
+
+
+        .detail-field .detail-value {
+            padding-left: 12px;
+            box-sizing: border-box;
+        }
+
+
+        .detail-field .detail-label {
+            flex: 1;
+        }
+
+        .detail-field .detail-value,
+        .detail-field .edit-only {
+            flex: 0 0 180px;
+            width: 180px;
+            text-align: left;
+        }
+
+        .drawer-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-light);
+            letter-spacing: 0.5px;
+        }
+
+        .detail-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .drawer-body.edit-mode .detail-field {
+            padding: 2px 0;
+            border-bottom: 1px dashed var(--border-light);
+        }
+
+        .drawer-body.edit-mode .detail-label.mandatory::after {
+            content: " *";
+            color: red;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        th {
+            background-color: #F8FAFC;
+        }
+
+        td.actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .actions i {
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .actions i:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div>
+                <div class="logo-container">
+                    <svg fill="#EAB308" height="28" viewbox="0 0 24 24" width="28">
+                        <path d="M12 2L15 10H22L16 15L18 22L12 18L6 22L8 15L2 10H9L12 2Z"></path>
+                    </svg>
+                    <span style="font-weight: 600; font-size: 16px; color: #008899;">Vietnam Airlines</span>
+                </div>
+                <nav class="primary-nav">
+                    <a class="nav-item" href="#"><i class="ri-user-star-line"></i> Pilot Category</a>
+                    <a class="nav-item" href="#"><i class="ri-user-heart-line"></i> Cabin Crew Category</a>
+                    <a class="nav-item" href="#"><i class="ri-plane-line"></i> Carrier</a>
+                    <a class="nav-item" href="#"><i class="ri-earth-line"></i> Country Category</a>
+                    <a class="nav-item" href="#"><i class="ri-map-pin-line"></i> FIR Category</a>
+                    <a class="nav-item" href="#"><i class="ri-mail-line"></i> Email List</a>
+                    <a class="nav-item" href="#"><i class="ri-box-3-line"></i> ULD Category</a>
+                    <a class="nav-item" href="#"><i class="ri-list-check-2"></i> Equipment List</a>
+                    <a class="nav-item" href="#"><i class="ri-route-line"></i> Flight Routes</a>
+                    <a class="nav-item" href="#"><i class="ri-flight-takeoff-line"></i> Flight Fleet</a>
+                    <a class="nav-item" href="#"><i class="ri-settings-4-line"></i> AC Subtype</a>
+                    <a class="nav-item" href="#"><i class="ri-plane-line"></i> Aircraft</a>
+                    <a class="nav-item" href="#"><i class="ri-building-4-line"></i> Airport</a>
+                    <a class="nav-item" href="#"><i class="ri-file-list-3-line"></i> OTP-OSP Destination</a>
+                    <a class="nav-item active" href="#"><i class="ri-route-line"></i> Leg Type</a>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <div class="footer-nav">
+                    <a class="nav-item" href="#"><i class="ri-notification-3-line"></i> Notifications</a>
+                    <a class="nav-item" href="#"><i class="ri-settings-3-line"></i> Settings</a>
+                </div>
+                <div class="user-profile">
+                    <div class="controls">
+                        <div class="theme-toggle">
+                            <i class="ri-sun-line active"></i>
+                            <i class="ri-moon-line"></i>
+                        </div>
+                    </div>
+                    <div class="user-info">
+                        <span class="name">Admin</span>
+                        <span class="email">admin@viettel.com</span>
+                    </div>
+                    <button class="btn-collapse"><i class="ri-arrow-left-s-line"></i></button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="breadcrumb">
+                Home &gt; Airport &gt; <span>Leg Type</span>
+            </div>
+            <!-- LEG TYPE SECTION -->
+            <div class="tabs-header">
+                <div class="tab active"><i class="ri-file-list-3-line"></i> Leg Type</div>
+            </div>
+            <div class="action-bar">
+                <button class="btn-filter" id="toggleFilterBtn">
+                    <i class="ri-filter-3-line"></i> Filter <i class="ri-arrow-down-s-line"
+                        style="font-size: 16px; font-weight: 400;"></i>
+                </button>
+                <div class="top-right" style="margin-left: auto;">
+                    <button class="btn btn-ghost"><i class="ri-refresh-line"></i> Refresh</button>
+                    <button class="btn btn-primary" style="background-color: #10b981;"><i
+                            class="ri-file-excel-2-line"></i> Export Excel</button>
+                </div>
+            </div>
+
+            <div class="filter-panel" id="filterPanel" style="display: none;">
+                <input class="custom-input" id="searchCodeInput" placeholder="Search by Code" type="text"
+                    autocomplete="off" />
+                <input class="custom-input" id="searchGroupInput" placeholder="Search by Group" type="text"
+                    list="groupList" autocomplete="off" />
+                <datalist id="groupList">
+                    <option value="Cargo Carrier Code"></option>
+                    <option value="Passenger Carrier Code"></option>
+                    <option value="Ferry"></option>
+                    <option value="VAP"></option>
+                    <option value="VIP"></option>
+                    <option value="Charter"></option>
+                </datalist>
+                <div class="filter-actions">
+                    <button class="btn btn-primary" id="searchBtn"><i class="ri-search-line"></i> Search</button>
+                    <button class="btn btn-ghost" id="clearFilterBtn"><i class="ri-loop-left-line"></i> Clear</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 60px; text-align: center;">No.</th>
+                            <th style="width: 120px; text-align: center;">Code</th>
+                            <th style="text-align: left;">Name</th>
+                            <th style="text-align: left;">Group</th>
+                            <th style="width: 100px; text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="legTypeTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="table-footer">
+                <span class="total-records">Total records: 10</span>
+                <div class="pagination-controls">
+                    <div class="page-size">
+                        Show
+                        <select>
+                            <option>25 entries</option>
+                            <option>50 entries</option>
+                            <option>100 entries</option>
+                        </select>
+                    </div>
+                    <div class="pages">
+                        <button class="page-btn"><i class="ri-arrow-left-double-line"></i></button>
+                        <button class="page-btn"><i class="ri-arrow-left-s-line"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn"><i class="ri-arrow-right-s-line"></i></button>
+                        <button class="page-btn"><i class="ri-arrow-right-double-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <!-- Drawer Overlay -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <!-- Drawer Panel -->
+    <div class="drawer-panel" id="drawerPanel">
+        <div class="drawer-header">
+            <div class="drawer-title-row">
+                <div class="drawer-title">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h2 id="drawerTitle">Leg Type Info</h2>
+                    </div>
+                </div>
+                <button class="drawer-close" id="closeDrawerBtn"><i class="ri-close-line"></i></button>
+            </div>
+        </div>
+        <div class="drawer-body" id="drawerBody">
+            <div class="drawer-section" id="legTypeDrawerSection">
+                <div class="section-title">LEG TYPE INFO</div>
+                <div class="detail-grid">
+                    <div class="detail-column">
+                        <div class="detail-field">
+                            <span class="detail-label mandatory">Code</span>
+                            <input class="custom-input edit-only leg-input" type="text" placeholder="Enter Code"
+                                readonly style="background-color: #f1f5f9; cursor: not-allowed;" />
+                        </div>
+                    </div>
+                    <div class="detail-column">
+                        <div class="detail-field">
+                            <span class="detail-label mandatory">Name</span>
+                            <input class="custom-input edit-only leg-input" type="text" placeholder="Enter Name" />
+                        </div>
+                    </div>
+                    <div class="detail-column">
+                        <div class="detail-field">
+                            <span class="detail-label mandatory">Group</span>
+                            <select class="custom-input edit-only leg-input">
+                                <option value="" disabled selected>Select Group</option>
+                                <option value="Cargo Carrier Code">Cargo Carrier Code</option>
+                                <option value="Passenger Carrier Code">Passenger Carrier Code</option>
+                                <option value="Ferry">Ferry</option>
+                                <option value="VAP">VAP</option>
+                                <option value="VIP">VIP</option>
+                                <option value="Charter">Charter</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drawer-footer"
+            style="padding: 16px 24px; display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid var(--border-color); background: #fff;">
+            <button class="btn btn-ghost" id="cancelEditBtn"
+                style="border: 1px solid var(--border-color);">Cancel</button>
+            <button class="btn btn-primary" id="saveEditBtn">Save</button>
+        </div>
+    </div>
+    <script>
+        // Search & Filter logic
+        const toggleFilterBtn = document.getElementById('toggleFilterBtn');
+        const filterPanel = document.getElementById('filterPanel');
+        const searchCodeInput = document.getElementById('searchCodeInput');
+        const searchGroupInput = document.getElementById('searchGroupInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearFilterBtn = document.getElementById('clearFilterBtn');
+
+        toggleFilterBtn.addEventListener('click', function () {
+            const icon = this.querySelector('.ri-arrow-down-s-line') || this.querySelector('.ri-arrow-up-s-line');
+            if (filterPanel.style.display === 'none') {
+                filterPanel.style.display = 'flex';
+                if (icon) {
+                    icon.classList.remove('ri-arrow-down-s-line');
+                    icon.classList.add('ri-arrow-up-s-line');
+                }
+            } else {
+                filterPanel.style.display = 'none';
+                if (icon) {
+                    icon.classList.remove('ri-arrow-up-s-line');
+                    icon.classList.add('ri-arrow-down-s-line');
+                }
+            }
+        });
+
+        const getFilteredData = () => {
+            const codeVal = searchCodeInput.value.toLowerCase().trim();
+            const groupVal = searchGroupInput.value.toLowerCase().trim();
+
+            return legTypeData.filter(row => {
+                const matchCode = row.code.toLowerCase().includes(codeVal);
+                const matchGroup = row.group.toLowerCase().includes(groupVal);
+                return matchCode && matchGroup;
+            });
+        };
+
+        searchBtn.addEventListener('click', () => {
+            renderLegTable();
+        });
+
+        clearFilterBtn.addEventListener('click', () => {
+            searchCodeInput.value = '';
+            searchGroupInput.value = '';
+            renderLegTable();
+        });
+
+
+        // Drawer Logic
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawerPanel = document.getElementById('drawerPanel');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const drawerBody = document.getElementById('drawerBody');
+        const drawerTitle = document.getElementById('drawerTitle');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const legTypeTableBody = document.getElementById('legTypeTableBody');
+
+        let legTypeData = [
+            { stt: 1, code: "F", name: "Scheduled Freighter", group: "Cargo Carrier Code" },
+            { stt: 2, code: "H", name: "Non-Scheduled Freighter", group: "Cargo Carrier Code" },
+            { stt: 3, code: "A", name: "All-Cargo Aircraft", group: "Cargo Carrier Code" },
+            { stt: 4, code: "Q", name: "Quick Change Aircraft", group: "Cargo Carrier Code" },
+            { stt: 5, code: "V", name: "VIP Cargo", group: "Cargo Carrier Code" },
+            { stt: 6, code: "J", name: "Scheduled Passenger", group: "Passenger Carrier Code" },
+            { stt: 7, code: "G", name: "Non-Scheduled Passenger", group: "Passenger Carrier Code" },
+            { stt: 8, code: "U", name: "Unscheduled Passenger", group: "Passenger Carrier Code" },
+            { stt: 9, code: "P", name: "Positioning Flight", group: "Ferry" },
+            { stt: 10, code: "E", name: "Escort Flight", group: "VAP" },
+            { stt: 11, code: "O", name: "Official VIP", group: "VIP" },
+            { stt: 12, code: "C", name: "Charter Flight", group: "Charter" }
+        ];
+
+        let currentMode = 'view';
+        let currentIndex = null;
+
+        const renderLegTable = () => {
+            const displayData = getFilteredData();
+            legTypeTableBody.innerHTML = '';
+            displayData.forEach((row) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="text-align: center;">${row.stt}</td>
+                    <td style="text-align: center; font-weight: 500;">${row.code}</td>
+                    <td style="text-align: left;">${row.name}</td>
+                    <td style="text-align: left;">${row.group}</td>
+                    <td class="actions" style="justify-content: center;">
+                        <i class="ri-pencil-line edit-leg-btn" data-id="${row.stt}" title="Edit" style="cursor:pointer;"></i>
+                    </td>
+                `;
+                legTypeTableBody.appendChild(tr);
+            });
+            // Update total records
+            const totalSpan = document.querySelector('.total-records');
+            if (totalSpan) totalSpan.textContent = `Total records: ${displayData.length}`;
+        };
+
+        const openDrawer = (mode = 'view', index = null) => {
+            currentMode = mode;
+            currentIndex = index;
+            drawerOverlay.classList.add('active');
+            drawerPanel.classList.add('active');
+
+            const legInputs = drawerBody.querySelectorAll('.leg-input');
+            drawerBody.classList.add('edit-mode'); // For visibility
+
+            if (mode === 'edit' && index !== null) {
+                drawerTitle.textContent = 'Edit Leg Type';
+                const rowData = legTypeData[index];
+                if (legInputs.length >= 3) {
+                    legInputs[0].value = rowData.code;
+                    legInputs[1].value = rowData.name;
+                    legInputs[2].value = rowData.group;
+                    // Code is always readonly in edit mode
+                    legInputs[0].setAttribute('readonly', 'true');
+                    legInputs[1].removeAttribute('readonly');
+                    legInputs[1].disabled = false;
+                    legInputs[2].removeAttribute('readonly');
+                    legInputs[2].disabled = false;
+                }
+            } else if (mode === 'view' && index !== null) {
+                drawerTitle.textContent = 'View Leg Type';
+                const rowData = legTypeData[index];
+                if (legInputs.length >= 3) {
+                    legInputs[0].value = rowData.code;
+                    legInputs[1].value = rowData.name;
+                    legInputs[2].value = rowData.group;
+                    // Everything is readonly in view mode
+                    legInputs.forEach(input => {
+                        input.setAttribute('readonly', 'true');
+                        input.disabled = true;
+                    });
+                }
+            }
+        };
+
+        const closeDrawer = () => {
+            drawerOverlay.classList.remove('active');
+            drawerPanel.classList.remove('active');
+        };
+
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+        cancelEditBtn.addEventListener('click', closeDrawer);
+
+        legTypeTableBody.addEventListener('click', (e) => {
+            if (e.target.closest('.edit-leg-btn')) {
+                const id = parseInt(e.target.closest('.edit-leg-btn').getAttribute('data-id'));
+                const index = legTypeData.findIndex(r => r.stt === id);
+                if (index > -1) openDrawer('edit', index);
+            } else if (e.target.closest('.view-leg-btn')) {
+                const id = parseInt(e.target.closest('.view-leg-btn').getAttribute('data-id'));
+                const index = legTypeData.findIndex(r => r.stt === id);
+                if (index > -1) openDrawer('view', index);
+            }
+        });
+
+        saveEditBtn.addEventListener('click', () => {
+            if (currentMode === 'view') {
+                closeDrawer();
+                return;
+            }
+            const legInputs = drawerBody.querySelectorAll('.leg-input');
+            if (legInputs.length >= 3 && currentIndex !== null) {
+                // Code is not saved because it's readonly
+                legTypeData[currentIndex].name = legInputs[1].value;
+                legTypeData[currentIndex].group = legInputs[2].value;
+                renderLegTable();
+            }
+            closeDrawer();
+        });
+
+        renderLegTable();
+
+        // Custom Year Picker Logic
+        const yearInput = document.getElementById('yearPickerInput');
+        const yearIcon = document.getElementById('yearPickerIcon');
+        const yearDropdown = document.getElementById('yearPickerDropdown');
+        const yearGrid = document.getElementById('yearGrid');
+        const decadeLabel = document.getElementById('decadeLabel');
+        const prevDecade = document.getElementById('prevDecade');
+        const nextDecade = document.getElementById('nextDecade');
+
+        let currentDecadeStart = 2020;
+
+        const renderYearGrid = () => {
+            yearGrid.innerHTML = '';
+            decadeLabel.textContent = `${currentDecadeStart} - ${currentDecadeStart + 9}`;
+            for (let i = 0; i < 12; i++) {
+                const year = currentDecadeStart - 1 + i;
+                const div = document.createElement('div');
+                div.textContent = year;
+                div.style.padding = '6px 0';
+                div.style.textAlign = 'center';
+                div.style.borderRadius = '4px';
+                div.style.cursor = 'pointer';
+                div.style.fontSize = '13px';
+                div.style.color = (i === 0 || i === 11) ? 'var(--text-muted)' : 'var(--text-main)';
+
+                div.addEventListener('mouseover', () => div.style.backgroundColor = '#F1F5F9');
+                div.addEventListener('mouseout', () => div.style.backgroundColor = 'transparent');
+
+                div.addEventListener('click', () => {
+                    yearInput.value = year;
+                    yearDropdown.style.display = 'none';
+                });
+                yearGrid.appendChild(div);
+            }
+        };
+
+        yearIcon.addEventListener('click', () => {
+            yearDropdown.style.display = yearDropdown.style.display === 'none' ? 'block' : 'none';
+            if (yearDropdown.style.display === 'block') {
+                const val = parseInt(yearInput.value);
+                if (val && !isNaN(val)) {
+                    currentDecadeStart = Math.floor(val / 10) * 10;
+                }
+                renderYearGrid();
+            }
+        });
+
+        yearInput.addEventListener('focus', () => {
+            yearDropdown.style.display = 'block';
+            const val = parseInt(yearInput.value);
+            if (val && !isNaN(val)) {
+                currentDecadeStart = Math.floor(val / 10) * 10;
+            }
+            renderYearGrid();
+        });
+
+        prevDecade.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentDecadeStart -= 10;
+            renderYearGrid();
+        });
+
+        nextDecade.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentDecadeStart += 10;
+            renderYearGrid();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!yearInput.contains(e.target) && !yearIcon.contains(e.target) && !yearDropdown.contains(e.target)) {
+                yearDropdown.style.display = 'none';
+            }
+        });
+
+        renderYearGrid();
+    </script>
+</body>
+
+</html>
