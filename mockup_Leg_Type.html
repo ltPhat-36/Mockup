@@ -909,9 +909,7 @@
                 Home &gt; Airport &gt; <span>Leg Type</span>
             </div>
             <!-- LEG TYPE SECTION -->
-            <div class="tabs-header">
-                <div class="tab active"><i class="ri-file-list-3-line"></i> Leg Type</div>
-            </div>
+
             <div class="action-bar">
                 <button class="btn-filter" id="toggleFilterBtn">
                     <i class="ri-filter-3-line"></i> Filter <i class="ri-arrow-down-s-line"
@@ -926,6 +924,8 @@
 
             <div class="filter-panel" id="filterPanel" style="display: none;">
                 <input class="custom-input" id="searchCodeInput" placeholder="Search by Code" type="text"
+                    autocomplete="off" />
+                <input class="custom-input" id="searchNameInput" placeholder="Search by Name" type="text"
                     autocomplete="off" />
                 <input class="custom-input" id="searchGroupInput" placeholder="Search by Group" type="text"
                     list="groupList" autocomplete="off" />
@@ -1041,6 +1041,7 @@
         const toggleFilterBtn = document.getElementById('toggleFilterBtn');
         const filterPanel = document.getElementById('filterPanel');
         const searchCodeInput = document.getElementById('searchCodeInput');
+        const searchNameInput = document.getElementById('searchNameInput');
         const searchGroupInput = document.getElementById('searchGroupInput');
         const searchBtn = document.getElementById('searchBtn');
         const clearFilterBtn = document.getElementById('clearFilterBtn');
@@ -1064,12 +1065,14 @@
 
         const getFilteredData = () => {
             const codeVal = searchCodeInput.value.toLowerCase().trim();
+            const nameVal = searchNameInput.value.toLowerCase().trim();
             const groupVal = searchGroupInput.value.toLowerCase().trim();
 
             return legTypeData.filter(row => {
                 const matchCode = row.code.toLowerCase().includes(codeVal);
+                const matchName = row.name.toLowerCase().includes(nameVal);
                 const matchGroup = row.group.toLowerCase().includes(groupVal);
-                return matchCode && matchGroup;
+                return matchCode && matchName && matchGroup;
             });
         };
 
@@ -1079,6 +1082,7 @@
 
         clearFilterBtn.addEventListener('click', () => {
             searchCodeInput.value = '';
+            searchNameInput.value = '';
             searchGroupInput.value = '';
             renderLegTable();
         });
