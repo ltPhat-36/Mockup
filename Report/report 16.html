@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cost Index Report</title>
+    <style>
+        :root {
+            --bg: #03111c;
+            --panel: #061421;
+            --line: #1b3345;
+            --text: #eef5f8;
+            --muted: #8fa3b1;
+            --cyan: #08a6c9;
+            --btn: #223240;
+            --thead: #111d2d;
+            --row: #081725;
+            --row2: #0a1929;
+            --green: #1cc67b
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0
+        }
+
+        body {
+            font-family: Inter, Segoe UI, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden
+        }
+
+        .app {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 11.5% 12% 1fr;
+            background: linear-gradient(180deg, #06121d, #040d17)
+        }
+
+        .sidebar {
+            background: #03111c;
+            border-right: 1px solid #11283a;
+            display: flex;
+            flex-direction: column
+        }
+
+        .logo {
+            height: 5.2vh;
+            padding: 1.1vh .85vw;
+            display: flex;
+            align-items: center;
+            gap: .35vw
+        }
+
+        .logo svg {
+            width: 1.55vw;
+            height: 1.1vw
+        }
+
+        .brand {
+            font-size: .76vw;
+            font-weight: 600
+        }
+
+        .menu {
+            padding: 1.2vh .6vw 0;
+            display: flex;
+            flex-direction: column;
+            gap: .5vh
+        }
+
+        .menu-item {
+            height: 4.4vh;
+            border-radius: .38vw;
+            padding: 0 .65vw;
+            display: flex;
+            align-items: center;
+            gap: .45vw;
+            font-size: .66vw
+        }
+
+        .menu-item.active {
+            background: #063f55
+        }
+
+        .menu-item svg {
+            width: .86vw;
+            height: .86vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .side-bottom {
+            margin-top: auto;
+            padding: 1.5vh .7vw
+        }
+
+        .hide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .35vw;
+            font-size: .64vw;
+            margin-bottom: 2vh
+        }
+
+        .hide i {
+            font-style: normal;
+            background: #f3f6f8;
+            color: #253645;
+            width: .9vw;
+            height: .9vw;
+            border-radius: .2vw;
+            display: grid;
+            place-items: center
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: .4vw
+        }
+
+        .avatar {
+            width: 1.8vw;
+            height: 1.8vw;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #effcff, #5bb6cb)
+        }
+
+        .user-txt {
+            font-size: .55vw;
+            line-height: 1.25
+        }
+
+        .user-txt b {
+            display: block;
+            font-size: .65vw
+        }
+
+        .report-list {
+            background: #061320;
+            border-right: 1px solid #12293c
+        }
+
+        .report-head {
+            height: 5.35vh;
+            padding: 0 .7vw;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            font-size: .72vw;
+            font-weight: 700
+        }
+
+        .collapse {
+            width: 1vw;
+            height: 1vw;
+            background: #edf3f6;
+            color: #173041;
+            border-radius: .22vw;
+            display: grid;
+            place-items: center;
+            font-size: .55vw
+        }
+
+        .search {
+            margin: 1.2vh .62vw .9vh;
+            height: 3.45vh;
+            border-radius: .28vw;
+            border: 1px solid #2b3e4d;
+            background: #1b2a39;
+            display: flex;
+            align-items: center;
+            gap: .35vw;
+            padding: 0 .6vw;
+            color: #7b8c9b;
+            font-size: .6vw
+        }
+
+        .search svg {
+            width: .7vw;
+            height: .7vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .report-items {
+            padding: 0 .62vw;
+            display: flex;
+            flex-direction: column;
+            gap: .25vh
+        }
+
+        .report-item {
+            min-height: 3.65vh;
+            border-radius: .25vw;
+            padding: 0 .52vw;
+            display: flex;
+            align-items: center;
+            font-size: .57vw
+        }
+
+        .report-item.active {
+            background: #08445d
+        }
+
+        .main {
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        .topbar {
+            height: 4.45vh;
+            border-bottom: 1px solid #102638;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 .8vw;
+            font-size: .56vw
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        .toolbar {
+            background: #061421;
+            border-bottom: 1px solid #15283a;
+            padding: 1.05vh .8vw .8vh
+        }
+
+        .toolbar-top {
+            display: flex;
+            align-items: center;
+            min-height: 2.6vh
+        }
+
+        .filter-trigger {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: .42vw;
+            font-size: .67vw;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .filter-trigger svg {
+            width: .72vw;
+            height: .72vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: .42vw
+        }
+
+        .action {
+            height: 3.1vh;
+            border: 1px solid #435462;
+            background: var(--btn);
+            border-radius: .38vw;
+            color: #fff;
+            padding: 0 .72vw;
+            display: flex;
+            align-items: center;
+            gap: .4vw;
+            font-size: .6vw;
+            cursor: pointer
+        }
+
+        .action svg {
+            width: .7vw;
+            height: .7vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .filters {
+            margin-top: .8vh
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 13.2vw 13.2vw 10vw 13vw 10vw 11vw;
+            gap: .42vw
+        }
+
+        .filter-grid2 {
+            display: grid;
+            grid-template-columns: 10.8vw 9.8vw 11.2vw 11.2vw 1fr auto auto;
+            gap: .42vw;
+            margin-top: .58vh;
+            align-items: center
+        }
+
+        .field {
+            height: 3.45vh;
+            border-radius: .3vw;
+            background: #1a2a38;
+            border: 1px solid #31414f;
+            color: #95a7b5;
+            padding: 0 .62vw;
+            font-size: .6vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 0
+        }
+
+        .field .ph {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .field svg {
+            width: .7vw;
+            height: .7vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .btn-search {
+            height: 3.45vh;
+            border: 0;
+            border-radius: .35vw;
+            background: var(--cyan);
+            color: #fff;
+            padding: 0 1vw;
+            display: flex;
+            align-items: center;
+            gap: .34vw;
+            font-size: .6vw;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .btn-clear {
+            height: 3.45vh;
+            border: 0;
+            background: transparent;
+            color: #d2dae0;
+            padding: 0 .65vw;
+            display: flex;
+            align-items: center;
+            gap: .34vw;
+            font-size: .6vw;
+            cursor: pointer
+        }
+
+        .btn-search svg,
+        .btn-clear svg {
+            width: .7vw;
+            height: .7vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .report-title {
+            height: 4.8vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #061421;
+            border-bottom: 1px solid #162b3d;
+            font-size: .92vw;
+            font-weight: 700
+        }
+
+        .table-wrap {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            overflow: auto;
+            background: #091725
+        }
+
+        table {
+            width: 100%;
+            min-width: 1050px;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: .59vw
+        }
+
+        th,
+        td {
+            border-right: 1px solid #203648;
+            border-bottom: 1px solid #203648;
+            padding: .7vh .35vw;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: var(--thead);
+            color: #c0cad2;
+            font-size: .51vw;
+            font-weight: 700
+        }
+
+        tbody tr:nth-child(odd) {
+            background: var(--row)
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--row2)
+        }
+
+        tbody tr:hover {
+            background: #113047
+        }
+
+        .crew-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.4vw;
+            height: 1.7vh;
+            border-radius: .9vw;
+            font-size: .49vw;
+            font-weight: 700
+        }
+
+        .crew-tag.pc {
+            background: rgba(0, 166, 203, .16);
+            color: #76dff4
+        }
+
+        .crew-tag.tv {
+            background: rgba(28, 198, 123, .16);
+            color: #8df1c1
+        }
+
+        .footer {
+            height: 5.1vh;
+            border-top: 1px solid #1e3244;
+            background: #06131f;
+            display: flex;
+            align-items: center;
+            padding: 0 .8vw;
+            font-size: .6vw
+        }
+
+        .pager {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: .4vw
+        }
+
+        .pager select {
+            height: 3vh;
+            border-radius: 1.5vh;
+            border: 1px solid #3a4957;
+            background: #2a3744;
+            color: #eef4f8;
+            padding: 0 1.5vw 0 .6vw;
+            font-size: .6vw
+        }
+
+        .page-btn {
+            width: 1.45vw;
+            height: 1.45vw;
+            border: 1px solid transparent;
+            border-radius: .28vw;
+            background: transparent;
+            color: #dce5eb;
+            display: grid;
+            place-items: center;
+            cursor: pointer
+        }
+
+        .page-btn.active {
+            background: #00a1c5;
+            color: #fff
+        }
+
+        .page-btn:disabled {
+            opacity: .35
+        }
+
+        .empty {
+            display: none;
+            height: 28vh;
+            align-items: center;
+            justify-content: center;
+            color: #8698a7;
+            font-size: .76vw
+        }
+
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 10, 18, .45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50
+        }
+
+        .modal-bg.show {
+            display: flex
+        }
+
+        .modal {
+            width: 27vw;
+            height: 54vh;
+            background: #041120;
+            border: 1px solid #102538;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+            display: flex;
+            flex-direction: column
+        }
+
+        .modal-head {
+            height: 4.8vh;
+            padding: 0 .72vw;
+            background: #061421;
+            border-bottom: 1px solid #13283a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .modal-title {
+            font-size: .77vw;
+            font-weight: 700
+        }
+
+        .close {
+            width: 1.35vw;
+            height: 1.35vw;
+            border-radius: .3vw;
+            background: #223240;
+            border: 1px solid #2f4252;
+            color: #aab7c0;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            font-size: .68vw
+        }
+
+        .ts-head {
+            height: 3.9vh;
+            background: #0f1c2d;
+            border-bottom: 1px solid #12283a;
+            display: grid;
+            grid-template-columns: 2.2vw 2.2vw 1fr;
+            align-items: center;
+            color: #c3ced7;
+            font-size: .56vw;
+            font-weight: 700
+        }
+
+        .ts-head div {
+            padding: 0 .55vw
+        }
+
+        .ts-list {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: #061523
+        }
+
+        .ts-row {
+            height: 3.9vh;
+            border-bottom: 1px solid #102638;
+            display: grid;
+            grid-template-columns: 2.2vw 2.2vw 1fr;
+            align-items: center;
+            font-size: .6vw
+        }
+
+        .drag {
+            height: 100%;
+            display: grid;
+            place-items: center;
+            color: #8094a5;
+            cursor: grab
+        }
+
+        .drag svg {
+            width: .7vw;
+            height: .7vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .checkwrap {
+            display: grid;
+            place-items: center
+        }
+
+        .check {
+            appearance: none;
+            width: .84vw;
+            height: .84vw;
+            border-radius: .18vw;
+            background: #0f1b2a;
+            border: 1px solid #2f4151;
+            display: grid;
+            place-items: center;
+            cursor: pointer
+        }
+
+        .check:checked {
+            background: var(--green);
+            border-color: #27c97d
+        }
+
+        .check:checked:after {
+            content: "";
+            width: .35vw;
+            height: .18vw;
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            transform: rotate(-45deg) translateY(-1px)
+        }
+
+        .ts-name {
+            padding: 0 .55vw;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .modal-foot {
+            height: 5.15vh;
+            padding: 0 .72vw;
+            border-top: 1px solid #13283a;
+            background: #061421;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: .4vw
+        }
+
+        .mbtn {
+            height: 3.3vh;
+            min-width: 3.8vw;
+            border-radius: .38vw;
+            border: 1px solid #273b4d;
+            background: #071625;
+            color: #eff5f8;
+            font-size: .64vw;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .mbtn.primary {
+            background: var(--cyan);
+            border-color: #1196b8
+        }
+
+        .toast {
+            position: fixed;
+            right: 1vw;
+            top: 5.3vh;
+            z-index: 80;
+            min-width: 18vw;
+            background: #132637;
+            border: 1px solid #2c4558;
+            color: #eef5f8;
+            padding: .8vh .75vw;
+            border-radius: .38vw;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+            display: none;
+            font-size: .62vw
+        }
+
+        .toast.show {
+            display: block
+        }
+
+        .toast b {
+            display: block;
+            margin-bottom: .25vh
+        }
+
+        .control-field {
+            padding: .28vh .48vw;
+            gap: .18vh;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+            height: 4.55vh;
+        }
+
+        .control-field label {
+            display: block;
+            font-size: .47vw;
+            line-height: 1;
+            color: #718797;
+            font-weight: 700;
+            letter-spacing: .02em;
+        }
+
+        .control-field input,
+        .control-field select {
+            width: 100%;
+            min-width: 0;
+            height: 2.15vh;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #eaf2f6;
+            font-family: inherit;
+            font-size: .59vw;
+        }
+
+        .control-field select {
+            cursor: pointer;
+        }
+
+        .control-field option {
+            background: #132333;
+            color: #eef5f8;
+        }
+
+        .control-field input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: .7;
+            cursor: pointer;
+        }
+
+        .filter-grid2 {
+            grid-template-columns: 10.8vw 9.8vw 11.2vw 11.2vw 1fr auto auto !important;
+        }
+
+
+        /* Compact VNA/TOSS filter style */
+        .toolbar {
+            padding: .72vh .65vw .72vh;
+            background: #071522;
+        }
+
+        .toolbar-top {
+            min-height: 2.4vh;
+        }
+
+        .filters {
+            margin-top: .55vh;
+        }
+
+        .filter-grid,
+        .filter-grid2 {
+            display: flex !important;
+            flex-wrap: wrap;
+            gap: .32vw !important;
+            align-items: center;
+        }
+
+        .filter-grid2 {
+            margin-top: .42vh;
+        }
+
+        .control-field {
+            width: auto;
+            min-width: 8vw;
+            height: 2.65vh;
+            padding: 0 .46vw;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            border-radius: .28vw;
+            background: #1e2c38;
+            border: 1px solid #344553;
+        }
+
+        .control-field.date-field {
+            min-width: 10.2vw;
+        }
+
+        .control-field.wide-field {
+            min-width: 10.6vw;
+        }
+
+        .control-field.small-field {
+            min-width: 7.2vw;
+        }
+
+        .control-field label {
+            display: none !important;
+        }
+
+        .control-field input,
+        .control-field select {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #eef5f8;
+            font-family: inherit;
+            font-size: .57vw;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .control-field select {
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 1.1vw;
+            background-image:
+                linear-gradient(45deg, transparent 50%, #8fa3b1 50%),
+                linear-gradient(135deg, #8fa3b1 50%, transparent 50%);
+            background-position:
+                calc(100% - .58vw) 50%,
+                calc(100% - .4vw) 50%;
+            background-size: .18vw .18vw, .18vw .18vw;
+            background-repeat: no-repeat;
+        }
+
+        .control-field select:invalid {
+            color: #8294a2;
+        }
+
+        .control-field input[type="date"] {
+            color-scheme: dark;
+            text-transform: none;
+        }
+
+        .control-field input[type="date"]:not(:focus):invalid {
+            color: #8294a2;
+        }
+
+        .control-field input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: .62;
+        }
+
+        .btn-search,
+        .btn-clear {
+            height: 2.65vh;
+            font-size: .56vw;
+        }
+
+        .btn-search {
+            padding: 0 .72vw;
+            border-radius: .3vw;
+        }
+
+        .btn-clear {
+            padding: 0 .42vw;
+        }
+
+        .header-actions,
+        .actions {
+            gap: .32vw;
+        }
+
+        .action {
+            height: 2.6vh;
+            font-size: .55vw;
+            border-radius: .3vw;
+        }
+
+
+        .footer .pager {
+            gap: .32vw
+        }
+
+        #pages {
+            align-items: center
+        }
+
+        .page-btn {
+            min-width: 1.55vw;
+            height: 2.55vh;
+            border-radius: .28vw;
+            font-size: .58vw;
+        }
+
+        .page-btn.active {
+            background: #00a7ca;
+            border-color: #0eb5d7;
+        }
+
+        #rangeText {
+            color: #d9e3e9;
+            font-weight: 600
+        }
+
+
+        .tz-switch {
+            width: 3.55vw;
+            height: 2.55vh;
+            border-radius: 1.2vw;
+            background: #2a3743;
+            border: 1px solid #41525e;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            gap: 2px
+        }
+
+        .tz-switch span {
+            flex: 1;
+            height: 1.82vh;
+            border-radius: 1vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .55vw;
+            font-weight: 700;
+            color: #b9c5cd;
+            cursor: pointer
+        }
+
+        .tz-switch span.active {
+            background: #06a6c9;
+            color: #fff
+        }
+
+        .crew-tag.orange {
+            background: rgba(255, 193, 61, .18);
+            color: #ffd86f
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo"><svg viewBox="0 0 100 70">
+                    <path d="M46 8 C51 25,62 34,78 36 C64 39,55 47,49 63 C42 48,34 40,18 36 C33 33,42 24,46 8Z"
+                        fill="#f3c61f" />
+                    <path d="M28 22 C32 31,38 36,46 38 C39 40,34 44,30 52 C27 44,22 40,13 38 C21 35,26 30,28 22Z"
+                        fill="#f3c61f" />
+                </svg>
+                <div class="brand">VietnamAirlines</div>
+            </div>
+            <div class="menu">
+                <div class="menu-item"><svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="8" />
+                        <path d="M12 8v4l3 2" />
+                    </svg>Live Operations</div>
+                <div class="menu-item"><svg viewBox="0 0 24 24">
+                        <path d="M6 4h9l3 3v13H6z" />
+                        <path d="M15 4v4h4" />
+                    </svg>Flight Dispatch</div>
+                <div class="menu-item"><svg viewBox="0 0 24 24">
+                        <path d="M3 11h18" />
+                        <path d="M6 7h12" />
+                        <path d="M8 15h8" />
+                    </svg>Flight Load Control</div>
+                <div class="menu-item"><svg viewBox="0 0 24 24">
+                        <path d="M12 3l7 4v10l-7 4-7-4V7z" />
+                    </svg>Station Manager</div>
+                <div class="menu-item"><svg viewBox="0 0 24 24">
+                        <path d="M4 18h16" />
+                        <path d="M6 15l3-4 3 2 4-6 2 3" />
+                    </svg>Operations Analysis</div>
+                <div class="menu-item active"><svg viewBox="0 0 24 24">
+                        <path d="M6 3h9l3 3v15H6z" />
+                        <path d="M9 11h6M9 15h6" />
+                    </svg>Report</div>
+                <div class="menu-item"><svg viewBox="0 0 24 24">
+                        <path d="M12 4a8 8 0 1 0 8 8" />
+                        <path d="M12 8v5l3 2" />
+                    </svg>Export Report History</div>
+            </div>
+            <div class="side-bottom">
+                <div class="hide"><i>◀</i>Hide</div>
+                <div class="user">
+                    <div class="avatar"></div>
+                    <div class="user-txt"><b>Admin</b><span style="color:#8092a1">admin@viettel.com</span></div>
+                </div>
+            </div>
+        </aside>
+
+        <aside class="report-list">
+            <div class="report-head"><span>Report List</span><span class="collapse">◀</span></div>
+            <div class="search"><svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="6" />
+                    <path d="M20 20l-4-4" />
+                </svg><span>Search</span></div>
+            <div class="report-items">
+                <div class="report-item">Flight Journey Statistics</div>
+                <div class="report-item">Aircraft Stop Report</div>
+                <div class="report-item">Take-off / Landing Statistics</div>
+                <div class="report-item active">Cost Index Report</div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">Operating Date: 19/09/2026&nbsp;&nbsp;15:21:42</div>
+            <div class="content">
+                <section class="toolbar">
+                    <div class="toolbar-top">
+                        <div class="filter-trigger" id="toggleFilter"><svg viewBox="0 0 24 24">
+                                <path d="M4 6h16" />
+                                <path d="M7 12h10" />
+                                <path d="M10 18h4" />
+                            </svg><span>Filter</span><span id="arrow">▼</span></div>
+                        <div class="actions">
+                            <div class="tz-switch"><span class="active" id="utcBtn">UTC</span><span id="ltBtn">LT</span>
+                            </div>
+                            <button class="action" id="exportBtn"><svg viewBox="0 0 24 24">
+                                    <path d="M12 4v10" />
+                                    <path d="M8 10l4 4 4-4" />
+                                    <path d="M5 19h14" />
+                                </svg>Export excel</button>
+                            <button class="action" id="openSetting"><svg viewBox="0 0 24 24">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                                    <path d="M4 10h16M10 4v16" />
+                                </svg>Table Setting</button>
+                        </div>
+                    </div>
+                    <div class="filters" id="filters">
+                        <div class="filter-grid">
+                            <div class="field control-field date-field">
+                                <input type="date" id="filterFromDate" value="2026-09-01" title="START DATE OF STD">
+                            </div>
+
+                            <div class="field control-field date-field">
+                                <input type="date" id="filterToDate" value="2026-09-30" title="END DATE OF STD">
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <select id="filterDepAirport" required title="SCHEDULED DEPARTURE AIRPORT">
+                                    <option value="" selected hidden>SCHED DEP</option>
+                                    <option value="HAN">HAN</option>
+                                    <option value="SGN">SGN</option>
+                                    <option value="DAD">DAD</option>
+                                </select>
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <select id="filterArrAirport" required title="SCHEDULED ARRIVAL AIRPORT">
+                                    <option value="" selected hidden>SCHED ARR</option>
+                                    <option value="HAN">HAN</option>
+                                    <option value="SGN">SGN</option>
+                                    <option value="DAD">DAD</option>
+                                    <option value="ICN">ICN</option>
+                                    <option value="NRT">NRT</option>
+                                </select>
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <input type="number" id="filterCiFrom" min="0" placeholder="CI FROM"
+                                    title="MIN COST INDEX">
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <input type="number" id="filterCiTo" min="0" placeholder="CI TO" title="MAX COST INDEX">
+                            </div>
+                        </div>
+
+                        <div class="filter-grid2">
+                            <div class="field control-field wide-field">
+                                <select id="filterAcReg" required title="AIRCRAFT REGISTRATION">
+                                    <option value="" selected hidden>ACREG</option>
+                                    <option value="VN-A601">VN-A601</option>
+                                    <option value="VN-A602">VN-A602</option>
+                                    <option value="VN-A603">VN-A603</option>
+                                    <option value="VN-A870">VN-A870</option>
+                                    <option value="VN-A886">VN-A886</option>
+                                </select>
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <select id="filterAcType" required title="AIRCRAFT SUBTYPE">
+                                    <option value="" selected hidden>ACTYPE</option>
+                                    <option value="A321">A321</option>
+                                    <option value="A21N">A21N</option>
+                                    <option value="A359">A359</option>
+                                    <option value="B789">B789</option>
+                                </select>
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <select id="filterLegState" required title="LEG STATE">
+                                    <option value="" selected hidden>LEG STATE</option>
+                                    <option value="SCH">SCH</option>
+                                    <option value="DEP">DEP</option>
+                                    <option value="ARR">ARR</option>
+                                </select>
+                            </div>
+
+                            <div class="field control-field small-field">
+                                <select id="filterLegType" required title="LEG TYPE">
+                                    <option value="" selected hidden>LEG TYPE</option>
+                                    <option value="J">J</option>
+                                </select>
+                            </div>
+
+                            <button class="btn-search" id="searchBtn">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="6" />
+                                    <path d="M20 20l-4-4" />
+                                </svg>
+                                Search
+                            </button>
+
+                            <button class="btn-clear" id="clearBtn">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 11a8 8 0 1 0 1 5" />
+                                    <path d="M20 4v7h-7" />
+                                </svg>
+                                Clear Filter
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="report-title">Cost Index Report</div>
+                <div class="table-wrap">
+                    <table id="reportTable"></table>
+                    <div class="empty" id="emptyState">Please select any time filters to display the report</div>
+                </div>
+
+                <div class="footer">
+                    <div class="total" id="totalText">Total: 48</div>
+                    <div class="pager">
+                        <span id="rangeText">1–25 of 48</span><span>Rows per page</span>
+                        <select id="pageSize">
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <button class="page-btn" id="first">≪</button><button class="page-btn" id="prev">‹</button>
+                        <div id="pages" style="display:flex;gap:.22vw"></div><button class="page-btn"
+                            id="next">›</button><button class="page-btn" id="last">≫</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-bg" id="modalBg">
+        <div class="modal">
+            <div class="modal-head">
+                <div class="modal-title">Table setting</div>
+                <div class="close" id="closeModal">✕</div>
+            </div>
+            <div class="ts-head">
+                <div></div>
+                <div></div>
+                <div>Data column name</div>
+            </div>
+            <div class="ts-list" id="tsList"></div>
+            <div class="modal-foot"><button class="mbtn" id="cancelBtn">Cancel</button><button class="mbtn primary"
+                    id="saveBtn">Save</button></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const allColumns = [{ "key": "no", "label": "NO.", "width": 52, "fixed": true }, { "key": "std", "label": "STD", "width": 90, "fixed": true }, { "key": "acType", "label": "ACTYPE", "width": 72, "fixed": true }, { "key": "acVersion", "label": "AC VERSION", "width": 90, "fixed": true }, { "key": "acLogicalNo", "label": "AC LOGICAL NO", "width": 100, "fixed": true }, { "key": "acReg", "label": "ACREG", "width": 90, "fixed": true }, { "key": "carrier", "label": "CARRIER", "width": 78, "fixed": true }, { "key": "fltNo", "label": "FLT NO", "width": 90, "fixed": true }, { "key": "schedDep", "label": "SCHED DEP", "width": 86, "defaultVisible": true }, { "key": "schedArr", "label": "SCHED ARR", "width": 86, "defaultVisible": true }, { "key": "etaDate", "label": "ETA (DATE)", "width": 92, "defaultVisible": false }, { "key": "etaTime", "label": "ETA (TIME)", "width": 90, "defaultVisible": true }, { "key": "etaDatetime", "label": "ETA (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "etdDate", "label": "ETD (DATE)", "width": 92, "defaultVisible": false }, { "key": "etdTime", "label": "ETD (TIME)", "width": 90, "defaultVisible": true }, { "key": "etdDatetime", "label": "ETD (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "ataDate", "label": "ATA (DATE)", "width": 92, "defaultVisible": false }, { "key": "ataTime", "label": "ATA (TIME)", "width": 90, "defaultVisible": true }, { "key": "ataDatetime", "label": "ATA (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "atdDate", "label": "ATD (DATE)", "width": 92, "defaultVisible": false }, { "key": "atdTime", "label": "ATD (TIME)", "width": 90, "defaultVisible": true }, { "key": "atdDatetime", "label": "ATD (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "fnNumber", "label": "FN NUMBER", "width": 92, "defaultVisible": false }, { "key": "fnSuffix", "label": "FN SUFFIX", "width": 90, "defaultVisible": false }, { "key": "costIndex", "label": "COST INDEX", "width": 100, "defaultVisible": true }, { "key": "ofpVersion", "label": "OFP VERSION", "width": 105, "defaultVisible": true }, { "key": "ofpTime", "label": "OFP TIME", "width": 130, "defaultVisible": true }, { "key": "pic", "label": "PIC", "width": 115, "defaultVisible": true }, { "key": "legState", "label": "LEG STATE", "width": 82, "defaultVisible": true }, { "key": "legType", "label": "LEG TYPE", "width": 78, "defaultVisible": true }, { "key": "eet", "label": "EET", "width": 78, "defaultVisible": true }, { "key": "flightTime", "label": "FLIGHT TIME", "width": 95, "defaultVisible": true }, { "key": "problem", "label": "PROBLEM", "width": 110, "defaultVisible": true }, { "key": "remark", "label": "REMARK", "width": 180, "defaultVisible": true }];
+        const configurableColumns = [{ "key": "schedDep", "label": "SCHED DEP", "width": 86, "defaultVisible": true }, { "key": "schedArr", "label": "SCHED ARR", "width": 86, "defaultVisible": true }, { "key": "etaDate", "label": "ETA (DATE)", "width": 92, "defaultVisible": false }, { "key": "etaTime", "label": "ETA (TIME)", "width": 90, "defaultVisible": true }, { "key": "etaDatetime", "label": "ETA (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "etdDate", "label": "ETD (DATE)", "width": 92, "defaultVisible": false }, { "key": "etdTime", "label": "ETD (TIME)", "width": 90, "defaultVisible": true }, { "key": "etdDatetime", "label": "ETD (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "ataDate", "label": "ATA (DATE)", "width": 92, "defaultVisible": false }, { "key": "ataTime", "label": "ATA (TIME)", "width": 90, "defaultVisible": true }, { "key": "ataDatetime", "label": "ATA (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "atdDate", "label": "ATD (DATE)", "width": 92, "defaultVisible": false }, { "key": "atdTime", "label": "ATD (TIME)", "width": 90, "defaultVisible": true }, { "key": "atdDatetime", "label": "ATD (DATETIME)", "width": 132, "defaultVisible": false }, { "key": "fnNumber", "label": "FN NUMBER", "width": 92, "defaultVisible": false }, { "key": "fnSuffix", "label": "FN SUFFIX", "width": 90, "defaultVisible": false }, { "key": "costIndex", "label": "COST INDEX", "width": 100, "defaultVisible": true }, { "key": "ofpVersion", "label": "OFP VERSION", "width": 105, "defaultVisible": true }, { "key": "ofpTime", "label": "OFP TIME", "width": 130, "defaultVisible": true }, { "key": "pic", "label": "PIC", "width": 115, "defaultVisible": true }, { "key": "legState", "label": "LEG STATE", "width": 82, "defaultVisible": true }, { "key": "legType", "label": "LEG TYPE", "width": 78, "defaultVisible": true }, { "key": "eet", "label": "EET", "width": 78, "defaultVisible": true }, { "key": "flightTime", "label": "FLIGHT TIME", "width": 95, "defaultVisible": true }, { "key": "problem", "label": "PROBLEM", "width": 110, "defaultVisible": true }, { "key": "remark", "label": "REMARK", "width": 180, "defaultVisible": true }];
+        const rows = [{ "std": "01SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "01SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 08:15", "etdDate": "01SEP26", "etdDatetime": "01SEP26 06:15", "ataDate": "01SEP26", "ataDatetime": "01SEP26 08:10", "atdDate": "01SEP26", "atdDatetime": "01SEP26 06:17" }, { "std": "01SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "01SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 11:05", "etdDate": "01SEP26", "etdDatetime": "01SEP26 09:40", "ataDate": "01SEP26", "ataDatetime": "01SEP26 11:00", "atdDate": "01SEP26", "atdDatetime": "01SEP26 09:43" }, { "std": "01SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "01SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 14:40", "etdDate": "01SEP26", "etdDatetime": "01SEP26 10:25", "ataDate": "01SEP26", "ataDatetime": "01SEP26 14:32", "atdDate": "01SEP26", "atdDatetime": "01SEP26 10:28" }, { "std": "01SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "01SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 17:25", "etdDate": "01SEP26", "etdDatetime": "01SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "01SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "01SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 08:40", "etdDate": "01SEP26", "etdDatetime": "01SEP26 07:10", "ataDate": "01SEP26", "ataDatetime": "01SEP26 08:36", "atdDate": "01SEP26", "atdDatetime": "01SEP26 07:12" }, { "std": "01SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "01SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 13:35", "etdDate": "01SEP26", "etdDatetime": "01SEP26 11:25", "ataDate": "01SEP26", "ataDatetime": "01SEP26 13:31", "atdDate": "01SEP26", "atdDatetime": "01SEP26 11:29" }, { "std": "01SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "01SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 08:15", "etdDate": "01SEP26", "etdDatetime": "01SEP26 06:15", "ataDate": "01SEP26", "ataDatetime": "01SEP26 08:10", "atdDate": "01SEP26", "atdDatetime": "01SEP26 06:17" }, { "std": "01SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "01SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-01", "etaDate": "01SEP26", "etaDatetime": "01SEP26 11:05", "etdDate": "01SEP26", "etdDatetime": "01SEP26 09:40", "ataDate": "01SEP26", "ataDatetime": "01SEP26 11:00", "atdDate": "01SEP26", "atdDatetime": "01SEP26 09:43" }, { "std": "02SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "02SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 14:40", "etdDate": "02SEP26", "etdDatetime": "02SEP26 10:25", "ataDate": "02SEP26", "ataDatetime": "02SEP26 14:32", "atdDate": "02SEP26", "atdDatetime": "02SEP26 10:28" }, { "std": "02SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "02SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 17:25", "etdDate": "02SEP26", "etdDatetime": "02SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "02SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "02SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 08:40", "etdDate": "02SEP26", "etdDatetime": "02SEP26 07:10", "ataDate": "02SEP26", "ataDatetime": "02SEP26 08:36", "atdDate": "02SEP26", "atdDatetime": "02SEP26 07:12" }, { "std": "02SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "02SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 13:35", "etdDate": "02SEP26", "etdDatetime": "02SEP26 11:25", "ataDate": "02SEP26", "ataDatetime": "02SEP26 13:31", "atdDate": "02SEP26", "atdDatetime": "02SEP26 11:29" }, { "std": "02SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "02SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 08:15", "etdDate": "02SEP26", "etdDatetime": "02SEP26 06:15", "ataDate": "02SEP26", "ataDatetime": "02SEP26 08:10", "atdDate": "02SEP26", "atdDatetime": "02SEP26 06:17" }, { "std": "02SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "02SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 11:05", "etdDate": "02SEP26", "etdDatetime": "02SEP26 09:40", "ataDate": "02SEP26", "ataDatetime": "02SEP26 11:00", "atdDate": "02SEP26", "atdDatetime": "02SEP26 09:43" }, { "std": "02SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "02SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 14:40", "etdDate": "02SEP26", "etdDatetime": "02SEP26 10:25", "ataDate": "02SEP26", "ataDatetime": "02SEP26 14:32", "atdDate": "02SEP26", "atdDatetime": "02SEP26 10:28" }, { "std": "02SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "02SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-02", "etaDate": "02SEP26", "etaDatetime": "02SEP26 17:25", "etdDate": "02SEP26", "etdDatetime": "02SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "03SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "03SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 08:40", "etdDate": "03SEP26", "etdDatetime": "03SEP26 07:10", "ataDate": "03SEP26", "ataDatetime": "03SEP26 08:36", "atdDate": "03SEP26", "atdDatetime": "03SEP26 07:12" }, { "std": "03SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "03SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 13:35", "etdDate": "03SEP26", "etdDatetime": "03SEP26 11:25", "ataDate": "03SEP26", "ataDatetime": "03SEP26 13:31", "atdDate": "03SEP26", "atdDatetime": "03SEP26 11:29" }, { "std": "03SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "03SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 08:15", "etdDate": "03SEP26", "etdDatetime": "03SEP26 06:15", "ataDate": "03SEP26", "ataDatetime": "03SEP26 08:10", "atdDate": "03SEP26", "atdDatetime": "03SEP26 06:17" }, { "std": "03SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "03SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 11:05", "etdDate": "03SEP26", "etdDatetime": "03SEP26 09:40", "ataDate": "03SEP26", "ataDatetime": "03SEP26 11:00", "atdDate": "03SEP26", "atdDatetime": "03SEP26 09:43" }, { "std": "03SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "03SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 14:40", "etdDate": "03SEP26", "etdDatetime": "03SEP26 10:25", "ataDate": "03SEP26", "ataDatetime": "03SEP26 14:32", "atdDate": "03SEP26", "atdDatetime": "03SEP26 10:28" }, { "std": "03SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "03SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 17:25", "etdDate": "03SEP26", "etdDatetime": "03SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "03SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "03SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 08:40", "etdDate": "03SEP26", "etdDatetime": "03SEP26 07:10", "ataDate": "03SEP26", "ataDatetime": "03SEP26 08:36", "atdDate": "03SEP26", "atdDatetime": "03SEP26 07:12" }, { "std": "03SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "03SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-03", "etaDate": "03SEP26", "etaDatetime": "03SEP26 13:35", "etdDate": "03SEP26", "etdDatetime": "03SEP26 11:25", "ataDate": "03SEP26", "ataDatetime": "03SEP26 13:31", "atdDate": "03SEP26", "atdDatetime": "03SEP26 11:29" }, { "std": "04SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "04SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 08:15", "etdDate": "04SEP26", "etdDatetime": "04SEP26 06:15", "ataDate": "04SEP26", "ataDatetime": "04SEP26 08:10", "atdDate": "04SEP26", "atdDatetime": "04SEP26 06:17" }, { "std": "04SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "04SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 11:05", "etdDate": "04SEP26", "etdDatetime": "04SEP26 09:40", "ataDate": "04SEP26", "ataDatetime": "04SEP26 11:00", "atdDate": "04SEP26", "atdDatetime": "04SEP26 09:43" }, { "std": "04SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "04SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 14:40", "etdDate": "04SEP26", "etdDatetime": "04SEP26 10:25", "ataDate": "04SEP26", "ataDatetime": "04SEP26 14:32", "atdDate": "04SEP26", "atdDatetime": "04SEP26 10:28" }, { "std": "04SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "04SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 17:25", "etdDate": "04SEP26", "etdDatetime": "04SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "04SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "04SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 08:40", "etdDate": "04SEP26", "etdDatetime": "04SEP26 07:10", "ataDate": "04SEP26", "ataDatetime": "04SEP26 08:36", "atdDate": "04SEP26", "atdDatetime": "04SEP26 07:12" }, { "std": "04SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "04SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 13:35", "etdDate": "04SEP26", "etdDatetime": "04SEP26 11:25", "ataDate": "04SEP26", "ataDatetime": "04SEP26 13:31", "atdDate": "04SEP26", "atdDatetime": "04SEP26 11:29" }, { "std": "04SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "04SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 08:15", "etdDate": "04SEP26", "etdDatetime": "04SEP26 06:15", "ataDate": "04SEP26", "ataDatetime": "04SEP26 08:10", "atdDate": "04SEP26", "atdDatetime": "04SEP26 06:17" }, { "std": "04SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "04SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-04", "etaDate": "04SEP26", "etaDatetime": "04SEP26 11:05", "etdDate": "04SEP26", "etdDatetime": "04SEP26 09:40", "ataDate": "04SEP26", "ataDatetime": "04SEP26 11:00", "atdDate": "04SEP26", "atdDatetime": "04SEP26 09:43" }, { "std": "05SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "05SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 14:40", "etdDate": "05SEP26", "etdDatetime": "05SEP26 10:25", "ataDate": "05SEP26", "ataDatetime": "05SEP26 14:32", "atdDate": "05SEP26", "atdDatetime": "05SEP26 10:28" }, { "std": "05SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "05SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 17:25", "etdDate": "05SEP26", "etdDatetime": "05SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "05SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "05SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 08:40", "etdDate": "05SEP26", "etdDatetime": "05SEP26 07:10", "ataDate": "05SEP26", "ataDatetime": "05SEP26 08:36", "atdDate": "05SEP26", "atdDatetime": "05SEP26 07:12" }, { "std": "05SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "05SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 13:35", "etdDate": "05SEP26", "etdDatetime": "05SEP26 11:25", "ataDate": "05SEP26", "ataDatetime": "05SEP26 13:31", "atdDate": "05SEP26", "atdDatetime": "05SEP26 11:29" }, { "std": "05SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "05SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 08:15", "etdDate": "05SEP26", "etdDatetime": "05SEP26 06:15", "ataDate": "05SEP26", "ataDatetime": "05SEP26 08:10", "atdDate": "05SEP26", "atdDatetime": "05SEP26 06:17" }, { "std": "05SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "05SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 11:05", "etdDate": "05SEP26", "etdDatetime": "05SEP26 09:40", "ataDate": "05SEP26", "ataDatetime": "05SEP26 11:00", "atdDate": "05SEP26", "atdDatetime": "05SEP26 09:43" }, { "std": "05SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "05SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 14:40", "etdDate": "05SEP26", "etdDatetime": "05SEP26 10:25", "ataDate": "05SEP26", "ataDatetime": "05SEP26 14:32", "atdDate": "05SEP26", "atdDatetime": "05SEP26 10:28" }, { "std": "05SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "05SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-05", "etaDate": "05SEP26", "etaDatetime": "05SEP26 17:25", "etdDate": "05SEP26", "etdDatetime": "05SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "06SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "06SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 08:40", "etdDate": "06SEP26", "etdDatetime": "06SEP26 07:10", "ataDate": "06SEP26", "ataDatetime": "06SEP26 08:36", "atdDate": "06SEP26", "atdDatetime": "06SEP26 07:12" }, { "std": "06SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "06SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 13:35", "etdDate": "06SEP26", "etdDatetime": "06SEP26 11:25", "ataDate": "06SEP26", "ataDatetime": "06SEP26 13:31", "atdDate": "06SEP26", "atdDatetime": "06SEP26 11:29" }, { "std": "06SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0200", "schedDep": "HAN", "schedArr": "SGN", "etdTime": "06:15", "etaTime": "08:15", "atdTime": "06:17", "ataTime": "08:10", "costIndex": "35", "_costIndex": 35, "ofpVersion": "R01", "ofpTime": "06SEP26 04:42", "pic": "PIC-1028", "legState": "ARR", "legType": "J", "eet": "02:00", "flightTime": "01:53", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "200", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 08:15", "etdDate": "06SEP26", "etdDatetime": "06SEP26 06:15", "ataDate": "06SEP26", "ataDatetime": "06SEP26 08:10", "atdDate": "06SEP26", "atdDatetime": "06SEP26 06:17" }, { "std": "06SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "602", "acReg": "VN-A602", "carrier": "VN", "fltNo": "VN0314", "schedDep": "HAN", "schedArr": "DAD", "etdTime": "09:40", "etaTime": "11:05", "atdTime": "09:43", "ataTime": "11:00", "costIndex": "28", "_costIndex": 28, "ofpVersion": "R02", "ofpTime": "06SEP26 08:55", "pic": "PIC-1142", "legState": "ARR", "legType": "J", "eet": "01:25", "flightTime": "01:17", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "314", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 11:05", "etdDate": "06SEP26", "etdDatetime": "06SEP26 09:40", "ataDate": "06SEP26", "ataDatetime": "06SEP26 11:00", "atdDate": "06SEP26", "atdDatetime": "06SEP26 09:43" }, { "std": "06SEP26", "acType": "A359", "acVersion": "359", "acLogicalNo": "870", "acReg": "VN-A870", "carrier": "VN", "fltNo": "VN0416", "schedDep": "HAN", "schedArr": "ICN", "etdTime": "10:25", "etaTime": "14:40", "atdTime": "10:28", "ataTime": "14:32", "costIndex": "45", "_costIndex": 45, "ofpVersion": "R01", "ofpTime": "06SEP26 09:05", "pic": "PIC-0815", "legState": "ARR", "legType": "J", "eet": "04:15", "flightTime": "04:04", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "416", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 14:40", "etdDate": "06SEP26", "etdDatetime": "06SEP26 10:25", "ataDate": "06SEP26", "ataDatetime": "06SEP26 14:32", "atdDate": "06SEP26", "atdDatetime": "06SEP26 10:28" }, { "std": "06SEP26", "acType": "B789", "acVersion": "789", "acLogicalNo": "886", "acReg": "VN-A886", "carrier": "VN", "fltNo": "VN0300", "schedDep": "SGN", "schedArr": "NRT", "etdTime": "11:30", "etaTime": "17:25", "atdTime": "--", "ataTime": "--", "costIndex": "52", "_costIndex": 52, "ofpVersion": "R01", "ofpTime": "06SEP26 10:05", "pic": "PIC-0760", "legState": "SCH", "legType": "J", "eet": "05:55", "flightTime": "--", "problem": "--", "remark": "Flight not departed", "fnNumber": "300", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 17:25", "etdDate": "06SEP26", "etdDatetime": "06SEP26 11:30", "ataDate": "--", "ataDatetime": "--", "atdDate": "--", "atdDatetime": "--" }, { "std": "06SEP26", "acType": "A21N", "acVersion": "32N", "acLogicalNo": "603", "acReg": "VN-A603", "carrier": "VN", "fltNo": "VN0126", "schedDep": "SGN", "schedArr": "DAD", "etdTime": "07:10", "etaTime": "08:40", "atdTime": "07:12", "ataTime": "08:36", "costIndex": "30", "_costIndex": 30, "ofpVersion": "R03", "ofpTime": "06SEP26 05:58", "pic": "PIC-1234", "legState": "ARR", "legType": "J", "eet": "01:30", "flightTime": "01:24", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "126", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 08:40", "etdDate": "06SEP26", "etdDatetime": "06SEP26 07:10", "ataDate": "06SEP26", "ataDatetime": "06SEP26 08:36", "atdDate": "06SEP26", "atdDatetime": "06SEP26 07:12" }, { "std": "06SEP26", "acType": "A321", "acVersion": "32B", "acLogicalNo": "601", "acReg": "VN-A601", "carrier": "VN", "fltNo": "VN0256", "schedDep": "SGN", "schedArr": "HAN", "etdTime": "11:25", "etaTime": "13:35", "atdTime": "11:29", "ataTime": "13:31", "costIndex": "32", "_costIndex": 32, "ofpVersion": "R01", "ofpTime": "06SEP26 10:38", "pic": "PIC-1099", "legState": "ARR", "legType": "J", "eet": "02:10", "flightTime": "02:02", "problem": "--", "remark": "Cost Index from final OFP", "fnNumber": "256", "fnSuffix": "--", "_stdIso": "2026-09-06", "etaDate": "06SEP26", "etaDatetime": "06SEP26 13:35", "etdDate": "06SEP26", "etdDatetime": "06SEP26 11:25", "ataDate": "06SEP26", "ataDatetime": "06SEP26 13:31", "atdDate": "06SEP26", "atdDatetime": "06SEP26 11:29" }];
+        let hasTimeFilter = true;
+        let filteredRows = rows.slice();
+        let currentPage = 1;
+        let pageSize = 25;
+        const totalRecords = rows.length;
+        const configStorageKey = 'costIndexReport.tableSetting.commonRule.v1';
+
+        let savedConfig;
+        try {
+            const stored = JSON.parse(localStorage.getItem(configStorageKey) || 'null');
+            savedConfig = Array.isArray(stored) ? stored : null;
+        } catch (e) { savedConfig = null; }
+        if (!savedConfig) {
+            savedConfig = configurableColumns.map((c, i) => ({
+                key: c.key,
+                visible: c.defaultVisible !== false,
+                order: i
+            }));
+        }
+        let draftConfig = null;
+
+        function showToast(title, msg) {
+            const e = document.getElementById('toast');
+            e.innerHTML = `<b>${title}</b>${msg}`;
+            e.classList.add('show');
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => e.classList.remove('show'), 3500);
+        }
+
+        function getCol(key) { return allColumns.find(c => c.key === key); }
+
+        function visibleCols() {
+            const fixed = [
+                getCol('std'), getCol('acType'), getCol('acVersion'), getCol('acLogicalNo'),
+                getCol('acReg'), getCol('carrier'), getCol('fltNo')
+            ];
+            const others = savedConfig
+                .slice()
+                .sort((a, b) => a.order - b.order)
+                .filter(x => x.visible)
+                .map(x => getCol(x.key));
+            return fixed.concat(others);
+        }
+
+        function renderTable() {
+            const table = document.getElementById('reportTable'), empty = document.getElementById('emptyState');
+            if (!hasTimeFilter) {
+                table.innerHTML = '';
+                empty.textContent = 'Please select any time filters to display the report';
+                empty.style.display = 'flex';
+                return;
+            }
+            if (filteredRows.length === 0) {
+                table.innerHTML = '';
+                empty.textContent = 'No data found';
+                empty.style.display = 'flex';
+                return;
+            }
+
+            empty.style.display = 'none';
+            const cols = visibleCols();
+            const colgroup = '<colgroup><col style="width:50px">' + cols.map(c => `<col style="width:${c.width}px">`).join('') + '</colgroup>';
+            const thead = '<thead><tr><th>NO.</th>' + cols.map(c => `<th>${c.label}</th>`).join('') + '</tr></thead>';
+            const startIndex = (currentPage - 1) * pageSize;
+            const pageRows = filteredRows.slice(startIndex, startIndex + pageSize);
+
+            const tbody = '<tbody>' + pageRows.map((r, i) => '<tr><td>' + (startIndex + i + 1) + '</td>' + cols.map(c => {
+                let v = r[c.key] ?? '--';
+                return `<td>${v}</td>`;
+            }).join('') + '</tr>').join('') + '</tbody>';
+            table.innerHTML = colgroup + thead + tbody;
+        }
+
+        function renderPager() {
+            const total = hasTimeFilter ? filteredRows.length : 0;
+            const tp = Math.max(1, Math.ceil(total / pageSize));
+            currentPage = Math.min(Math.max(1, currentPage), tp);
+
+            const start = total ? (currentPage - 1) * pageSize + 1 : 0;
+            const end = total ? Math.min(currentPage * pageSize, total) : 0;
+            document.getElementById('rangeText').textContent = `${start}–${end} of ${total}`;
+            document.getElementById('totalText').textContent = `Total: ${total}`;
+
+            const h = document.getElementById('pages');
+            h.innerHTML = '';
+            const from = Math.max(1, currentPage - 2);
+            const to = Math.min(tp, from + 4);
+            for (let i = from; i <= to; i++) {
+                const b = document.createElement('button');
+                b.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                b.textContent = i;
+                b.disabled = !total;
+                b.onclick = () => { currentPage = i; renderTable(); renderPager() };
+                h.appendChild(b);
+            }
+
+            document.getElementById('first').disabled = currentPage === 1 || !total;
+            document.getElementById('prev').disabled = currentPage === 1 || !total;
+            document.getElementById('next').disabled = currentPage === tp || !total;
+            document.getElementById('last').disabled = currentPage === tp || !total;
+        }
+
+        function renderSetting() {
+            const list = document.getElementById('tsList'); list.innerHTML = '';
+            draftConfig.slice().sort((a, b) => a.order - b.order).forEach(item => {
+                const def = configurableColumns.find(c => c.key === item.key);
+                const row = document.createElement('div'); row.className = 'ts-row'; row.draggable = true; row.dataset.key = item.key;
+                row.innerHTML = `<div class="drag"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h8"/></svg></div><div class="checkwrap"><input class="check" type="checkbox" ${item.visible ? 'checked' : ''}></div><div class="ts-name">${def.label}</div>`;
+                row.querySelector('.check').onchange = e => draftConfig.find(x => x.key === item.key).visible = e.target.checked;
+                row.ondragstart = e => e.dataTransfer.setData('text/plain', item.key);
+                row.ondragover = e => e.preventDefault();
+                row.ondrop = e => {
+                    e.preventDefault(); const k = e.dataTransfer.getData('text/plain'); if (!k || k === item.key) return;
+                    const a = draftConfig.slice().sort((x, y) => x.order - y.order), from = a.findIndex(x => x.key === k), to = a.findIndex(x => x.key === item.key);
+                    const moved = a.splice(from, 1)[0]; a.splice(to, 0, moved); a.forEach((x, i) => x.order = i); draftConfig = a; renderSetting();
+                };
+                list.appendChild(row);
+            });
+        }
+
+        document.getElementById('openSetting').onclick = () => { draftConfig = savedConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); renderSetting(); document.getElementById('modalBg').classList.add('show') };
+        function closeModal() { draftConfig = null; document.getElementById('modalBg').classList.remove('show') }
+        document.getElementById('closeModal').onclick = closeModal;
+        document.getElementById('cancelBtn').onclick = closeModal;
+        document.getElementById('modalBg').onclick = e => { if (e.target.id === 'modalBg') closeModal() };
+        document.getElementById('saveBtn').onclick = () => { savedConfig = draftConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); localStorage.setItem(configStorageKey, JSON.stringify(savedConfig)); renderTable(); closeModal() };
+
+        document.getElementById('toggleFilter').onclick = () => { const f = document.getElementById('filters'), a = document.getElementById('arrow'), h = f.style.display === 'none'; f.style.display = h ? 'block' : 'none'; a.textContent = h ? '▼' : '▲' };
+        function getFilterValue(id) {
+            return document.getElementById(id).value;
+        }
+
+        function applyFilters() {
+            const fromVal = getFilterValue('filterFromDate');
+            const toVal = getFilterValue('filterToDate');
+
+            if (!fromVal || !toVal) {
+                hasTimeFilter = false;
+                filteredRows = [];
+                currentPage = 1;
+                renderTable();
+                renderPager();
+                return;
+            }
+
+            hasTimeFilter = true;
+
+            const dep = getFilterValue('filterDepAirport');
+            const arr = getFilterValue('filterArrAirport');
+            const ciFromRaw = getFilterValue('filterCiFrom');
+            const ciToRaw = getFilterValue('filterCiTo');
+            const ciFrom = ciFromRaw === '' ? null : Number(ciFromRaw);
+            const ciTo = ciToRaw === '' ? null : Number(ciToRaw);
+            const acReg = getFilterValue('filterAcReg');
+            const acType = getFilterValue('filterAcType');
+            const legState = getFilterValue('filterLegState');
+            const legType = getFilterValue('filterLegType');
+
+            filteredRows = rows.filter(r => {
+                if (r._stdIso < fromVal || r._stdIso > toVal) return false;
+                if (dep && r.schedDep !== dep) return false;
+                if (arr && r.schedArr !== arr) return false;
+                if (ciFrom !== null && r._costIndex < ciFrom) return false;
+                if (ciTo !== null && r._costIndex > ciTo) return false;
+                if (acReg && r.acReg !== acReg) return false;
+                if (acType && r.acType !== acType) return false;
+                if (legState && r.legState !== legState) return false;
+                if (legType && r.legType !== legType) return false;
+                return true;
+            });
+
+            currentPage = 1;
+            renderTable();
+            renderPager();
+        }
+
+        function clearFilters() {
+            document.getElementById('filterFromDate').value = '';
+            document.getElementById('filterToDate').value = '';
+            document.getElementById('filterCiFrom').value = '';
+            document.getElementById('filterCiTo').value = '';
+
+            [
+                'filterDepAirport', 'filterArrAirport', 'filterAcReg', 'filterAcType',
+                'filterLegState', 'filterLegType'
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                el.value = '';
+                if (el.tagName === 'SELECT') el.selectedIndex = 0;
+            });
+
+            hasTimeFilter = false;
+            filteredRows = [];
+            currentPage = 1;
+            renderTable();
+            renderPager();
+        }
+
+        document.getElementById('searchBtn').onclick = applyFilters;
+        document.getElementById('clearBtn').onclick = clearFilters;
+
+        document.getElementById('pageSize').onchange = e => {
+            pageSize = Number(e.target.value);
+            currentPage = 1;
+            renderTable();
+            renderPager();
+        };
+        document.getElementById('first').onclick = () => { currentPage = 1; renderTable(); renderPager() };
+        document.getElementById('prev').onclick = () => { currentPage = Math.max(1, currentPage - 1); renderTable(); renderPager() };
+        document.getElementById('next').onclick = () => { currentPage = currentPage + 1; renderTable(); renderPager() };
+        document.getElementById('last').onclick = () => {
+            currentPage = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+            renderTable();
+            renderPager();
+        };
+
+
+        let isLocalTime = false;
+
+        function shiftTimeText(value, hours) {
+            if (!value || value === '--') return value;
+            const m = value.match(/^(\d{2}):(\d{2})$/);
+            if (!m) return value;
+            let mins = (Number(m[1]) * 60 + Number(m[2]) + hours * 60) % (24 * 60);
+            if (mins < 0) mins += 24 * 60;
+            return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+        }
+
+        function shiftDateTimeText(value, hours) {
+            if (!value || value === '--') return value;
+            const m = value.match(/^(\d{2})([A-Z]{3})(\d{2}) (\d{2}):(\d{2})$/);
+            if (!m) return value;
+            const monMap = { JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5, JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11 };
+            const rev = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            const d = new Date(Date.UTC(2000 + Number(m[3]), monMap[m[2]], Number(m[1]), Number(m[4]), Number(m[5])));
+            d.setUTCHours(d.getUTCHours() + hours);
+            return `${String(d.getUTCDate()).padStart(2, '0')}${rev[d.getUTCMonth()]}${String(d.getUTCFullYear()).slice(-2)} ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+        }
+
+        function setTimezone(local) {
+            if (isLocalTime === local) return;
+            const delta = local ? 7 : -7;
+
+            rows.forEach(r => {
+                ['eta', 'etd', 'ata', 'atd'].forEach(prefix => {
+                    const timeKey = prefix + 'Time';
+                    const dateKey = prefix + 'Date';
+                    const dtKey = prefix + 'Datetime';
+
+                    r[timeKey] = shiftTimeText(r[timeKey], delta);
+                    r[dtKey] = shiftDateTimeText(r[dtKey], delta);
+
+                    if (r[dtKey] && r[dtKey] !== '--') {
+                        r[dateKey] = r[dtKey].split(' ')[0];
+                    }
+                });
+
+                r.ofpTime = shiftDateTimeText(r.ofpTime, delta);
+            });
+
+            isLocalTime = local;
+            document.getElementById('utcBtn').classList.toggle('active', !local);
+            document.getElementById('ltBtn').classList.toggle('active', local);
+            renderTable();
+        }
+
+        document.getElementById('utcBtn')?.addEventListener('click', () => setTimezone(false));
+        document.getElementById('ltBtn')?.addEventListener('click', () => setTimezone(true));
+
+        renderTable(); renderPager();
+    </script>
+</body>
+
+</html>

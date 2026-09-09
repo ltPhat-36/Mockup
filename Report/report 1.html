@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take-off / Landing Statistics - Table Setting</title>
+    <style>
+        :root {
+            --bg: #04101a;
+            --panel: #071421;
+            --panel-2: #0b1827;
+            --panel-3: #0e1d2d;
+            --panel-4: #112233;
+            --line: #1d3446;
+            --line-2: #233b4d;
+            --text: #edf5f8;
+            --muted: #90a2b0;
+            --muted-2: #73879a;
+            --cyan: #05a6cb;
+            --cyan-2: #008eb2;
+            --cyan-3: #063d53;
+            --btn: #233240;
+            --btn-bd: #465665;
+            --thead: #111e2f;
+            --row: #091827;
+            --row-alt: #0b1a2a;
+            --green: #13c273;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+            background: #03111c;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        .viewport {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #03111c;
+        }
+
+        .stage {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .app {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(180deg, #06121d 0%, #040d17 100%);
+            border: 0;
+            display: grid;
+            grid-template-columns: 11.46% 11.98% minmax(0, 1fr);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #03111c;
+            border-right: 1px solid #11293b;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .logo {
+            height: 5.2vh;
+            padding: 1.1vh .8vw .7vh .9vw;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .logo svg {
+            width: 1.55vw;
+            height: 1.05vw;
+            flex: 0 0 auto
+        }
+
+        .brand {
+            font-size: .76vw;
+            font-weight: 600
+        }
+
+        .menu {
+            padding: 1.35vh .62vw 0;
+            display: flex;
+            flex-direction: column;
+            gap: .55vh
+        }
+
+        .menu-item {
+            height: 4.45vh;
+            border-radius: .42vw;
+            padding: 0 .62vw;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .67vw;
+            color: #eff5f8;
+        }
+
+        .menu-item.active {
+            background: #063f55
+        }
+
+        .menu-icon {
+            width: .9vw;
+            height: .9vw;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto
+        }
+
+        .menu-icon svg {
+            width: .9vw;
+            height: .9vw;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .side-bottom {
+            margin-top: auto;
+            padding: 1.6vh .72vw 1.2vh
+        }
+
+        .hide-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 2.2vh;
+            font-size: .67vw;
+            color: #f4f8fa;
+        }
+
+        .hide-btn .circle {
+            width: .9vw;
+            height: .9vw;
+            border-radius: .26vw;
+            background: #eff3f5;
+            color: #213342;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .avatar {
+            width: 1.85vw;
+            height: 1.85vw;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eefaff, #54afc8);
+            border: 1px solid rgba(255, 255, 255, .8);
+        }
+
+        .user-text {
+            font-size: .57vw;
+            line-height: 1.3
+        }
+
+        .user-text b {
+            display: block;
+            font-size: .67vw
+        }
+
+        .user-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px
+        }
+
+        .icon-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background: #1c2b3a;
+            border: 1px solid #314252;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dce6ed;
+        }
+
+        .icon-badge svg {
+            width: 13px;
+            height: 13px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        /* Report list */
+        .report-list {
+            background: #061320;
+            border-right: 1px solid #12293c;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .report-head {
+            height: 5.35vh;
+            padding: 0 .72vw;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            font-size: .67vw;
+            font-weight: 700;
+        }
+
+        .collapse-btn {
+            width: 1vw;
+            height: 1vw;
+            border-radius: 4px;
+            background: #eef4f6;
+            color: #182c3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .search {
+            margin: 1.2vh .62vw .9vh;
+            height: 3.5vh;
+            border-radius: 5px;
+            border: 1px solid #2b3e4d;
+            background: #1b2a39;
+            padding: 0 .62vw;
+            color: #7b8c9b;
+            font-size: .62vw;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search svg {
+            width: 12px;
+            height: 12px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .report-items {
+            padding: 0 .62vw;
+            display: flex;
+            flex-direction: column;
+            gap: .28vh
+        }
+
+        .report-item {
+            min-height: 3.7vh;
+            border-radius: .26vw;
+            padding: 0 .52vw;
+            display: flex;
+            align-items: center;
+            font-size: .57vw;
+            color: #f1f6f9;
+        }
+
+        .report-item.active {
+            background: #08445d
+        }
+
+        /* Main */
+        .main {
+            min-width: 0;
+            min-height: 0;
+            background: #05111c;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            height: 4.45vh;
+            flex: 0 0 auto;
+            padding: 0 10px;
+            border-bottom: 1px solid #102638;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: .57vw;
+            color: #f3f7f9;
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        /* Toolbar / filter */
+        .toolbar {
+            flex: 0 0 auto;
+            background: #061421;
+            border-bottom: 1px solid #15283a;
+            padding: 1.15vh .82vw .95vh;
+        }
+
+        .toolbar-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 24px;
+        }
+
+        .filter-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: auto;
+            font-size: .67vw;
+            font-weight: 700;
+            color: #edf5f8;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .filter-trigger svg {
+            width: 13px;
+            height: 13px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .tz-switch {
+            width: 3.55vw;
+            height: 2.6vh;
+            border-radius: 13px;
+            background: #2a3743;
+            border: 1px solid #41525e;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .tz-switch span {
+            flex: 1;
+            height: 1.85vh;
+            border-radius: .55vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .57vw;
+            color: #bcc7cf;
+            font-weight: 600;
+        }
+
+        .tz-switch .active {
+            background: var(--cyan);
+            color: white
+        }
+
+        .action-btn {
+            height: 3.15vh;
+            border-radius: 8px;
+            border: 1px solid var(--btn-bd);
+            background: var(--btn);
+            color: white;
+            padding: 0 .72vw;
+            display: flex;
+            align-items: center;
+            gap: .42vw;
+            font-size: .62vw;
+            cursor: pointer;
+        }
+
+        .action-btn svg {
+            width: 13px;
+            height: 13px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .filters {
+            margin-top: .8vh
+        }
+
+        .filter-grid {
+            display: grid;
+            gap: 6px;
+            align-items: center;
+            grid-template-columns: 16.7vw 7.3vw 6.8vw 6.8vw 6.8vw 6.8vw 6.8vw 6.8vw;
+        }
+
+        .filter-row-2 {
+            display: flex;
+            gap: .42vw;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: .6vh
+        }
+
+        .field {
+            height: 3.5vh;
+            border-radius: .32vw;
+            background: #1a2a38;
+            border: 1px solid #31414f;
+            color: #93a5b4;
+            padding: 0 .62vw;
+            font-size: .62vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 0;
+        }
+
+        .field.small {
+            width: 7.3vw
+        }
+
+        .field .placeholder {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .field svg {
+            width: 12px;
+            height: 12px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: 0 0 auto;
+            margin-left: 6px
+        }
+
+        .btn-search {
+            height: 3.5vh;
+            border: none;
+            border-radius: 7px;
+            background: var(--cyan);
+            color: white;
+            padding: 0 1.05vw;
+            display: flex;
+            align-items: center;
+            gap: .36vw;
+            font-size: .62vw;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-search svg,
+        .btn-clear svg {
+            width: 12px;
+            height: 12px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .btn-clear {
+            height: 3.5vh;
+            border: none;
+            background: transparent;
+            color: #d0d8de;
+            font-size: .62vw;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .report-title {
+            flex: 0 0 auto;
+            height: 4.8vh;
+            background: #061421;
+            border-bottom: 1px solid #162b3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .92vw;
+            font-weight: 700;
+        }
+
+        /* Table */
+        .table-wrap {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            overflow: auto;
+            background: #091725;
+        }
+
+        table {
+            width: 100%;
+            min-width: 0;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: .57vw;
+            color: #eef5f8;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: var(--thead);
+            color: #c0cad2;
+            font-size: .52vw;
+            font-weight: 700;
+            letter-spacing: .12px;
+        }
+
+        th,
+        td {
+            border-right: 1px solid #203648;
+            border-bottom: 1px solid #203648;
+            padding: .55vh .3vw;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: var(--row)
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--row-alt)
+        }
+
+        tbody tr:hover {
+            background: #113047
+        }
+
+        .time-col {
+            background: rgba(0, 166, 201, .045)
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 16px;
+            border-radius: 10px;
+            font-size: .52vw;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .arr {
+            background: rgba(68, 160, 109, .18);
+            color: #7bf0b2
+        }
+
+        .enr {
+            background: rgba(255, 193, 61, .18);
+            color: #ffd86f
+        }
+
+        .brd {
+            background: rgba(168, 121, 255, .18);
+            color: #cab0ff
+        }
+
+        .sch {
+            background: rgba(99, 146, 255, .16);
+            color: #a8c4ff
+        }
+
+        .count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background: #173848;
+            color: #72dbee;
+            font-weight: 700;
+        }
+
+        .footer {
+            flex: 0 0 auto;
+            height: 5.2vh;
+            border-top: 1px solid #1e3244;
+            background: #06131f;
+            display: flex;
+            align-items: center;
+            padding: 0 .82vw;
+            font-size: .62vw;
+        }
+
+        .footer .total {
+            font-weight: 700
+        }
+
+        .pager {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #e8eef3
+        }
+
+        .pager select {
+            height: 3vh;
+            border-radius: 1.5vh;
+            border: 1px solid #3a4957;
+            background: #2a3744;
+            color: #eef4f8;
+            padding: 0 1.55vw 0 .62vw;
+            font-size: .62vw;
+            outline: none;
+        }
+
+        .page-btn {
+            width: 1.45vw;
+            height: 1.45vw;
+            border-radius: .3vw;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #dce5eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: #00a1c5;
+            color: #fff
+        }
+
+        .page-btn:hover {
+            background: #182c3b;
+            border-color: #2f4556
+        }
+
+        .page-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed
+        }
+
+        /* Table setting modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(2, 10, 18, .42);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-backdrop.show {
+            display: flex
+        }
+
+        .modal {
+            width: 27vw;
+            height: 76vh;
+            max-height: calc(100vh - 24px);
+            background: #041120;
+            border: 1px solid #102538;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+            display: flex;
+            flex-direction: column;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            flex: 0 0 auto;
+            height: 4.8vh;
+            padding: 0 10px 0 12px;
+            background: #061421;
+            border-bottom: 1px solid #13283a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: .78vw;
+            font-weight: 700
+        }
+
+        .modal-close {
+            width: 1.35vw;
+            height: 1.35vw;
+            border-radius: 6px;
+            background: #223240;
+            border: 1px solid #2f4252;
+            color: #aab7c0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .ts-head {
+            flex: 0 0 auto;
+            height: 3.9vh;
+            background: #0f1c2d;
+            border-bottom: 1px solid #12283a;
+            display: grid;
+            grid-template-columns: 2.3vw 2.3vw 1fr;
+            align-items: center;
+            color: #c3ced7;
+            font-size: .57vw;
+            font-weight: 700;
+        }
+
+        .ts-head div {
+            padding: 0 10px
+        }
+
+        .ts-scroll {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: #061523;
+        }
+
+        .ts-row {
+            height: 3.9vh;
+            border-bottom: 1px solid #102638;
+            display: grid;
+            grid-template-columns: 2.3vw 2.3vw 1fr;
+            align-items: center;
+            color: #eef4f8;
+            font-size: .62vw;
+        }
+
+        .ts-row.dragging {
+            opacity: .55
+        }
+
+        .drag {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8396a7;
+            cursor: grab;
+        }
+
+        .drag svg {
+            width: 12px;
+            height: 12px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .check-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ts-check {
+            width: .9vw;
+            height: .9vw;
+            border-radius: .26vw;
+            background: #0f1b2a;
+            border: 1px solid #2f4151;
+            appearance: none;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .ts-check:checked {
+            background: var(--green);
+            border-color: #27c97d;
+        }
+
+        .ts-check:checked::after {
+            content: "";
+            width: 7px;
+            height: 4px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(-45deg) translateY(-1px);
+        }
+
+        .ts-name {
+            padding: 0 10px;
+            color: #f1f6f9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ts-footer {
+            flex: 0 0 auto;
+            height: 5.2vh;
+            padding: 0 10px;
+            border-top: 1px solid #13283a;
+            background: #061421;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .modal-btn {
+            height: 3.35vh;
+            min-width: 54px;
+            padding: 0 14px;
+            border-radius: 8px;
+            border: 1px solid #273b4d;
+            background: #071625;
+            color: #eff5f8;
+            font-size: .67vw;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-btn.primary {
+            background: var(--cyan);
+            border-color: #1196b8;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="viewport" id="viewport">
+        <div class="stage" id="stage">
+            <div class="app">
+                <aside class="sidebar">
+                    <div class="logo">
+                        <svg viewBox="0 0 100 70" aria-hidden="true">
+                            <path
+                                d="M46 8 C51 25, 62 34, 78 36 C64 39, 55 47, 49 63 C42 48, 34 40, 18 36 C33 33, 42 24, 46 8Z"
+                                fill="#f3c61f" />
+                            <path
+                                d="M28 22 C32 31, 38 36, 46 38 C39 40, 34 44, 30 52 C27 44, 22 40, 13 38 C21 35, 26 30, 28 22Z"
+                                fill="#f3c61f" />
+                        </svg>
+                        <div class="brand">VietnamAirlines</div>
+                    </div>
+                    <div class="menu">
+                        <div class="menu-item"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="8"></circle>
+                                    <path d="M12 8v4l3 2"></path>
+                                </svg></span>Live Operations</div>
+                        <div class="menu-item"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M6 4h9l3 3v13H6z"></path>
+                                    <path d="M15 4v4h4"></path>
+                                </svg></span>Flight Dispatch</div>
+                        <div class="menu-item"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M3 11h18"></path>
+                                    <path d="M6 7h12"></path>
+                                    <path d="M8 15h8"></path>
+                                    <path d="M10 19h4"></path>
+                                </svg></span>Flight Load Control</div>
+                        <div class="menu-item"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M12 3l7 4v10l-7 4-7-4V7z"></path>
+                                    <path d="M12 7v10"></path>
+                                </svg></span>Station Manager</div>
+                        <div class="menu-item"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M4 18h16"></path>
+                                    <path d="M6 15l3-4 3 2 4-6 2 3"></path>
+                                </svg></span>Operations Analysis</div>
+                        <div class="menu-item active"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M6 3h9l3 3v15H6z"></path>
+                                    <path d="M15 3v4h4"></path>
+                                    <path d="M9 11h6M9 15h6"></path>
+                                </svg></span>Report</div>
+                        <div class="menu-item"><span class="menu-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M12 4a8 8 0 1 0 8 8"></path>
+                                    <path d="M12 8v5l3 2"></path>
+                                </svg></span>Export Report History</div>
+                    </div>
+                    <div class="side-bottom">
+                        <div class="hide-btn"><span class="circle">◀</span>Hide</div>
+                        <div class="user-box">
+                            <div class="avatar"></div>
+                            <div class="user-text"><b>Admin</b><span style="color:#8092a1">admin@viettel.com</span>
+                            </div>
+                            <div class="user-actions">
+                                <span class="icon-badge"><svg viewBox="0 0 24 24">
+                                        <path d="M12 3v2"></path>
+                                        <path d="M12 19v2"></path>
+                                        <path d="M4.9 4.9l1.4 1.4"></path>
+                                        <path d="M17.7 17.7l1.4 1.4"></path>
+                                        <path d="M3 12h2"></path>
+                                        <path d="M19 12h2"></path>
+                                        <path d="M4.9 19.1l1.4-1.4"></path>
+                                        <path d="M17.7 6.3l1.4-1.4"></path>
+                                        <circle cx="12" cy="12" r="4"></circle>
+                                    </svg></span>
+                                <span class="icon-badge"><svg viewBox="0 0 24 24">
+                                        <path d="M12 6v6l4 2"></path>
+                                        <circle cx="12" cy="12" r="8"></circle>
+                                    </svg></span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <aside class="report-list">
+                    <div class="report-head"><span>Report List</span><span class="collapse-btn">◀</span></div>
+                    <div class="search">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="6"></circle>
+                            <path d="M20 20l-4-4"></path>
+                        </svg>
+                        <span>Search</span>
+                    </div>
+                    <div class="report-items">
+                        <div class="report-item">Departure/Arrival Delay Report</div>
+                        <div class="report-item">Flight &amp; Maintenance Plan</div>
+                        <div class="report-item">Flight Diversion Report</div>
+                        <div class="report-item">Ground Time Report</div>
+                        <div class="report-item active">Take-off / Landing Statistics Report</div>
+                    </div>
+                </aside>
+
+                <main class="main">
+                    <div class="topbar">Operating Date: 19/09/2026&nbsp;&nbsp;15:21:42</div>
+
+                    <div class="content">
+                        <section class="toolbar">
+                            <div class="toolbar-top">
+                                <div class="filter-trigger" id="toggleFilter">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M4 6h16"></path>
+                                        <path d="M7 12h10"></path>
+                                        <path d="M10 18h4"></path>
+                                    </svg>
+                                    <span>Filter</span>
+                                    <span id="arrow">▼</span>
+                                </div>
+
+                                <div class="header-actions">
+                                    <div class="tz-switch"><span class="active">UTC</span><span>LT</span></div>
+                                    <button class="action-btn"><svg viewBox="0 0 24 24">
+                                            <path d="M12 4v10"></path>
+                                            <path d="M8 10l4 4 4-4"></path>
+                                            <path d="M5 19h14"></path>
+                                        </svg>Export excel</button>
+                                    <button class="action-btn" id="openTableSetting"><svg viewBox="0 0 24 24">
+                                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                            <path d="M4 10h16M10 4v16"></path>
+                                        </svg>Table Setting</button>
+                                </div>
+                            </div>
+
+                            <div class="filters" id="filters">
+                                <div class="filter-grid">
+                                    <div class="field"><span class="placeholder">From date &nbsp;→&nbsp; To
+                                            date</span><svg viewBox="0 0 24 24">
+                                            <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+                                            <path d="M8 3v4M16 3v4M4 10h16"></path>
+                                        </svg></div>
+                                    <div class="field"><span class="placeholder">CARRIER</span><svg viewBox="0 0 24 24">
+                                            <path d="M6 9l6 6 6-6"></path>
+                                        </svg></div>
+                                    <div class="field"><span class="placeholder">ACREG</span></div>
+                                    <div class="field"><span class="placeholder">AC TYPE</span><svg viewBox="0 0 24 24">
+                                            <path d="M6 9l6 6 6-6"></path>
+                                        </svg></div>
+                                    <div class="field"><span class="placeholder">FLT NO</span></div>
+                                    <div class="field"><span class="placeholder">SCHED DEP</span></div>
+                                    <div class="field"><span class="placeholder">SCHED ARR</span></div>
+                                    <div class="field"><span class="placeholder">STATUS</span><svg viewBox="0 0 24 24">
+                                            <path d="M6 9l6 6 6-6"></path>
+                                        </svg></div>
+                                </div>
+                                <div class="filter-row-2">
+                                    <div class="field small"><span class="placeholder">INT/DOM</span><svg
+                                            viewBox="0 0 24 24">
+                                            <path d="M6 9l6 6 6-6"></path>
+                                        </svg></div>
+                                    <div class="field small"><span class="placeholder">ATD</span></div>
+                                    <div class="field small"><span class="placeholder">ATA</span></div>
+                                    <button class="btn-search"><svg viewBox="0 0 24 24">
+                                            <circle cx="11" cy="11" r="6"></circle>
+                                            <path d="M20 20l-4-4"></path>
+                                        </svg>Search</button>
+                                    <button class="btn-clear"><svg viewBox="0 0 24 24">
+                                            <path d="M20 11a8 8 0 1 0 1 5"></path>
+                                            <path d="M20 4v7h-7"></path>
+                                        </svg>Clear Filter</button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="report-title">Take-off / Landing Statistics Report</div>
+
+                        <div class="table-wrap">
+                            <table id="reportTable"></table>
+                        </div>
+
+                        <div class="footer">
+                            <div class="total">Total: 80</div>
+                            <div class="pager">
+                                <span id="rangeText">1–25 of 80</span>
+                                <span>Hiển thị</span>
+                                <select id="pageSize">
+                                    <option value="25" selected>25 bản ghi</option>
+                                    <option value="50">50 bản ghi</option>
+                                    <option value="100">100 bản ghi</option>
+                                </select>
+                                <button class="page-btn" id="firstPage">≪</button>
+                                <button class="page-btn" id="prevPage">‹</button>
+                                <div id="pageNumbers" style="display:flex;align-items:center;gap:4px"></div>
+                                <button class="page-btn" id="nextPage">›</button>
+                                <button class="page-btn" id="lastPage">≫</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table setting modal -->
+    <div class="modal-backdrop" id="tsBackdrop">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tsTitle">
+            <div class="modal-header">
+                <div class="modal-title" id="tsTitle">Table setting</div>
+                <div class="modal-close" id="closeTableSetting">✕</div>
+            </div>
+
+            <div class="ts-head">
+                <div></div>
+                <div></div>
+                <div>Data column name</div>
+            </div>
+
+            <div class="ts-scroll" id="tsList"></div>
+
+            <div class="ts-footer">
+                <button class="modal-btn" id="cancelTableSetting">Cancel</button>
+                <button class="modal-btn primary" id="saveTableSetting">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fixedColumns = [
+            { key: 'no', label: 'NO.', width: 46 },
+            { key: 'std', label: 'EDD', width: 78 },
+            { key: 'actype', label: 'ACTYPE', width: 64 },
+            { key: 'acVersion', label: 'AC VERSION', width: 82 },
+            { key: 'acLogicalNo', label: 'AC LOGICAL NO', width: 92 },
+            { key: 'acreg', label: 'ACREG', width: 74 },
+            { key: 'carrier', label: 'CARRIER', width: 58 },
+            { key: 'fltNo', label: 'FLT NO', width: 70 }
+        ];
+
+        const configurableColumns = [
+            { key: 'fnNumber', label: 'FN NUMBER', width: 80, defaultVisible: false },
+            { key: 'fnSuffix', label: 'FN SUFFIX', width: 78, defaultVisible: false },
+            { key: 'schedDep', label: 'SCHED DEP', width: 76, defaultVisible: true },
+            { key: 'schedArr', label: 'SCHED ARR', width: 76, defaultVisible: true },
+            { key: 'etaDate', label: 'ETA (DATE)', width: 80, defaultVisible: false },
+            { key: 'etaTime', label: 'ETA (TIME)', width: 76, defaultVisible: true, className: 'time-col' },
+            { key: 'etaDatetime', label: 'ETA (DATETIME)', width: 104, defaultVisible: false },
+            { key: 'etdDate', label: 'ETD (DATE)', width: 80, defaultVisible: false },
+            { key: 'etdTime', label: 'ETD (TIME)', width: 76, defaultVisible: true, className: 'time-col' },
+            { key: 'etdDatetime', label: 'ETD (DATETIME)', width: 104, defaultVisible: false },
+            { key: 'ataDate', label: 'ATA (DATE)', width: 80, defaultVisible: false },
+            { key: 'ataTime', label: 'ATA (TIME)', width: 76, defaultVisible: true, className: 'time-col' },
+            { key: 'ataDatetime', label: 'ATA (DATETIME)', width: 104, defaultVisible: false },
+            { key: 'atdDate', label: 'ATD (DATE)', width: 80, defaultVisible: false },
+            { key: 'atdTime', label: 'ATD (TIME)', width: 76, defaultVisible: true, className: 'time-col' },
+            { key: 'atdDatetime', label: 'ATD (DATETIME)', width: 104, defaultVisible: false },
+            { key: 'status', label: 'STATUS', width: 72, defaultVisible: true },
+            { key: 'intDom', label: 'INT/DOM', width: 68, defaultVisible: true },
+            { key: 'takeoffCount', label: 'TAKE-OFF COUNT', width: 98, defaultVisible: true },
+            { key: 'landingCount', label: 'LANDING COUNT', width: 98, defaultVisible: true }
+        ];
+
+        const statusClassMap = { ARR: 'arr', ENR: 'enr', BRD: 'brd', SCH: 'sch' };
+
+        const rows = [
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '886', acreg: 'VNA886', carrier: 'VN', fltNo: 'VN207', fnNumber: '207', fnSuffix: '', schedDep: 'HAN', schedArr: 'SGN', etdDate: '15JUN26', etdTime: '07:00', etdDatetime: '15JUN26 07:00', etaDate: '15JUN26', etaTime: '09:10', etaDatetime: '15JUN26 09:10', atdDate: '15JUN26', atdTime: '07:05', atdDatetime: '15JUN26 07:05', ataDate: '15JUN26', ataTime: '09:02', ataDatetime: '15JUN26 09:02', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '888', acreg: 'VNA888', carrier: 'VN', fltNo: 'VN245', fnNumber: '245', fnSuffix: '', schedDep: 'HAN', schedArr: 'SGN', etdDate: '15JUN26', etdTime: '08:00', etdDatetime: '15JUN26 08:00', etaDate: '15JUN26', etaTime: '10:10', etaDatetime: '15JUN26 10:10', atdDate: '15JUN26', atdTime: '08:12', atdDatetime: '15JUN26 08:12', ataDate: '15JUN26', ataTime: '10:18', ataDatetime: '15JUN26 10:18', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '892', acreg: 'VNA892', carrier: 'VN', fltNo: 'VN209', fnNumber: '209', fnSuffix: '', schedDep: 'HAN', schedArr: 'SGN', etdDate: '15JUN26', etdTime: '09:00', etdDatetime: '15JUN26 09:00', etaDate: '15JUN26', etaTime: '11:10', etaDatetime: '15JUN26 11:10', atdDate: '15JUN26', atdTime: '09:03', atdDatetime: '15JUN26 09:03', ataDate: '15JUN26', ataTime: '11:05', ataDatetime: '15JUN26 11:05', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '893', acreg: 'VNA893', carrier: 'VN', fltNo: 'VN211', fnNumber: '211', fnSuffix: '', schedDep: 'HAN', schedArr: 'SGN', etdDate: '15JUN26', etdTime: '11:00', etdDatetime: '15JUN26 11:00', etaDate: '15JUN26', etaTime: '13:10', etaDatetime: '15JUN26 13:10', atdDate: '15JUN26', atdTime: '11:00', atdDatetime: '15JUN26 11:00', ataDate: '15JUN26', ataTime: '13:06', ataDatetime: '15JUN26 13:06', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '894', acreg: 'VNA894', carrier: 'VN', fltNo: 'VN213', fnNumber: '213', fnSuffix: '', schedDep: 'HAN', schedArr: 'SGN', etdDate: '15JUN26', etdTime: '13:00', etdDatetime: '15JUN26 13:00', etaDate: '15JUN26', etaTime: '15:10', etaDatetime: '15JUN26 15:10', atdDate: '15JUN26', atdTime: '13:22', atdDatetime: '15JUN26 13:22', ataDate: '15JUN26', ataTime: '15:28', ataDatetime: '15JUN26 15:28', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '896', acreg: 'VNA896', carrier: 'VN', fltNo: 'VN253', fnNumber: '253', fnSuffix: '', schedDep: 'HAN', schedArr: 'DAD', etdDate: '15JUN26', etdTime: '14:00', etdDatetime: '15JUN26 14:00', etaDate: '15JUN26', etaTime: '15:25', etaDatetime: '15JUN26 15:25', atdDate: '15JUN26', atdTime: '14:00', atdDatetime: '15JUN26 14:00', ataDate: '15JUN26', ataTime: '15:22', ataDatetime: '15JUN26 15:22', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '897', acreg: 'VNA897', carrier: 'VN', fltNo: 'VN215', fnNumber: '215', fnSuffix: '', schedDep: 'SGN', schedArr: 'HAN', etdDate: '15JUN26', etdTime: '15:00', etdDatetime: '15JUN26 15:00', etaDate: '15JUN26', etaTime: '17:10', etaDatetime: '15JUN26 17:10', atdDate: '15JUN26', atdTime: '15:00', atdDatetime: '15JUN26 15:00', ataDate: '15JUN26', ataTime: '17:02', ataDatetime: '15JUN26 17:02', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '899', acreg: 'VNA899', carrier: 'VN', fltNo: 'VN273', fnNumber: '273', fnSuffix: '', schedDep: 'SGN', schedArr: 'PQC', etdDate: '15JUN26', etdTime: '16:00', etdDatetime: '15JUN26 16:00', etaDate: '15JUN26', etaTime: '17:05', etaDatetime: '15JUN26 17:05', atdDate: '15JUN26', atdTime: '16:18', atdDatetime: '15JUN26 16:18', ataDate: '15JUN26', ataTime: '17:00', ataDatetime: '15JUN26 17:00', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '861', acreg: 'VNA861', carrier: 'VN', fltNo: 'VN217', fnNumber: '217', fnSuffix: '', schedDep: 'HAN', schedArr: 'CXR', etdDate: '15JUN26', etdTime: '17:00', etdDatetime: '15JUN26 17:00', etaDate: '15JUN26', etaTime: '18:50', etaDatetime: '15JUN26 18:50', atdDate: '15JUN26', atdTime: '17:06', atdDatetime: '15JUN26 17:06', ataDate: '15JUN26', ataTime: '18:54', ataDatetime: '15JUN26 18:54', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '867', acreg: 'VNA867', carrier: 'VN', fltNo: 'VN257', fnNumber: '257', fnSuffix: '', schedDep: 'HAN', schedArr: 'UIH', etdDate: '15JUN26', etdTime: '17:30', etdDatetime: '15JUN26 17:30', etaDate: '15JUN26', etaTime: '19:00', etaDatetime: '15JUN26 19:00', atdDate: '15JUN26', atdTime: '17:35', atdDatetime: '15JUN26 17:35', ataDate: '15JUN26', ataTime: '19:04', ataDatetime: '15JUN26 19:04', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '872', acreg: 'VNA872', carrier: 'VN', fltNo: 'VN259', fnNumber: '259', fnSuffix: '', schedDep: 'SGN', schedArr: 'HUI', etdDate: '15JUN26', etdTime: '18:00', etdDatetime: '15JUN26 18:00', etaDate: '15JUN26', etaTime: '19:20', etaDatetime: '15JUN26 19:20', atdDate: '15JUN26', atdTime: '18:00', atdDatetime: '15JUN26 18:00', ataDate: '15JUN26', ataTime: '19:18', ataDatetime: '15JUN26 19:18', status: 'ARR', intDom: 'DOM', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A359', acVersion: '35A', acLogicalNo: '873', acreg: 'VNA873', carrier: 'VN', fltNo: 'VN219', fnNumber: '219', fnSuffix: '', schedDep: 'HAN', schedArr: 'ICN', etdDate: '15JUN26', etdTime: '19:00', etdDatetime: '15JUN26 19:00', etaDate: '16/JUL/26', etaTime: '01:40', etaDatetime: '16/JUL/26 01:40', atdDate: '15JUN26', atdTime: '19:12', atdDatetime: '15JUN26 19:12', ataDate: '16/JUL/26', ataTime: '01:50', ataDatetime: '16/JUL/26 01:50', status: 'ARR', intDom: 'INT', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A21N', acVersion: '32N', acLogicalNo: '603', acreg: 'VNA603', carrier: 'VN', fltNo: 'VN263', fnNumber: '263', fnSuffix: '', schedDep: 'SGN', schedArr: 'NRT', etdDate: '15JUN26', etdTime: '20:00', etdDatetime: '15JUN26 20:00', etaDate: '16/JUL/26', etaTime: '03:20', etaDatetime: '16/JUL/26 03:20', atdDate: '15JUN26', atdTime: '20:05', atdDatetime: '15JUN26 20:05', ataDate: '16/JUL/26', ataTime: '03:18', ataDatetime: '16/JUL/26 03:18', status: 'ARR', intDom: 'INT', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A21N', acVersion: '32N', acLogicalNo: '606', acreg: 'VNA606', carrier: 'VN', fltNo: 'VN265', fnNumber: '265', fnSuffix: '', schedDep: 'HAN', schedArr: 'BKK', etdDate: '15JUN26', etdTime: '20:30', etdDatetime: '15JUN26 20:30', etaDate: '15JUN26', etaTime: '22:20', etaDatetime: '15JUN26 22:20', atdDate: '15JUN26', atdTime: '20:44', atdDatetime: '15JUN26 20:44', ataDate: '15JUN26', ataTime: '22:30', ataDatetime: '15JUN26 22:30', status: 'ARR', intDom: 'INT', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A21N', acVersion: '32N', acLogicalNo: '609', acreg: 'VNA609', carrier: 'VN', fltNo: 'VN221', fnNumber: '221', fnSuffix: '', schedDep: 'SGN', schedArr: 'SIN', etdDate: '15JUN26', etdTime: '21:00', etdDatetime: '15JUN26 21:00', etaDate: '15JUN26', etaTime: '23:50', etaDatetime: '15JUN26 23:50', atdDate: '15JUN26', atdTime: '21:03', atdDatetime: '15JUN26 21:03', ataDate: '15JUN26', ataTime: '23:55', ataDatetime: '15JUN26 23:55', status: 'ARR', intDom: 'INT', takeoffCount: 1, landingCount: 1 },
+            { std: '15JUN26', actype: 'A321', acVersion: '32B', acLogicalNo: '258', acreg: 'VNA258', carrier: 'VN', fltNo: 'VN256', fnNumber: '256', fnSuffix: '', schedDep: 'SGN', schedArr: 'HAN', etdDate: '15JUN26', etdTime: '10:00', etdDatetime: '15JUN26 10:00', etaDate: '15JUN26', etaTime: '12:10', etaDatetime: '15JUN26 12:10', atdDate: '15JUN26', atdTime: '10:04', atdDatetime: '15JUN26 10:04', ataDate: '', ataTime: '--', ataDatetime: '', status: 'ENR', intDom: 'DOM', takeoffCount: 1, landingCount: 0 },
+            { std: '15JUN26', actype: 'A321', acVersion: '32B', acLogicalNo: '212', acreg: 'VNA212', carrier: 'VN', fltNo: 'VN212', fnNumber: '212', fnSuffix: '', schedDep: 'SGN', schedArr: 'HAN', etdDate: '15JUN26', etdTime: '12:00', etdDatetime: '15JUN26 12:00', etaDate: '15JUN26', etaTime: '14:10', etaDatetime: '15JUN26 14:10', atdDate: '15JUN26', atdTime: '12:00', atdDatetime: '15JUN26 12:00', ataDate: '', ataTime: '--', ataDatetime: '', status: 'ENR', intDom: 'DOM', takeoffCount: 1, landingCount: 0 },
+            { std: '15JUN26', actype: 'A321', acVersion: '32B', acLogicalNo: '262', acreg: 'VNA262', carrier: 'VN', fltNo: 'VN262', fnNumber: '262', fnSuffix: '', schedDep: 'SGN', schedArr: 'VII', etdDate: '15JUN26', etdTime: '12:30', etdDatetime: '15JUN26 12:30', etaDate: '15JUN26', etaTime: '14:20', etaDatetime: '15JUN26 14:20', atdDate: '', atdTime: '--', atdDatetime: '', ataDate: '', ataTime: '--', ataDatetime: '', status: 'BRD', intDom: 'DOM', takeoffCount: 0, landingCount: 0 },
+            { std: '15JUN26', actype: 'A321', acVersion: '32B', acLogicalNo: '214', acreg: 'VNA214', carrier: 'VN', fltNo: 'VN214', fnNumber: '214', fnSuffix: '', schedDep: 'SGN', schedArr: 'HAN', etdDate: '15JUN26', etdTime: '13:30', etdDatetime: '15JUN26 13:30', etaDate: '15JUN26', etaTime: '15:40', etaDatetime: '15JUN26 15:40', atdDate: '', atdTime: '--', atdDatetime: '', ataDate: '', ataTime: '--', ataDatetime: '', status: 'BRD', intDom: 'DOM', takeoffCount: 0, landingCount: 0 },
+            { std: '15JUN26', actype: 'A321', acVersion: '32B', acLogicalNo: '216', acreg: 'VNA216', carrier: 'VN', fltNo: 'VN901', fnNumber: '901', fnSuffix: '', schedDep: 'HAN', schedArr: 'HAN', etdDate: '15JUN26', etdTime: '15:00', etdDatetime: '15JUN26 15:00', etaDate: '15JUN26', etaTime: '19:00', etaDatetime: '15JUN26 19:00', atdDate: '', atdTime: '--', atdDatetime: '', ataDate: '', ataTime: '--', ataDatetime: '', status: 'SCH', intDom: 'DOM', takeoffCount: 0, landingCount: 0 },
+            { std: '15JUN26', actype: 'A321', acVersion: '32B', acLogicalNo: '218', acreg: 'VNA218', carrier: 'VN', fltNo: 'VN902', fnNumber: '902', fnSuffix: '', schedDep: 'SGN', schedArr: 'SGN', etdDate: '15JUN26', etdTime: '16:00', etdDatetime: '15JUN26 16:00', etaDate: '15JUN26', etaTime: '22:00', etaDatetime: '15JUN26 22:00', atdDate: '', atdTime: '--', atdDatetime: '', ataDate: '', ataTime: '--', ataDatetime: '', status: 'SCH', intDom: 'DOM', takeoffCount: 0, landingCount: 0 }
+        ];
+
+        const totalRecords = 80;
+        let currentPage = 1;
+        let pageSize = 25;
+
+        let savedConfig = configurableColumns.map((col, index) => ({
+            key: col.key,
+            visible: col.defaultVisible,
+            order: index
+        }));
+
+        let draftConfig = null;
+
+        function getColumnDef(key) {
+            return configurableColumns.find(c => c.key === key);
+        }
+
+        function getVisibleConfigColumns() {
+            return savedConfig
+                .slice()
+                .sort((a, b) => a.order - b.order)
+                .filter(c => c.visible)
+                .map(c => getColumnDef(c.key));
+        }
+
+        function cellHtml(col, value) {
+            if (col.key === 'status') {
+                const cls = statusClassMap[value] || 'sch';
+                return `<span class="status-pill ${cls}">${value || '--'}</span>`;
+            }
+            if (col.key === 'takeoffCount' || col.key === 'landingCount') {
+                return value ? `<span class="count">${value}</span>` : '0';
+            }
+            return (value === '' || value === null || value === undefined) ? '--' : String(value);
+        }
+
+        function renderTable() {
+            const table = document.getElementById('reportTable');
+            const allCols = [...fixedColumns, ...getVisibleConfigColumns()];
+
+            const colgroup = '<colgroup>' + allCols.map(c => `<col style="width:${c.width || 76}px">`).join('') + '</colgroup>';
+            const thead = '<thead><tr>' + allCols.map(c => `<th class="${c.className || ''}">${c.label}</th>`).join('') + '</tr></thead>';
+            const tbody = '<tbody>' + rows.map((row, rowIndex) => {
+                return '<tr>' + allCols.map(col => {
+                    const value = col.key === 'no' ? (rowIndex + 1) : row[col.key];
+                    return `<td class="${col.className || ''}">${cellHtml(col, value)}</td>`;
+                }).join('') + '</tr>';
+            }).join('') + '</tbody>';
+
+            table.innerHTML = colgroup + thead + tbody;
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(totalRecords / pageSize);
+            currentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+            const start = (currentPage - 1) * pageSize + 1;
+            const end = Math.min(currentPage * pageSize, totalRecords);
+            document.getElementById('rangeText').textContent = `${start}–${end} of ${totalRecords}`;
+
+            const container = document.getElementById('pageNumbers');
+            container.innerHTML = '';
+
+            let from = Math.max(1, currentPage - 2);
+            let to = Math.min(totalPages, from + 4);
+            from = Math.max(1, to - 4);
+
+            for (let i = from; i <= to; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                btn.textContent = i;
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderPagination();
+                });
+                container.appendChild(btn);
+            }
+
+            document.getElementById('firstPage').disabled = currentPage === 1;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+            document.getElementById('lastPage').disabled = currentPage === totalPages;
+        }
+
+        function openTableSetting() {
+            draftConfig = savedConfig
+                .slice()
+                .sort((a, b) => a.order - b.order)
+                .map((c, idx) => ({ key: c.key, visible: c.visible, order: idx }));
+
+            renderTableSettingList();
+            document.getElementById('tsBackdrop').classList.add('show');
+        }
+
+        function closeTableSetting() {
+            draftConfig = null;
+            document.getElementById('tsBackdrop').classList.remove('show');
+        }
+
+        function renderTableSettingList() {
+            const list = document.getElementById('tsList');
+            list.innerHTML = '';
+
+            draftConfig
+                .slice()
+                .sort((a, b) => a.order - b.order)
+                .forEach(item => {
+                    const def = getColumnDef(item.key);
+                    const row = document.createElement('div');
+                    row.className = 'ts-row';
+                    row.draggable = true;
+                    row.dataset.key = item.key;
+
+                    row.innerHTML = `
+          <div class="drag" title="Drag to reorder">
+            <svg viewBox="0 0 24 24">
+              <path d="M8 7h8M8 12h8M8 17h8"></path>
+            </svg>
+          </div>
+          <div class="check-wrap">
+            <input class="ts-check" type="checkbox" ${item.visible ? 'checked' : ''} />
+          </div>
+          <div class="ts-name">${def.label}</div>
+        `;
+
+                    const checkbox = row.querySelector('.ts-check');
+                    checkbox.addEventListener('change', (e) => {
+                        const found = draftConfig.find(x => x.key === item.key);
+                        found.visible = e.target.checked;
+                    });
+
+                    row.addEventListener('dragstart', (e) => {
+                        row.classList.add('dragging');
+                        e.dataTransfer.setData('text/plain', item.key);
+                    });
+                    row.addEventListener('dragend', () => row.classList.remove('dragging'));
+                    row.addEventListener('dragover', (e) => e.preventDefault());
+                    row.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const dragKey = e.dataTransfer.getData('text/plain');
+                        const targetKey = item.key;
+                        if (!dragKey || dragKey === targetKey) return;
+
+                        const ordered = draftConfig.slice().sort((a, b) => a.order - b.order);
+                        const fromIndex = ordered.findIndex(x => x.key === dragKey);
+                        const toIndex = ordered.findIndex(x => x.key === targetKey);
+                        const moved = ordered.splice(fromIndex, 1)[0];
+                        ordered.splice(toIndex, 0, moved);
+
+                        ordered.forEach((x, idx) => x.order = idx);
+                        draftConfig = ordered;
+                        renderTableSettingList();
+                    });
+
+                    list.appendChild(row);
+                });
+        }
+
+        function saveTableSetting() {
+            savedConfig = draftConfig
+                .slice()
+                .sort((a, b) => a.order - b.order)
+                .map((c, idx) => ({ key: c.key, visible: c.visible, order: idx }));
+
+            renderTable();
+            closeTableSetting();
+        }
+
+        // Events
+        document.getElementById('toggleFilter').addEventListener('click', () => {
+            const filters = document.getElementById('filters');
+            const arrow = document.getElementById('arrow');
+            const hidden = filters.style.display === 'none';
+            filters.style.display = hidden ? 'block' : 'none';
+            arrow.textContent = hidden ? '▼' : '▲';
+        });
+
+        document.getElementById('pageSize').addEventListener('change', (e) => {
+            pageSize = Number(e.target.value);
+            currentPage = 1;
+            renderPagination();
+        });
+        document.getElementById('firstPage').addEventListener('click', () => { currentPage = 1; renderPagination(); });
+        document.getElementById('prevPage').addEventListener('click', () => { currentPage -= 1; renderPagination(); });
+        document.getElementById('nextPage').addEventListener('click', () => { currentPage += 1; renderPagination(); });
+        document.getElementById('lastPage').addEventListener('click', () => { currentPage = Math.ceil(totalRecords / pageSize); renderPagination(); });
+
+        document.getElementById('openTableSetting').addEventListener('click', openTableSetting);
+        document.getElementById('closeTableSetting').addEventListener('click', closeTableSetting);
+        document.getElementById('cancelTableSetting').addEventListener('click', closeTableSetting);
+        document.getElementById('saveTableSetting').addEventListener('click', saveTableSetting);
+        document.getElementById('tsBackdrop').addEventListener('click', (e) => {
+            if (e.target.id === 'tsBackdrop') closeTableSetting();
+        });
+
+
+        // Init
+        renderTable();
+        renderPagination();
+    </script>
+</body>
+
+</html>

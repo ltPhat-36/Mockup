@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Standby Crew Report</title>
+<style>
+:root{--bg:#03111c;--panel:#061421;--line:#1b3345;--text:#eef5f8;--muted:#8fa3b1;--cyan:#08a6c9;--btn:#223240;--thead:#111d2d;--row:#081725;--row2:#0a1929;--green:#1cc67b}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+.app{width:100vw;height:100vh;display:grid;grid-template-columns:11.5% 12% 1fr;background:linear-gradient(180deg,#06121d,#040d17)}
+.sidebar{background:#03111c;border-right:1px solid #11283a;display:flex;flex-direction:column}
+.logo{height:5.2vh;padding:1.1vh .85vw;display:flex;align-items:center;gap:.35vw}.logo svg{width:1.55vw;height:1.1vw}.brand{font-size:.76vw;font-weight:600}
+.menu{padding:1.2vh .6vw 0;display:flex;flex-direction:column;gap:.5vh}.menu-item{height:4.4vh;border-radius:.38vw;padding:0 .65vw;display:flex;align-items:center;gap:.45vw;font-size:.66vw}.menu-item.active{background:#063f55}.menu-item svg{width:.86vw;height:.86vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.side-bottom{margin-top:auto;padding:1.5vh .7vw}.hide{display:flex;align-items:center;justify-content:center;gap:.35vw;font-size:.64vw;margin-bottom:2vh}.hide i{font-style:normal;background:#f3f6f8;color:#253645;width:.9vw;height:.9vw;border-radius:.2vw;display:grid;place-items:center}
+.user{display:flex;align-items:center;gap:.4vw}.avatar{width:1.8vw;height:1.8vw;border-radius:50%;background:linear-gradient(135deg,#effcff,#5bb6cb)}.user-txt{font-size:.55vw;line-height:1.25}.user-txt b{display:block;font-size:.65vw}
+.report-list{background:#061320;border-right:1px solid #12293c}.report-head{height:5.35vh;padding:0 .7vw;display:flex;align-items:flex-end;justify-content:space-between;font-size:.72vw;font-weight:700}
+.collapse{width:1vw;height:1vw;background:#edf3f6;color:#173041;border-radius:.22vw;display:grid;place-items:center;font-size:.55vw}
+.search{margin:1.2vh .62vw .9vh;height:3.45vh;border-radius:.28vw;border:1px solid #2b3e4d;background:#1b2a39;display:flex;align-items:center;gap:.35vw;padding:0 .6vw;color:#7b8c9b;font-size:.6vw}
+.search svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.report-items{padding:0 .62vw;display:flex;flex-direction:column;gap:.25vh}.report-item{min-height:3.65vh;border-radius:.25vw;padding:0 .52vw;display:flex;align-items:center;font-size:.57vw}.report-item.active{background:#08445d}
+.main{min-width:0;min-height:0;display:flex;flex-direction:column}.topbar{height:4.45vh;border-bottom:1px solid #102638;display:flex;align-items:center;justify-content:flex-end;padding:0 .8vw;font-size:.56vw}.content{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column}
+.toolbar{background:#061421;border-bottom:1px solid #15283a;padding:1.05vh .8vw .8vh}.toolbar-top{display:flex;align-items:center;min-height:2.6vh}.filter-trigger{margin-right:auto;display:flex;align-items:center;gap:.42vw;font-size:.67vw;font-weight:700;cursor:pointer}
+.filter-trigger svg{width:.72vw;height:.72vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.actions{display:flex;align-items:center;gap:.42vw}
+.action{height:3.1vh;border:1px solid #435462;background:var(--btn);border-radius:.38vw;color:#fff;padding:0 .72vw;display:flex;align-items:center;gap:.4vw;font-size:.6vw;cursor:pointer}
+.action svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.filters{margin-top:.8vh}.filter-grid{display:grid;grid-template-columns:13.2vw 13.2vw 10vw 13vw 10vw 11vw;gap:.42vw}.filter-grid2{display:grid;grid-template-columns:10.8vw 9.8vw 11.2vw 11.2vw 1fr auto auto;gap:.42vw;margin-top:.58vh;align-items:center}
+.field{height:3.45vh;border-radius:.3vw;background:#1a2a38;border:1px solid #31414f;color:#95a7b5;padding:0 .62vw;font-size:.6vw;display:flex;align-items:center;justify-content:space-between;min-width:0}
+.field .ph{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.field svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn-search{height:3.45vh;border:0;border-radius:.35vw;background:var(--cyan);color:#fff;padding:0 1vw;display:flex;align-items:center;gap:.34vw;font-size:.6vw;font-weight:700;cursor:pointer}
+.btn-clear{height:3.45vh;border:0;background:transparent;color:#d2dae0;padding:0 .65vw;display:flex;align-items:center;gap:.34vw;font-size:.6vw;cursor:pointer}
+.btn-search svg,.btn-clear svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.report-title{height:4.8vh;display:flex;align-items:center;justify-content:center;background:#061421;border-bottom:1px solid #162b3d;font-size:.92vw;font-weight:700}
+.table-wrap{flex:1;min-width:0;min-height:0;overflow:auto;background:#091725}table{width:100%;min-width:1050px;border-collapse:collapse;table-layout:fixed;font-size:.59vw}th,td{border-right:1px solid #203648;border-bottom:1px solid #203648;padding:.7vh .35vw;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+thead th{position:sticky;top:0;z-index:2;background:var(--thead);color:#c0cad2;font-size:.51vw;font-weight:700}tbody tr:nth-child(odd){background:var(--row)}tbody tr:nth-child(even){background:var(--row2)}tbody tr:hover{background:#113047}
+.crew-tag{display:inline-flex;align-items:center;justify-content:center;min-width:2.4vw;height:1.7vh;border-radius:.9vw;font-size:.49vw;font-weight:700}.crew-tag.pc{background:rgba(0,166,203,.16);color:#76dff4}.crew-tag.tv{background:rgba(28,198,123,.16);color:#8df1c1}
+.footer{height:5.1vh;border-top:1px solid #1e3244;background:#06131f;display:flex;align-items:center;padding:0 .8vw;font-size:.6vw}.pager{margin-left:auto;display:flex;align-items:center;gap:.4vw}.pager select{height:3vh;border-radius:1.5vh;border:1px solid #3a4957;background:#2a3744;color:#eef4f8;padding:0 1.5vw 0 .6vw;font-size:.6vw}.page-btn{width:1.45vw;height:1.45vw;border:1px solid transparent;border-radius:.28vw;background:transparent;color:#dce5eb;display:grid;place-items:center;cursor:pointer}.page-btn.active{background:#00a1c5;color:#fff}.page-btn:disabled{opacity:.35}
+.empty{display:none;height:28vh;align-items:center;justify-content:center;color:#8698a7;font-size:.76vw}
+.modal-bg{position:fixed;inset:0;background:rgba(2,10,18,.45);display:none;align-items:center;justify-content:center;z-index:50}.modal-bg.show{display:flex}.modal{width:27vw;height:54vh;background:#041120;border:1px solid #102538;box-shadow:0 18px 40px rgba(0,0,0,.45);display:flex;flex-direction:column}
+.modal-head{height:4.8vh;padding:0 .72vw;background:#061421;border-bottom:1px solid #13283a;display:flex;align-items:center;justify-content:space-between}.modal-title{font-size:.77vw;font-weight:700}.close{width:1.35vw;height:1.35vw;border-radius:.3vw;background:#223240;border:1px solid #2f4252;color:#aab7c0;display:grid;place-items:center;cursor:pointer;font-size:.68vw}
+.ts-head{height:3.9vh;background:#0f1c2d;border-bottom:1px solid #12283a;display:grid;grid-template-columns:2.2vw 2.2vw 1fr;align-items:center;color:#c3ced7;font-size:.56vw;font-weight:700}.ts-head div{padding:0 .55vw}
+.ts-list{flex:1;min-height:0;overflow:auto;background:#061523}.ts-row{height:3.9vh;border-bottom:1px solid #102638;display:grid;grid-template-columns:2.2vw 2.2vw 1fr;align-items:center;font-size:.6vw}
+.drag{height:100%;display:grid;place-items:center;color:#8094a5;cursor:grab}.drag svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.checkwrap{display:grid;place-items:center}.check{appearance:none;width:.84vw;height:.84vw;border-radius:.18vw;background:#0f1b2a;border:1px solid #2f4151;display:grid;place-items:center;cursor:pointer}.check:checked{background:var(--green);border-color:#27c97d}.check:checked:after{content:"";width:.35vw;height:.18vw;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.ts-name{padding:0 .55vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.modal-foot{height:5.15vh;padding:0 .72vw;border-top:1px solid #13283a;background:#061421;display:flex;align-items:center;justify-content:flex-end;gap:.4vw}
+.mbtn{height:3.3vh;min-width:3.8vw;border-radius:.38vw;border:1px solid #273b4d;background:#071625;color:#eff5f8;font-size:.64vw;font-weight:600;cursor:pointer}.mbtn.primary{background:var(--cyan);border-color:#1196b8}
+.toast{position:fixed;right:1vw;top:5.3vh;z-index:80;min-width:18vw;background:#132637;border:1px solid #2c4558;color:#eef5f8;padding:.8vh .75vw;border-radius:.38vw;box-shadow:0 12px 30px rgba(0,0,0,.35);display:none;font-size:.62vw}.toast.show{display:block}.toast b{display:block;margin-bottom:.25vh}
+
+.control-field{
+  padding:.28vh .48vw;
+  gap:.18vh;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+  height:4.55vh;
+}
+.control-field label{
+  display:block;
+  font-size:.47vw;
+  line-height:1;
+  color:#718797;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+.control-field input,
+.control-field select{
+  width:100%;
+  min-width:0;
+  height:2.15vh;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#eaf2f6;
+  font-family:inherit;
+  font-size:.59vw;
+}
+.control-field select{ cursor:pointer; }
+.control-field option{
+  background:#132333;
+  color:#eef5f8;
+}
+.control-field input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:invert(1);
+  opacity:.7;
+  cursor:pointer;
+}
+.filter-grid2{grid-template-columns:10.8vw 9.8vw 11.2vw 11.2vw 1fr auto auto!important;}
+
+
+/* Compact VNA/TOSS filter style */
+.toolbar{
+  padding:.72vh .65vw .72vh;
+  background:#071522;
+}
+.toolbar-top{
+  min-height:2.4vh;
+}
+.filters{
+  margin-top:.55vh;
+}
+.filter-grid,
+.filter-grid2{
+  display:flex !important;
+  flex-wrap:wrap;
+  gap:.32vw !important;
+  align-items:center;
+}
+.filter-grid2{
+  margin-top:.42vh;
+}
+.control-field{
+  width:auto;
+  min-width:8vw;
+  height:2.65vh;
+  padding:0 .46vw;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  border-radius:.28vw;
+  background:#1e2c38;
+  border:1px solid #344553;
+}
+.control-field.date-field{ min-width:10.2vw; }
+.control-field.wide-field{ min-width:10.6vw; }
+.control-field.small-field{ min-width:7.2vw; }
+
+.control-field label{
+  display:none !important;
+}
+.control-field input,
+.control-field select{
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#eef5f8;
+  font-family:inherit;
+  font-size:.57vw;
+  font-weight:600;
+  text-transform:uppercase;
+}
+.control-field select{
+  appearance:none;
+  -webkit-appearance:none;
+  padding-right:1.1vw;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8fa3b1 50%),
+    linear-gradient(135deg, #8fa3b1 50%, transparent 50%);
+  background-position:
+    calc(100% - .58vw) 50%,
+    calc(100% - .4vw) 50%;
+  background-size:.18vw .18vw,.18vw .18vw;
+  background-repeat:no-repeat;
+}
+.control-field select:invalid{
+  color:#8294a2;
+}
+.control-field input[type="date"]{
+  color-scheme:dark;
+  text-transform:none;
+}
+.control-field input[type="date"]:not(:focus):invalid{
+  color:#8294a2;
+}
+.control-field input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:invert(1);
+  opacity:.62;
+}
+.btn-search,.btn-clear{
+  height:2.65vh;
+  font-size:.56vw;
+}
+.btn-search{
+  padding:0 .72vw;
+  border-radius:.3vw;
+}
+.btn-clear{
+  padding:0 .42vw;
+}
+.header-actions,.actions{
+  gap:.32vw;
+}
+.action{
+  height:2.6vh;
+  font-size:.55vw;
+  border-radius:.3vw;
+}
+
+
+.footer .pager{gap:.32vw}
+#pages{align-items:center}
+.page-btn{
+  min-width:1.55vw;
+  height:2.55vh;
+  border-radius:.28vw;
+  font-size:.58vw;
+}
+.page-btn.active{
+  background:#00a7ca;
+  border-color:#0eb5d7;
+}
+#rangeText{color:#d9e3e9;font-weight:600}
+
+
+.tz-switch{width:3.55vw;height:2.55vh;border-radius:1.2vw;background:#2a3743;border:1px solid #41525e;padding:2px;display:flex;align-items:center;gap:2px}
+.tz-switch span{flex:1;height:1.82vh;border-radius:1vw;display:flex;align-items:center;justify-content:center;font-size:.55vw;font-weight:700;color:#b9c5cd;cursor:pointer}
+.tz-switch span.active{background:#06a6c9;color:#fff}
+.crew-tag.orange{background:rgba(255,193,61,.18);color:#ffd86f}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><svg viewBox="0 0 100 70"><path d="M46 8 C51 25,62 34,78 36 C64 39,55 47,49 63 C42 48,34 40,18 36 C33 33,42 24,46 8Z" fill="#f3c61f"/><path d="M28 22 C32 31,38 36,46 38 C39 40,34 44,30 52 C27 44,22 40,13 38 C21 35,26 30,28 22Z" fill="#f3c61f"/></svg><div class="brand">VietnamAirlines</div></div>
+    <div class="menu">
+      <div class="menu-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Live Operations</div>
+      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M6 4h9l3 3v13H6z"/><path d="M15 4v4h4"/></svg>Flight Dispatch</div>
+      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M6 7h12"/><path d="M8 15h8"/></svg>Flight Load Control</div>
+      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7z"/></svg>Station Manager</div>
+      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M4 18h16"/><path d="M6 15l3-4 3 2 4-6 2 3"/></svg>Operations Analysis</div>
+      <div class="menu-item active"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6"/></svg>Report</div>
+      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 8v5l3 2"/></svg>Export Report History</div>
+    </div>
+    <div class="side-bottom"><div class="hide"><i>◀</i>Hide</div><div class="user"><div class="avatar"></div><div class="user-txt"><b>Admin</b><span style="color:#8092a1">admin@viettel.com</span></div></div></div>
+  </aside>
+
+  <aside class="report-list">
+    <div class="report-head"><span>Report List</span><span class="collapse">◀</span></div>
+    <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg><span>Search</span></div>
+    <div class="report-items">
+      <div class="report-item">Flight Journey Statistics</div>
+      <div class="report-item">Aircraft Stop Report</div>
+      <div class="report-item">Take-off / Landing Statistics</div>
+      <div class="report-item active">Standby Crew Report</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">Operating Date: 19/09/2026&nbsp;&nbsp;15:21:42</div>
+    <div class="content">
+      <section class="toolbar">
+        <div class="toolbar-top">
+          <div class="filter-trigger" id="toggleFilter"><svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/></svg><span>Filter</span><span id="arrow">▼</span></div>
+          <div class="actions"><div class="tz-switch"><span class="active" id="utcBtn">UTC</span><span id="ltBtn">LT</span></div>
+            <button class="action" id="exportBtn"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 19h14"/></svg>Export excel</button>
+            <button class="action" id="openSetting"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg>Table Setting</button>
+          </div>
+        </div>
+        <div class="filters" id="filters">
+          <div class="filter-grid">
+            <div class="field control-field date-field">
+              <input type="date" id="filterFromDate" value="2026-09-01" title="FROM DATE">
+            </div>
+            <div class="field control-field date-field">
+              <input type="date" id="filterToDate" value="2026-09-30" title="TO DATE">
+            </div>
+
+            <div class="field control-field wide-field">
+              <select id="filterCrewType" required title="CREW TYPE">
+                <option value="" selected hidden>CREW TYPE</option>
+                <option value="PILOT">PILOT</option>
+                <option value="CABIN CREW">CABIN CREW</option>
+              </select>
+            </div>
+
+            <div class="field control-field wide-field">
+              <select id="filterPosition" required title="CREW POSITION">
+                <option value="" selected hidden>CREW POSITION</option>
+                <option value="CAPTAIN">CAPTAIN</option>
+                <option value="FIRST OFFICER">FIRST OFFICER</option>
+                <option value="PURSER">PURSER</option>
+                <option value="CABIN CREW">CABIN CREW</option>
+              </select>
+            </div>
+
+            <div class="field control-field small-field">
+              <select id="filterBase" required title="BASE">
+                <option value="" selected hidden>BASE</option>
+                <option value="HAN">HAN</option>
+                <option value="SGN">SGN</option>
+                <option value="DAD">DAD</option>
+              </select>
+            </div>
+
+            <div class="field control-field wide-field">
+              <select id="filterStatus" required title="STANDBY STATUS">
+                <option value="" selected hidden>STANDBY STATUS</option>
+                <option value="STANDBY">STANDBY</option>
+                <option value="ASSIGNED FROM STANDBY">ASSIGNED FROM STANDBY</option>
+                <option value="RELEASED">RELEASED</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-grid2">
+            <div class="field control-field wide-field">
+              <select id="filterAssignedFlight" required title="ASSIGNED FLIGHT">
+                <option value="" selected hidden>ASSIGNED FLIGHT</option>
+                <option value="ASSIGNED">ASSIGNED</option>
+                <option value="NOT ASSIGNED">NOT ASSIGNED</option>
+              </select>
+            </div>
+
+            <div class="field control-field wide-field">
+              <select id="filterCarrier" required title="CARRIER">
+                <option value="" selected hidden>CARRIER</option>
+                <option value="VN">VN</option>
+              </select>
+            </div>
+
+            <div class="field control-field small-field">
+              <select id="filterDep" required title="DEP AIRPORT">
+                <option value="" selected hidden>DEP</option>
+                <option value="HAN">HAN</option>
+                <option value="SGN">SGN</option>
+                <option value="DAD">DAD</option>
+              </select>
+            </div>
+
+            <div class="field control-field small-field">
+              <select id="filterArr" required title="ARR AIRPORT">
+                <option value="" selected hidden>ARR</option>
+                <option value="HAN">HAN</option>
+                <option value="SGN">SGN</option>
+                <option value="DAD">DAD</option>
+                <option value="ICN">ICN</option>
+                <option value="NRT">NRT</option>
+              </select>
+            </div>
+
+            <div></div>
+
+            <button class="btn-search" id="searchBtn">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>
+              Search
+            </button>
+
+            <button class="btn-clear" id="clearBtn">
+              <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 1 5"/><path d="M20 4v7h-7"/></svg>
+              Clear Filter
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="report-title">Standby Crew Report</div>
+      <div class="table-wrap"><table id="reportTable"></table><div class="empty" id="emptyState">Please select any time filters to display the report</div></div>
+
+      <div class="footer">
+        <div class="total" id="totalText">Total: 48</div>
+        <div class="pager">
+          <span id="rangeText">1–25 of 48</span><span>Rows per page</span>
+          <select id="pageSize"><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select>
+          <button class="page-btn" id="first">≪</button><button class="page-btn" id="prev">‹</button><div id="pages" style="display:flex;gap:.22vw"></div><button class="page-btn" id="next">›</button><button class="page-btn" id="last">≫</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Table setting</div><div class="close" id="closeModal">✕</div></div>
+    <div class="ts-head"><div></div><div></div><div>Data column name</div></div>
+    <div class="ts-list" id="tsList"></div>
+    <div class="modal-foot"><button class="mbtn" id="cancelBtn">Cancel</button><button class="mbtn primary" id="saveBtn">Save</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const columnDefs = [{"key": "date", "label": "DATE", "width": 90, "defaultVisible": true}, {"key": "crewId", "label": "CREW ID", "width": 90, "defaultVisible": true}, {"key": "crewName", "label": "CREW NAME", "width": 150, "defaultVisible": true}, {"key": "crewType", "label": "CREW TYPE", "width": 105, "defaultVisible": true}, {"key": "position", "label": "CREW POSITION", "width": 130, "defaultVisible": true}, {"key": "base", "label": "BASE", "width": 80, "defaultVisible": true}, {"key": "standbyStart", "label": "STANDBY START", "width": 120, "defaultVisible": true}, {"key": "standbyEnd", "label": "STANDBY END", "width": 120, "defaultVisible": true}, {"key": "standbyDuration", "label": "STANDBY DURATION", "width": 125, "defaultVisible": true}, {"key": "status", "label": "STANDBY STATUS", "width": 155, "defaultVisible": true}, {"key": "assignedFlight", "label": "ASSIGNED FLT NO", "width": 120, "defaultVisible": true}, {"key": "std", "label": "STD", "width": 110, "defaultVisible": true}, {"key": "route", "label": "ROUTE", "width": 95, "defaultVisible": true}, {"key": "acType", "label": "ACTYPE", "width": 80, "defaultVisible": true}, {"key": "acReg", "label": "ACREG", "width": 95, "defaultVisible": true}, {"key": "remark", "label": "REMARK", "width": 170, "defaultVisible": true}];
+const rows = [{"date": "01SEP26", "crewId": "P00182", "crewName": "NGUYEN VAN AN", "crewType": "PILOT", "position": "CAPTAIN", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at HAN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-01", "_assigned": "NOT ASSIGNED"}, {"date": "01SEP26", "crewId": "P00232", "crewName": "TRAN MINH KHOA", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "02:35", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0200", "std": "06:15", "route": "HAN-SGN", "acType": "A321", "acReg": "VN-A601", "remark": "Assigned at 07:35", "_carrier": "VN", "_dep": "HAN", "_arr": "SGN", "_isoDate": "2026-09-01", "_assigned": "ASSIGNED"}, {"date": "01SEP26", "crewId": "C01044", "crewName": "LE THU HA", "crewType": "CABIN CREW", "position": "PURSER", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "No assignment", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-01", "_assigned": "NOT ASSIGNED"}, {"date": "01SEP26", "crewId": "C01580", "crewName": "PHAM NGOC MAI", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "03:10", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0314", "std": "09:40", "route": "HAN-DAD", "acType": "A321", "acReg": "VN-A602", "remark": "Replacement crew", "_carrier": "VN", "_dep": "HAN", "_arr": "DAD", "_isoDate": "2026-09-01", "_assigned": "ASSIGNED"}, {"date": "01SEP26", "crewId": "P00309", "crewName": "DO QUANG HUY", "crewType": "PILOT", "position": "CAPTAIN", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "06:00", "status": "RELEASED", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Released after standby", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-01", "_assigned": "NOT ASSIGNED"}, {"date": "01SEP26", "crewId": "P00423", "crewName": "VU HOANG NAM", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "04:25", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0256", "std": "11:25", "route": "SGN-HAN", "acType": "A359", "acReg": "VN-A886", "remark": "Crew shortage", "_carrier": "VN", "_dep": "SGN", "_arr": "HAN", "_isoDate": "2026-09-01", "_assigned": "ASSIGNED"}, {"date": "01SEP26", "crewId": "C01917", "crewName": "NGUYEN HONG NHUNG", "crewType": "CABIN CREW", "position": "PURSER", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at SGN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-01", "_assigned": "NOT ASSIGNED"}, {"date": "01SEP26", "crewId": "C02141", "crewName": "BUI THAO LINH", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "02:50", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0650", "std": "10:50", "route": "SGN-PQC", "acType": "A321", "acReg": "VN-A603", "remark": "Assigned from reserve pool", "_carrier": "VN", "_dep": "SGN", "_arr": "PQC", "_isoDate": "2026-09-01", "_assigned": "ASSIGNED"}, {"date": "02SEP26", "crewId": "P00190", "crewName": "NGUYEN VAN AN", "crewType": "PILOT", "position": "CAPTAIN", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at HAN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-02", "_assigned": "NOT ASSIGNED"}, {"date": "02SEP26", "crewId": "P00240", "crewName": "TRAN MINH KHOA", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "02:35", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0200", "std": "06:15", "route": "HAN-SGN", "acType": "A321", "acReg": "VN-A601", "remark": "Assigned at 07:35", "_carrier": "VN", "_dep": "HAN", "_arr": "SGN", "_isoDate": "2026-09-02", "_assigned": "ASSIGNED"}, {"date": "02SEP26", "crewId": "C01052", "crewName": "LE THU HA", "crewType": "CABIN CREW", "position": "PURSER", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "No assignment", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-02", "_assigned": "NOT ASSIGNED"}, {"date": "02SEP26", "crewId": "C01588", "crewName": "PHAM NGOC MAI", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "03:10", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0314", "std": "09:40", "route": "HAN-DAD", "acType": "A321", "acReg": "VN-A602", "remark": "Replacement crew", "_carrier": "VN", "_dep": "HAN", "_arr": "DAD", "_isoDate": "2026-09-02", "_assigned": "ASSIGNED"}, {"date": "02SEP26", "crewId": "P00317", "crewName": "DO QUANG HUY", "crewType": "PILOT", "position": "CAPTAIN", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "06:00", "status": "RELEASED", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Released after standby", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-02", "_assigned": "NOT ASSIGNED"}, {"date": "02SEP26", "crewId": "P00431", "crewName": "VU HOANG NAM", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "04:25", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0256", "std": "11:25", "route": "SGN-HAN", "acType": "A359", "acReg": "VN-A886", "remark": "Crew shortage", "_carrier": "VN", "_dep": "SGN", "_arr": "HAN", "_isoDate": "2026-09-02", "_assigned": "ASSIGNED"}, {"date": "02SEP26", "crewId": "C01925", "crewName": "NGUYEN HONG NHUNG", "crewType": "CABIN CREW", "position": "PURSER", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at SGN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-02", "_assigned": "NOT ASSIGNED"}, {"date": "02SEP26", "crewId": "C02149", "crewName": "BUI THAO LINH", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "02:50", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0650", "std": "10:50", "route": "SGN-PQC", "acType": "A321", "acReg": "VN-A603", "remark": "Assigned from reserve pool", "_carrier": "VN", "_dep": "SGN", "_arr": "PQC", "_isoDate": "2026-09-02", "_assigned": "ASSIGNED"}, {"date": "03SEP26", "crewId": "P00198", "crewName": "NGUYEN VAN AN", "crewType": "PILOT", "position": "CAPTAIN", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at HAN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-03", "_assigned": "NOT ASSIGNED"}, {"date": "03SEP26", "crewId": "P00248", "crewName": "TRAN MINH KHOA", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "02:35", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0200", "std": "06:15", "route": "HAN-SGN", "acType": "A321", "acReg": "VN-A601", "remark": "Assigned at 07:35", "_carrier": "VN", "_dep": "HAN", "_arr": "SGN", "_isoDate": "2026-09-03", "_assigned": "ASSIGNED"}, {"date": "03SEP26", "crewId": "C01060", "crewName": "LE THU HA", "crewType": "CABIN CREW", "position": "PURSER", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "No assignment", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-03", "_assigned": "NOT ASSIGNED"}, {"date": "03SEP26", "crewId": "C01596", "crewName": "PHAM NGOC MAI", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "03:10", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0314", "std": "09:40", "route": "HAN-DAD", "acType": "A321", "acReg": "VN-A602", "remark": "Replacement crew", "_carrier": "VN", "_dep": "HAN", "_arr": "DAD", "_isoDate": "2026-09-03", "_assigned": "ASSIGNED"}, {"date": "03SEP26", "crewId": "P00325", "crewName": "DO QUANG HUY", "crewType": "PILOT", "position": "CAPTAIN", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "06:00", "status": "RELEASED", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Released after standby", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-03", "_assigned": "NOT ASSIGNED"}, {"date": "03SEP26", "crewId": "P00439", "crewName": "VU HOANG NAM", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "04:25", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0256", "std": "11:25", "route": "SGN-HAN", "acType": "A359", "acReg": "VN-A886", "remark": "Crew shortage", "_carrier": "VN", "_dep": "SGN", "_arr": "HAN", "_isoDate": "2026-09-03", "_assigned": "ASSIGNED"}, {"date": "03SEP26", "crewId": "C01933", "crewName": "NGUYEN HONG NHUNG", "crewType": "CABIN CREW", "position": "PURSER", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at SGN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-03", "_assigned": "NOT ASSIGNED"}, {"date": "03SEP26", "crewId": "C02157", "crewName": "BUI THAO LINH", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "02:50", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0650", "std": "10:50", "route": "SGN-PQC", "acType": "A321", "acReg": "VN-A603", "remark": "Assigned from reserve pool", "_carrier": "VN", "_dep": "SGN", "_arr": "PQC", "_isoDate": "2026-09-03", "_assigned": "ASSIGNED"}, {"date": "04SEP26", "crewId": "P00206", "crewName": "NGUYEN VAN AN", "crewType": "PILOT", "position": "CAPTAIN", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at HAN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-04", "_assigned": "NOT ASSIGNED"}, {"date": "04SEP26", "crewId": "P00256", "crewName": "TRAN MINH KHOA", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "02:35", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0200", "std": "06:15", "route": "HAN-SGN", "acType": "A321", "acReg": "VN-A601", "remark": "Assigned at 07:35", "_carrier": "VN", "_dep": "HAN", "_arr": "SGN", "_isoDate": "2026-09-04", "_assigned": "ASSIGNED"}, {"date": "04SEP26", "crewId": "C01068", "crewName": "LE THU HA", "crewType": "CABIN CREW", "position": "PURSER", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "No assignment", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-04", "_assigned": "NOT ASSIGNED"}, {"date": "04SEP26", "crewId": "C01604", "crewName": "PHAM NGOC MAI", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "03:10", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0314", "std": "09:40", "route": "HAN-DAD", "acType": "A321", "acReg": "VN-A602", "remark": "Replacement crew", "_carrier": "VN", "_dep": "HAN", "_arr": "DAD", "_isoDate": "2026-09-04", "_assigned": "ASSIGNED"}, {"date": "04SEP26", "crewId": "P00333", "crewName": "DO QUANG HUY", "crewType": "PILOT", "position": "CAPTAIN", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "06:00", "status": "RELEASED", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Released after standby", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-04", "_assigned": "NOT ASSIGNED"}, {"date": "04SEP26", "crewId": "P00447", "crewName": "VU HOANG NAM", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "04:25", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0256", "std": "11:25", "route": "SGN-HAN", "acType": "A359", "acReg": "VN-A886", "remark": "Crew shortage", "_carrier": "VN", "_dep": "SGN", "_arr": "HAN", "_isoDate": "2026-09-04", "_assigned": "ASSIGNED"}, {"date": "04SEP26", "crewId": "C01941", "crewName": "NGUYEN HONG NHUNG", "crewType": "CABIN CREW", "position": "PURSER", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at SGN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-04", "_assigned": "NOT ASSIGNED"}, {"date": "04SEP26", "crewId": "C02165", "crewName": "BUI THAO LINH", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "02:50", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0650", "std": "10:50", "route": "SGN-PQC", "acType": "A321", "acReg": "VN-A603", "remark": "Assigned from reserve pool", "_carrier": "VN", "_dep": "SGN", "_arr": "PQC", "_isoDate": "2026-09-04", "_assigned": "ASSIGNED"}, {"date": "05SEP26", "crewId": "P00214", "crewName": "NGUYEN VAN AN", "crewType": "PILOT", "position": "CAPTAIN", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at HAN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-05", "_assigned": "NOT ASSIGNED"}, {"date": "05SEP26", "crewId": "P00264", "crewName": "TRAN MINH KHOA", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "02:35", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0200", "std": "06:15", "route": "HAN-SGN", "acType": "A321", "acReg": "VN-A601", "remark": "Assigned at 07:35", "_carrier": "VN", "_dep": "HAN", "_arr": "SGN", "_isoDate": "2026-09-05", "_assigned": "ASSIGNED"}, {"date": "05SEP26", "crewId": "C01076", "crewName": "LE THU HA", "crewType": "CABIN CREW", "position": "PURSER", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "No assignment", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-05", "_assigned": "NOT ASSIGNED"}, {"date": "05SEP26", "crewId": "C01612", "crewName": "PHAM NGOC MAI", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "03:10", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0314", "std": "09:40", "route": "HAN-DAD", "acType": "A321", "acReg": "VN-A602", "remark": "Replacement crew", "_carrier": "VN", "_dep": "HAN", "_arr": "DAD", "_isoDate": "2026-09-05", "_assigned": "ASSIGNED"}, {"date": "05SEP26", "crewId": "P00341", "crewName": "DO QUANG HUY", "crewType": "PILOT", "position": "CAPTAIN", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "06:00", "status": "RELEASED", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Released after standby", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-05", "_assigned": "NOT ASSIGNED"}, {"date": "05SEP26", "crewId": "P00455", "crewName": "VU HOANG NAM", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "04:25", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0256", "std": "11:25", "route": "SGN-HAN", "acType": "A359", "acReg": "VN-A886", "remark": "Crew shortage", "_carrier": "VN", "_dep": "SGN", "_arr": "HAN", "_isoDate": "2026-09-05", "_assigned": "ASSIGNED"}, {"date": "05SEP26", "crewId": "C01949", "crewName": "NGUYEN HONG NHUNG", "crewType": "CABIN CREW", "position": "PURSER", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at SGN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-05", "_assigned": "NOT ASSIGNED"}, {"date": "05SEP26", "crewId": "C02173", "crewName": "BUI THAO LINH", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "02:50", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0650", "std": "10:50", "route": "SGN-PQC", "acType": "A321", "acReg": "VN-A603", "remark": "Assigned from reserve pool", "_carrier": "VN", "_dep": "SGN", "_arr": "PQC", "_isoDate": "2026-09-05", "_assigned": "ASSIGNED"}, {"date": "06SEP26", "crewId": "P00222", "crewName": "NGUYEN VAN AN", "crewType": "PILOT", "position": "CAPTAIN", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at HAN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-06", "_assigned": "NOT ASSIGNED"}, {"date": "06SEP26", "crewId": "P00272", "crewName": "TRAN MINH KHOA", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "HAN", "standbyStart": "05:00", "standbyEnd": "11:00", "standbyDuration": "02:35", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0200", "std": "06:15", "route": "HAN-SGN", "acType": "A321", "acReg": "VN-A601", "remark": "Assigned at 07:35", "_carrier": "VN", "_dep": "HAN", "_arr": "SGN", "_isoDate": "2026-09-06", "_assigned": "ASSIGNED"}, {"date": "06SEP26", "crewId": "C01084", "crewName": "LE THU HA", "crewType": "CABIN CREW", "position": "PURSER", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "No assignment", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-06", "_assigned": "NOT ASSIGNED"}, {"date": "06SEP26", "crewId": "C01620", "crewName": "PHAM NGOC MAI", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "HAN", "standbyStart": "06:00", "standbyEnd": "12:00", "standbyDuration": "03:10", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0314", "std": "09:40", "route": "HAN-DAD", "acType": "A321", "acReg": "VN-A602", "remark": "Replacement crew", "_carrier": "VN", "_dep": "HAN", "_arr": "DAD", "_isoDate": "2026-09-06", "_assigned": "ASSIGNED"}, {"date": "06SEP26", "crewId": "P00349", "crewName": "DO QUANG HUY", "crewType": "PILOT", "position": "CAPTAIN", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "06:00", "status": "RELEASED", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Released after standby", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-06", "_assigned": "NOT ASSIGNED"}, {"date": "06SEP26", "crewId": "P00463", "crewName": "VU HOANG NAM", "crewType": "PILOT", "position": "FIRST OFFICER", "base": "SGN", "standbyStart": "07:00", "standbyEnd": "13:00", "standbyDuration": "04:25", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0256", "std": "11:25", "route": "SGN-HAN", "acType": "A359", "acReg": "VN-A886", "remark": "Crew shortage", "_carrier": "VN", "_dep": "SGN", "_arr": "HAN", "_isoDate": "2026-09-06", "_assigned": "ASSIGNED"}, {"date": "06SEP26", "crewId": "C01957", "crewName": "NGUYEN HONG NHUNG", "crewType": "CABIN CREW", "position": "PURSER", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "06:00", "status": "STANDBY", "assignedFlight": "--", "std": "--", "route": "--", "acType": "--", "acReg": "--", "remark": "Available at SGN", "_carrier": "", "_dep": "", "_arr": "", "_isoDate": "2026-09-06", "_assigned": "NOT ASSIGNED"}, {"date": "06SEP26", "crewId": "C02181", "crewName": "BUI THAO LINH", "crewType": "CABIN CREW", "position": "CABIN CREW", "base": "SGN", "standbyStart": "08:00", "standbyEnd": "14:00", "standbyDuration": "02:50", "status": "ASSIGNED FROM STANDBY", "assignedFlight": "VN0650", "std": "10:50", "route": "SGN-PQC", "acType": "A321", "acReg": "VN-A603", "remark": "Assigned from reserve pool", "_carrier": "VN", "_dep": "SGN", "_arr": "PQC", "_isoDate": "2026-09-06", "_assigned": "ASSIGNED"}];
+let hasTimeFilter = true;
+let filteredRows = rows.slice();
+let currentPage = 1;
+let pageSize = 25;
+const totalRecords = rows.length;
+const configStorageKey = 'standbyCrewReport.trueBusiness.v1';
+
+let savedConfig;
+try {
+  const stored = JSON.parse(localStorage.getItem(configStorageKey) || 'null');
+  savedConfig = Array.isArray(stored) ? stored : null;
+} catch(e) { savedConfig = null; }
+if(!savedConfig) {
+  savedConfig = columnDefs.map((c,i)=>({
+    key:c.key,
+    visible:c.defaultVisible !== false,
+    order:i
+  }));
+};
+
+let draftConfig = null;
+
+function showToast(title,msg) {
+  const e=document.getElementById('toast');
+  e.innerHTML=`<b>${title}</b>${msg}`;
+  e.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>e.classList.remove('show'),3500);
+}
+
+function visibleCols() {
+  return savedConfig
+    .slice()
+    .sort((a,b)=>a.order-b.order)
+    .filter(x=>x.visible)
+    .map(x=>columnDefs.find(c=>c.key===x.key));
+}
+
+function renderTable() {
+  const table=document.getElementById('reportTable'), empty=document.getElementById('emptyState');
+  if(!hasTimeFilter) {
+    table.innerHTML='';
+    empty.textContent='Please select any time filters to display the report';
+    empty.style.display='flex';
+    return;
+  }
+  if(filteredRows.length===0) {
+    table.innerHTML='';
+    empty.textContent='No data found';
+    empty.style.display='flex';
+    return;
+  }
+
+  empty.style.display='none';
+  const cols=visibleCols();
+  const colgroup='<colgroup><col style="width:50px">'+cols.map(c=>`<col style="width:${c.width}px">`).join('')+'</colgroup>';
+  const thead='<thead><tr><th>NO.</th>'+cols.map(c=>`<th>${c.label}</th>`).join('')+'</tr></thead>';
+
+  const startIndex=(currentPage-1)*pageSize;
+  const pageRows=filteredRows.slice(startIndex,startIndex+pageSize);
+
+  const tbody='<tbody>'+pageRows.map((r,i)=>'<tr><td>'+(startIndex+i+1)+'</td>'+cols.map(c=>{
+    let v=r[c.key] ?? '--';
+    if(c.key==='status'){
+      let cls='tv';
+      if(v==='ASSIGNED FROM STANDBY') cls='pc';
+      if(v==='RELEASED') cls='orange';
+      v=`<span class="crew-tag ${cls}">${v}</span>`;
+    }
+    return `<td>${v}</td>`;
+  }).join('')+'</tr>').join('')+'</tbody>';
+
+  table.innerHTML=colgroup+thead+tbody;
+}
+
+function renderPager() {
+  const total=hasTimeFilter?filteredRows.length:0;
+  const tp=Math.max(1,Math.ceil(total/pageSize));
+  currentPage=Math.min(Math.max(1,currentPage),tp);
+
+  const start=total?(currentPage-1)*pageSize+1:0;
+  const end=total?Math.min(currentPage*pageSize,total):0;
+  document.getElementById('rangeText').textContent=`${start}–${end} of ${total}`;
+  document.getElementById('totalText').textContent=`Total: ${total}`;
+
+  const h=document.getElementById('pages');
+  h.innerHTML='';
+  const from=Math.max(1,currentPage-2);
+  const to=Math.min(tp,from+4);
+  for(let i=from;i<=to;i++) {
+    const b=document.createElement('button');
+    b.className='page-btn'+(i===currentPage?' active':'');
+    b.textContent=i;
+    b.disabled=!total;
+    b.onclick=()=>{currentPage=i;renderTable();renderPager()};
+    h.appendChild(b);
+  }
+
+  document.getElementById('first').disabled=currentPage===1||!total;
+  document.getElementById('prev').disabled=currentPage===1||!total;
+  document.getElementById('next').disabled=currentPage===tp||!total;
+  document.getElementById('last').disabled=currentPage===tp||!total;
+}
+
+function renderSetting() {
+  const list=document.getElementById('tsList'); list.innerHTML='';
+  draftConfig.slice().sort((a,b)=>a.order-b.order).forEach(item=>{
+    const def=columnDefs.find(c=>c.key===item.key);
+    const row=document.createElement('div'); row.className='ts-row'; row.draggable=true; row.dataset.key=item.key;
+    row.innerHTML=`<div class="drag"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h8"/></svg></div><div class="checkwrap"><input class="check" type="checkbox" ${item.visible?'checked':''}></div><div class="ts-name">${def.label}</div>`;
+    row.querySelector('.check').onchange=e=>draftConfig.find(x=>x.key===item.key).visible=e.target.checked;
+    row.ondragstart=e=>e.dataTransfer.setData('text/plain',item.key);
+    row.ondragover=e=>e.preventDefault();
+    row.ondrop=e=>{
+      e.preventDefault(); const k=e.dataTransfer.getData('text/plain'); if(!k||k===item.key)return;
+      const a=draftConfig.slice().sort((x,y)=>x.order-y.order), from=a.findIndex(x=>x.key===k), to=a.findIndex(x=>x.key===item.key);
+      const moved=a.splice(from,1)[0]; a.splice(to,0,moved); a.forEach((x,i)=>x.order=i); draftConfig=a; renderSetting();
+    };
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('openSetting').onclick=()=>{draftConfig=savedConfig.slice().sort((a,b)=>a.order-b.order).map((x,i)=>({key:x.key,visible:x.visible,order:i}));renderSetting();document.getElementById('modalBg').classList.add('show')};
+function closeModal(){draftConfig=null;document.getElementById('modalBg').classList.remove('show')}
+document.getElementById('closeModal').onclick=closeModal;
+document.getElementById('cancelBtn').onclick=closeModal;
+document.getElementById('modalBg').onclick=e=>{if(e.target.id==='modalBg')closeModal()};
+document.getElementById('saveBtn').onclick=()=>{savedConfig=draftConfig.slice().sort((a,b)=>a.order-b.order).map((x,i)=>({key:x.key,visible:x.visible,order:i}));localStorage.setItem(configStorageKey,JSON.stringify(savedConfig));renderTable();closeModal()};
+
+document.getElementById('toggleFilter').onclick=()=>{const f=document.getElementById('filters'),a=document.getElementById('arrow'),h=f.style.display==='none';f.style.display=h?'block':'none';a.textContent=h?'▼':'▲'};
+function getFilterValue(id){
+  return document.getElementById(id).value;
+}
+
+function applyFilters(){
+  const fromVal=getFilterValue('filterFromDate');
+  const toVal=getFilterValue('filterToDate');
+
+  if(!fromVal || !toVal){
+    hasTimeFilter=false;
+    filteredRows=[];
+    currentPage=1;
+    renderTable();
+    renderPager();
+    return;
+  }
+
+  hasTimeFilter=true;
+
+  const crewType=getFilterValue('filterCrewType');
+  const position=getFilterValue('filterPosition');
+  const base=getFilterValue('filterBase');
+  const status=getFilterValue('filterStatus');
+  const assigned=getFilterValue('filterAssignedFlight');
+  const carrier=getFilterValue('filterCarrier');
+  const dep=getFilterValue('filterDep');
+  const arr=getFilterValue('filterArr');
+
+  filteredRows=rows.filter(r=>{
+    if(r._isoDate < fromVal || r._isoDate > toVal) return false;
+    if(crewType && r.crewType!==crewType) return false;
+    if(position && r.position!==position) return false;
+    if(base && r.base!==base) return false;
+    if(status && r.status!==status) return false;
+    if(assigned && r._assigned!==assigned) return false;
+    if(carrier && r._carrier!==carrier) return false;
+    if(dep && r._dep!==dep) return false;
+    if(arr && r._arr!==arr) return false;
+    return true;
+  });
+
+  currentPage=1;
+  renderTable();
+  renderPager();
+}
+
+function clearFilters(){
+  document.getElementById('filterFromDate').value='';
+  document.getElementById('filterToDate').value='';
+
+  [
+    'filterCrewType','filterPosition','filterBase','filterStatus',
+    'filterAssignedFlight','filterCarrier','filterDep','filterArr'
+  ].forEach(id=>{
+    const el=document.getElementById(id);
+    el.value='';
+    if(el.tagName==='SELECT') el.selectedIndex=0;
+  });
+
+  hasTimeFilter=false;
+  filteredRows=[];
+  currentPage=1;
+  renderTable();
+  renderPager();
+}
+
+document.getElementById('searchBtn').onclick=applyFilters;
+document.getElementById('clearBtn').onclick=clearFilters;
+
+document.getElementById('pageSize').onchange=e=>{
+  pageSize=Number(e.target.value);
+  currentPage=1;
+  renderTable();
+  renderPager();
+};
+document.getElementById('first').onclick=()=>{currentPage=1;renderTable();renderPager()};
+document.getElementById('prev').onclick=()=>{currentPage=Math.max(1,currentPage-1);renderTable();renderPager()};
+document.getElementById('next').onclick=()=>{currentPage=currentPage+1;renderTable();renderPager()};
+document.getElementById('last').onclick=()=>{
+  currentPage=Math.max(1,Math.ceil(filteredRows.length/pageSize));
+  renderTable();
+  renderPager();
+};
+
+
+let isLocalTime = false;
+function shiftTimeText(value, hours){
+  if(!value || value==='--') return value;
+  const m=value.match(/^(\d{2}):(\d{2})$/);
+  if(!m) return value;
+  let mins=(Number(m[1])*60+Number(m[2])+hours*60)%(24*60);
+  if(mins<0) mins+=24*60;
+  return `${String(Math.floor(mins/60)).padStart(2,'0')}:${String(mins%60).padStart(2,'0')}`;
+}
+function setTimezone(local){
+  if(isLocalTime===local) return;
+  const delta=local?7:-7;
+  ['standbyStart','standbyEnd','std'].forEach(key=>{
+    rows.forEach(r=>r[key]=shiftTimeText(r[key],delta));
+  });
+  isLocalTime=local;
+  document.getElementById('utcBtn').classList.toggle('active',!local);
+  document.getElementById('ltBtn').classList.toggle('active',local);
+  renderTable();
+}
+document.getElementById('utcBtn')?.addEventListener('click',()=>setTimezone(false));
+document.getElementById('ltBtn')?.addEventListener('click',()=>setTimezone(true));
+
+renderTable(); renderPager();
+</script>
+</body>
+</html>
