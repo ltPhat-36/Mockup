@@ -319,10 +319,11 @@
 
     .filter-grid2 {
       display: grid;
-      grid-template-columns: 12vw 12vw 1fr auto auto;
+      grid-template-columns: 12vw 12vw 8vw auto auto;
       gap: .42vw;
       margin-top: .58vh;
-      align-items: center
+      align-items: center;
+      justify-content: start
     }
 
     .field {
@@ -548,7 +549,7 @@
 
     .modal {
       width: 27vw;
-      height: 54vh;
+      height: 66vh;
       background: #041120;
       border: 1px solid #102538;
       box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
@@ -912,7 +913,9 @@
               </div>
 
               <div class="field filter-control">
-                <input type="text" id="filterLegType" placeholder="LEG TYPE" title="LEG TYPE">
+                <select id="filterLegType" required title="LEG TYPE">
+                  <option value="" selected hidden>LEG TYPE</option>
+                </select>
               </div>
 
               <button class="btn-search" id="searchBtn"><svg viewBox="0 0 24 24">
@@ -971,242 +974,35 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const columnDefs = [{ "key": "crewGroup", "label": "CREW GROUP", "width": 105, "defaultVisible": true }, { "key": "crewPosition", "label": "CREW POSITION", "width": 145, "defaultVisible": true }, { "key": "crewEmployer", "label": "CREW EMPLOYER", "width": 120, "defaultVisible": true }, { "key": "aircraftSubtype", "label": "AIRCRAFT SUBTYPE", "width": 125, "defaultVisible": true }, { "key": "route", "label": "ROUTE", "width": 105, "defaultVisible": true }, { "key": "operatingCarrier", "label": "OPERATING CARRIER", "width": 125, "defaultVisible": true }, { "key": "totalFlights", "label": "TOTAL FLIGHTS", "width": 110, "defaultVisible": true }, { "key": "totalCycles", "label": "TOTAL CYCLES", "width": 110, "defaultVisible": true }, { "key": "totalFlightTime", "label": "TOTAL FLIGHT TIME", "width": 130, "defaultVisible": true }, { "key": "avgFlightTime", "label": "AVG FLIGHT TIME / FLIGHT", "width": 160, "defaultVisible": true }, { "key": "avgEet", "label": "AVG EET", "width": 100, "defaultVisible": true }, { "key": "avgSchedBlock", "label": "AVG SCHED BLOCK TIME", "width": 150, "defaultVisible": true }, { "key": "avgActualBlock", "label": "AVG ACTUAL BLOCK TIME", "width": 150, "defaultVisible": true }];
-    const rows = [{ "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "42", "totalCycles": "42", "totalFlightTime": "88:20", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12" }, { "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "45", "totalCycles": "45", "totalFlightTime": "94:15", "avgFlightTime": "02:06", "avgEet": "02:02", "avgSchedBlock": "02:15", "avgActualBlock": "02:13" }, { "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "18", "totalCycles": "18", "totalFlightTime": "66:24", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47" }, { "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "20", "totalCycles": "20", "totalFlightTime": "73:20", "avgFlightTime": "03:40", "avgEet": "03:34", "avgSchedBlock": "03:49", "avgActualBlock": "03:46" }, { "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "12", "totalCycles": "12", "totalFlightTime": "62:12", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19" }, { "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "14", "totalCycles": "14", "totalFlightTime": "72:14", "avgFlightTime": "05:10", "avgEet": "05:04", "avgSchedBlock": "05:24", "avgActualBlock": "05:18" }, { "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "48", "totalCycles": "48", "totalFlightTime": "100:48", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12" }, { "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "192", "totalCycles": "192", "totalFlightTime": "403:12", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12" }, { "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "20", "totalCycles": "20", "totalFlightTime": "73:40", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47" }, { "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "160", "totalCycles": "160", "totalFlightTime": "589:20", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47" }, { "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "14", "totalCycles": "14", "totalFlightTime": "72:38", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19" }, { "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "112", "totalCycles": "112", "totalFlightTime": "581:04", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19" }];
-    let hasTimeFilter = true;
-    let filteredRows = rows.slice();
-    let currentPage = 1;
-    let pageSize = 25;
-    const totalRecords = 28;
-    const configStorageKey = 'pilotCabinAverageFlightTimeReport.tableSetting.v2';
-
-    let savedConfig;
-    try {
-      const stored = JSON.parse(localStorage.getItem(configStorageKey) || 'null');
-      savedConfig = Array.isArray(stored) ? stored : null;
-    } catch (e) { savedConfig = null; }
-    if (!savedConfig) {
-      savedConfig = columnDefs.map((c, i) => ({ key: c.key, visible: c.defaultVisible !== false, order: i }));
-    }
+    const columnDefs = [{ "key": "crewGroup", "label": "CREW GROUP", "width": 105, "defaultVisible": true }, { "key": "crewPosition", "label": "CREW POSITION", "width": 145, "defaultVisible": true }, { "key": "crewEmployer", "label": "CREW EMPLOYER", "width": 120, "defaultVisible": true }, { "key": "aircraftSubtype", "label": "AIRCRAFT SUBTYPE", "width": 125, "defaultVisible": true }, { "key": "route", "label": "ROUTE", "width": 105, "defaultVisible": true }, { "key": "operatingCarrier", "label": "OPERATING CARRIER", "width": 125, "defaultVisible": true }, { "key": "totalFlights", "label": "TOTAL FLIGHTS", "width": 110, "defaultVisible": true }, { "key": "totalCrewAssignments", "label": "TOTAL CREW ASSIGNMENTS", "width": 150, "defaultVisible": true }, { "key": "totalCycles", "label": "TOTAL CYCLES", "width": 110, "defaultVisible": true }, { "key": "totalCrewFlightTime", "label": "TOTAL CREW FLIGHT TIME", "width": 155, "defaultVisible": true }, { "key": "avgFlightTimeAssignment", "label": "AVG FLIGHT TIME / ASSIGNMENT", "width": 180, "defaultVisible": true }, { "key": "avgEet", "label": "AVG EET", "width": 100, "defaultVisible": true }, { "key": "avgSchedBlock", "label": "AVG SCHED BLOCK TIME", "width": 150, "defaultVisible": true }, { "key": "avgActualBlock", "label": "AVG ACTUAL BLOCK TIME", "width": 150, "defaultVisible": true }];
+    const sourceAssignments = [{ "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-01", "legNo": 1001, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 126, "eetMinutes": 121, "schedBlockMinutes": 135, "actualBlockMinutes": 132 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-02", "legNo": 1002, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 124, "eetMinutes": 120, "schedBlockMinutes": 135, "actualBlockMinutes": 130 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-03", "legNo": 1003, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 221, "eetMinutes": 215, "schedBlockMinutes": 230, "actualBlockMinutes": 227 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-04", "legNo": 1004, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 311, "eetMinutes": 303, "schedBlockMinutes": 325, "actualBlockMinutes": 319 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-05", "legNo": 1005, "legType": "J", "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A21N", "route": "SGN-DAD", "operatingCarrier": "VN", "cycles": 1, "flightMinutes": 84, "eetMinutes": 82, "schedBlockMinutes": 95, "actualBlockMinutes": 91 }, { "std": "2026-09-06", "legNo": 1901, "legType": "Z", "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-HAN", "operatingCarrier": "VN", "cycles": 0, "flightMinutes": 0, "eetMinutes": 0, "schedBlockMinutes": 120, "actualBlockMinutes": 118 }];
+    let hasTimeFilter = true, currentPage = 1, pageSize = 25, aggregatedRows = [];
+    const configStorageKey = 'pilotCabinAverageFlightTimeReport.tableSetting.businessCorrect.v1';
+    let savedConfig; try { savedConfig = JSON.parse(localStorage.getItem(configStorageKey) || 'null') } catch (e) { savedConfig = null }
+    if (!Array.isArray(savedConfig)) savedConfig = columnDefs.map((c, i) => ({ key: c.key, visible: c.defaultVisible !== false, order: i }));
     let draftConfig = null;
-
-    function showToast(title, msg) {
-      const e = document.getElementById('toast');
-      e.innerHTML = `<b>${title}</b>${msg}`;
-      e.classList.add('show');
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(() => e.classList.remove('show'), 3500);
-    }
-
-    function visibleCols() {
-      return savedConfig.slice().sort((a, b) => a.order - b.order).filter(x => x.visible).map(x => columnDefs.find(c => c.key === x.key));
-    }
-
-    function renderTable() {
-      const table = document.getElementById('reportTable'), empty = document.getElementById('emptyState');
-
-      if (!hasTimeFilter) {
-        table.innerHTML = '';
-        empty.textContent = 'Please select From Date and To Date to display the report';
-        empty.style.display = 'flex';
-        return;
-      }
-
-      if (filteredRows.length === 0) {
-        table.innerHTML = '';
-        empty.textContent = 'No data found';
-        empty.style.display = 'flex';
-        return;
-      }
-
-      empty.style.display = 'none';
-
-      const cols = visibleCols();
-      const colgroup = '<colgroup><col style="width:50px">' + cols.map(c => `<col style="width:${c.width}px">`).join('') + '</colgroup>';
-      const thead = '<thead><tr><th>NO.</th>' + cols.map(c => `<th>${c.label}</th>`).join('') + '</tr></thead>';
-
-      const startIndex = (currentPage - 1) * pageSize;
-      const pageRows = filteredRows.slice(startIndex, startIndex + pageSize);
-
-      const tbody = '<tbody>' + pageRows.map((r, i) => '<tr><td>' + (startIndex + i + 1) + '</td>' + cols.map(c => {
-        let v = r[c.key] ?? '';
-        if (c.key === 'crewGroup') v = `<span class="crew-tag ${String(v).toLowerCase() === 'cockpit' ? 'pc' : 'tv'}">${v}</span>`;
-        return `<td>${v}</td>`;
-      }).join('') + '</tr>').join('') + '</tbody>';
-
-      table.innerHTML = colgroup + thead + tbody;
-    }
-
-    function renderPager() {
-      const total = hasTimeFilter ? filteredRows.length : 0;
-      const tp = Math.max(1, Math.ceil(total / pageSize));
-      currentPage = Math.min(Math.max(1, currentPage), tp);
-
-      const start = total ? (currentPage - 1) * pageSize + 1 : 0;
-      const end = total ? Math.min(currentPage * pageSize, total) : 0;
-      document.getElementById('rangeText').textContent = `${start}–${end} of ${total}`;
-      document.getElementById('totalText').textContent = `Total: ${total}`;
-
-      const h = document.getElementById('pages');
-      h.innerHTML = '';
-
-      let from = Math.max(1, currentPage - 2);
-      let to = Math.min(tp, from + 4);
-      from = Math.max(1, to - 4);
-
-      for (let i = from; i <= to; i++) {
-        const b = document.createElement('button');
-        b.className = 'page-btn' + (i === currentPage ? ' active' : '');
-        b.textContent = i;
-        b.disabled = !total;
-        b.onclick = () => { currentPage = i; renderTable(); renderPager() };
-        h.appendChild(b);
-      }
-
-      document.getElementById('first').disabled = currentPage === 1 || !total;
-      document.getElementById('prev').disabled = currentPage === 1 || !total;
-      document.getElementById('next').disabled = currentPage === tp || !total;
-      document.getElementById('last').disabled = currentPage === tp || !total;
-    }
-
-    function renderSetting() {
-      const list = document.getElementById('tsList'); list.innerHTML = '';
-      draftConfig.slice().sort((a, b) => a.order - b.order).forEach(item => {
-        const def = columnDefs.find(c => c.key === item.key);
-        const row = document.createElement('div'); row.className = 'ts-row'; row.draggable = true; row.dataset.key = item.key;
-        row.innerHTML = `<div class="drag"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h8"/></svg></div><div class="checkwrap"><input class="check" type="checkbox" ${item.visible ? 'checked' : ''}></div><div class="ts-name">${def.label}</div>`;
-        row.querySelector('.check').onchange = e => draftConfig.find(x => x.key === item.key).visible = e.target.checked;
-        row.ondragstart = e => e.dataTransfer.setData('text/plain', item.key);
-        row.ondragover = e => e.preventDefault();
-        row.ondrop = e => {
-          e.preventDefault(); const k = e.dataTransfer.getData('text/plain'); if (!k || k === item.key) return;
-          const a = draftConfig.slice().sort((x, y) => x.order - y.order), from = a.findIndex(x => x.key === k), to = a.findIndex(x => x.key === item.key);
-          const moved = a.splice(from, 1)[0]; a.splice(to, 0, moved); a.forEach((x, i) => x.order = i); draftConfig = a; renderSetting();
-        };
-        list.appendChild(row);
-      });
-    }
-
-
-    function uniqueValues(key) {
-      return [...new Set(
-        rows.map(r => r[key]).filter(v => v !== '' && v !== null && v !== undefined && v !== '--')
-      )].sort((a, b) => String(a).localeCompare(String(b)));
-    }
-
-    function fillSelect(id, values) {
-      const el = document.getElementById(id);
-      values.forEach(v => {
-        const op = document.createElement('option');
-        op.value = v;
-        op.textContent = v;
-        el.appendChild(op);
-      });
-    }
-
-    function initFilterOptions() {
-      fillSelect('filterCrewType', uniqueValues('crewGroup'));
-      fillSelect('filterCrewPosition', uniqueValues('crewPosition'));
-      fillSelect('filterAircraftSubtype', uniqueValues('aircraftSubtype'));
-      fillSelect('filterRoute', uniqueValues('route'));
-      fillSelect('filterCrewEmployer', uniqueValues('crewEmployer'));
-      fillSelect('filterOperatingCarrier', uniqueValues('operatingCarrier'));
-    }
-
-    function normalizeText(v) {
-      return String(v || '').trim().toUpperCase();
-    }
-
-    function applyFilters() {
-      const fromRaw = document.getElementById('filterFromDate').value;
-      const toRaw = document.getElementById('filterToDate').value;
-
-      if (!fromRaw || !toRaw) {
-        hasTimeFilter = false;
-        filteredRows = [];
-        currentPage = 1;
-        renderTable();
-        renderPager();
-        return;
-      }
-
-      const crewType = normalizeText(document.getElementById('filterCrewType').value);
-      const crewPosition = normalizeText(document.getElementById('filterCrewPosition').value);
-      const aircraftSubtype = normalizeText(document.getElementById('filterAircraftSubtype').value);
-      const route = normalizeText(document.getElementById('filterRoute').value);
-      const crewEmployer = normalizeText(document.getElementById('filterCrewEmployer').value);
-      const operatingCarrier = normalizeText(document.getElementById('filterOperatingCarrier').value);
-      const legType = normalizeText(document.getElementById('filterLegType').value);
-
-      /*
-        This report is aggregated for the selected From/To period.
-        The current mock rows do not carry a row-level date, so the date range
-        acts as the report aggregation period; dimension filters are applied
-        to the displayed aggregate rows.
-      */
-      hasTimeFilter = true;
-
-      filteredRows = rows.filter(r => {
-        if (crewType && normalizeText(r.crewGroup) !== crewType) return false;
-        if (crewPosition && normalizeText(r.crewPosition) !== crewPosition) return false;
-        if (aircraftSubtype && normalizeText(r.aircraftSubtype) !== aircraftSubtype) return false;
-        if (route && normalizeText(r.route) !== route) return false;
-        if (crewEmployer && normalizeText(r.crewEmployer) !== crewEmployer) return false;
-        if (operatingCarrier && normalizeText(r.operatingCarrier) !== operatingCarrier) return false;
-
-        /*
-          LEG TYPE is not present in the current mock row dataset.
-          If a LEG TYPE is entered, only rows with a future row.legType value can match.
-        */
-        if (legType && normalizeText(r.legType) !== legType) return false;
-
-        return true;
-      });
-
-      currentPage = 1;
-      renderTable();
-      renderPager();
-    }
-
-    function clearFilters() {
-      document.getElementById('filterFromDate').value = '';
-      document.getElementById('filterToDate').value = '';
-      document.getElementById('filterLegType').value = '';
-
-      [
-        'filterCrewType', 'filterCrewPosition', 'filterAircraftSubtype',
-        'filterRoute', 'filterCrewEmployer', 'filterOperatingCarrier'
-      ].forEach(id => {
-        const el = document.getElementById(id);
-        el.selectedIndex = 0;
-        el.value = '';
-      });
-
-      hasTimeFilter = false;
-      filteredRows = [];
-      currentPage = 1;
-      renderTable();
-      renderPager();
-    }
-
-    document.getElementById('openSetting').onclick = () => { draftConfig = savedConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); renderSetting(); document.getElementById('modalBg').classList.add('show') };
+    function showToast(title, msg) { const e = document.getElementById('toast'); e.innerHTML = `<b>${title}</b>${msg}`; e.classList.add('show'); clearTimeout(window.__toastTimer); window.__toastTimer = setTimeout(() => e.classList.remove('show'), 3500) }
+    function visibleCols() { return savedConfig.slice().sort((a, b) => a.order - b.order).filter(x => x.visible).map(x => columnDefs.find(c => c.key === x.key)).filter(Boolean) }
+    function fmt(v) { if (v === null || v === undefined || Number.isNaN(Number(v))) return '--'; const n = Math.max(0, Math.round(Number(v))), h = Math.floor(n / 60), m = n % 60; return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}` }
+    function avg(v) { const a = v.filter(x => x !== null && x !== undefined && !Number.isNaN(Number(x))).map(Number); return a.length ? a.reduce((s, x) => s + x, 0) / a.length : null }
+    function uniq(k) { return [...new Set(sourceAssignments.map(r => r[k]).filter(v => v !== '' && v !== null && v !== undefined && v !== '--'))].sort((a, b) => String(a).localeCompare(String(b))) }
+    function fill(id, vals) { const e = document.getElementById(id); vals.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; e.appendChild(o) }) }
+    function initFilterOptions() { fill('filterCrewType', uniq('crewGroup')); fill('filterCrewPosition', uniq('crewPosition')); fill('filterAircraftSubtype', uniq('aircraftSubtype')); fill('filterRoute', uniq('route')); fill('filterCrewEmployer', uniq('crewEmployer')); fill('filterOperatingCarrier', uniq('operatingCarrier')); fill('filterLegType', uniq('legType')) }
+    function norm(v) { return String(v || '').trim().toUpperCase() }
+    function buildAggregates(list) { const groups = new Map(); list.forEach(a => { const k = [a.crewGroup, a.crewPosition, a.crewEmployer, a.aircraftSubtype, a.route, a.operatingCarrier].join('|'); if (!groups.has(k)) groups.set(k, { crewGroup: a.crewGroup, crewPosition: a.crewPosition, crewEmployer: a.crewEmployer, aircraftSubtype: a.aircraftSubtype, route: a.route, operatingCarrier: a.operatingCarrier, assignments: [], flights: new Map() }); const g = groups.get(k); g.assignments.push(a); if (!g.flights.has(a.legNo)) g.flights.set(a.legNo, { cycles: Number(a.cycles || 0), eet: Number(a.eetMinutes || 0), sched: Number(a.schedBlockMinutes || 0), actual: Number(a.actualBlockMinutes || 0) }) }); return [...groups.values()].map(g => { const f = [...g.flights.values()], crewMin = g.assignments.reduce((s, a) => s + Number(a.flightMinutes || 0), 0); return { crewGroup: g.crewGroup, crewPosition: g.crewPosition, crewEmployer: g.crewEmployer, aircraftSubtype: g.aircraftSubtype, route: g.route, operatingCarrier: g.operatingCarrier, totalFlights: String(f.length), totalCrewAssignments: String(g.assignments.length), totalCycles: String(f.reduce((s, x) => s + x.cycles, 0)), totalCrewFlightTime: fmt(crewMin), avgFlightTimeAssignment: fmt(g.assignments.length ? crewMin / g.assignments.length : null), avgEet: fmt(avg(f.map(x => x.eet))), avgSchedBlock: fmt(avg(f.map(x => x.sched))), avgActualBlock: fmt(avg(f.map(x => x.actual))) } }).sort((a, b) => a.crewGroup.localeCompare(b.crewGroup) || a.crewPosition.localeCompare(b.crewPosition) || a.aircraftSubtype.localeCompare(b.aircraftSubtype) || a.route.localeCompare(b.route)) }
+    function getFilteredAssignments() { const from = document.getElementById('filterFromDate').value, to = document.getElementById('filterToDate').value; if (!from || !to) return null; const cg = norm(document.getElementById('filterCrewType').value), cp = norm(document.getElementById('filterCrewPosition').value), ac = norm(document.getElementById('filterAircraftSubtype').value), rt = norm(document.getElementById('filterRoute').value), emp = norm(document.getElementById('filterCrewEmployer').value), car = norm(document.getElementById('filterOperatingCarrier').value), lt = norm(document.getElementById('filterLegType').value); return sourceAssignments.filter(a => { if (a.std < from || a.std > to) return false; if (cg && norm(a.crewGroup) !== cg) return false; if (cp && norm(a.crewPosition) !== cp) return false; if (ac && norm(a.aircraftSubtype) !== ac) return false; if (rt && norm(a.route) !== rt) return false; if (emp && norm(a.crewEmployer) !== emp) return false; if (car && norm(a.operatingCarrier) !== car) return false; if (lt && norm(a.legType) !== lt) return false; return true }) }
+    function applyFilters() { const a = getFilteredAssignments(); if (a === null) { hasTimeFilter = false; aggregatedRows = [] } else { hasTimeFilter = true; aggregatedRows = buildAggregates(a) } currentPage = 1; renderTable(); renderPager() }
+    function clearFilters() { document.getElementById('filterFromDate').value = ''; document.getElementById('filterToDate').value = '';['filterCrewType', 'filterCrewPosition', 'filterAircraftSubtype', 'filterRoute', 'filterCrewEmployer', 'filterOperatingCarrier', 'filterLegType'].forEach(id => { const e = document.getElementById(id); e.selectedIndex = 0; e.value = '' }); hasTimeFilter = false; aggregatedRows = []; currentPage = 1; renderTable(); renderPager() }
+    function renderTable() { const table = document.getElementById('reportTable'), empty = document.getElementById('emptyState'); if (!hasTimeFilter) { table.innerHTML = ''; empty.textContent = 'Please select From Date and To Date to display the report'; empty.style.display = 'flex'; return } if (!aggregatedRows.length) { table.innerHTML = ''; empty.textContent = 'No data found'; empty.style.display = 'flex'; return } empty.style.display = 'none'; const cols = visibleCols(), start = (currentPage - 1) * pageSize, rs = aggregatedRows.slice(start, start + pageSize); const cg = '<colgroup><col style="width:50px">' + cols.map(c => `<col style="width:${c.width}px">`).join('') + '</colgroup>', th = '<thead><tr><th>NO.</th>' + cols.map(c => `<th>${c.label}</th>`).join('') + '</tr></thead>', tb = '<tbody>' + rs.map((r, i) => '<tr><td>' + (start + i + 1) + '</td>' + cols.map(c => { let v = r[c.key] ?? '--'; if (c.key === 'crewGroup') v = `<span class="crew-tag ${String(v).toLowerCase() === 'cockpit' ? 'pc' : 'tv'}">${v}</span>`; return `<td>${v}</td>` }).join('') + '</tr>').join('') + '</tbody>'; table.innerHTML = cg + th + tb }
+    function renderPager() { const total = hasTimeFilter ? aggregatedRows.length : 0, tp = Math.max(1, Math.ceil(total / pageSize)); currentPage = Math.min(Math.max(1, currentPage), tp); const s = total ? (currentPage - 1) * pageSize + 1 : 0, e = total ? Math.min(currentPage * pageSize, total) : 0; document.getElementById('rangeText').textContent = `${s}–${e} of ${total}`; document.getElementById('totalText').textContent = `Total: ${total}`; const h = document.getElementById('pages'); h.innerHTML = ''; let f = Math.max(1, currentPage - 2), t = Math.min(tp, f + 4); f = Math.max(1, t - 4); for (let i = f; i <= t; i++) { const b = document.createElement('button'); b.className = 'page-btn' + (i === currentPage ? ' active' : ''); b.textContent = i; b.disabled = !total; b.onclick = () => { currentPage = i; renderTable(); renderPager() }; h.appendChild(b) } document.getElementById('first').disabled = currentPage === 1 || !total; document.getElementById('prev').disabled = currentPage === 1 || !total; document.getElementById('next').disabled = currentPage === tp || !total; document.getElementById('last').disabled = currentPage === tp || !total }
+    function renderSetting() { const list = document.getElementById('tsList'); list.innerHTML = ''; draftConfig.slice().sort((a, b) => a.order - b.order).forEach(item => { const def = columnDefs.find(c => c.key === item.key); if (!def) return; const row = document.createElement('div'); row.className = 'ts-row'; row.draggable = true; row.dataset.key = item.key; row.innerHTML = `<div class="drag"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h8"/></svg></div><div class="checkwrap"><input class="check" type="checkbox" ${item.visible ? 'checked' : ''}></div><div class="ts-name">${def.label}</div>`; row.querySelector('.check').onchange = e => draftConfig.find(x => x.key === item.key).visible = e.target.checked; row.ondragstart = e => e.dataTransfer.setData('text/plain', item.key); row.ondragover = e => e.preventDefault(); row.ondrop = e => { e.preventDefault(); const k = e.dataTransfer.getData('text/plain'); if (!k || k === item.key) return; const a = draftConfig.slice().sort((x, y) => x.order - y.order), from = a.findIndex(x => x.key === k), to = a.findIndex(x => x.key === item.key), mv = a.splice(from, 1)[0]; a.splice(to, 0, mv); a.forEach((x, i) => x.order = i); draftConfig = a; renderSetting() }; list.appendChild(row) }) }
+    document.getElementById('openSetting').onclick = () => { draftConfig = savedConfig.filter(x => columnDefs.some(c => c.key === x.key)).slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); columnDefs.forEach(c => { if (!draftConfig.some(x => x.key === c.key)) draftConfig.push({ key: c.key, visible: c.defaultVisible !== false, order: draftConfig.length }) }); renderSetting(); document.getElementById('modalBg').classList.add('show') };
     function closeModal() { draftConfig = null; document.getElementById('modalBg').classList.remove('show') }
-    document.getElementById('closeModal').onclick = closeModal;
-    document.getElementById('cancelBtn').onclick = closeModal;
-    document.getElementById('modalBg').onclick = e => { if (e.target.id === 'modalBg') closeModal() };
-    document.getElementById('saveBtn').onclick = () => { savedConfig = draftConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); localStorage.setItem(configStorageKey, JSON.stringify(savedConfig)); renderTable(); closeModal() };
-
+    document.getElementById('closeModal').onclick = closeModal; document.getElementById('cancelBtn').onclick = closeModal; document.getElementById('modalBg').onclick = e => { if (e.target.id === 'modalBg') closeModal() }; document.getElementById('saveBtn').onclick = () => { savedConfig = draftConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); localStorage.setItem(configStorageKey, JSON.stringify(savedConfig)); renderTable(); closeModal() };
     document.getElementById('toggleFilter').onclick = () => { const f = document.getElementById('filters'), a = document.getElementById('arrow'), h = f.style.display === 'none'; f.style.display = h ? 'block' : 'none'; a.textContent = h ? '▼' : '▲' };
-    document.getElementById('clearBtn').onclick = clearFilters;
-    document.getElementById('searchBtn').onclick = applyFilters;
-    document.getElementById('exportBtn').onclick = () => { if (!hasTimeFilter) { showToast('Export failed', 'You have to filter by From Date and To Date before exporting'); return } showToast('Export request received', 'Your report export request has been received. Please track its progress and receive report file in Report Export History') };
-    document.getElementById('pageSize').onchange = e => { pageSize = Number(e.target.value); currentPage = 1; renderTable(); renderPager() };
-    document.getElementById('first').onclick = () => { currentPage = 1; renderTable(); renderPager() };
-    document.getElementById('prev').onclick = () => { currentPage = Math.max(1, currentPage - 1); renderTable(); renderPager() };
-    document.getElementById('next').onclick = () => { currentPage++; renderTable(); renderPager() };
-    document.getElementById('last').onclick = () => { currentPage = Math.max(1, Math.ceil(filteredRows.length / pageSize)); renderTable(); renderPager() };
-
-    initFilterOptions(); renderTable(); renderPager();
+    document.getElementById('clearBtn').onclick = clearFilters; document.getElementById('searchBtn').onclick = applyFilters; document.getElementById('exportBtn').onclick = () => { if (!hasTimeFilter) { showToast('Export failed', 'You have to filter by From Date and To Date before exporting'); return } showToast('Export request received', 'Your report export request has been received. Please track its progress and receive report file in Report Export History') };
+    document.getElementById('pageSize').onchange = e => { pageSize = Number(e.target.value); currentPage = 1; renderTable(); renderPager() }; document.getElementById('first').onclick = () => { currentPage = 1; renderTable(); renderPager() }; document.getElementById('prev').onclick = () => { currentPage = Math.max(1, currentPage - 1); renderTable(); renderPager() }; document.getElementById('next').onclick = () => { currentPage++; renderTable(); renderPager() }; document.getElementById('last').onclick = () => { currentPage = Math.max(1, Math.ceil(aggregatedRows.length / pageSize)); renderTable(); renderPager() };
+    initFilterOptions(); applyFilters();
   </script>
 </body>
 
