@@ -1,233 +1,1213 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Pilot & Cabin Crew Avg. Flight Time</title>
-<style>
-:root{--bg:#03111c;--panel:#061421;--line:#1b3345;--text:#eef5f8;--muted:#8fa3b1;--cyan:#08a6c9;--btn:#223240;--thead:#111d2d;--row:#081725;--row2:#0a1929;--green:#1cc67b}
-*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
-.app{width:100vw;height:100vh;display:grid;grid-template-columns:11.5% 12% 1fr;background:linear-gradient(180deg,#06121d,#040d17)}
-.sidebar{background:#03111c;border-right:1px solid #11283a;display:flex;flex-direction:column}
-.logo{height:5.2vh;padding:1.1vh .85vw;display:flex;align-items:center;gap:.35vw}.logo svg{width:1.55vw;height:1.1vw}.brand{font-size:.76vw;font-weight:600}
-.menu{padding:1.2vh .6vw 0;display:flex;flex-direction:column;gap:.5vh}.menu-item{height:4.4vh;border-radius:.38vw;padding:0 .65vw;display:flex;align-items:center;gap:.45vw;font-size:.66vw}.menu-item.active{background:#063f55}.menu-item svg{width:.86vw;height:.86vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.side-bottom{margin-top:auto;padding:1.5vh .7vw}.hide{display:flex;align-items:center;justify-content:center;gap:.35vw;font-size:.64vw;margin-bottom:2vh}.hide i{font-style:normal;background:#f3f6f8;color:#253645;width:.9vw;height:.9vw;border-radius:.2vw;display:grid;place-items:center}
-.user{display:flex;align-items:center;gap:.4vw}.avatar{width:1.8vw;height:1.8vw;border-radius:50%;background:linear-gradient(135deg,#effcff,#5bb6cb)}.user-txt{font-size:.55vw;line-height:1.25}.user-txt b{display:block;font-size:.65vw}
-.report-list{background:#061320;border-right:1px solid #12293c}.report-head{height:5.35vh;padding:0 .7vw;display:flex;align-items:flex-end;justify-content:space-between;font-size:.72vw;font-weight:700}
-.collapse{width:1vw;height:1vw;background:#edf3f6;color:#173041;border-radius:.22vw;display:grid;place-items:center;font-size:.55vw}
-.search{margin:1.2vh .62vw .9vh;height:3.45vh;border-radius:.28vw;border:1px solid #2b3e4d;background:#1b2a39;display:flex;align-items:center;gap:.35vw;padding:0 .6vw;color:#7b8c9b;font-size:.6vw}
-.search svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.report-items{padding:0 .62vw;display:flex;flex-direction:column;gap:.25vh}.report-item{min-height:3.65vh;border-radius:.25vw;padding:0 .52vw;display:flex;align-items:center;font-size:.57vw}.report-item.active{background:#08445d}
-.main{min-width:0;min-height:0;display:flex;flex-direction:column}.topbar{height:4.45vh;border-bottom:1px solid #102638;display:flex;align-items:center;justify-content:flex-end;padding:0 .8vw;font-size:.56vw}.content{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column}
-.toolbar{background:#061421;border-bottom:1px solid #15283a;padding:1.05vh .8vw .8vh}.toolbar-top{display:flex;align-items:center;min-height:2.6vh}.filter-trigger{margin-right:auto;display:flex;align-items:center;gap:.42vw;font-size:.67vw;font-weight:700;cursor:pointer}
-.filter-trigger svg{width:.72vw;height:.72vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.actions{display:flex;align-items:center;gap:.42vw}
-.action{height:3.1vh;border:1px solid #435462;background:var(--btn);border-radius:.38vw;color:#fff;padding:0 .72vw;display:flex;align-items:center;gap:.4vw;font-size:.6vw;cursor:pointer}
-.action svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.filters{margin-top:.8vh}.filter-grid{display:grid;grid-template-columns:13.2vw 13.2vw 10vw 13vw 10vw 11vw;gap:.42vw}.filter-grid2{display:grid;grid-template-columns:12vw 12vw 1fr auto auto;gap:.42vw;margin-top:.58vh;align-items:center}
-.field{height:3.45vh;border-radius:.3vw;background:#1a2a38;border:1px solid #31414f;color:#95a7b5;padding:0 .62vw;font-size:.6vw;display:flex;align-items:center;justify-content:space-between;min-width:0}
-.field .ph{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.field svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.btn-search{height:3.45vh;border:0;border-radius:.35vw;background:var(--cyan);color:#fff;padding:0 1vw;display:flex;align-items:center;gap:.34vw;font-size:.6vw;font-weight:700;cursor:pointer}
-.btn-clear{height:3.45vh;border:0;background:transparent;color:#d2dae0;padding:0 .65vw;display:flex;align-items:center;gap:.34vw;font-size:.6vw;cursor:pointer}
-.btn-search svg,.btn-clear svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.report-title{height:4.8vh;display:flex;align-items:center;justify-content:center;background:#061421;border-bottom:1px solid #162b3d;font-size:.92vw;font-weight:700}
-.table-wrap{flex:1;min-width:0;min-height:0;overflow:auto;background:#091725}table{width:100%;min-width:1050px;border-collapse:collapse;table-layout:fixed;font-size:.59vw}th,td{border-right:1px solid #203648;border-bottom:1px solid #203648;padding:.7vh .35vw;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-thead th{position:sticky;top:0;z-index:2;background:var(--thead);color:#c0cad2;font-size:.51vw;font-weight:700}tbody tr:nth-child(odd){background:var(--row)}tbody tr:nth-child(even){background:var(--row2)}tbody tr:hover{background:#113047}
-.crew-tag{display:inline-flex;align-items:center;justify-content:center;min-width:2.4vw;height:1.7vh;border-radius:.9vw;font-size:.49vw;font-weight:700}.crew-tag.pc{background:rgba(0,166,203,.16);color:#76dff4}.crew-tag.tv{background:rgba(28,198,123,.16);color:#8df1c1}
-.footer{height:5.1vh;border-top:1px solid #1e3244;background:#06131f;display:flex;align-items:center;padding:0 .8vw;font-size:.6vw}.pager{margin-left:auto;display:flex;align-items:center;gap:.4vw}.pager select{height:3vh;border-radius:1.5vh;border:1px solid #3a4957;background:#2a3744;color:#eef4f8;padding:0 1.5vw 0 .6vw;font-size:.6vw}.page-btn{width:1.45vw;height:1.45vw;border:1px solid transparent;border-radius:.28vw;background:transparent;color:#dce5eb;display:grid;place-items:center;cursor:pointer}.page-btn.active{background:#00a1c5;color:#fff}.page-btn:disabled{opacity:.35}
-.empty{display:none;height:28vh;align-items:center;justify-content:center;color:#8698a7;font-size:.76vw}
-.modal-bg{position:fixed;inset:0;background:rgba(2,10,18,.45);display:none;align-items:center;justify-content:center;z-index:50}.modal-bg.show{display:flex}.modal{width:27vw;height:54vh;background:#041120;border:1px solid #102538;box-shadow:0 18px 40px rgba(0,0,0,.45);display:flex;flex-direction:column}
-.modal-head{height:4.8vh;padding:0 .72vw;background:#061421;border-bottom:1px solid #13283a;display:flex;align-items:center;justify-content:space-between}.modal-title{font-size:.77vw;font-weight:700}.close{width:1.35vw;height:1.35vw;border-radius:.3vw;background:#223240;border:1px solid #2f4252;color:#aab7c0;display:grid;place-items:center;cursor:pointer;font-size:.68vw}
-.ts-head{height:3.9vh;background:#0f1c2d;border-bottom:1px solid #12283a;display:grid;grid-template-columns:2.2vw 2.2vw 1fr;align-items:center;color:#c3ced7;font-size:.56vw;font-weight:700}.ts-head div{padding:0 .55vw}
-.ts-list{flex:1;min-height:0;overflow:auto;background:#061523}.ts-row{height:3.9vh;border-bottom:1px solid #102638;display:grid;grid-template-columns:2.2vw 2.2vw 1fr;align-items:center;font-size:.6vw}
-.drag{height:100%;display:grid;place-items:center;color:#8094a5;cursor:grab}.drag svg{width:.7vw;height:.7vw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.checkwrap{display:grid;place-items:center}.check{appearance:none;width:.84vw;height:.84vw;border-radius:.18vw;background:#0f1b2a;border:1px solid #2f4151;display:grid;place-items:center;cursor:pointer}.check:checked{background:var(--green);border-color:#27c97d}.check:checked:after{content:"";width:.35vw;height:.18vw;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
-.ts-name{padding:0 .55vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.modal-foot{height:5.15vh;padding:0 .72vw;border-top:1px solid #13283a;background:#061421;display:flex;align-items:center;justify-content:flex-end;gap:.4vw}
-.mbtn{height:3.3vh;min-width:3.8vw;border-radius:.38vw;border:1px solid #273b4d;background:#071625;color:#eff5f8;font-size:.64vw;font-weight:600;cursor:pointer}.mbtn.primary{background:var(--cyan);border-color:#1196b8}
-.toast{position:fixed;right:1vw;top:5.3vh;z-index:80;min-width:18vw;background:#132637;border:1px solid #2c4558;color:#eef5f8;padding:.8vh .75vw;border-radius:.38vw;box-shadow:0 12px 30px rgba(0,0,0,.35);display:none;font-size:.62vw}.toast.show{display:block}.toast b{display:block;margin-bottom:.25vh}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pilot & Cabin Crew Avg. Flight Time</title>
+  <style>
+    :root {
+      --bg: #03111c;
+      --panel: #061421;
+      --line: #1b3345;
+      --text: #eef5f8;
+      --muted: #8fa3b1;
+      --cyan: #08a6c9;
+      --btn: #223240;
+      --thead: #111d2d;
+      --row: #081725;
+      --row2: #0a1929;
+      --green: #1cc67b
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0
+    }
+
+    body {
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden
+    }
+
+    .app {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 11.5% 12% 1fr;
+      background: linear-gradient(180deg, #06121d, #040d17)
+    }
+
+    .sidebar {
+      background: #03111c;
+      border-right: 1px solid #11283a;
+      display: flex;
+      flex-direction: column
+    }
+
+    .logo {
+      height: 5.2vh;
+      padding: 1.1vh .85vw;
+      display: flex;
+      align-items: center;
+      gap: .35vw
+    }
+
+    .logo svg {
+      width: 1.55vw;
+      height: 1.1vw
+    }
+
+    .brand {
+      font-size: .76vw;
+      font-weight: 600
+    }
+
+    .menu {
+      padding: 1.2vh .6vw 0;
+      display: flex;
+      flex-direction: column;
+      gap: .5vh
+    }
+
+    .menu-item {
+      height: 4.4vh;
+      border-radius: .38vw;
+      padding: 0 .65vw;
+      display: flex;
+      align-items: center;
+      gap: .45vw;
+      font-size: .66vw
+    }
+
+    .menu-item.active {
+      background: #063f55
+    }
+
+    .menu-item svg {
+      width: .86vw;
+      height: .86vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .side-bottom {
+      margin-top: auto;
+      padding: 1.5vh .7vw
+    }
+
+    .hide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .35vw;
+      font-size: .64vw;
+      margin-bottom: 2vh
+    }
+
+    .hide i {
+      font-style: normal;
+      background: #f3f6f8;
+      color: #253645;
+      width: .9vw;
+      height: .9vw;
+      border-radius: .2vw;
+      display: grid;
+      place-items: center
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: .4vw
+    }
+
+    .avatar {
+      width: 1.8vw;
+      height: 1.8vw;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #effcff, #5bb6cb)
+    }
+
+    .user-txt {
+      font-size: .55vw;
+      line-height: 1.25
+    }
+
+    .user-txt b {
+      display: block;
+      font-size: .65vw
+    }
+
+    .report-list {
+      background: #061320;
+      border-right: 1px solid #12293c
+    }
+
+    .report-head {
+      height: 5.35vh;
+      padding: 0 .7vw;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      font-size: .72vw;
+      font-weight: 700
+    }
+
+    .collapse {
+      width: 1vw;
+      height: 1vw;
+      background: #edf3f6;
+      color: #173041;
+      border-radius: .22vw;
+      display: grid;
+      place-items: center;
+      font-size: .55vw
+    }
+
+    .search {
+      margin: 1.2vh .62vw .9vh;
+      height: 3.45vh;
+      border-radius: .28vw;
+      border: 1px solid #2b3e4d;
+      background: #1b2a39;
+      display: flex;
+      align-items: center;
+      gap: .35vw;
+      padding: 0 .6vw;
+      color: #7b8c9b;
+      font-size: .6vw
+    }
+
+    .search svg {
+      width: .7vw;
+      height: .7vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .report-items {
+      padding: 0 .62vw;
+      display: flex;
+      flex-direction: column;
+      gap: .25vh
+    }
+
+    .report-item {
+      min-height: 3.65vh;
+      border-radius: .25vw;
+      padding: 0 .52vw;
+      display: flex;
+      align-items: center;
+      font-size: .57vw
+    }
+
+    .report-item.active {
+      background: #08445d
+    }
+
+    .main {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column
+    }
+
+    .topbar {
+      height: 4.45vh;
+      border-bottom: 1px solid #102638;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 .8vw;
+      font-size: .56vw
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column
+    }
+
+    .toolbar {
+      background: #061421;
+      border-bottom: 1px solid #15283a;
+      padding: 1.05vh .8vw .8vh
+    }
+
+    .toolbar-top {
+      display: flex;
+      align-items: center;
+      min-height: 2.6vh
+    }
+
+    .filter-trigger {
+      margin-right: auto;
+      display: flex;
+      align-items: center;
+      gap: .42vw;
+      font-size: .67vw;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .filter-trigger svg {
+      width: .72vw;
+      height: .72vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: .42vw
+    }
+
+    .action {
+      height: 3.1vh;
+      border: 1px solid #435462;
+      background: var(--btn);
+      border-radius: .38vw;
+      color: #fff;
+      padding: 0 .72vw;
+      display: flex;
+      align-items: center;
+      gap: .4vw;
+      font-size: .6vw;
+      cursor: pointer
+    }
+
+    .action svg {
+      width: .7vw;
+      height: .7vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .filters {
+      margin-top: .8vh
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 13.2vw 13.2vw 10vw 13vw 10vw 11vw;
+      gap: .42vw
+    }
+
+    .filter-grid2 {
+      display: grid;
+      grid-template-columns: 12vw 12vw 1fr auto auto;
+      gap: .42vw;
+      margin-top: .58vh;
+      align-items: center
+    }
+
+    .field {
+      height: 3.45vh;
+      border-radius: .3vw;
+      background: #1a2a38;
+      border: 1px solid #31414f;
+      color: #95a7b5;
+      padding: 0 .62vw;
+      font-size: .6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0
+    }
+
+    .field .ph {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .field svg {
+      width: .7vw;
+      height: .7vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .btn-search {
+      height: 3.45vh;
+      border: 0;
+      border-radius: .35vw;
+      background: var(--cyan);
+      color: #fff;
+      padding: 0 1vw;
+      display: flex;
+      align-items: center;
+      gap: .34vw;
+      font-size: .6vw;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .btn-clear {
+      height: 3.45vh;
+      border: 0;
+      background: transparent;
+      color: #d2dae0;
+      padding: 0 .65vw;
+      display: flex;
+      align-items: center;
+      gap: .34vw;
+      font-size: .6vw;
+      cursor: pointer
+    }
+
+    .btn-search svg,
+    .btn-clear svg {
+      width: .7vw;
+      height: .7vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .report-title {
+      height: 4.8vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #061421;
+      border-bottom: 1px solid #162b3d;
+      font-size: .92vw;
+      font-weight: 700
+    }
+
+    .table-wrap {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      background: #091725
+    }
+
+    table {
+      width: 100%;
+      min-width: 1050px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: .59vw
+    }
+
+    th,
+    td {
+      border-right: 1px solid #203648;
+      border-bottom: 1px solid #203648;
+      padding: .7vh .35vw;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--thead);
+      color: #c0cad2;
+      font-size: .51vw;
+      font-weight: 700
+    }
+
+    tbody tr:nth-child(odd) {
+      background: var(--row)
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row2)
+    }
+
+    tbody tr:hover {
+      background: #113047
+    }
+
+    .crew-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.4vw;
+      height: 1.7vh;
+      border-radius: .9vw;
+      font-size: .49vw;
+      font-weight: 700
+    }
+
+    .crew-tag.pc {
+      background: rgba(0, 166, 203, .16);
+      color: #76dff4
+    }
+
+    .crew-tag.tv {
+      background: rgba(28, 198, 123, .16);
+      color: #8df1c1
+    }
+
+    .footer {
+      height: 5.1vh;
+      border-top: 1px solid #1e3244;
+      background: #06131f;
+      display: flex;
+      align-items: center;
+      padding: 0 .8vw;
+      font-size: .6vw
+    }
+
+    .pager {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: .4vw
+    }
+
+    .pager select {
+      height: 3vh;
+      border-radius: 1.5vh;
+      border: 1px solid #3a4957;
+      background: #2a3744;
+      color: #eef4f8;
+      padding: 0 1.5vw 0 .6vw;
+      font-size: .6vw
+    }
+
+    .page-btn {
+      width: 1.45vw;
+      height: 1.45vw;
+      border: 1px solid transparent;
+      border-radius: .28vw;
+      background: transparent;
+      color: #dce5eb;
+      display: grid;
+      place-items: center;
+      cursor: pointer
+    }
+
+    .page-btn.active {
+      background: #00a1c5;
+      color: #fff
+    }
+
+    .page-btn:disabled {
+      opacity: .35
+    }
+
+    .empty {
+      display: none;
+      height: 28vh;
+      align-items: center;
+      justify-content: center;
+      color: #8698a7;
+      font-size: .76vw
+    }
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 10, 18, .45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50
+    }
+
+    .modal-bg.show {
+      display: flex
+    }
+
+    .modal {
+      width: 27vw;
+      height: 54vh;
+      background: #041120;
+      border: 1px solid #102538;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+      display: flex;
+      flex-direction: column
+    }
+
+    .modal-head {
+      height: 4.8vh;
+      padding: 0 .72vw;
+      background: #061421;
+      border-bottom: 1px solid #13283a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .modal-title {
+      font-size: .77vw;
+      font-weight: 700
+    }
+
+    .close {
+      width: 1.35vw;
+      height: 1.35vw;
+      border-radius: .3vw;
+      background: #223240;
+      border: 1px solid #2f4252;
+      color: #aab7c0;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: .68vw
+    }
+
+    .ts-head {
+      height: 3.9vh;
+      background: #0f1c2d;
+      border-bottom: 1px solid #12283a;
+      display: grid;
+      grid-template-columns: 2.2vw 2.2vw 1fr;
+      align-items: center;
+      color: #c3ced7;
+      font-size: .56vw;
+      font-weight: 700
+    }
+
+    .ts-head div {
+      padding: 0 .55vw
+    }
+
+    .ts-list {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      background: #061523
+    }
+
+    .ts-row {
+      height: 3.9vh;
+      border-bottom: 1px solid #102638;
+      display: grid;
+      grid-template-columns: 2.2vw 2.2vw 1fr;
+      align-items: center;
+      font-size: .6vw
+    }
+
+    .drag {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #8094a5;
+      cursor: grab
+    }
+
+    .drag svg {
+      width: .7vw;
+      height: .7vw;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .checkwrap {
+      display: grid;
+      place-items: center
+    }
+
+    .check {
+      appearance: none;
+      width: .84vw;
+      height: .84vw;
+      border-radius: .18vw;
+      background: #0f1b2a;
+      border: 1px solid #2f4151;
+      display: grid;
+      place-items: center;
+      cursor: pointer
+    }
+
+    .check:checked {
+      background: var(--green);
+      border-color: #27c97d
+    }
+
+    .check:checked:after {
+      content: "";
+      width: .35vw;
+      height: .18vw;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translateY(-1px)
+    }
+
+    .ts-name {
+      padding: 0 .55vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .modal-foot {
+      height: 5.15vh;
+      padding: 0 .72vw;
+      border-top: 1px solid #13283a;
+      background: #061421;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: .4vw
+    }
+
+    .mbtn {
+      height: 3.3vh;
+      min-width: 3.8vw;
+      border-radius: .38vw;
+      border: 1px solid #273b4d;
+      background: #071625;
+      color: #eff5f8;
+      font-size: .64vw;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    .mbtn.primary {
+      background: var(--cyan);
+      border-color: #1196b8
+    }
+
+    .toast {
+      position: fixed;
+      right: 1vw;
+      top: 5.3vh;
+      z-index: 80;
+      min-width: 18vw;
+      background: #132637;
+      border: 1px solid #2c4558;
+      color: #eef5f8;
+      padding: .8vh .75vw;
+      border-radius: .38vw;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+      display: none;
+      font-size: .62vw
+    }
+
+    .toast.show {
+      display: block
+    }
+
+    .toast b {
+      display: block;
+      margin-bottom: .25vh
+    }
+
+    .field.filter-control {
+      padding: 0 .48vw;
+      gap: .26vw
+    }
+
+    .field.filter-control input,
+    .field.filter-control select {
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #eef5f8;
+      font: inherit;
+      font-size: .58vw
+    }
+
+    .field.filter-control input::placeholder {
+      color: #95a7b5;
+      opacity: 1
+    }
+
+    .field.filter-control select {
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer
+    }
+
+    .field.filter-control select:invalid {
+      color: #95a7b5
+    }
+
+    .field.filter-control option {
+      background: #152536;
+      color: #eef5f8
+    }
+
+    .field.filter-control input[type="date"] {
+      color-scheme: dark
+    }
+
+    .filter-empty-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28vh;
+      color: #8698a7;
+      font-size: .76vw
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="logo"><svg viewBox="0 0 100 70"><path d="M46 8 C51 25,62 34,78 36 C64 39,55 47,49 63 C42 48,34 40,18 36 C33 33,42 24,46 8Z" fill="#f3c61f"/><path d="M28 22 C32 31,38 36,46 38 C39 40,34 44,30 52 C27 44,22 40,13 38 C21 35,26 30,28 22Z" fill="#f3c61f"/></svg><div class="brand">VietnamAirlines</div></div>
-    <div class="menu">
-      <div class="menu-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Live Operations</div>
-      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M6 4h9l3 3v13H6z"/><path d="M15 4v4h4"/></svg>Flight Dispatch</div>
-      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M6 7h12"/><path d="M8 15h8"/></svg>Flight Load Control</div>
-      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7z"/></svg>Station Manager</div>
-      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M4 18h16"/><path d="M6 15l3-4 3 2 4-6 2 3"/></svg>Operations Analysis</div>
-      <div class="menu-item active"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6"/></svg>Report</div>
-      <div class="menu-item"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M12 8v5l3 2"/></svg>Export Report History</div>
-    </div>
-    <div class="side-bottom"><div class="hide"><i>◀</i>Hide</div><div class="user"><div class="avatar"></div><div class="user-txt"><b>Admin</b><span style="color:#8092a1">admin@viettel.com</span></div></div></div>
-  </aside>
-
-  <aside class="report-list">
-    <div class="report-head"><span>Report List</span><span class="collapse">◀</span></div>
-    <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg><span>Search</span></div>
-    <div class="report-items">
-      <div class="report-item">Flight Journey Statistics</div>
-      <div class="report-item">Aircraft Stop Report</div>
-      <div class="report-item">Take-off / Landing Statistics</div>
-      <div class="report-item active">Pilot & Cabin Crew Avg. Flight Time</div>
-    </div>
-  </aside>
-
-  <main class="main">
-    <div class="topbar">Operating Date: 19/09/2026&nbsp;&nbsp;15:21:42</div>
-    <div class="content">
-      <section class="toolbar">
-        <div class="toolbar-top">
-          <div class="filter-trigger" id="toggleFilter"><svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/></svg><span>Filter</span><span id="arrow">▼</span></div>
-          <div class="actions">
-            <button class="action" id="exportBtn"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 19h14"/></svg>Export excel</button>
-            <button class="action" id="openSetting"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg>Table Setting</button>
-          </div>
-        </div>
-        <div class="filters" id="filters">
-          <div class="filter-grid">
-            <div class="field" id="fromDate"><span class="ph">From Date: 01/09/2026</span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></div>
-            <div class="field" id="toDate"><span class="ph">To Date: 30/09/2026</span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></div>
-            <div class="field"><span class="ph">CREW TYPE</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-            <div class="field"><span class="ph">CREW POSITION</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-            <div class="field"><span class="ph">AIRCRAFT SUBTYPE</span></div>
-            <div class="field"><span class="ph">ROUTE</span></div>
-          </div>
-          <div class="filter-grid2">
-            <div class="field"><span class="ph">CREW EMPLOYER</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-            <div class="field"><span class="ph">OPERATING CARRIER</span></div>
-            <div class="field"><span class="ph">LEG TYPE</span></div>
-            <button class="btn-search" id="searchBtn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>Search</button>
-            <button class="btn-clear" id="clearBtn"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 1 5"/><path d="M20 4v7h-7"/></svg>Clear Filter</button>
-          </div>
-        </div>
-      </section>
-
-      <div class="report-title">Pilot and Cabin Crew Average Flight Time by Position Report</div>
-      <div class="table-wrap"><table id="reportTable"></table><div class="empty" id="emptyState">Please select any time filters to display the report</div></div>
-
-      <div class="footer">
-        <div class="total" id="totalText">Total: 28</div>
-        <div class="pager">
-          <span id="rangeText">1–25 of 28</span><span>Hiển thị</span>
-          <select id="pageSize"><option value="25" selected>25 bản ghi</option><option value="50">50 bản ghi</option><option value="100">100 bản ghi</option></select>
-          <button class="page-btn" id="first">≪</button><button class="page-btn" id="prev">‹</button><div id="pages" style="display:flex;gap:.22vw"></div><button class="page-btn" id="next">›</button><button class="page-btn" id="last">≫</button>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo"><svg viewBox="0 0 100 70">
+          <path d="M46 8 C51 25,62 34,78 36 C64 39,55 47,49 63 C42 48,34 40,18 36 C33 33,42 24,46 8Z" fill="#f3c61f" />
+          <path d="M28 22 C32 31,38 36,46 38 C39 40,34 44,30 52 C27 44,22 40,13 38 C21 35,26 30,28 22Z"
+            fill="#f3c61f" />
+        </svg>
+        <div class="brand">VietnamAirlines</div>
+      </div>
+      <div class="menu">
+        <div class="menu-item"><svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8" />
+            <path d="M12 8v4l3 2" />
+          </svg>Live Operations</div>
+        <div class="menu-item"><svg viewBox="0 0 24 24">
+            <path d="M6 4h9l3 3v13H6z" />
+            <path d="M15 4v4h4" />
+          </svg>Flight Dispatch</div>
+        <div class="menu-item"><svg viewBox="0 0 24 24">
+            <path d="M3 11h18" />
+            <path d="M6 7h12" />
+            <path d="M8 15h8" />
+          </svg>Flight Load Control</div>
+        <div class="menu-item"><svg viewBox="0 0 24 24">
+            <path d="M12 3l7 4v10l-7 4-7-4V7z" />
+          </svg>Station Manager</div>
+        <div class="menu-item"><svg viewBox="0 0 24 24">
+            <path d="M4 18h16" />
+            <path d="M6 15l3-4 3 2 4-6 2 3" />
+          </svg>Operations Analysis</div>
+        <div class="menu-item active"><svg viewBox="0 0 24 24">
+            <path d="M6 3h9l3 3v15H6z" />
+            <path d="M9 11h6M9 15h6" />
+          </svg>Report</div>
+        <div class="menu-item"><svg viewBox="0 0 24 24">
+            <path d="M12 4a8 8 0 1 0 8 8" />
+            <path d="M12 8v5l3 2" />
+          </svg>Export Report History</div>
+      </div>
+      <div class="side-bottom">
+        <div class="hide"><i>◀</i>Hide</div>
+        <div class="user">
+          <div class="avatar"></div>
+          <div class="user-txt"><b>Admin</b><span style="color:#8092a1">admin@viettel.com</span></div>
         </div>
       </div>
-    </div>
-  </main>
-</div>
+    </aside>
 
-<div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <div class="modal-head"><div class="modal-title">Table setting</div><div class="close" id="closeModal">✕</div></div>
-    <div class="ts-head"><div></div><div></div><div>Data column name</div></div>
-    <div class="ts-list" id="tsList"></div>
-    <div class="modal-foot"><button class="mbtn" id="cancelBtn">Cancel</button><button class="mbtn primary" id="saveBtn">Save</button></div>
+    <aside class="report-list">
+      <div class="report-head"><span>Report List</span><span class="collapse">◀</span></div>
+      <div class="search"><svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="6" />
+          <path d="M20 20l-4-4" />
+        </svg><span>Search</span></div>
+      <div class="report-items">
+        <div class="report-item">Flight Journey Statistics</div>
+        <div class="report-item">Aircraft Stop Report</div>
+        <div class="report-item">Take-off / Landing Statistics</div>
+        <div class="report-item active">Pilot & Cabin Crew Avg. Flight Time</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">Operating Date: 19/09/2026&nbsp;&nbsp;15:21:42</div>
+      <div class="content">
+        <section class="toolbar">
+          <div class="toolbar-top">
+            <div class="filter-trigger" id="toggleFilter"><svg viewBox="0 0 24 24">
+                <path d="M4 6h16" />
+                <path d="M7 12h10" />
+                <path d="M10 18h4" />
+              </svg><span>Filter</span><span id="arrow">▼</span></div>
+            <div class="actions">
+              <button class="action" id="exportBtn"><svg viewBox="0 0 24 24">
+                  <path d="M12 4v10" />
+                  <path d="M8 10l4 4 4-4" />
+                  <path d="M5 19h14" />
+                </svg>Export excel</button>
+              <button class="action" id="openSetting"><svg viewBox="0 0 24 24">
+                  <rect x="4" y="4" width="16" height="16" rx="2" />
+                  <path d="M4 10h16M10 4v16" />
+                </svg>Table Setting</button>
+            </div>
+          </div>
+          <div class="filters" id="filters">
+            <div class="filter-grid">
+              <div class="field filter-control" id="fromDate">
+                <input type="date" id="filterFromDate" value="2026-09-01" title="FROM DATE">
+              </div>
+
+              <div class="field filter-control" id="toDate">
+                <input type="date" id="filterToDate" value="2026-09-30" title="TO DATE">
+              </div>
+
+              <div class="field filter-control">
+                <select id="filterCrewType" required title="CREW TYPE">
+                  <option value="" selected hidden>CREW TYPE</option>
+                </select>
+              </div>
+
+              <div class="field filter-control">
+                <select id="filterCrewPosition" required title="CREW POSITION">
+                  <option value="" selected hidden>CREW POSITION</option>
+                </select>
+              </div>
+
+              <div class="field filter-control">
+                <select id="filterAircraftSubtype" required title="AIRCRAFT SUBTYPE">
+                  <option value="" selected hidden>AIRCRAFT SUBTYPE</option>
+                </select>
+              </div>
+
+              <div class="field filter-control">
+                <select id="filterRoute" required title="ROUTE">
+                  <option value="" selected hidden>ROUTE</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-grid2">
+              <div class="field filter-control">
+                <select id="filterCrewEmployer" required title="CREW EMPLOYER">
+                  <option value="" selected hidden>CREW EMPLOYER</option>
+                </select>
+              </div>
+
+              <div class="field filter-control">
+                <select id="filterOperatingCarrier" required title="OPERATING CARRIER">
+                  <option value="" selected hidden>OPERATING CARRIER</option>
+                </select>
+              </div>
+
+              <div class="field filter-control">
+                <input type="text" id="filterLegType" placeholder="LEG TYPE" title="LEG TYPE">
+              </div>
+
+              <button class="btn-search" id="searchBtn"><svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="6" />
+                  <path d="M20 20l-4-4" />
+                </svg>Search</button>
+              <button class="btn-clear" id="clearBtn"><svg viewBox="0 0 24 24">
+                  <path d="M20 11a8 8 0 1 0 1 5" />
+                  <path d="M20 4v7h-7" />
+                </svg>Clear Filter</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="report-title">Pilot and Cabin Crew Average Flight Time by Position Report</div>
+        <div class="table-wrap">
+          <table id="reportTable"></table>
+          <div class="empty" id="emptyState">Please select any time filters to display the report</div>
+        </div>
+
+        <div class="footer">
+          <div class="total" id="totalText">Total: 28</div>
+          <div class="pager">
+            <span id="rangeText">1–25 of 28</span><span>Hiển thị</span>
+            <select id="pageSize">
+              <option value="25" selected>25 bản ghi</option>
+              <option value="50">50 bản ghi</option>
+              <option value="100">100 bản ghi</option>
+            </select>
+            <button class="page-btn" id="first">≪</button><button class="page-btn" id="prev">‹</button>
+            <div id="pages" style="display:flex;gap:.22vw"></div><button class="page-btn" id="next">›</button><button
+              class="page-btn" id="last">≫</button>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
-</div>
 
-<div class="toast" id="toast"></div>
+  <div class="modal-bg" id="modalBg">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title">Table setting</div>
+        <div class="close" id="closeModal">✕</div>
+      </div>
+      <div class="ts-head">
+        <div></div>
+        <div></div>
+        <div>Data column name</div>
+      </div>
+      <div class="ts-list" id="tsList"></div>
+      <div class="modal-foot"><button class="mbtn" id="cancelBtn">Cancel</button><button class="mbtn primary"
+          id="saveBtn">Save</button></div>
+    </div>
+  </div>
 
-<script>
-const columnDefs = [{"key": "crewGroup", "label": "CREW GROUP", "width": 105, "defaultVisible": true}, {"key": "crewPosition", "label": "CREW POSITION", "width": 145, "defaultVisible": true}, {"key": "crewEmployer", "label": "CREW EMPLOYER", "width": 120, "defaultVisible": true}, {"key": "aircraftSubtype", "label": "AIRCRAFT SUBTYPE", "width": 125, "defaultVisible": true}, {"key": "route", "label": "ROUTE", "width": 105, "defaultVisible": true}, {"key": "operatingCarrier", "label": "OPERATING CARRIER", "width": 125, "defaultVisible": true}, {"key": "totalFlights", "label": "TOTAL FLIGHTS", "width": 110, "defaultVisible": true}, {"key": "totalCycles", "label": "TOTAL CYCLES", "width": 110, "defaultVisible": true}, {"key": "totalFlightTime", "label": "TOTAL FLIGHT TIME", "width": 130, "defaultVisible": true}, {"key": "avgFlightTime", "label": "AVG FLIGHT TIME / FLIGHT", "width": 160, "defaultVisible": true}, {"key": "avgEet", "label": "AVG EET", "width": 100, "defaultVisible": true}, {"key": "avgSchedBlock", "label": "AVG SCHED BLOCK TIME", "width": 150, "defaultVisible": true}, {"key": "avgActualBlock", "label": "AVG ACTUAL BLOCK TIME", "width": 150, "defaultVisible": true}];
-const rows = [{"crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "42", "totalCycles": "42", "totalFlightTime": "88:20", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12"}, {"crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "45", "totalCycles": "45", "totalFlightTime": "94:15", "avgFlightTime": "02:06", "avgEet": "02:02", "avgSchedBlock": "02:15", "avgActualBlock": "02:13"}, {"crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "18", "totalCycles": "18", "totalFlightTime": "66:24", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47"}, {"crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "20", "totalCycles": "20", "totalFlightTime": "73:20", "avgFlightTime": "03:40", "avgEet": "03:34", "avgSchedBlock": "03:49", "avgActualBlock": "03:46"}, {"crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "12", "totalCycles": "12", "totalFlightTime": "62:12", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19"}, {"crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "14", "totalCycles": "14", "totalFlightTime": "72:14", "avgFlightTime": "05:10", "avgEet": "05:04", "avgSchedBlock": "05:24", "avgActualBlock": "05:18"}, {"crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "48", "totalCycles": "48", "totalFlightTime": "100:48", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12"}, {"crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "192", "totalCycles": "192", "totalFlightTime": "403:12", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12"}, {"crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "20", "totalCycles": "20", "totalFlightTime": "73:40", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47"}, {"crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "160", "totalCycles": "160", "totalFlightTime": "589:20", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47"}, {"crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "14", "totalCycles": "14", "totalFlightTime": "72:38", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19"}, {"crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "112", "totalCycles": "112", "totalFlightTime": "581:04", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19"}];
-let hasTimeFilter = true;
-let currentPage = 1;
-let pageSize = 25;
-const totalRecords = 28;
-const configStorageKey = 'pilotCabinAverageFlightTimeReport.tableSetting.v2';
+  <div class="toast" id="toast"></div>
 
-let savedConfig;
-try {
-  const stored = JSON.parse(localStorage.getItem(configStorageKey) || 'null');
-  savedConfig = Array.isArray(stored) ? stored : null;
-} catch(e) { savedConfig = null; }
-if(!savedConfig) {
-  savedConfig = columnDefs.map((c,i)=>({key:c.key,visible:c.defaultVisible !== false,order:i}));
-}
-let draftConfig = null;
+  <script>
+    const columnDefs = [{ "key": "crewGroup", "label": "CREW GROUP", "width": 105, "defaultVisible": true }, { "key": "crewPosition", "label": "CREW POSITION", "width": 145, "defaultVisible": true }, { "key": "crewEmployer", "label": "CREW EMPLOYER", "width": 120, "defaultVisible": true }, { "key": "aircraftSubtype", "label": "AIRCRAFT SUBTYPE", "width": 125, "defaultVisible": true }, { "key": "route", "label": "ROUTE", "width": 105, "defaultVisible": true }, { "key": "operatingCarrier", "label": "OPERATING CARRIER", "width": 125, "defaultVisible": true }, { "key": "totalFlights", "label": "TOTAL FLIGHTS", "width": 110, "defaultVisible": true }, { "key": "totalCycles", "label": "TOTAL CYCLES", "width": 110, "defaultVisible": true }, { "key": "totalFlightTime", "label": "TOTAL FLIGHT TIME", "width": 130, "defaultVisible": true }, { "key": "avgFlightTime", "label": "AVG FLIGHT TIME / FLIGHT", "width": 160, "defaultVisible": true }, { "key": "avgEet", "label": "AVG EET", "width": 100, "defaultVisible": true }, { "key": "avgSchedBlock", "label": "AVG SCHED BLOCK TIME", "width": 150, "defaultVisible": true }, { "key": "avgActualBlock", "label": "AVG ACTUAL BLOCK TIME", "width": 150, "defaultVisible": true }];
+    const rows = [{ "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "42", "totalCycles": "42", "totalFlightTime": "88:20", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12" }, { "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "45", "totalCycles": "45", "totalFlightTime": "94:15", "avgFlightTime": "02:06", "avgEet": "02:02", "avgSchedBlock": "02:15", "avgActualBlock": "02:13" }, { "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "18", "totalCycles": "18", "totalFlightTime": "66:24", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47" }, { "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "20", "totalCycles": "20", "totalFlightTime": "73:20", "avgFlightTime": "03:40", "avgEet": "03:34", "avgSchedBlock": "03:49", "avgActualBlock": "03:46" }, { "crewGroup": "COCKPIT", "crewPosition": "CAPTAIN", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "12", "totalCycles": "12", "totalFlightTime": "62:12", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19" }, { "crewGroup": "COCKPIT", "crewPosition": "FIRST OFFICER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "14", "totalCycles": "14", "totalFlightTime": "72:14", "avgFlightTime": "05:10", "avgEet": "05:04", "avgSchedBlock": "05:24", "avgActualBlock": "05:18" }, { "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "48", "totalCycles": "48", "totalFlightTime": "100:48", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12" }, { "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A321", "route": "HAN-SGN", "operatingCarrier": "VN", "totalFlights": "192", "totalCycles": "192", "totalFlightTime": "403:12", "avgFlightTime": "02:06", "avgEet": "02:01", "avgSchedBlock": "02:15", "avgActualBlock": "02:12" }, { "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "20", "totalCycles": "20", "totalFlightTime": "73:40", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47" }, { "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "A359", "route": "HAN-ICN", "operatingCarrier": "VN", "totalFlights": "160", "totalCycles": "160", "totalFlightTime": "589:20", "avgFlightTime": "03:41", "avgEet": "03:35", "avgSchedBlock": "03:50", "avgActualBlock": "03:47" }, { "crewGroup": "CABIN", "crewPosition": "PURSER", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "14", "totalCycles": "14", "totalFlightTime": "72:38", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19" }, { "crewGroup": "CABIN", "crewPosition": "CABIN CREW", "crewEmployer": "VN", "aircraftSubtype": "B789", "route": "SGN-NRT", "operatingCarrier": "VN", "totalFlights": "112", "totalCycles": "112", "totalFlightTime": "581:04", "avgFlightTime": "05:11", "avgEet": "05:03", "avgSchedBlock": "05:25", "avgActualBlock": "05:19" }];
+    let hasTimeFilter = true;
+    let filteredRows = rows.slice();
+    let currentPage = 1;
+    let pageSize = 25;
+    const totalRecords = 28;
+    const configStorageKey = 'pilotCabinAverageFlightTimeReport.tableSetting.v2';
 
-function showToast(title,msg) {
-  const e=document.getElementById('toast');
-  e.innerHTML=`<b>${title}</b>${msg}`;
-  e.classList.add('show');
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer=setTimeout(()=>e.classList.remove('show'),3500);
-}
+    let savedConfig;
+    try {
+      const stored = JSON.parse(localStorage.getItem(configStorageKey) || 'null');
+      savedConfig = Array.isArray(stored) ? stored : null;
+    } catch (e) { savedConfig = null; }
+    if (!savedConfig) {
+      savedConfig = columnDefs.map((c, i) => ({ key: c.key, visible: c.defaultVisible !== false, order: i }));
+    }
+    let draftConfig = null;
 
-function visibleCols() {
-  return savedConfig.slice().sort((a,b)=>a.order-b.order).filter(x=>x.visible).map(x=>columnDefs.find(c=>c.key===x.key));
-}
+    function showToast(title, msg) {
+      const e = document.getElementById('toast');
+      e.innerHTML = `<b>${title}</b>${msg}`;
+      e.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => e.classList.remove('show'), 3500);
+    }
 
-function renderTable() {
-  const table=document.getElementById('reportTable'), empty=document.getElementById('emptyState');
-  if(!hasTimeFilter) { table.innerHTML=''; empty.style.display='flex'; return; }
-  empty.style.display='none';
-  const cols=visibleCols();
-  const colgroup='<colgroup><col style="width:50px">'+cols.map(c=>`<col style="width:${c.width}px">`).join('')+'</colgroup>';
-  const thead='<thead><tr><th>NO.</th>'+cols.map(c=>`<th>${c.label}</th>`).join('')+'</tr></thead>';
-  const tbody='<tbody>'+rows.map((r,i)=>'<tr><td>'+(i+1)+'</td>'+cols.map(c=>{
-    let v=r[c.key] ?? '';
-    if(c.key==='crewGroup') v=`<span class="crew-tag ${String(v).toLowerCase()==='cockpit'?'pc':'tv'}">${v}</span>`;
-    return `<td>${v}</td>`;
-  }).join('')+'</tr>').join('')+'</tbody>';
-  table.innerHTML=colgroup+thead+tbody;
-}
+    function visibleCols() {
+      return savedConfig.slice().sort((a, b) => a.order - b.order).filter(x => x.visible).map(x => columnDefs.find(c => c.key === x.key));
+    }
 
-function renderPager() {
-  const total=hasTimeFilter?totalRecords:0;
-  const tp=Math.max(1,Math.ceil(total/pageSize));
-  currentPage=Math.min(Math.max(1,currentPage),tp);
-  const start=total?(currentPage-1)*pageSize+1:0, end=total?Math.min(currentPage*pageSize,total):0;
-  document.getElementById('rangeText').textContent=`${start}–${end} of ${total}`;
-  document.getElementById('totalText').textContent=`Total: ${total}`;
-  const h=document.getElementById('pages'); h.innerHTML='';
-  for(let i=1;i<=Math.min(tp,5);i++) {
-    const b=document.createElement('button'); b.className='page-btn'+(i===currentPage?' active':''); b.textContent=i; b.disabled=!total;
-    b.onclick=()=>{currentPage=i;renderPager()}; h.appendChild(b);
-  }
-  document.getElementById('first').disabled=currentPage===1||!total;
-  document.getElementById('prev').disabled=currentPage===1||!total;
-  document.getElementById('next').disabled=currentPage===tp||!total;
-  document.getElementById('last').disabled=currentPage===tp||!total;
-}
+    function renderTable() {
+      const table = document.getElementById('reportTable'), empty = document.getElementById('emptyState');
 
-function renderSetting() {
-  const list=document.getElementById('tsList'); list.innerHTML='';
-  draftConfig.slice().sort((a,b)=>a.order-b.order).forEach(item=>{
-    const def=columnDefs.find(c=>c.key===item.key);
-    const row=document.createElement('div'); row.className='ts-row'; row.draggable=true; row.dataset.key=item.key;
-    row.innerHTML=`<div class="drag"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h8"/></svg></div><div class="checkwrap"><input class="check" type="checkbox" ${item.visible?'checked':''}></div><div class="ts-name">${def.label}</div>`;
-    row.querySelector('.check').onchange=e=>draftConfig.find(x=>x.key===item.key).visible=e.target.checked;
-    row.ondragstart=e=>e.dataTransfer.setData('text/plain',item.key);
-    row.ondragover=e=>e.preventDefault();
-    row.ondrop=e=>{
-      e.preventDefault(); const k=e.dataTransfer.getData('text/plain'); if(!k||k===item.key)return;
-      const a=draftConfig.slice().sort((x,y)=>x.order-y.order), from=a.findIndex(x=>x.key===k), to=a.findIndex(x=>x.key===item.key);
-      const moved=a.splice(from,1)[0]; a.splice(to,0,moved); a.forEach((x,i)=>x.order=i); draftConfig=a; renderSetting();
-    };
-    list.appendChild(row);
-  });
-}
+      if (!hasTimeFilter) {
+        table.innerHTML = '';
+        empty.textContent = 'Please select From Date and To Date to display the report';
+        empty.style.display = 'flex';
+        return;
+      }
 
-document.getElementById('openSetting').onclick=()=>{draftConfig=savedConfig.slice().sort((a,b)=>a.order-b.order).map((x,i)=>({key:x.key,visible:x.visible,order:i}));renderSetting();document.getElementById('modalBg').classList.add('show')};
-function closeModal(){draftConfig=null;document.getElementById('modalBg').classList.remove('show')}
-document.getElementById('closeModal').onclick=closeModal;
-document.getElementById('cancelBtn').onclick=closeModal;
-document.getElementById('modalBg').onclick=e=>{if(e.target.id==='modalBg')closeModal()};
-document.getElementById('saveBtn').onclick=()=>{savedConfig=draftConfig.slice().sort((a,b)=>a.order-b.order).map((x,i)=>({key:x.key,visible:x.visible,order:i}));localStorage.setItem(configStorageKey,JSON.stringify(savedConfig));renderTable();closeModal()};
+      if (filteredRows.length === 0) {
+        table.innerHTML = '';
+        empty.textContent = 'No data found';
+        empty.style.display = 'flex';
+        return;
+      }
 
-document.getElementById('toggleFilter').onclick=()=>{const f=document.getElementById('filters'),a=document.getElementById('arrow'),h=f.style.display==='none';f.style.display=h?'block':'none';a.textContent=h?'▼':'▲'};
-document.getElementById('clearBtn').onclick=()=>{hasTimeFilter=false;document.querySelector('#fromDate .ph').textContent='From Date';document.querySelector('#toDate .ph').textContent='To Date';renderTable();renderPager()};
-document.getElementById('searchBtn').onclick=()=>{hasTimeFilter=true;document.querySelector('#fromDate .ph').textContent='From Date: 01/09/2026';document.querySelector('#toDate .ph').textContent='To Date: 30/09/2026';currentPage=1;renderTable();renderPager()};
-document.getElementById('exportBtn').onclick=()=>{if(!hasTimeFilter){showToast('Export failed','You have to filter by From Date and To Date before exporting');return}showToast('Export request received','Your report export request has been received. Please track its progress and receive report file in Report Export History')};
-document.getElementById('pageSize').onchange=e=>{pageSize=Number(e.target.value);currentPage=1;renderPager()};
-document.getElementById('first').onclick=()=>{currentPage=1;renderPager()};
-document.getElementById('prev').onclick=()=>{currentPage--;renderPager()};
-document.getElementById('next').onclick=()=>{currentPage++;renderPager()};
-document.getElementById('last').onclick=()=>{currentPage=Math.ceil(totalRecords/pageSize);renderPager()};
+      empty.style.display = 'none';
 
-renderTable(); renderPager();
-</script>
+      const cols = visibleCols();
+      const colgroup = '<colgroup><col style="width:50px">' + cols.map(c => `<col style="width:${c.width}px">`).join('') + '</colgroup>';
+      const thead = '<thead><tr><th>NO.</th>' + cols.map(c => `<th>${c.label}</th>`).join('') + '</tr></thead>';
+
+      const startIndex = (currentPage - 1) * pageSize;
+      const pageRows = filteredRows.slice(startIndex, startIndex + pageSize);
+
+      const tbody = '<tbody>' + pageRows.map((r, i) => '<tr><td>' + (startIndex + i + 1) + '</td>' + cols.map(c => {
+        let v = r[c.key] ?? '';
+        if (c.key === 'crewGroup') v = `<span class="crew-tag ${String(v).toLowerCase() === 'cockpit' ? 'pc' : 'tv'}">${v}</span>`;
+        return `<td>${v}</td>`;
+      }).join('') + '</tr>').join('') + '</tbody>';
+
+      table.innerHTML = colgroup + thead + tbody;
+    }
+
+    function renderPager() {
+      const total = hasTimeFilter ? filteredRows.length : 0;
+      const tp = Math.max(1, Math.ceil(total / pageSize));
+      currentPage = Math.min(Math.max(1, currentPage), tp);
+
+      const start = total ? (currentPage - 1) * pageSize + 1 : 0;
+      const end = total ? Math.min(currentPage * pageSize, total) : 0;
+      document.getElementById('rangeText').textContent = `${start}–${end} of ${total}`;
+      document.getElementById('totalText').textContent = `Total: ${total}`;
+
+      const h = document.getElementById('pages');
+      h.innerHTML = '';
+
+      let from = Math.max(1, currentPage - 2);
+      let to = Math.min(tp, from + 4);
+      from = Math.max(1, to - 4);
+
+      for (let i = from; i <= to; i++) {
+        const b = document.createElement('button');
+        b.className = 'page-btn' + (i === currentPage ? ' active' : '');
+        b.textContent = i;
+        b.disabled = !total;
+        b.onclick = () => { currentPage = i; renderTable(); renderPager() };
+        h.appendChild(b);
+      }
+
+      document.getElementById('first').disabled = currentPage === 1 || !total;
+      document.getElementById('prev').disabled = currentPage === 1 || !total;
+      document.getElementById('next').disabled = currentPage === tp || !total;
+      document.getElementById('last').disabled = currentPage === tp || !total;
+    }
+
+    function renderSetting() {
+      const list = document.getElementById('tsList'); list.innerHTML = '';
+      draftConfig.slice().sort((a, b) => a.order - b.order).forEach(item => {
+        const def = columnDefs.find(c => c.key === item.key);
+        const row = document.createElement('div'); row.className = 'ts-row'; row.draggable = true; row.dataset.key = item.key;
+        row.innerHTML = `<div class="drag"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h8"/></svg></div><div class="checkwrap"><input class="check" type="checkbox" ${item.visible ? 'checked' : ''}></div><div class="ts-name">${def.label}</div>`;
+        row.querySelector('.check').onchange = e => draftConfig.find(x => x.key === item.key).visible = e.target.checked;
+        row.ondragstart = e => e.dataTransfer.setData('text/plain', item.key);
+        row.ondragover = e => e.preventDefault();
+        row.ondrop = e => {
+          e.preventDefault(); const k = e.dataTransfer.getData('text/plain'); if (!k || k === item.key) return;
+          const a = draftConfig.slice().sort((x, y) => x.order - y.order), from = a.findIndex(x => x.key === k), to = a.findIndex(x => x.key === item.key);
+          const moved = a.splice(from, 1)[0]; a.splice(to, 0, moved); a.forEach((x, i) => x.order = i); draftConfig = a; renderSetting();
+        };
+        list.appendChild(row);
+      });
+    }
+
+
+    function uniqueValues(key) {
+      return [...new Set(
+        rows.map(r => r[key]).filter(v => v !== '' && v !== null && v !== undefined && v !== '--')
+      )].sort((a, b) => String(a).localeCompare(String(b)));
+    }
+
+    function fillSelect(id, values) {
+      const el = document.getElementById(id);
+      values.forEach(v => {
+        const op = document.createElement('option');
+        op.value = v;
+        op.textContent = v;
+        el.appendChild(op);
+      });
+    }
+
+    function initFilterOptions() {
+      fillSelect('filterCrewType', uniqueValues('crewGroup'));
+      fillSelect('filterCrewPosition', uniqueValues('crewPosition'));
+      fillSelect('filterAircraftSubtype', uniqueValues('aircraftSubtype'));
+      fillSelect('filterRoute', uniqueValues('route'));
+      fillSelect('filterCrewEmployer', uniqueValues('crewEmployer'));
+      fillSelect('filterOperatingCarrier', uniqueValues('operatingCarrier'));
+    }
+
+    function normalizeText(v) {
+      return String(v || '').trim().toUpperCase();
+    }
+
+    function applyFilters() {
+      const fromRaw = document.getElementById('filterFromDate').value;
+      const toRaw = document.getElementById('filterToDate').value;
+
+      if (!fromRaw || !toRaw) {
+        hasTimeFilter = false;
+        filteredRows = [];
+        currentPage = 1;
+        renderTable();
+        renderPager();
+        return;
+      }
+
+      const crewType = normalizeText(document.getElementById('filterCrewType').value);
+      const crewPosition = normalizeText(document.getElementById('filterCrewPosition').value);
+      const aircraftSubtype = normalizeText(document.getElementById('filterAircraftSubtype').value);
+      const route = normalizeText(document.getElementById('filterRoute').value);
+      const crewEmployer = normalizeText(document.getElementById('filterCrewEmployer').value);
+      const operatingCarrier = normalizeText(document.getElementById('filterOperatingCarrier').value);
+      const legType = normalizeText(document.getElementById('filterLegType').value);
+
+      /*
+        This report is aggregated for the selected From/To period.
+        The current mock rows do not carry a row-level date, so the date range
+        acts as the report aggregation period; dimension filters are applied
+        to the displayed aggregate rows.
+      */
+      hasTimeFilter = true;
+
+      filteredRows = rows.filter(r => {
+        if (crewType && normalizeText(r.crewGroup) !== crewType) return false;
+        if (crewPosition && normalizeText(r.crewPosition) !== crewPosition) return false;
+        if (aircraftSubtype && normalizeText(r.aircraftSubtype) !== aircraftSubtype) return false;
+        if (route && normalizeText(r.route) !== route) return false;
+        if (crewEmployer && normalizeText(r.crewEmployer) !== crewEmployer) return false;
+        if (operatingCarrier && normalizeText(r.operatingCarrier) !== operatingCarrier) return false;
+
+        /*
+          LEG TYPE is not present in the current mock row dataset.
+          If a LEG TYPE is entered, only rows with a future row.legType value can match.
+        */
+        if (legType && normalizeText(r.legType) !== legType) return false;
+
+        return true;
+      });
+
+      currentPage = 1;
+      renderTable();
+      renderPager();
+    }
+
+    function clearFilters() {
+      document.getElementById('filterFromDate').value = '';
+      document.getElementById('filterToDate').value = '';
+      document.getElementById('filterLegType').value = '';
+
+      [
+        'filterCrewType', 'filterCrewPosition', 'filterAircraftSubtype',
+        'filterRoute', 'filterCrewEmployer', 'filterOperatingCarrier'
+      ].forEach(id => {
+        const el = document.getElementById(id);
+        el.selectedIndex = 0;
+        el.value = '';
+      });
+
+      hasTimeFilter = false;
+      filteredRows = [];
+      currentPage = 1;
+      renderTable();
+      renderPager();
+    }
+
+    document.getElementById('openSetting').onclick = () => { draftConfig = savedConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); renderSetting(); document.getElementById('modalBg').classList.add('show') };
+    function closeModal() { draftConfig = null; document.getElementById('modalBg').classList.remove('show') }
+    document.getElementById('closeModal').onclick = closeModal;
+    document.getElementById('cancelBtn').onclick = closeModal;
+    document.getElementById('modalBg').onclick = e => { if (e.target.id === 'modalBg') closeModal() };
+    document.getElementById('saveBtn').onclick = () => { savedConfig = draftConfig.slice().sort((a, b) => a.order - b.order).map((x, i) => ({ key: x.key, visible: x.visible, order: i })); localStorage.setItem(configStorageKey, JSON.stringify(savedConfig)); renderTable(); closeModal() };
+
+    document.getElementById('toggleFilter').onclick = () => { const f = document.getElementById('filters'), a = document.getElementById('arrow'), h = f.style.display === 'none'; f.style.display = h ? 'block' : 'none'; a.textContent = h ? '▼' : '▲' };
+    document.getElementById('clearBtn').onclick = clearFilters;
+    document.getElementById('searchBtn').onclick = applyFilters;
+    document.getElementById('exportBtn').onclick = () => { if (!hasTimeFilter) { showToast('Export failed', 'You have to filter by From Date and To Date before exporting'); return } showToast('Export request received', 'Your report export request has been received. Please track its progress and receive report file in Report Export History') };
+    document.getElementById('pageSize').onchange = e => { pageSize = Number(e.target.value); currentPage = 1; renderTable(); renderPager() };
+    document.getElementById('first').onclick = () => { currentPage = 1; renderTable(); renderPager() };
+    document.getElementById('prev').onclick = () => { currentPage = Math.max(1, currentPage - 1); renderTable(); renderPager() };
+    document.getElementById('next').onclick = () => { currentPage++; renderTable(); renderPager() };
+    document.getElementById('last').onclick = () => { currentPage = Math.max(1, Math.ceil(filteredRows.length / pageSize)); renderTable(); renderPager() };
+
+    initFilterOptions(); renderTable(); renderPager();
+  </script>
 </body>
+
 </html>
