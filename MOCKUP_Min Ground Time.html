@@ -1,0 +1,2804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport - Min Ground Time</title>
+    <style>
+        :root {
+            --teal: #0695ae;
+            --teal2: #07869d;
+            --orange: #f5a313;
+            --bg: #f3f6f8;
+            --panel: #fff;
+            --line: #dce5ea;
+            --line2: #e8eef1;
+            --text: #2d3e47;
+            --muted: #74858f;
+            --green: #1cb978;
+            --red: #f06060;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0
+        }
+
+        body {
+            background: #f3f6f8;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            font-size: 12px;
+            overflow: hidden
+        }
+
+        button,
+        input,
+        select {
+            font: inherit
+        }
+
+        .app {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            background: var(--bg);
+            display: flex;
+            box-shadow: none;
+            overflow: hidden
+        }
+
+        .sidebar {
+            width: 190px;
+            height: 100vh;
+            background: #f7fafb;
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            flex: 0 0 190px;
+            overflow-y: auto
+        }
+
+        .brand {
+            height: 58px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            color: #0793ad;
+            font-weight: 700;
+            border-bottom: 1px solid #edf2f4
+        }
+
+        .brand .lotus {
+            font-size: 20px;
+            color: #efb419;
+            margin-right: 5px
+        }
+
+        .nav {
+            padding: 8px
+        }
+
+        .nav-item {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 0 10px;
+            border-radius: 5px;
+            margin: 1px 0;
+            color: #344650
+        }
+
+        .nav-item .ico {
+            width: 15px;
+            text-align: center;
+            color: #4b626e
+        }
+
+        .nav-item.active {
+            background: var(--teal);
+            color: white
+        }
+
+        .nav-item.active .ico {
+            color: white
+        }
+
+        .flex1 {
+            flex: 1
+        }
+
+        .profile {
+            padding: 12px;
+            border-top: 1px solid var(--line)
+        }
+
+        .profile b {
+            display: block
+        }
+
+        .profile small {
+            color: #84949d
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            height: 100vh;
+            padding: 0 10px 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .breadcrumb {
+            height: 31px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #7e8f98;
+            padding-left: 5px
+        }
+
+        .breadcrumb b {
+            color: #0a91aa
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            white-space: nowrap;
+            overflow-x: auto;
+            padding: 0 4px;
+            scrollbar-width: none
+        }
+
+        .tab {
+            height: 34px;
+            padding: 0 11px;
+            border: 1px solid var(--line);
+            border-bottom: none;
+            background: white;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600
+        }
+
+        .tab.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: white
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 0 5px 5px 5px;
+            min-height: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .toolbar {
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            flex: 0 0 43px
+        }
+
+        .filter-title {
+            font-weight: 700;
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px
+        }
+
+        .btn-top {
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            padding: 0 12px;
+            cursor: pointer
+        }
+
+        .btn-refresh {
+            background: white;
+            color: #40535d
+        }
+
+        .btn-import {
+            background: var(--orange);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .btn-export {
+            background: var(--orange);
+            color: white
+        }
+
+        .btn-add {
+            background: var(--teal);
+            color: white
+        }
+
+        .filters {
+            padding: 0 10px 10px;
+            display: grid;
+            grid-template-columns: 1.8fr .9fr .9fr auto auto;
+            gap: 9px;
+            align-items: center
+        }
+
+        .control {
+            height: 35px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: white;
+            padding: 0 10px;
+            color: #5f7079;
+            min-width: 0
+        }
+
+        .date-range-control {
+            position: relative;
+            height: 35px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #fff;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr 30px;
+            align-items: center;
+            min-width: 0
+        }
+
+        .date-range-control input[type="text"] {
+            width: 100%;
+            height: 33px;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0 8px;
+            color: #5f7079;
+            min-width: 0;
+            font-size: 11px
+        }
+
+        .range-arrow {
+            color: #809099;
+            font-size: 13px;
+            padding: 0 2px
+        }
+
+        .calendar-btn {
+            height: 33px;
+            border: none;
+            background: transparent;
+            color: #6e818b;
+            cursor: pointer;
+            font-size: 13px
+        }
+
+        .date-range-popover {
+            display: none;
+            position: absolute;
+            top: 41px;
+            left: 0;
+            z-index: 60;
+            width: 390px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            box-shadow: 0 10px 28px rgba(31, 51, 60, .18);
+            padding: 12px
+        }
+
+        .date-range-popover.show {
+            display: block
+        }
+
+        .date-pop-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .date-pop-field label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #647781;
+            margin-bottom: 5px
+        }
+
+        .date-pop-field input {
+            width: 100%;
+            height: 34px;
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 0 8px
+        }
+
+        .date-pop-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 11px
+        }
+
+        .search {
+            height: 35px;
+            border: none;
+            border-radius: 7px;
+            background: var(--teal);
+            color: #fff;
+            padding: 0 15px;
+            cursor: pointer
+        }
+
+        .clear {
+            height: 35px;
+            border: none;
+            background: white;
+            color: #596a73;
+            cursor: pointer
+        }
+
+
+        .table-wrap {
+            overflow: auto;
+            flex: 1;
+            min-height: 0
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1060px
+        }
+
+        th {
+            height: 34px;
+            background: #f3f6f8;
+            border-right: 1px solid #e3e9ed;
+            border-bottom: 1px solid var(--line);
+            padding: 0 8px;
+            text-align: left;
+            font-size: 11px;
+            white-space: nowrap;
+            color: #465a64;
+            position: sticky;
+            top: 0;
+            z-index: 2
+        }
+
+        td {
+            height: 40px;
+            padding: 0 8px;
+            border-right: 1px solid #edf1f3;
+            border-bottom: 1px solid #e7ecef;
+            white-space: nowrap
+        }
+
+        tbody tr.main-row:hover {
+            background: #f9fcfd
+        }
+
+        .center {
+            text-align: center
+        }
+
+        .airport {
+            font-weight: 700
+        }
+
+        .status {
+            display: inline-flex;
+            padding: 3px 8px;
+            border-radius: 11px;
+            font-size: 10px;
+            font-weight: 600
+        }
+
+        .status.active {
+            border: 1px solid #75d7b1;
+            color: #13895e;
+            background: #effcf7
+        }
+
+        .status.scheduled {
+            border: 1px solid #78bff0;
+            color: #2c8fc3;
+            background: #f1f8fe
+        }
+
+        .status.expired {
+            border: 1px solid #b8c1c7;
+            color: #6f7c84;
+            background: #f3f5f6
+        }
+
+        .ongoing-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            border-radius: 11px;
+            color: #13895e;
+            background: #effcf7;
+            border: 1px solid #75d7b1;
+            font-size: 10px;
+            font-style: italic;
+            font-weight: 600
+        }
+
+        .action-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px
+        }
+
+        .icon {
+            width: 24px;
+            height: 26px;
+            border: none;
+            background: transparent;
+            color: #5c6f79;
+            cursor: pointer;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .icon:hover {
+            color: var(--teal)
+        }
+
+        .icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .detail-row {
+            display: none;
+            background: #fbfdfe
+        }
+
+        .detail-row.show {
+            display: table-row
+        }
+
+        .detail-box {
+            padding: 12px 16px 16px
+        }
+
+        .detail-title {
+            font-weight: 700;
+            margin: 2px 0 9px;
+            display: flex;
+            justify-content: space-between
+        }
+
+        .matrix {
+            min-width: 850px;
+            border: 1px solid var(--line)
+        }
+
+        .matrix th {
+            background: #eef4f6;
+            text-align: center
+        }
+
+        .matrix td {
+            text-align: center;
+            height: 31px;
+            font-size: 11px
+        }
+
+        .matrix td.route {
+            text-align: left;
+            font-weight: 600;
+            background: #fbfcfd
+        }
+
+        .matrix .blank {
+            color: #a4b0b6
+        }
+
+        .footer {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 13px;
+            font-size: 11px;
+            flex: 0 0 48px;
+            border-top: 1px solid var(--line2);
+            background: #fff
+        }
+
+        .pager {
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .page {
+            width: 27px;
+            height: 27px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #566872
+        }
+
+        .page.active {
+            background: var(--teal);
+            color: white
+        }
+
+        .page:disabled {
+            opacity: .35;
+            cursor: not-allowed
+        }
+
+        /* modal */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(25, 41, 49, .42);
+            z-index: 20;
+            align-items: center;
+            justify-content: center;
+            padding: 18px
+        }
+
+        .overlay.show {
+            display: flex
+        }
+
+        .modal {
+            width: min(1050px, 96vw);
+            max-height: 92vh;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 18px 60px rgba(0, 0, 0, .25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .modal.small {
+            width: min(440px, 94vw)
+        }
+
+        .modal.history {
+            width: min(830px, 94vw)
+        }
+
+        .history-overlay {
+            z-index: 90
+        }
+
+        .history-common-modal {
+            width: min(1080px, 96vw);
+            height: min(720px, 92vh);
+            max-height: 92vh;
+            background: #f3f5f7
+        }
+
+        .history-head {
+            height: 54px;
+            font-size: 16px;
+            background: #f3f5f7
+        }
+
+        .history-filter {
+            padding: 8px 14px 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto auto;
+            gap: 10px;
+            align-items: center;
+            background: #f3f5f7
+        }
+
+        .history-card {
+            margin: 0 14px 14px;
+            background: #fff;
+            border: 1px solid #e0e6ea;
+            border-radius: 9px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            flex: 1;
+            overflow: hidden
+        }
+
+        .history-download-row {
+            min-height: 42px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 7px 10px;
+            border-bottom: 1px solid #e4eaee
+        }
+
+        .history-download-btn {
+            height: 29px;
+            border: 1px solid #dfe6ea;
+            background: #fff;
+            border-radius: 6px;
+            padding: 0 11px;
+            color: #536671;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .history-table-wrap {
+            overflow: auto;
+            flex: 1;
+            min-height: 0
+        }
+
+        .history-table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse
+        }
+
+        .history-table th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            height: 34px;
+            background: #eef1f4;
+            color: #344954;
+            border-right: 1px solid #dfe5e9;
+            border-bottom: 1px solid #d8e0e5;
+            padding: 0 8px;
+            font-size: 10px
+        }
+
+        .history-table td {
+            height: auto;
+            min-height: 38px;
+            padding: 8px;
+            border-right: 1px solid #e6ebee;
+            border-bottom: 1px solid #e6ebee;
+            vertical-align: top;
+            white-space: normal;
+            font-size: 11px;
+            line-height: 1.4
+        }
+
+        .history-action-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 7px;
+            border-radius: 5px;
+            border: 1px solid #69b8ff;
+            background: #eef8ff;
+            color: #258ae0;
+            font-size: 10px
+        }
+
+        .history-action-tag.delete {
+            border-color: #ff9f9f;
+            background: #fff3f3;
+            color: #e35454
+        }
+
+        .history-action-tag.import {
+            border-color: #87c9b1;
+            background: #effbf5;
+            color: #17865c
+        }
+
+        .history-detail-main {
+            font-weight: 700;
+            color: #2e414c
+        }
+
+        .history-detail-sub {
+            color: #6f8089;
+            margin-top: 2px
+        }
+
+        .history-old {
+            text-decoration: line-through;
+            color: #87949b
+        }
+
+        .history-new {
+            font-weight: 700;
+            color: #2f414c
+        }
+
+        .history-footer {
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            border-top: 1px solid #e0e6ea;
+            font-size: 11px
+        }
+
+        .history-pager {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .history-common-modal .modal-body {
+            padding: 0
+        }
+
+        @media(max-width:900px) {
+            .history-filter {
+                grid-template-columns: 1fr 1fr 1fr
+            }
+        }
+
+        .modal-head {
+            height: 50px;
+            padding: 0 17px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            font-weight: 700;
+            font-size: 14px
+        }
+
+        .close {
+            border: none;
+            background: transparent;
+            font-size: 20px;
+            color: #71818a;
+            cursor: pointer
+        }
+
+        .modal-body {
+            padding: 15px;
+            overflow: auto
+        }
+
+        .meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 15px;
+            align-items: end
+        }
+
+        .field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 5px
+        }
+
+        .req {
+            color: #e95454
+        }
+
+        .field input,
+        .field select {
+            height: 35px;
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 0 9px
+        }
+
+        .field input:disabled,
+        .field select:disabled {
+            background: #f3f5f6;
+            color: #89969e;
+            cursor: not-allowed
+        }
+
+        .modal-foot {
+            padding: 11px 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px
+        }
+
+        .btn {
+            height: 34px;
+            padding: 0 16px;
+            border-radius: 6px;
+            border: 1px solid var(--line);
+            background: white;
+            cursor: pointer
+        }
+
+        .btn.primary {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: white
+        }
+
+        .btn.danger {
+            background: #e75b5b;
+            border-color: #e75b5b;
+            color: white
+        }
+
+        .edit-matrix {
+            min-width: 820px
+        }
+
+        .edit-matrix input {
+            width: 72px;
+            height: 27px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            text-align: center
+        }
+
+        .edit-matrix th,
+        .edit-matrix td {
+            text-align: center;
+            height: 33px
+        }
+
+        .edit-matrix td:first-child {
+            text-align: left;
+            font-weight: 600
+        }
+
+        .note {
+            font-size: 11px;
+            color: #75858e;
+            margin: 0 0 10px
+        }
+
+        .import-excel-icon {
+            font-size: 15px;
+            line-height: 1
+        }
+
+        .import-overlay {
+            z-index: 80
+        }
+
+        .import-main-modal {
+            width: min(650px, 94vw);
+            max-height: 94vh
+        }
+
+        .import-modal-head {
+            font-size: 17px;
+            height: 56px
+        }
+
+        .import-main-body {
+            background: #f3f5f7;
+            padding: 16px 18px;
+            overflow: auto
+        }
+
+        .import-section {
+            background: #fff;
+            border: 1px solid #e0e5e9;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 12px
+        }
+
+        .import-section:last-child {
+            margin-bottom: 0
+        }
+
+        .import-section-title {
+            font-weight: 800;
+            font-size: 13px;
+            color: #263944;
+            margin-bottom: 12px
+        }
+
+        .import-card {
+            background: #fff
+        }
+
+        .import-upload-card {
+            padding: 0;
+            border: none
+        }
+
+        .drop-zone {
+            min-height: 170px;
+            border: 1px dashed #b8c4cc;
+            border-radius: 8px;
+            background: #fafbfd;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            transition: .15s ease
+        }
+
+        .drop-zone.dragover {
+            border-color: var(--teal);
+            background: #f2fbfd
+        }
+
+        .drop-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #283a45
+        }
+
+        .drop-or {
+            margin: 12px 0;
+            color: #526670;
+            font-size: 12px
+        }
+
+        .choose-file-btn {
+            height: 38px;
+            padding: 0 16px;
+            border: 1px solid #29a0be;
+            border-radius: 6px;
+            background: #fff;
+            color: #138eab;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .accepted-text {
+            margin-top: 12px;
+            color: #566974;
+            font-size: 11px
+        }
+
+        .selected-file {
+            width: min(430px, 100%);
+            margin-top: 13px;
+            padding: 9px 11px;
+            border: 1px solid #cfe3e8;
+            border-radius: 7px;
+            display: none;
+            align-items: center;
+            gap: 9px;
+            background: #f8fcfd
+        }
+
+        .selected-file.show {
+            display: flex
+        }
+
+        .selected-file-icon {
+            font-size: 20px;
+            color: var(--teal)
+        }
+
+        .selected-file-info {
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column
+        }
+
+        .selected-file-info b {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 12px
+        }
+
+        .selected-file-info span {
+            font-size: 10px;
+            color: #83919a;
+            margin-top: 2px
+        }
+
+        .remove-file-btn {
+            border: none;
+            background: transparent;
+            color: #71818a;
+            font-size: 18px;
+            cursor: pointer
+        }
+
+        .template-hint {
+            text-align: center;
+            margin-top: 12px;
+            line-height: 1.7;
+            color: #788993;
+            font-size: 10px
+        }
+
+        .template-link {
+            border: none;
+            background: transparent;
+            color: #278be8;
+            cursor: pointer;
+            padding: 0;
+            font-size: 10px
+        }
+
+        .import-foot {
+            background: #fff
+        }
+
+        #confirmImportExcel:disabled,
+        #confirmImportSave:disabled {
+            background: #b8c4ca;
+            border-color: #b8c4ca;
+            cursor: not-allowed
+        }
+
+        .import-confirm-modal {
+            width: min(590px, 94vw);
+            max-height: 90vh
+        }
+
+        .confirm-import-body {
+            background: #f4f6f8;
+            padding: 14px;
+            overflow: auto
+        }
+
+        .confirm-card {
+            background: #fff;
+            border: 1px solid #e1e6ea;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px
+        }
+
+        .confirm-card:last-child {
+            margin-bottom: 0
+        }
+
+        .confirm-card-title {
+            padding: 11px 12px;
+            font-size: 13px;
+            font-weight: 800
+        }
+
+        .confirm-card-title.warning {
+            background: #fff4e9
+        }
+
+        .confirm-card-title.info {
+            background: #edf7ff
+        }
+
+        .confirm-card-title.neutral {
+            background: #f3f6f8
+        }
+
+        .confirm-card-content {
+            padding: 10px 12px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #475b66
+        }
+
+        .confirm-card-content p {
+            margin: 0 0 8px
+        }
+
+        .confirm-card-content p:last-child {
+            margin-bottom: 0
+        }
+
+        .period-table {
+            width: 100%;
+            min-width: 0;
+            border-collapse: collapse;
+            margin-top: 9px
+        }
+
+        .period-table th,
+        .period-table td {
+            border: 1px solid #e2e8ec;
+            padding: 7px 8px;
+            height: auto;
+            font-size: 11px
+        }
+
+        .period-table th {
+            background: #f1f4f6;
+            color: #394d58
+        }
+
+        .period-table td:first-child {
+            font-weight: 700;
+            width: 38%
+        }
+
+        .period-sub {
+            display: block;
+            color: #7b8991;
+            font-weight: 400;
+            margin-top: 2px
+        }
+
+        .old-period {
+            text-decoration: line-through;
+            color: #7b8991
+        }
+
+        .new-period {
+            font-weight: 700;
+            color: #263944
+        }
+
+        .timeline-note {
+            font-size: 10px;
+            color: #82919a;
+            margin-top: 5px
+        }
+
+        @media(max-width:700px) {}
+
+        .toast {
+            display: none;
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: white;
+            border: 1px solid #bfe8d4;
+            border-left: 4px solid var(--green);
+            border-radius: 7px;
+            padding: 11px 14px;
+            box-shadow: 0 8px 25px rgba(31, 51, 60, .15);
+            z-index: 50;
+            min-width: 300px
+        }
+
+        .toast.show {
+            display: block
+        }
+
+        .toast b {
+            display: block;
+            margin-bottom: 3px
+        }
+
+        .toast span {
+            color: #6f7f88;
+            font-size: 11px
+        }
+
+        /* common detail drawer */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(22, 33, 39, .46);
+            z-index: 35;
+            display: none
+        }
+
+        .drawer-overlay.show {
+            display: block
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -760px;
+            width: min(760px, 92vw);
+            height: 100vh;
+            background: #fff;
+            z-index: 40;
+            box-shadow: -12px 0 40px rgba(0, 0, 0, .18);
+            transition: right .22s ease;
+            display: flex;
+            flex-direction: column
+        }
+
+        .drawer.show {
+            right: 0
+        }
+
+        .drawer-head {
+            padding: 18px 20px 12px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .drawer-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px
+        }
+
+        .drawer-title {
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin: 0
+        }
+
+        .drawer-sub {
+            color: #70818a;
+            margin-top: 6px
+        }
+
+        .drawer-close {
+            border: none;
+            background: transparent;
+            font-size: 24px;
+            color: #8596a0;
+            cursor: pointer
+        }
+
+        .drawer-top-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        .drawer-action-btn {
+            height: 30px;
+            padding: 0 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #495c67;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .drawer-action-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .drawer-body {
+            padding: 14px 18px 20px;
+            overflow: auto
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 28px;
+            margin-bottom: 16px
+        }
+
+        .info-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e9eef1
+        }
+
+        .info-item .label {
+            font-size: 11px;
+            color: #74848d;
+            font-weight: 700;
+            margin-bottom: 5px
+        }
+
+        .info-item .value {
+            font-size: 21px;
+            font-weight: 800;
+            color: #263740
+        }
+
+        .info-item .value.small {
+            font-size: 14px
+        }
+
+        .drawer-section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 0 8px
+        }
+
+        .drawer-section-title h4 {
+            margin: 0;
+            font-size: 28px;
+            line-height: 1.1
+        }
+
+        .drawer-mini-count {
+            color: #71808b;
+            font-size: 22px;
+            font-weight: 600
+        }
+
+        .drawer-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px
+        }
+
+        .drawer-table th,
+        .drawer-table td {
+            border: 1px solid #e5ebef;
+            padding: 8px 9px;
+            height: 34px;
+            white-space: nowrap
+        }
+
+        .drawer-table th {
+            background: #f4f7f9;
+            font-size: 11px
+        }
+
+        .drawer-table td {
+            font-size: 12px
+        }
+
+        .drawer-table td:first-child {
+            width: 44px;
+            text-align: center
+        }
+
+        .drawer-table td.route-name {
+            text-align: left;
+            font-weight: 600
+        }
+
+        @media(max-width:1100px) {
+            .sidebar {
+                width: 160px;
+                flex-basis: 160px
+            }
+
+            .filters {
+                grid-template-columns: 1.5fr 1fr 1fr
+            }
+
+            .tabs {
+                font-size: 11px
+            }
+
+            .meta {
+                grid-template-columns: 1fr 1fr 1fr
+            }
+        }
+
+        @media(max-width:700px) {
+            .meta {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+Business-consistent mock data rule:
+- An Expired record only exists when a newer record for the same airport has been created.
+- The old record's Effective To is set to the day before the newer record's Effective From.
+- Scheduled records are future periods. They may supersede/close a prior period.
+- Active means the currently open period with no Effective To.
+-->
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand"><span class="lotus">✦</span>VietnamAirlines</div>
+            <div class="nav">
+                <div class="nav-item"><span class="ico">◉</span>Pilot Category</div>
+                <div class="nav-item"><span class="ico">◉</span>Cabin Crew Category</div>
+                <div class="nav-item"><span class="ico">▣</span>Carrier</div>
+                <div class="nav-item"><span class="ico">◫</span>Country Category</div>
+                <div class="nav-item"><span class="ico">◫</span>FIR Category</div>
+                <div class="nav-item"><span class="ico">✉</span>Email List</div>
+                <div class="nav-item"><span class="ico">▢</span>ULD Category</div>
+                <div class="nav-item"><span class="ico">▣</span>ULD</div>
+                <div class="nav-item"><span class="ico">⌘</span>Flight Routes</div>
+                <div class="nav-item"><span class="ico">✈</span>Flight Fleet</div>
+                <div class="nav-item"><span class="ico">⌁</span>AC Subtype</div>
+                <div class="nav-item"><span class="ico">✈</span>Aircraft</div>
+                <div class="nav-item active"><span class="ico">♜</span>Airport</div>
+                <div class="nav-item"><span class="ico">▣</span>OTP-OSP</div>
+                <div class="nav-item"><span class="ico">⌁</span>Leg Type</div>
+                <div class="nav-item" style="margin-top:10px"><span class="ico">♧</span>Notification</div>
+                <div class="nav-item"><span class="ico">⚙</span>Setting</div>
+            </div>
+            <div class="flex1"></div>
+            <div class="profile"><b>Admin</b><small>admin@viettel.com</small></div>
+        </aside>
+
+        <main class="main">
+            <div class="breadcrumb">Home <span>›</span> <b>Airport</b></div>
+            <div class="tabs">
+                <div class="tab">ⓘ General Information</div>
+                <div class="tab">◷ Taxi Time</div>
+                <div class="tab">⌘ Destination Alternate</div>
+                <div class="tab">⚙ Ground Support Equipment</div>
+                <div class="tab">◉ Minima</div>
+                <div class="tab">▣ Fuel Pricing</div>
+                <div class="tab active">◷ Min Ground Time</div>
+            </div>
+
+            <section class="panel">
+                <div class="toolbar">
+                    <div class="filter-title">☰ Filter <span style="font-size:9px">▲</span></div>
+                    <div class="actions">
+                        <button class="btn-top btn-refresh" id="refresh">⟳ Refresh</button>
+                        <button class="btn-top btn-import" id="openImportExcel">
+                            <span class="import-excel-icon">⇧</span> Import Excel
+                        </button>
+                        <button class="btn-top btn-export" id="export">⇩ Export Excel</button>
+                        <button class="btn-top btn-add" id="add">＋ Add New</button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <div class="date-range-control">
+                        <input id="fEffectiveFrom" type="text" placeholder="Effective From" readonly>
+                        <span class="range-arrow">→</span>
+                        <input id="fEffectiveTo" type="text" placeholder="Effective To" readonly>
+                        <button class="calendar-btn" id="openDateRange" type="button"
+                            title="Select effective date range">▣</button>
+
+                        <div class="date-range-popover" id="dateRangePopover">
+                            <div class="date-pop-row">
+                                <div class="date-pop-field">
+                                    <label>Effective From</label>
+                                    <input id="fEffectiveFromNative" type="date">
+                                </div>
+                                <div class="date-pop-field">
+                                    <label>Effective To</label>
+                                    <input id="fEffectiveToNative" type="date">
+                                </div>
+                            </div>
+                            <div class="date-pop-actions">
+                                <button type="button" class="btn" id="dateRangeClear">Clear</button>
+                                <button type="button" class="btn primary" id="dateRangeApply">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input class="control" id="fIcao" type="text" placeholder="ICAO">
+                    <select class="control" id="fStatus">
+                        <option value="">Status</option>
+                        <option>Active</option>
+                        <option>Scheduled</option>
+                        <option>Expired</option>
+                    </select>
+
+                    <button class="search" id="search">⌕ Search</button>
+                    <button class="clear" id="clear">○ Clear Filter</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="center" style="width:45px">No.</th>
+                                <th>ICAO</th>
+                                <th>Effective From</th>
+                                <th>Effective To</th>
+                                <th>Last Updated</th>
+                                <th>Updated By</th>
+                                <th class="center">Status</th>
+                                <th class="center" style="width:125px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+
+                <div class="footer">
+                    <b id="total">Total: 0</b>
+                    <div class="pager">
+                        <span>Hiển thị</span>
+                        <select class="control" id="pageSize" style="width:105px;height:29px" disabled>
+                            <option value="25">25 bản ghi</option>
+                        </select>
+                        <div id="pagerButtons" style="display:flex;gap:6px;align-items:center"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="overlay" id="editOverlay">
+        <div class="modal">
+            <div class="modal-head"><span id="editTitle">Add Min Ground Time</span><button class="close"
+                    data-close="editOverlay">×</button></div>
+            <div class="modal-body">
+                <div class="meta">
+                    <div class="field"><label>ICAO <span class="req">*</span></label>
+                        <select id="mAirport">
+                            <option value="">Select ICAO</option>
+                            <option value="VVNB">VVNB - Noi Bai</option>
+                            <option value="VVTS">VVTS - Tan Son Nhat</option>
+                            <option value="VVDN">VVDN - Da Nang</option>
+                            <option value="VVCR">VVCR - Cam Ranh</option>
+                            <option value="VVPQ">VVPQ - Phu Quoc</option>
+                            <option value="VVCI">VVCI - Cat Bi</option>
+                            <option value="VVVH">VVVH - Vinh</option>
+                            <option value="VVPB">VVPB - Phu Bai</option>
+                            <option value="VVCT">VVCT - Can Tho</option>
+                            <option value="VVDL">VVDL - Lien Khuong</option>
+                            <option value="VVDH">VVDH - Dong Hoi</option>
+                            <option value="VVCA">VVCA - Chu Lai</option>
+                            <option value="VVPK">VVPK - Pleiku</option>
+                            <option value="VVBM">VVBM - Buon Ma Thuot</option>
+                            <option value="VVTX">VVTX - Tho Xuan</option>
+                            <option value="VVVD">VVVD - Van Don</option>
+                            <option value="VVTH">VVTH - Tuy Hoa</option>
+                            <option value="VVPC">VVPC - Phu Cat</option>
+                            <option value="VVDB">VVDB - Dien Bien</option>
+                            <option value="VVCM">VVCM - Ca Mau</option>
+                            <option value="VVCS">VVCS - Con Dao</option>
+                            <option value="VVRG">VVRG - Rach Gia</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Effective From <span class="req">*</span></label><input id="mFrom"
+                            type="date" value="2026-06-01"></div>
+                    <div class="field"><label>Effective To</label><input id="mTo" type="text" value="Ongoing" disabled>
+                    </div>
+                </div>
+                <p class="note">Min Ground Time is configured in minutes for each Previous Sector - Next Sector
+                    combination and each fleet type.</p>
+                <table class="edit-matrix">
+                    <thead>
+                        <tr>
+                            <th style="width:230px">Previous Sector - Next Sector</th>
+                            <th>A320</th>
+                            <th>A321</th>
+                            <th>A350</th>
+                            <th>B787</th>
+                            <th>ATR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="editMatrixBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-foot"><button class="btn" data-close="editOverlay">Cancel</button><button
+                    class="btn primary" id="save">Save</button></div>
+        </div>
+    </div>
+
+
+
+    <div class="overlay import-overlay" id="importExcelOverlay">
+        <div class="modal import-modal import-main-modal">
+            <div class="modal-head import-modal-head">
+                <span>Import Min Ground Time</span>
+                <button class="close" id="closeImportExcel" type="button">×</button>
+            </div>
+
+            <div class="import-body import-main-body">
+                <div class="import-section">
+                    <div class="import-section-title">Upload file</div>
+
+                    <div class="import-card import-upload-card">
+                        <div class="drop-zone" id="excelDropZone">
+                            <div class="drop-title">Drag and drop files here</div>
+                            <div class="drop-or">or</div>
+
+                            <button type="button" class="choose-file-btn" id="chooseExcelFile">
+                                <span>☁</span> Select file
+                            </button>
+                            <input type="file" id="excelFileInput" accept=".xlsx" hidden>
+
+                            <div class="accepted-text">Accepted formats are .xlsx (up to 5MB)</div>
+
+                            <div class="selected-file" id="selectedExcelFile">
+                                <span class="selected-file-icon">▤</span>
+                                <div class="selected-file-info">
+                                    <b id="selectedExcelName"></b>
+                                    <span id="selectedExcelSize"></span>
+                                </div>
+                                <button type="button" class="remove-file-btn" id="removeExcelFile"
+                                    title="Remove file">×</button>
+                            </div>
+                        </div>
+
+                        <div class="template-hint">
+                            For accurate import results, please use the template file.
+                            <button type="button" class="template-link" id="downloadTemplateBtn">↓ Download template
+                                file.</button>
+                            <br>
+                            One file can contain multiple airports. Each airport/effective period is represented by 16
+                            route-pair rows.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-foot import-foot">
+                <button type="button" class="btn" id="cancelImportExcel">Cancel</button>
+                <button type="button" class="btn primary" id="confirmImportExcel" disabled>Import</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay import-overlay" id="importConfirmOverlay">
+        <div class="modal import-confirm-modal">
+            <div class="modal-head">
+                <span>Confirm Import</span>
+                <button class="close" id="closeImportConfirm" type="button">×</button>
+            </div>
+
+            <div class="modal-body confirm-import-body" id="importConfirmBody"></div>
+
+            <div class="modal-foot">
+                <button type="button" class="btn" id="backToImport">Back to Edit</button>
+                <button type="button" class="btn primary" id="confirmImportSave">Confirm & Import</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="deleteOverlay">
+        <div class="modal small">
+            <div class="modal-head"><span>Delete Min Ground Time</span><button class="close"
+                    data-close="deleteOverlay">×</button></div>
+            <div class="modal-body">Are you sure you want to delete this Min Ground Time configuration?<div
+                    id="deleteName" style="font-weight:700;margin-top:10px"></div>
+            </div>
+            <div class="modal-foot"><button class="btn" data-close="deleteOverlay">Cancel</button><button
+                    class="btn danger" id="deleteConfirm">Delete</button></div>
+        </div>
+    </div>
+
+
+    <div class="overlay history-overlay" id="historyOverlay">
+        <div class="modal history history-common-modal">
+            <div class="modal-head history-head">
+                <span id="historyTitle">Change History</span>
+                <button class="close" data-close="historyOverlay">×</button>
+            </div>
+
+            <div class="history-filter">
+                <input class="control" id="historyFromDate" type="date" title="From Date">
+                <input class="control" id="historyToDate" type="date" title="To Date">
+                <input class="control" id="historyAccount" type="text" placeholder="Account">
+                <select class="control" id="historyAction">
+                    <option value="">Action</option>
+                    <option value="Create">Create</option>
+                    <option value="Update">Update</option>
+                    <option value="Delete">Delete</option>
+                    <option value="Import">Import</option>
+                </select>
+                <button type="button" class="search" id="historySearch">⌕ Search</button>
+                <button type="button" class="clear" id="historyClear">↶ Clear Filter</button>
+            </div>
+
+            <div class="history-card">
+                <div class="history-download-row">
+                    <button type="button" class="history-download-btn" id="historyDownload">⇩ Download file</button>
+                </div>
+
+                <div class="history-table-wrap">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th style="width:46px">NO.</th>
+                                <th style="width:160px">Time</th>
+                                <th style="width:92px">Action</th>
+                                <th>Update Details</th>
+                                <th style="width:130px">Updated by</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="history-footer">
+                    <span id="historyCount">0 operation(s)</span>
+                    <div class="history-pager">
+                        <span>Hiển thị</span>
+                        <select class="control" style="width:105px;height:29px" disabled>
+                            <option>25 bản ghi</option>
+                        </select>
+                        <button class="page">«</button>
+                        <button class="page">‹</button>
+                        <button class="page active">1</button>
+                        <button class="page">2</button>
+                        <button class="page">3</button>
+                        <button class="page">4</button>
+                        <button class="page">5</button>
+                        <button class="page">›</button>
+                        <button class="page">»</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    <aside class="drawer" id="detailDrawer">
+        <div class="drawer-head">
+            <div class="drawer-title-row">
+                <div>
+                    <h2 class="drawer-title" id="drawerTitle">Min Ground Time</h2>
+                    <div class="drawer-sub" id="drawerSub">Airport detail</div>
+                </div>
+                <button class="drawer-close" onclick="closeDrawer()">×</button>
+            </div>
+            <div class="drawer-top-actions">
+                <button class="drawer-action-btn" id="drawerEditBtn"><span id="drawerEditIcon"></span> Edit</button>
+                <button class="drawer-action-btn" id="drawerHistoryBtn"><span id="drawerHistoryIcon"></span>
+                    History</button>
+                <button class="drawer-action-btn" id="drawerDeleteBtn"><span id="drawerDeleteIcon"></span>
+                    Delete</button>
+            </div>
+        </div>
+        <div class="drawer-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">Airport</div>
+                    <div class="value" id="drawerAirport">Noi Bai</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Status</div>
+                    <div class="value small" id="drawerStatus"></div>
+                </div>
+                <div class="info-item">
+                    <div class="label">ICAO</div>
+                    <div class="value" id="drawerIcao">VVNB</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Effective From</div>
+                    <div class="value small" id="drawerFrom">01/06/2026</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Effective To</div>
+                    <div class="value small" id="drawerTo"><span class="ongoing-tag">Ongoing</span></div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Last Updated</div>
+                    <div class="value small" id="drawerUpdatedAt"></div>
+                </div>
+            </div>
+
+            <div class="drawer-section-title">
+                <div>
+                    <h4>Min Ground Time Matrix <span class="drawer-mini-count" id="drawerCount">(16)</span></h4>
+                </div>
+            </div>
+            <table class="drawer-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Previous - Next Sector</th>
+                        <th>A320</th>
+                        <th>A321</th>
+                        <th>A350</th>
+                        <th>B787</th>
+                        <th>ATR</th>
+                    </tr>
+                </thead>
+                <tbody id="drawerMatrixBody"></tbody>
+            </table>
+        </div>
+    </aside>
+
+    <div class="toast" id="toast"><b id="toastTitle"></b><span id="toastText"></span></div>
+
+    <script>
+        const routes = [
+            "DOM → DOM", "DOM → INT - Long", "DOM → INT - Medium", "DOM → INT - Short",
+            "INT - Long → INT - Long", "INT - Long → INT - Medium", "INT - Long → INT - Short", "INT - Long → DOM",
+            "INT - Medium → INT - Long", "INT - Medium → INT - Medium", "INT - Medium → INT - Short", "INT - Medium → DOM",
+            "INT - Short → INT - Long", "INT - Short → INT - Medium", "INT - Short → INT - Short", "INT - Short → DOM"
+        ];
+
+        // Values are mapped from the supplied Excel where possible:
+        // source B787/A350/A330 -> A350 + B787, source A321 -> A321, source AT7 -> ATR.
+        // A320 is not populated in the source matrix, therefore it remains blank in this list mockup.
+        function matrixFor(type) {
+            const blank = () => ({ A320: "", A321: "", A350: "", B787: "", ATR: "" });
+            let m = Object.fromEntries(routes.map(r => [r, blank()]));
+            const set = (r, a321, a350, atr) => { m[r].A321 = a321 ?? ""; m[r].A350 = a350 ?? ""; m[r].B787 = a350 ?? ""; m[r].ATR = atr ?? ""; };
+            if (type === "HUB") {
+                set("DOM → DOM", 35, 55, 30); set("DOM → INT - Long", "", 85, ""); set("DOM → INT - Medium", 50, 65, ""); set("DOM → INT - Short", 45, 55, "");
+                set("INT - Long → INT - Long", "", 85, ""); set("INT - Long → INT - Medium", "", 85, ""); set("INT - Long → INT - Short", "", 85, ""); set("INT - Long → DOM", "", 85, "");
+                set("INT - Medium → INT - Long", "", 85, ""); set("INT - Medium → INT - Medium", 50, 75, ""); set("INT - Medium → INT - Short", 50, 65, ""); set("INT - Medium → DOM", 50, 65, "");
+                set("INT - Short → INT - Long", "", 85, ""); set("INT - Short → INT - Medium", 50, 65, ""); set("INT - Short → INT - Short", 45, 55, ""); set("INT - Short → DOM", 45, 55, "");
+            } else if (type === "DAD_CXR") {
+                set("DOM → DOM", 35, 55, 30); set("DOM → INT - Medium", 50, 65, ""); set("DOM → INT - Short", 45, 55, "");
+                set("INT - Medium → INT - Medium", 50, 65, ""); set("INT - Medium → INT - Short", 50, 65, ""); set("INT - Medium → DOM", 50, 65, "");
+                set("INT - Short → INT - Medium", 50, 65, ""); set("INT - Short → INT - Short", 45, 55, ""); set("INT - Short → DOM", 45, 55, "");
+            } else {
+                set("DOM → DOM", 35, 55, 20); m["DOM → INT - Short"].A321 = 55; m["INT - Short → INT - Short"].A321 = 50; m["INT - Short → DOM"].A321 = 50;
+            }
+            return m;
+        }
+
+        const airportMaster = {
+            VVNB: { name: "Noi Bai", type: "HUB" },
+            VVTS: { name: "Tan Son Nhat", type: "HUB" },
+            VVDN: { name: "Da Nang", type: "DAD_CXR" },
+            VVCR: { name: "Cam Ranh", type: "DAD_CXR" },
+            VVPQ: { name: "Phu Quoc", type: "OTHER" },
+            VVCI: { name: "Cat Bi", type: "OTHER" },
+            VVVH: { name: "Vinh", type: "OTHER" },
+            VVPB: { name: "Phu Bai", type: "OTHER" },
+            VVCT: { name: "Can Tho", type: "OTHER" },
+            VVDL: { name: "Lien Khuong", type: "OTHER" },
+            VVDH: { name: "Dong Hoi", type: "OTHER" },
+            VVCA: { name: "Chu Lai", type: "OTHER" },
+            VVPK: { name: "Pleiku", type: "OTHER" },
+            VVBM: { name: "Buon Ma Thuot", type: "OTHER" },
+            VVTX: { name: "Tho Xuan", type: "OTHER" },
+            VVVD: { name: "Van Don", type: "OTHER" },
+            VVTH: { name: "Tuy Hoa", type: "OTHER" },
+            VVPC: { name: "Phu Cat", type: "OTHER" },
+            VVDB: { name: "Dien Bien", type: "OTHER" },
+            VVCM: { name: "Ca Mau", type: "OTHER" },
+            VVCS: { name: "Con Dao", type: "OTHER" },
+            VVRG: { name: "Rach Gia", type: "OTHER" }
+        };
+
+        const fakeRows = [
+            // ===== PAGE 1 — 25 records: 8 Active / 8 Scheduled / 9 Expired =====
+            ["VVNB", "01/09/2026", "", "16/09/2026 15:00", "16/09/2026 15:05", false, "FULL"],                  // Active
+            ["VVPQ", "01/10/2026", "", "16/09/2026 14:55", "16/09/2026 15:01", false, "FULL"],                  // Scheduled
+            ["VVNB", "01/06/2026", "31/08/2026", "16/09/2026 14:50", "16/09/2026 15:00", false, "JET3"],        // Expired
+
+            ["VVTS", "01/09/2026", "", "16/09/2026 14:45", "16/09/2026 14:53", false, "FULL"],                  // Active
+            ["VVCT", "01/10/2026", "", "16/09/2026 14:40", "16/09/2026 14:48", false, "FULL"],                  // Scheduled
+            ["VVPQ", "01/06/2026", "30/09/2026", "16/09/2026 14:35", "16/09/2026 14:55", false, "JET3"],        // Expired
+
+            ["VVDN", "01/08/2026", "", "16/09/2026 14:30", "16/09/2026 14:38", false, "JET3"],                  // Active
+            ["VVPK", "01/11/2026", "", "16/09/2026 14:25", "16/09/2026 14:33", false, "FULL"],                  // Scheduled
+            ["VVTS", "01/06/2026", "31/08/2026", "16/09/2026 14:20", "16/09/2026 14:45", false, "FULL"],        // Expired
+
+            ["VVCR", "01/08/2026", "", "16/09/2026 14:15", "16/09/2026 14:23", false, "FULL"],                  // Active
+            ["VVTX", "01/10/2026", "", "16/09/2026 14:10", "16/09/2026 14:18", false, "A321_ATR"],              // Scheduled
+            ["VVCT", "01/06/2026", "30/09/2026", "16/09/2026 14:05", "16/09/2026 14:40", false, "FULL"],        // Expired
+
+            ["VVCI", "01/07/2026", "", "16/09/2026 14:00", "16/09/2026 14:08", false, "A321_ATR"],              // Active
+            ["VVVD", "01/10/2026", "", "16/09/2026 13:55", "16/09/2026 14:03", false, "FULL"],                  // Scheduled
+            ["VVDN", "01/01/2026", "31/07/2026", "16/09/2026 13:50", "16/09/2026 14:30", false, "FULL"],        // Expired
+
+            ["VVVH", "01/09/2026", "", "16/09/2026 13:45", "16/09/2026 13:53", false, "FULL"],                  // Active
+            ["VVPC", "01/11/2026", "", "16/09/2026 13:40", "16/09/2026 13:48", false, "FULL"],                  // Scheduled
+            ["VVPK", "01/07/2026", "31/10/2026", "16/09/2026 13:35", "16/09/2026 14:25", false, "FULL"],        // Expired
+
+            ["VVPB", "01/06/2026", "", "16/09/2026 13:30", "16/09/2026 13:38", false, "A350_B787"],             // Active
+            ["VVDB", "01/01/2027", "", "16/09/2026 13:25", "16/09/2026 13:33", false, "B787_ATR"],              // Scheduled
+            ["VVCR", "01/01/2026", "31/07/2026", "16/09/2026 13:20", "16/09/2026 14:15", false, "A321_A350"],   // Expired
+
+            ["VVDL", "01/06/2026", "", "16/09/2026 13:15", "16/09/2026 13:23", false, "JET3"],                  // Active
+            ["VVRG", "01/10/2026", "", "16/09/2026 13:10", "16/09/2026 13:18", false, "A321_A350"],             // Scheduled
+            ["VVTX", "01/01/2026", "30/09/2026", "16/09/2026 13:05", "16/09/2026 14:10", false, "FULL"],        // Expired
+            ["VVVD", "01/07/2026", "30/09/2026", "16/09/2026 13:00", "16/09/2026 13:55", false, "FULL"],        // Expired
+
+            // ===== PAGE 2 — remaining records =====
+            ["VVBM", "01/07/2026", "", "15/09/2026 17:00", "15/09/2026 17:10", false, "FULL"],                  // Active
+            ["VVTH", "01/07/2026", "", "15/09/2026 16:50", "15/09/2026 17:00", false, "JET3"],                  // Active
+            ["VVCS", "01/08/2026", "", "15/09/2026 16:40", "15/09/2026 16:50", false, "FULL"],                  // Active
+            ["VVDH", "01/07/2026", "", "15/09/2026 16:30", "15/09/2026 16:40", false, "FULL"],                  // Active
+
+            ["VVBM", "01/11/2026", "", "15/09/2026 16:20", "15/09/2026 16:30", false, "FULL"],                  // Scheduled
+            ["VVTH", "01/12/2026", "", "15/09/2026 16:10", "15/09/2026 16:20", false, "JET3"],                  // Scheduled
+            ["VVCS", "01/01/2027", "", "15/09/2026 16:00", "15/09/2026 16:10", false, "FULL"],                  // Scheduled
+
+            ["VVPC", "01/07/2026", "31/10/2026", "15/09/2026 15:50", "16/09/2026 13:40", false, "B787_ATR"],    // Expired
+            ["VVDB", "01/08/2026", "31/12/2026", "15/09/2026 15:40", "16/09/2026 13:25", false, "FULL"],        // Expired
+            ["VVDH", "01/01/2026", "30/06/2026", "15/09/2026 15:30", "15/09/2026 16:30", false, "A321_A350"],   // Expired
+            ["VVRG", "01/08/2026", "30/09/2026", "15/09/2026 15:20", "16/09/2026 13:10", false, "FULL"]         // Expired
+        ];
+
+
+        const fleetProfiles = {
+            FULL: ["A321", "A350", "B787", "ATR"],
+            JET3: ["A321", "A350", "B787"],
+            A321_ATR: ["A321", "ATR"],
+            A350_B787: ["A350", "B787"],
+            A321_A350: ["A321", "A350"],
+            B787_ATR: ["B787", "ATR"],
+            A320_A321: ["A320", "A321"]
+        };
+
+        function matrixWithFleetProfile(type, profileCode) {
+            const m = matrixFor(type);
+            const allowed = fleetProfiles[profileCode] || fleetProfiles.FULL;
+            const defaults = { A320: 35, A321: 35, A350: 55, B787: 55, ATR: 30 };
+
+            ["A320", "A321", "A350", "B787", "ATR"].forEach(fleet => {
+                routes.forEach(route => {
+                    if (!allowed.includes(fleet)) m[route][fleet] = "";
+                });
+
+                // Ensure every selected fleet actually has at least one MGT value
+                // so the  column is driven by real record data.
+                if (allowed.includes(fleet)) {
+                    const hasValue = routes.some(route => {
+                        const v = m[route][fleet];
+                        return v !== "" && v !== null && v !== undefined;
+                    });
+                    if (!hasValue) m["DOM → DOM"][fleet] = defaults[fleet];
+                }
+            });
+            return m;
+        }
+
+        function parseDateTime(value) {
+            if (!value) return 0;
+            const [date, time] = value.split(" ");
+            const [d, m, y] = date.split("/").map(Number);
+            const [hh, mm] = time.split(":").map(Number);
+            return Date.UTC(y, m - 1, d, hh, mm);
+        }
+
+        const mockUsers = ["quan.nm", "huyen.ntt", "nam.lh", "ha.tt", "admin"];
+
+        let configs = fakeRows.map((r, idx) => {
+            const [icao, from, to, createdAt, updatedAt, toApiError, fleetProfile] = r;
+            const a = airportMaster[icao];
+            return {
+                id: idx + 1,
+                airport: a.name,
+                icao,
+                from,
+                to,
+                toApiError,
+                createdAt,
+                updatedAt,
+                updatedBy: mockUsers[idx % mockUsers.length],
+                fleetProfile,
+                matrix: matrixWithFleetProfile(a.type, fleetProfile)
+            };
+        }).sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+
+        let visible = [...configs], editingId = null, deletingId = null;
+        let currentPage = 1;
+        const pageSize = 25;
+
+        function parseEffectiveDate(value) {
+            if (!value) return null;
+            const [d, m, y] = value.split("/").map(Number);
+            return Date.UTC(y, m - 1, d);
+        }
+        function utcToday() {
+            // Mockup reference date: 16/09/2026 UTC.
+            return Date.UTC(2026, 8, 16);
+        }
+        function deriveStatus(c) {
+            if (c.toApiError) return "";
+            const effectiveFrom = parseEffectiveDate(c.from);
+            if (effectiveFrom !== null && effectiveFrom > utcToday()) return "Scheduled";
+            return c.to ? "Expired" : "Active";
+        }
+        function statusHtml(c) {
+            const s = deriveStatus(c);
+            if (!s) return "";
+            return `<span class="status ${s.toLowerCase()}">${s}</span>`;
+        }
+        function effectiveToHtml(c) {
+            if (c.toApiError) return "";
+            return c.to ? c.to : `<span class="ongoing-tag">Ongoing</span>`;
+        }
+
+        function detailMatrix(c) {
+            return `<div class="detail-box"><div class="detail-title"><span>Min Ground Time Matrix — ${c.airport} (${c.icao})</span><span style="color:#72838c;font-weight:500">Unit: minutes</span></div>
+  <table class="matrix"><thead><tr><th>Previous Sector - Next Sector</th><th>A320</th><th>A321</th><th>A350</th><th>B787</th><th>ATR</th></tr></thead>
+  <tbody>${routes.map(r => { let x = c.matrix[r]; return `<tr><td class="route">${r}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td class="${x[k] === "" ? "blank" : ""}">${x[k] === "" ? "—" : x[k]}</td>`).join("")}</tr>` }).join("")}</tbody></table></div>`;
+        }
+
+
+        function viewIcon() {
+            return `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+    <circle cx="12" cy="12" r="2.6"/>
+  </svg>`;
+        }
+        function editIcon() {
+            return `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 20h9"/>
+    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+  </svg>`;
+        }
+        function historyIcon() {
+            return `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3 12a9 9 0 1 0 3-6.7"/>
+    <path d="M3 4v5h5"/>
+    <path d="M12 7v5l3 2"/>
+  </svg>`;
+        }
+        function deleteIcon() {
+            return `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3 6h18"/>
+    <path d="M8 6V4h8v2"/>
+    <path d="M19 6l-1 14H6L5 6"/>
+    <path d="M10 11v5M14 11v5"/>
+  </svg>`;
+        }
+        function actionButtons(c) {
+            const status = deriveStatus(c);
+
+            // View Detail is always available.
+            if (status === "Expired") {
+                return `
+      <button class="icon" title="View detail" aria-label="View detail"
+        onclick="openDrawer(${c.id}); event.stopPropagation();">${viewIcon()}</button>
+      <button class="icon" title="History" aria-label="History"
+        onclick="openHistory(${c.id}); event.stopPropagation();">${historyIcon()}</button>
+    `;
+            }
+
+            // Active / Scheduled / blank status: View + Edit + History + Delete
+            return `
+    <button class="icon" title="View detail" aria-label="View detail"
+      onclick="openDrawer(${c.id}); event.stopPropagation();">${viewIcon()}</button>
+    <button class="icon" title="Edit" aria-label="Edit"
+      onclick="openEdit(${c.id}); event.stopPropagation();">${editIcon()}</button>
+    <button class="icon" title="History" aria-label="History"
+      onclick="openHistory(${c.id}); event.stopPropagation();">${historyIcon()}</button>
+    <button class="icon" title="Delete" aria-label="Delete"
+      onclick="openDelete(${c.id}); event.stopPropagation();">${deleteIcon()}</button>
+  `;
+        }
+
+        function render() {
+            const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * pageSize;
+            const pageRows = visible.slice(start, start + pageSize);
+
+            let tb = document.getElementById("tbody");
+            tb.innerHTML = "";
+            pageRows.forEach((c, i) => {
+                tb.insertAdjacentHTML("beforeend", `
+      <tr class="main-row" onclick="openDrawer(${c.id})" style="cursor:pointer">
+        <td class="center">${start + i + 1}</td>
+        <td><b>${c.icao}</b></td>
+        <td>${c.from || ""}</td>
+        <td>${effectiveToHtml(c)}</td>
+        <td>${c.updatedAt || ""}</td>
+        <td>${c.updatedBy || ""}</td>
+        <td class="center">${statusHtml(c)}</td>
+        <td class="center"><div class="action-cell">
+          ${actionButtons(c)}
+        </div></td>
+      </tr>
+    `);
+            });
+
+            document.getElementById("total").textContent = `Total: ${visible.length}`;
+            renderPager(totalPages);
+        }
+
+        function renderPager(totalPages) {
+            const holder = document.getElementById("pagerButtons");
+            if (!holder) return;
+
+            let pages = [];
+            if (totalPages <= 5) {
+                pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+            } else {
+                const start = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
+                pages = Array.from({ length: 5 }, (_, i) => start + i);
+            }
+
+            holder.innerHTML = `
+    <button class="page" ${currentPage === 1 ? "disabled" : ""} onclick="goPage(1)">«</button>
+    <button class="page" ${currentPage === 1 ? "disabled" : ""} onclick="goPage(${currentPage - 1})">‹</button>
+    ${pages.map(p => `<button class="page ${p === currentPage ? "active" : ""}" onclick="goPage(${p})">${p}</button>`).join("")}
+    <button class="page" ${currentPage === totalPages ? "disabled" : ""} onclick="goPage(${currentPage + 1})">›</button>
+    <button class="page" ${currentPage === totalPages ? "disabled" : ""} onclick="goPage(${totalPages})">»</button>
+  `;
+        }
+
+        function goPage(page) {
+            const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
+            currentPage = Math.min(Math.max(1, page), totalPages);
+            render();
+        }
+
+        function openDrawer(id) {
+            const c = configs.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById("drawerTitle").textContent = `Min Ground Time — ${c.icao}`;
+            document.getElementById("drawerSub").textContent = c.airport;
+            document.getElementById("drawerAirport").textContent = c.airport;
+            document.getElementById("drawerIcao").textContent = c.icao;
+            document.getElementById("drawerFrom").textContent = c.from || "";
+            document.getElementById("drawerTo").innerHTML = effectiveToHtml(c);
+            document.getElementById("drawerUpdatedAt").textContent = c.updatedAt || "";
+            document.getElementById("drawerStatus").innerHTML = statusHtml(c);
+            document.getElementById("drawerCount").textContent = `(${routes.length})`;
+            document.getElementById("drawerMatrixBody").innerHTML = routes.map((r, idx) => {
+                let x = c.matrix[r];
+                return `<tr>
+      <td>${idx + 1}</td>
+      <td class="route-name">${r}</td>
+      <td>${x.A320 === "" ? "—" : x.A320}</td>
+      <td>${x.A321 === "" ? "—" : x.A321}</td>
+      <td>${x.A350 === "" ? "—" : x.A350}</td>
+      <td>${x.B787 === "" ? "—" : x.B787}</td>
+      <td>${x.ATR === "" ? "—" : x.ATR}</td>
+    </tr>`;
+            }).join("");
+            document.getElementById("drawerEditIcon").innerHTML = editIcon();
+            document.getElementById("drawerHistoryIcon").innerHTML = historyIcon();
+            document.getElementById("drawerDeleteIcon").innerHTML = deleteIcon();
+
+            const expired = deriveStatus(c) === "Expired";
+            document.getElementById("drawerEditBtn").style.display = expired ? "none" : "inline-flex";
+            document.getElementById("drawerDeleteBtn").style.display = expired ? "none" : "inline-flex";
+            document.getElementById("drawerHistoryBtn").style.display = "inline-flex";
+
+            document.getElementById("drawerEditBtn").onclick = () => openEdit(id);
+            document.getElementById("drawerDeleteBtn").onclick = () => openDelete(id);
+            document.getElementById("drawerHistoryBtn").onclick = () => openHistory(id);
+            document.getElementById("drawerOverlay").classList.add("show");
+            document.getElementById("detailDrawer").classList.add("show");
+        }
+        function closeDrawer() {
+            document.getElementById("drawerOverlay").classList.remove("show");
+            document.getElementById("detailDrawer").classList.remove("show");
+        }
+        function editRows(matrix) {
+            document.getElementById("editMatrixBody").innerHTML = routes.map(r => {
+                let x = matrix[r] || { A320: "", A321: "", A350: "", B787: "", ATR: "" };
+                return `<tr><td>${r}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td><input type="number" min="0" data-route="${r}" data-fleet="${k}" value="${x[k]}"></td>`).join("")}</tr>`
+            }).join("");
+        }
+        function emptyMatrix() { return Object.fromEntries(routes.map(r => [r, { A320: "", A321: "", A350: "", B787: "", ATR: "" }])) }
+        function openAdd() {
+            editingId = null;
+            document.getElementById("editTitle").textContent = "Add Min Ground Time";
+
+            const airportField = document.getElementById("mAirport");
+            airportField.disabled = false;
+            airportField.value = "";
+
+            const fromField = document.getElementById("mFrom");
+            fromField.disabled = false;
+            fromField.value = "";
+
+            const toField = document.getElementById("mTo");
+            toField.value = "Ongoing";
+            toField.disabled = true;
+
+            editRows(emptyMatrix());
+            document.getElementById("editOverlay").classList.add("show");
+        }
+        function openEdit(id) {
+            closeDrawer();
+            editingId = id;
+            const c = configs.find(x => x.id === id);
+            document.getElementById("editTitle").textContent = "Edit Min Ground Time";
+            const airportField = document.getElementById("mAirport");
+            airportField.value = c.icao;
+            airportField.disabled = true;
+            const fromField = document.getElementById("mFrom");
+            fromField.value = toISODate(c.from);
+            fromField.disabled = true;
+            document.getElementById("mTo").value = c.toApiError ? "" : (c.to || "Ongoing");
+            document.getElementById("mTo").disabled = true;
+            editRows(c.matrix);
+            document.getElementById("editOverlay").classList.add("show");
+        }
+        function readMatrix() {
+            let m = emptyMatrix();
+            document.querySelectorAll("#editMatrixBody input").forEach(inp => m[inp.dataset.route][inp.dataset.fleet] = inp.value);
+            return m;
+        }
+        function showToast(t, s) {
+            document.getElementById("toastTitle").textContent = t; document.getElementById("toastText").textContent = s;
+            let el = document.getElementById("toast"); el.classList.add("show"); setTimeout(() => el.classList.remove("show"), 2200);
+        }
+        function fmtDate(v) { if (!v) return ""; let [y, m, d] = v.split("-"); return `${d}/${m}/${y}` } function toISODate(v) { if (!v) return ""; let [d, m, y] = v.split("/"); return `${y}-${m}-${d}` }
+
+        document.getElementById("add").onclick = openAdd;
+        document.getElementById("save").onclick = () => {
+            const icao = document.getElementById("mAirport").value;
+            const fromRaw = document.getElementById("mFrom").value;
+
+            if (!icao) {
+                alert("Please select ICAO.");
+                return;
+            }
+            if (!fromRaw) {
+                alert("Please select Effective From.");
+                return;
+            }
+
+            const a = airportMaster[icao];
+            const from = fmtDate(fromRaw);
+            const matrix = readMatrix();
+            if (editingId) {
+                const c = configs.find(x => x.id === editingId);
+                c.from = from;
+                c.matrix = matrix;
+                c.updatedAt = "16/09/2026 14:10";
+                c.updatedBy = "admin";
+                showToast("Update successful", "Min Ground Time configuration has been updated successfully.");
+            } else {
+                configs.unshift({ id: Date.now(), airport: a.name, icao, from, to: "", toApiError: false, createdAt: "16/09/2026 14:10", updatedAt: "16/09/2026 14:10", updatedBy: "admin", matrix });
+                configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+                showToast("Add successful", "Min Ground Time configuration has been added successfully.");
+            }
+            visible = [...configs].sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            currentPage = 1;
+            render(); document.getElementById("editOverlay").classList.remove("show");
+        };
+        function openDelete(id) { closeDrawer(); deletingId = id; let c = configs.find(x => x.id === id); document.getElementById("deleteName").textContent = `ICAO: ${c.icao} | Airport: ${c.airport} | Effective From: ${c.from}`; document.getElementById("deleteOverlay").classList.add("show") }
+        document.getElementById("deleteConfirm").onclick = () => {
+            configs = configs.filter(x => x.id !== deletingId);
+            visible = visible.filter(x => x.id !== deletingId);
+            render();
+            document.getElementById("deleteOverlay").classList.remove("show"); showToast("Delete successful", "Min Ground Time configuration has been deleted successfully.");
+        };
+        let currentHistoryRecordId = null;
+        let currentHistoryRows = [];
+
+        function buildHistoryRows(c) {
+            const user = c.updatedBy || "admin";
+            const rows = [
+                {
+                    time: c.updatedAt || "16/09/2026 15:05",
+                    action: "Update",
+                    details: `<div class="history-detail-main">Min Ground Time updated</div>
+               <div class="history-detail-sub">Fleet matrix values changed for ${c.icao}. Example: <span class="history-old">A321 / DOM → DOM: 30</span> → <span class="history-new">35</span></div>`,
+                    by: user
+                },
+                {
+                    time: c.updatedAt || "16/09/2026 15:05",
+                    action: "Update",
+                    details: `<div class="history-detail-main">Effective period recalculated</div>
+               <div class="history-detail-sub">Effective To: <span class="history-old">Ongoing</span> → <span class="history-new">${c.to || "Ongoing"}</span></div>`,
+                    by: user
+                },
+                {
+                    time: c.createdAt || "15/09/2026 09:30",
+                    action: "Import",
+                    details: `<div class="history-detail-main">Import from file</div>
+               <div class="history-detail-sub">${c.icao}: route-pair matrix imported from min-ground-time-template.xlsx</div>`,
+                    by: user
+                },
+                {
+                    time: c.createdAt || "15/09/2026 09:30",
+                    action: "Create",
+                    details: `<div class="history-detail-main">Record created</div>
+               <div class="history-detail-sub">Effective period: <span class="history-new">${c.from} → ${c.to || "Ongoing"}</span></div>`,
+                    by: user
+                },
+                {
+                    time: "14/09/2026 16:18",
+                    action: "Update",
+                    details: `<div class="history-detail-main">Fleet values changed</div>
+               <div class="history-detail-sub">A350 / INT - Short → DOM: <span class="history-old">50</span> → <span class="history-new">55</span></div>`,
+                    by: "huyen.ntt"
+                },
+                {
+                    time: "13/09/2026 10:12",
+                    action: "Delete",
+                    details: `<div class="history-detail-main">Imported row removed</div>
+               <div class="history-detail-sub">A duplicate route-pair row was removed during validation.</div>`,
+                    by: "quan.nm"
+                }
+            ];
+            return rows;
+        }
+
+        function actionTag(action) {
+            const cls = action === "Delete" ? "delete" : (action === "Import" ? "import" : "");
+            return `<span class="history-action-tag ${cls}">${action}</span>`;
+        }
+
+        function parseHistoryTime(value) {
+            return parseDateTime(value);
+        }
+
+        function renderHistoryRows(rows) {
+            currentHistoryRows = rows;
+            document.getElementById("historyBody").innerHTML = rows.map((r, i) => `
+    <tr>
+      <td class="center">${i + 1}</td>
+      <td><b>${r.time}</b></td>
+      <td>${actionTag(r.action)}</td>
+      <td>${r.details}</td>
+      <td><b>${r.by}</b></td>
+    </tr>
+  `).join("");
+            document.getElementById("historyCount").textContent = `${rows.length} operation(s)`;
+        }
+
+        function openHistory(id) {
+            closeDrawer();
+            currentHistoryRecordId = id;
+            const c = configs.find(x => x.id === id);
+            document.getElementById("historyTitle").textContent =
+                `Change History - ${c.icao} - ${c.from} - ${c.to || "Ongoing"}`;
+
+            document.getElementById("historyFromDate").value = "";
+            document.getElementById("historyToDate").value = "";
+            document.getElementById("historyAccount").value = "";
+            document.getElementById("historyAction").value = "";
+
+            renderHistoryRows(buildHistoryRows(c));
+            document.getElementById("historyOverlay").classList.add("show");
+        }
+
+        document.getElementById("historySearch").onclick = () => {
+            if (!currentHistoryRecordId) return;
+            const c = configs.find(x => x.id === currentHistoryRecordId);
+            const from = document.getElementById("historyFromDate").value;
+            const to = document.getElementById("historyToDate").value;
+            const account = document.getElementById("historyAccount").value.trim().toLowerCase();
+            const action = document.getElementById("historyAction").value;
+
+            let rows = buildHistoryRows(c).filter(r => {
+                const ts = parseHistoryTime(r.time);
+                if (from && ts < Date.parse(from + "T00:00:00Z")) return false;
+                if (to && ts > Date.parse(to + "T23:59:59Z")) return false;
+                if (account && !r.by.toLowerCase().includes(account)) return false;
+                if (action && r.action !== action) return false;
+                return true;
+            });
+            renderHistoryRows(rows);
+        };
+
+        document.getElementById("historyClear").onclick = () => {
+            if (!currentHistoryRecordId) return;
+            document.getElementById("historyFromDate").value = "";
+            document.getElementById("historyToDate").value = "";
+            document.getElementById("historyAccount").value = "";
+            document.getElementById("historyAction").value = "";
+            const c = configs.find(x => x.id === currentHistoryRecordId);
+            renderHistoryRows(buildHistoryRows(c));
+        };
+
+        document.getElementById("historyDownload").onclick = () => {
+            if (!currentHistoryRecordId) return;
+            const c = configs.find(x => x.id === currentHistoryRecordId);
+            const rows = [["No.", "Time", "Action", "Update Details", "Updated by"]];
+            currentHistoryRows.forEach((r, i) => {
+                const text = r.details.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+                rows.push([i + 1, r.time, r.action, text, r.by]);
+            });
+            const csv = rows.map(row => row.map(v => `"${String(v).replaceAll('"', '""')}"`).join(",")).join("\n");
+            const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `Change_History_${c.icao}_${c.from.replaceAll("/", "-")}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+        document.getElementById("search").onclick = () => {
+            let icao = document.getElementById("fIcao").value.trim().toUpperCase();
+            let fromValue = document.getElementById("fEffectiveFromNative").value;
+            let toValue = document.getElementById("fEffectiveToNative").value;
+            let status = document.getElementById("fStatus").value;
+
+            let fromTs = fromValue ? Date.parse(fromValue + "T00:00:00Z") : null;
+            let toTs = toValue ? Date.parse(toValue + "T23:59:59Z") : null;
+
+            visible = configs.filter(c => {
+                if (icao && !c.icao.toUpperCase().includes(icao)) return false;
+                if (status && deriveStatus(c) !== status) return false;
+
+                if (fromTs !== null || toTs !== null) {
+                    const [d, m, y] = c.from.split("/").map(Number);
+                    const effectiveFromTs = Date.UTC(y, m - 1, d);
+                    let effectiveToTs = null;
+                    if (c.to) {
+                        const [td, tm, ty] = c.to.split("/").map(Number);
+                        effectiveToTs = Date.UTC(ty, tm - 1, td, 23, 59, 59);
+                    }
+
+                    // Record period must overlap selected filter range.
+                    if (fromTs !== null && effectiveToTs !== null && effectiveToTs < fromTs) return false;
+                    if (toTs !== null && effectiveFromTs > toTs) return false;
+                }
+                return true;
+            }).sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            currentPage = 1;
+            render();
+        };
+        document.getElementById("clear").onclick = () => {
+            ["fIcao", "fEffectiveFrom", "fEffectiveTo", "fEffectiveFromNative", "fEffectiveToNative", "fStatus"].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = "";
+            });
+            document.getElementById("dateRangePopover").classList.remove("show");
+            visible = [...configs].sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            render();
+        };
+        document.getElementById("refresh").onclick = () => {
+            visible = [...configs].sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            currentPage = 1;
+            render(); showToast("Refreshed", "Latest Min Ground Time data loaded.");
+        };
+        document.getElementById("export").onclick = () => {
+            const head = ["Airport", "ICAO", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector - Next Sector", "A320", "A321", "A350", "B787", "ATR"];
+            const rows = [head];
+            visible.forEach(c => routes.forEach(r => { let x = c.matrix[r]; rows.push([c.airport, c.icao, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", c.updatedBy || "", deriveStatus(c), r, x.A320, x.A321, x.A350, x.B787, x.ATR]) }));
+            let csv = rows.map(row => row.map(v => `"${String(v ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
+            let blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
+            a.href = url; a.download = "Min_Ground_Time.csv"; a.click(); URL.revokeObjectURL(url); showToast("Export successful", "Min Ground Time matrix has been exported.");
+        };
+        document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => document.getElementById(b.dataset.close).classList.remove("show"));
+        document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) o.classList.remove("show") }));
+
+        function displayDate(iso) {
+            if (!iso) return "";
+            const [y, m, d] = iso.split("-");
+            return `${d}/${m}/${y}`;
+        }
+        document.getElementById("openDateRange").onclick = (e) => {
+            e.stopPropagation();
+            document.getElementById("dateRangePopover").classList.toggle("show");
+        };
+        document.getElementById("dateRangeApply").onclick = () => {
+            const from = document.getElementById("fEffectiveFromNative").value;
+            const to = document.getElementById("fEffectiveToNative").value;
+            if (from && to && Date.parse(from) > Date.parse(to)) {
+                alert("Effective From must be earlier than or equal to Effective To.");
+                return;
+            }
+            document.getElementById("fEffectiveFrom").value = displayDate(from);
+            document.getElementById("fEffectiveTo").value = displayDate(to);
+            document.getElementById("dateRangePopover").classList.remove("show");
+        };
+        document.getElementById("dateRangeClear").onclick = () => {
+            ["fEffectiveFrom", "fEffectiveTo", "fEffectiveFromNative", "fEffectiveToNative"].forEach(id => document.getElementById(id).value = "");
+        };
+        document.addEventListener("click", (e) => {
+            const wrap = document.querySelector(".date-range-control");
+            if (wrap && !wrap.contains(e.target)) document.getElementById("dateRangePopover").classList.remove("show");
+        });
+
+
+
+
+        let selectedExcel = null;
+        let pendingImportBatch = [];
+
+        function dateToTs(ddmmyyyy) {
+            if (!ddmmyyyy) return null;
+            const [d, m, y] = ddmmyyyy.split("/").map(Number);
+            return Date.UTC(y, m - 1, d);
+        }
+        function addDaysDisplay(ddmmyyyy, days) {
+            const ts = dateToTs(ddmmyyyy);
+            if (ts === null) return "";
+            const dt = new Date(ts + days * 86400000);
+            const d = String(dt.getUTCDate()).padStart(2, "0");
+            const m = String(dt.getUTCMonth() + 1).padStart(2, "0");
+            const y = dt.getUTCFullYear();
+            return `${d}/${m}/${y}`;
+        }
+        function periodDisplay(from, to) {
+            return `${from} → ${to || "Ongoing"}`;
+        }
+        function getAirportRecords(icao) {
+            return configs
+                .filter(c => c.icao === icao && !c.toApiError)
+                .slice()
+                .sort((a, b) => dateToTs(a.from) - dateToTs(b.from));
+        }
+        function buildSingleImportPlan(icao, newFrom) {
+            const records = getAirportRecords(icao);
+            const newTs = dateToTs(newFrom);
+            const same = records.find(r => dateToTs(r.from) === newTs);
+            if (same) {
+                return {
+                    invalid: true,
+                    icao,
+                    airport: airportMaster[icao]?.name || icao,
+                    newFrom,
+                    reason: "Duplicate Effective From"
+                };
+            }
+
+            const previous = records.filter(r => dateToTs(r.from) < newTs).at(-1) || null;
+            const next = records.find(r => dateToTs(r.from) > newTs) || null;
+
+            let scenario = "FIRST";
+            if (previous && next) scenario = "INSERT";
+            else if (previous) scenario = "CLOSE_PREVIOUS";
+            else if (next) scenario = "INSERT_FIRST";
+
+            return {
+                invalid: false,
+                icao,
+                airport: airportMaster[icao]?.name || icao,
+                newFrom,
+                newTo: next ? addDaysDisplay(next.from, -1) : "",
+                previous,
+                previousNewTo: previous ? addDaysDisplay(newFrom, -1) : "",
+                next,
+                scenario
+            };
+        }
+
+        /*
+          Prototype behavior:
+          Browser mock does not parse .xlsx content.
+          The uploaded file is represented as a multi-airport batch so the UX can be tested.
+          The real backend will read ICAO + Effective From + 16 route-pair rows from the workbook.
+        */
+        function mockBatchFromExcel() {
+            return [
+                buildSingleImportPlan("VVNB", "01/10/2026"),
+                buildSingleImportPlan("VVCM", "01/10/2026"),
+                buildSingleImportPlan("VVCA", "01/11/2026"),
+                buildSingleImportPlan("VVTS", "15/07/2026")
+            ];
+        }
+
+        function openImportExcelPopup() {
+            selectedExcel = null;
+            pendingImportBatch = [];
+            document.getElementById("excelFileInput").value = "";
+            document.getElementById("selectedExcelFile").classList.remove("show");
+            document.getElementById("selectedExcelName").textContent = "";
+            document.getElementById("selectedExcelSize").textContent = "";
+            document.getElementById("confirmImportExcel").disabled = true;
+            document.getElementById("importExcelOverlay").classList.add("show");
+        }
+        function closeImportExcelPopup() {
+            document.getElementById("importExcelOverlay").classList.remove("show");
+            document.getElementById("excelDropZone").classList.remove("dragover");
+        }
+        function closeImportConfirmPopup() {
+            document.getElementById("importConfirmOverlay").classList.remove("show");
+        }
+        function validateExcelFile(file) {
+            if (!file) return false;
+            if (!file.name.toLowerCase().endsWith(".xlsx")) {
+                alert("Only .xlsx files are accepted.");
+                return false;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert("File size must not exceed 5MB.");
+                return false;
+            }
+            return true;
+        }
+        function setSelectedExcel(file) {
+            if (!validateExcelFile(file)) return;
+            selectedExcel = file;
+            document.getElementById("selectedExcelName").textContent = file.name;
+            document.getElementById("selectedExcelSize").textContent = (file.size / 1024).toFixed(1) + " KB";
+            document.getElementById("selectedExcelFile").classList.add("show");
+            document.getElementById("confirmImportExcel").disabled = false;
+        }
+
+        function scenarioText(plan) {
+            if (plan.invalid) return "Cannot import — duplicate Effective From";
+            if (plan.scenario === "CLOSE_PREVIOUS") return "Close previous period & create new period";
+            if (plan.scenario === "INSERT") return "Insert between existing periods";
+            if (plan.scenario === "INSERT_FIRST") return "Create earlier period before existing timeline";
+            return "Create first period";
+        }
+
+        function batchConfirmHtml(batch) {
+            const invalid = batch.filter(x => x.invalid);
+            const valid = batch.filter(x => !x.invalid);
+
+            let html = `
+    <div class="confirm-card">
+      <div class="confirm-card-title info">${valid.length} airport period(s) ready to import</div>
+      <div class="confirm-card-content">
+        <p>The file contains multiple airports. TOSS will apply period rules independently for each airport.</p>
+        <table class="period-table">
+          <thead>
+            <tr>
+              <th>ICAO</th>
+              <th>NEW EFFECTIVE PERIOD</th>
+              <th>RESULT</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${valid.map(p => `
+              <tr>
+                <td><b>${p.icao}</b><span class="period-sub">${p.airport}</span></td>
+                <td><span class="new-period">${periodDisplay(p.newFrom, p.newTo)}</span></td>
+                <td>${scenarioText(p)}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+            const closing = valid.filter(p => p.previous);
+            if (closing.length) {
+                html += `
+      <div class="confirm-card">
+        <div class="confirm-card-title warning">${closing.length} previous period(s) will be adjusted</div>
+        <div class="confirm-card-content">
+          <p>To keep each airport timeline continuous, the period immediately before each imported period will be closed automatically where applicable.</p>
+          <table class="period-table">
+            <thead>
+              <tr><th>AIRPORT</th><th>PREVIOUS PERIOD</th><th>AFTER IMPORT</th></tr>
+            </thead>
+            <tbody>
+              ${closing.map(p => `
+                <tr>
+                  <td><b>${p.icao}</b></td>
+                  <td><span class="old-period">${periodDisplay(p.previous.from, p.previous.to)}</span></td>
+                  <td><span class="new-period">${periodDisplay(p.previous.from, p.previousNewTo)}</span></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+            }
+
+            if (invalid.length) {
+                html += `
+      <div class="confirm-card">
+        <div class="confirm-card-title warning">${invalid.length} row group(s) cannot be imported</div>
+        <div class="confirm-card-content">
+          <table class="period-table">
+            <thead><tr><th>ICAO</th><th>EFFECTIVE FROM</th><th>REASON</th></tr></thead>
+            <tbody>
+              ${invalid.map(p => `
+                <tr><td><b>${p.icao}</b></td><td>${p.newFrom}</td><td>${p.reason}</td></tr>
+              `).join("")}
+            </tbody>
+          </table>
+          <div class="timeline-note">Invalid groups will not be imported. Correct the Excel file and upload again if they must be included.</div>
+        </div>
+      </div>
+    `;
+            }
+
+            return html;
+        }
+        function openImportConfirmPopup(batch) {
+            pendingImportBatch = batch;
+            document.getElementById("importConfirmBody").innerHTML = batchConfirmHtml(batch);
+            document.getElementById("confirmImportSave").disabled = batch.every(x => x.invalid);
+            document.getElementById("importExcelOverlay").classList.remove("show");
+            document.getElementById("importConfirmOverlay").classList.add("show");
+        }
+        function mockImportedMatrix(icao) {
+            return matrixWithFleetProfile(airportMaster[icao]?.type || "OTHER", "FULL");
+        }
+        function applyImportBatch(batch) {
+            batch.filter(x => !x.invalid).forEach((plan, index) => {
+                if (plan.previous) {
+                    plan.previous.to = plan.previousNewTo;
+                    plan.previous.updatedAt = "16/09/2026 17:02";
+                    plan.previous.updatedBy = "admin";
+                }
+
+                configs.push({
+                    id: Date.now() + index,
+                    airport: plan.airport,
+                    icao: plan.icao,
+                    from: plan.newFrom,
+                    to: plan.newTo,
+                    toApiError: false,
+                    createdAt: "16/09/2026 17:02",
+                    updatedAt: "16/09/2026 17:02",
+                    updatedBy: "admin",
+                    fleetProfile: "FULL",
+                    matrix: mockImportedMatrix(plan.icao)
+                });
+            });
+
+            configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            visible = [...configs];
+            currentPage = 1;
+            render();
+        }
+
+        document.getElementById("openImportExcel").onclick = openImportExcelPopup;
+        document.getElementById("closeImportExcel").onclick = closeImportExcelPopup;
+        document.getElementById("cancelImportExcel").onclick = closeImportExcelPopup;
+
+        document.getElementById("chooseExcelFile").onclick = () => {
+            document.getElementById("excelFileInput").click();
+        };
+        document.getElementById("excelFileInput").onchange = (e) => {
+            setSelectedExcel(e.target.files?.[0]);
+        };
+        document.getElementById("removeExcelFile").onclick = () => {
+            selectedExcel = null;
+            document.getElementById("excelFileInput").value = "";
+            document.getElementById("selectedExcelFile").classList.remove("show");
+            document.getElementById("confirmImportExcel").disabled = true;
+        };
+
+        const excelDropZone = document.getElementById("excelDropZone");
+        ["dragenter", "dragover"].forEach(evt => {
+            excelDropZone.addEventListener(evt, e => {
+                e.preventDefault();
+                e.stopPropagation();
+                excelDropZone.classList.add("dragover");
+            });
+        });
+        ["dragleave", "drop"].forEach(evt => {
+            excelDropZone.addEventListener(evt, e => {
+                e.preventDefault();
+                e.stopPropagation();
+                excelDropZone.classList.remove("dragover");
+            });
+        });
+        excelDropZone.addEventListener("drop", e => {
+            setSelectedExcel(e.dataTransfer?.files?.[0]);
+        });
+
+        document.getElementById("downloadTemplateBtn").onclick = () => {
+            showToast("Template", "Use the multi-airport Min Ground Time import template (.xlsx).");
+        };
+
+        document.getElementById("confirmImportExcel").onclick = () => {
+            if (!selectedExcel) return;
+            openImportConfirmPopup(mockBatchFromExcel());
+        };
+
+        document.getElementById("closeImportConfirm").onclick = closeImportConfirmPopup;
+        document.getElementById("backToImport").onclick = () => {
+            closeImportConfirmPopup();
+            document.getElementById("importExcelOverlay").classList.add("show");
+        };
+        document.getElementById("confirmImportSave").onclick = () => {
+            if (!pendingImportBatch.length) return;
+            applyImportBatch(pendingImportBatch);
+            closeImportConfirmPopup();
+            closeImportExcelPopup();
+            selectedExcel = null;
+            pendingImportBatch = [];
+            showToast("Import successful", "Multiple airport Min Ground Time records have been imported successfully.");
+        };
+
+        document.getElementById("importExcelOverlay").addEventListener("click", e => {
+            if (e.target === document.getElementById("importExcelOverlay")) closeImportExcelPopup();
+        });
+        document.getElementById("importConfirmOverlay").addEventListener("click", e => {
+            if (e.target === document.getElementById("importConfirmOverlay")) closeImportConfirmPopup();
+        });
+
+
+
+        document.addEventListener("keydown", e => { if (e.key === "Escape") { closeImportConfirmPopup(); closeImportExcelPopup(); closeDrawer(); document.getElementById("dateRangePopover").classList.remove("show"); } });
+        render();
+    </script>
+</body>
+
+</html>
