@@ -246,7 +246,7 @@
         .filters {
             padding: 0 10px 10px;
             display: grid;
-            grid-template-columns: 1.8fr .9fr .9fr auto auto;
+            grid-template-columns: .9fr 1.8fr .9fr auto auto;
             gap: 9px;
             align-items: center
         }
@@ -1380,6 +1380,41 @@
             font-weight: 600
         }
 
+        .drawer-table th:nth-child(n+3),
+        .drawer-table td:nth-child(n+3) {
+            text-align: center
+        }
+
+        .route-pair {
+            display: grid;
+            grid-template-columns: 112px 20px 112px;
+            align-items: center;
+            column-gap: 4px
+        }
+
+        .route-pair .part {
+            display: block
+        }
+
+        .route-pair .arrow {
+            text-align: center;
+            color: #7b8b94;
+            font-weight: 700
+        }
+
+        .matrix td.route .route-pair {
+            grid-template-columns: 112px 20px 112px
+        }
+
+        .drawer-table td.route-name .route-pair {
+            grid-template-columns: 112px 20px 112px
+        }
+
+        .edit-matrix td:first-child .route-pair {
+            grid-template-columns: 112px 20px 112px
+        }
+
+
         @media(max-width:1100px) {
             .sidebar {
                 width: 160px;
@@ -1467,6 +1502,7 @@ Business-consistent mock data rule:
                 </div>
 
                 <div class="filters">
+                    <input class="control" id="fIata" type="text" placeholder="IATA">
                     <div class="date-range-control">
                         <input id="fEffectiveFrom" type="text" placeholder="Effective From" readonly>
                         <span class="range-arrow">→</span>
@@ -1492,7 +1528,6 @@ Business-consistent mock data rule:
                         </div>
                     </div>
 
-                    <input class="control" id="fIcao" type="text" placeholder="ICAO">
                     <select class="control" id="fStatus">
                         <option value="">Status</option>
                         <option>Active</option>
@@ -1509,7 +1544,7 @@ Business-consistent mock data rule:
                         <thead>
                             <tr>
                                 <th class="center" style="width:45px">No.</th>
-                                <th>ICAO</th>
+                                <th>IATA</th>
                                 <th>Effective From</th>
                                 <th>Effective To</th>
                                 <th>Last Updated</th>
@@ -1542,31 +1577,31 @@ Business-consistent mock data rule:
                     data-close="editOverlay">×</button></div>
             <div class="modal-body">
                 <div class="meta">
-                    <div class="field"><label>ICAO <span class="req">*</span></label>
+                    <div class="field"><label>IATA <span class="req">*</span></label>
                         <select id="mAirport">
-                            <option value="">Select ICAO</option>
-                            <option value="VVNB">VVNB - Noi Bai</option>
-                            <option value="VVTS">VVTS - Tan Son Nhat</option>
-                            <option value="VVDN">VVDN - Da Nang</option>
-                            <option value="VVCR">VVCR - Cam Ranh</option>
-                            <option value="VVPQ">VVPQ - Phu Quoc</option>
-                            <option value="VVCI">VVCI - Cat Bi</option>
-                            <option value="VVVH">VVVH - Vinh</option>
-                            <option value="VVPB">VVPB - Phu Bai</option>
-                            <option value="VVCT">VVCT - Can Tho</option>
-                            <option value="VVDL">VVDL - Lien Khuong</option>
-                            <option value="VVDH">VVDH - Dong Hoi</option>
-                            <option value="VVCA">VVCA - Chu Lai</option>
-                            <option value="VVPK">VVPK - Pleiku</option>
-                            <option value="VVBM">VVBM - Buon Ma Thuot</option>
-                            <option value="VVTX">VVTX - Tho Xuan</option>
-                            <option value="VVVD">VVVD - Van Don</option>
-                            <option value="VVTH">VVTH - Tuy Hoa</option>
-                            <option value="VVPC">VVPC - Phu Cat</option>
-                            <option value="VVDB">VVDB - Dien Bien</option>
-                            <option value="VVCM">VVCM - Ca Mau</option>
-                            <option value="VVCS">VVCS - Con Dao</option>
-                            <option value="VVRG">VVRG - Rach Gia</option>
+                            <option value="">Select IATA</option>
+                            <option value="HAN">HAN - Noi Bai</option>
+                            <option value="SGN">SGN - Tan Son Nhat</option>
+                            <option value="DAD">DAD - Da Nang</option>
+                            <option value="CXR">CXR - Cam Ranh</option>
+                            <option value="PQC">PQC - Phu Quoc</option>
+                            <option value="HPH">HPH - Cat Bi</option>
+                            <option value="VII">VII - Vinh</option>
+                            <option value="HUI">HUI - Phu Bai</option>
+                            <option value="VCA">VCA - Can Tho</option>
+                            <option value="DLI">DLI - Lien Khuong</option>
+                            <option value="VDH">VDH - Dong Hoi</option>
+                            <option value="VCL">VCL - Chu Lai</option>
+                            <option value="PXU">PXU - Pleiku</option>
+                            <option value="BMV">BMV - Buon Ma Thuot</option>
+                            <option value="THD">THD - Tho Xuan</option>
+                            <option value="VDO">VDO - Van Don</option>
+                            <option value="TBB">TBB - Tuy Hoa</option>
+                            <option value="UIH">UIH - Phu Cat</option>
+                            <option value="DIN">DIN - Dien Bien</option>
+                            <option value="CAH">CAH - Ca Mau</option>
+                            <option value="VCS">VCS - Con Dao</option>
+                            <option value="VKG">VKG - Rach Gia</option>
                         </select>
                     </div>
                     <div class="field"><label>Effective From <span class="req">*</span></label><input id="mFrom"
@@ -1772,8 +1807,8 @@ Business-consistent mock data rule:
                     <div class="value small" id="drawerStatus"></div>
                 </div>
                 <div class="info-item">
-                    <div class="label">ICAO</div>
-                    <div class="value" id="drawerIcao">VVNB</div>
+                    <div class="label">IATA</div>
+                    <div class="value" id="drawerIata">VVNB</div>
                 </div>
                 <div class="info-item">
                     <div class="label">Effective From</div>
@@ -1821,6 +1856,12 @@ Business-consistent mock data rule:
             "INT - Short → INT - Long", "INT - Short → INT - Medium", "INT - Short → INT - Short", "INT - Short → DOM"
         ];
 
+        function routeLabel(route) {
+            const parts = route.split(" → ");
+            if (parts.length !== 2) return route;
+            return `<span class="route-pair"><span class="part">${parts[0]}</span><span class="arrow">→</span><span class="part">${parts[1]}</span></span>`;
+        }
+
         // Values are mapped from the supplied Excel where possible:
         // source B787/A350/A330 -> A350 + B787, source A321 -> A321, source AT7 -> ATR.
         // A320 is not populated in the source matrix, therefore it remains blank in this list mockup.
@@ -1844,79 +1885,79 @@ Business-consistent mock data rule:
         }
 
         const airportMaster = {
-            VVNB: { name: "Noi Bai", type: "HUB" },
-            VVTS: { name: "Tan Son Nhat", type: "HUB" },
-            VVDN: { name: "Da Nang", type: "DAD_CXR" },
-            VVCR: { name: "Cam Ranh", type: "DAD_CXR" },
-            VVPQ: { name: "Phu Quoc", type: "OTHER" },
-            VVCI: { name: "Cat Bi", type: "OTHER" },
-            VVVH: { name: "Vinh", type: "OTHER" },
-            VVPB: { name: "Phu Bai", type: "OTHER" },
-            VVCT: { name: "Can Tho", type: "OTHER" },
-            VVDL: { name: "Lien Khuong", type: "OTHER" },
-            VVDH: { name: "Dong Hoi", type: "OTHER" },
-            VVCA: { name: "Chu Lai", type: "OTHER" },
-            VVPK: { name: "Pleiku", type: "OTHER" },
-            VVBM: { name: "Buon Ma Thuot", type: "OTHER" },
-            VVTX: { name: "Tho Xuan", type: "OTHER" },
-            VVVD: { name: "Van Don", type: "OTHER" },
-            VVTH: { name: "Tuy Hoa", type: "OTHER" },
-            VVPC: { name: "Phu Cat", type: "OTHER" },
-            VVDB: { name: "Dien Bien", type: "OTHER" },
-            VVCM: { name: "Ca Mau", type: "OTHER" },
-            VVCS: { name: "Con Dao", type: "OTHER" },
-            VVRG: { name: "Rach Gia", type: "OTHER" }
+            HAN: { name: "Noi Bai", type: "HUB" },
+            SGN: { name: "Tan Son Nhat", type: "HUB" },
+            DAD: { name: "Da Nang", type: "DAD_CXR" },
+            CXR: { name: "Cam Ranh", type: "DAD_CXR" },
+            PQC: { name: "Phu Quoc", type: "OTHER" },
+            HPH: { name: "Cat Bi", type: "OTHER" },
+            VII: { name: "Vinh", type: "OTHER" },
+            HUI: { name: "Phu Bai", type: "OTHER" },
+            VCA: { name: "Can Tho", type: "OTHER" },
+            DLI: { name: "Lien Khuong", type: "OTHER" },
+            VDH: { name: "Dong Hoi", type: "OTHER" },
+            VCL: { name: "Chu Lai", type: "OTHER" },
+            PXU: { name: "Pleiku", type: "OTHER" },
+            BMV: { name: "Buon Ma Thuot", type: "OTHER" },
+            THD: { name: "Tho Xuan", type: "OTHER" },
+            VDO: { name: "Van Don", type: "OTHER" },
+            TBB: { name: "Tuy Hoa", type: "OTHER" },
+            UIH: { name: "Phu Cat", type: "OTHER" },
+            DIN: { name: "Dien Bien", type: "OTHER" },
+            CAH: { name: "Ca Mau", type: "OTHER" },
+            VCS: { name: "Con Dao", type: "OTHER" },
+            VKG: { name: "Rach Gia", type: "OTHER" }
         };
 
         const fakeRows = [
             // ===== PAGE 1 — 25 records: 8 Active / 8 Scheduled / 9 Expired =====
-            ["VVNB", "01/09/2026", "", "16/09/2026 15:00", "16/09/2026 15:05", false, "FULL"],                  // Active
-            ["VVPQ", "01/10/2026", "", "16/09/2026 14:55", "16/09/2026 15:01", false, "FULL"],                  // Scheduled
-            ["VVNB", "01/06/2026", "31/08/2026", "16/09/2026 14:50", "16/09/2026 15:00", false, "JET3"],        // Expired
+            ["HAN", "01/09/2026", "", "16/09/2026 15:00", "16/09/2026 15:05", false, "FULL"],                  // Active
+            ["PQC", "01/10/2026", "", "16/09/2026 14:55", "16/09/2026 15:01", false, "FULL"],                  // Scheduled
+            ["HAN", "01/06/2026", "31/08/2026", "16/09/2026 14:50", "16/09/2026 15:00", false, "JET3"],        // Expired
 
-            ["VVTS", "01/09/2026", "", "16/09/2026 14:45", "16/09/2026 14:53", false, "FULL"],                  // Active
-            ["VVCT", "01/10/2026", "", "16/09/2026 14:40", "16/09/2026 14:48", false, "FULL"],                  // Scheduled
-            ["VVPQ", "01/06/2026", "30/09/2026", "16/09/2026 14:35", "16/09/2026 14:55", false, "JET3"],        // Expired
+            ["SGN", "01/09/2026", "", "16/09/2026 14:45", "16/09/2026 14:53", false, "FULL"],                  // Active
+            ["VCA", "01/10/2026", "", "16/09/2026 14:40", "16/09/2026 14:48", false, "FULL"],                  // Scheduled
+            ["PQC", "01/06/2026", "30/09/2026", "16/09/2026 14:35", "16/09/2026 14:55", false, "JET3"],        // Expired
 
-            ["VVDN", "01/08/2026", "", "16/09/2026 14:30", "16/09/2026 14:38", false, "JET3"],                  // Active
-            ["VVPK", "01/11/2026", "", "16/09/2026 14:25", "16/09/2026 14:33", false, "FULL"],                  // Scheduled
-            ["VVTS", "01/06/2026", "31/08/2026", "16/09/2026 14:20", "16/09/2026 14:45", false, "FULL"],        // Expired
+            ["DAD", "01/08/2026", "", "16/09/2026 14:30", "16/09/2026 14:38", false, "JET3"],                  // Active
+            ["PXU", "01/11/2026", "", "16/09/2026 14:25", "16/09/2026 14:33", false, "FULL"],                  // Scheduled
+            ["SGN", "01/06/2026", "31/08/2026", "16/09/2026 14:20", "16/09/2026 14:45", false, "FULL"],        // Expired
 
-            ["VVCR", "01/08/2026", "", "16/09/2026 14:15", "16/09/2026 14:23", false, "FULL"],                  // Active
-            ["VVTX", "01/10/2026", "", "16/09/2026 14:10", "16/09/2026 14:18", false, "A321_ATR"],              // Scheduled
-            ["VVCT", "01/06/2026", "30/09/2026", "16/09/2026 14:05", "16/09/2026 14:40", false, "FULL"],        // Expired
+            ["CXR", "01/08/2026", "", "16/09/2026 14:15", "16/09/2026 14:23", false, "FULL"],                  // Active
+            ["THD", "01/10/2026", "", "16/09/2026 14:10", "16/09/2026 14:18", false, "A321_ATR"],              // Scheduled
+            ["VCA", "01/06/2026", "30/09/2026", "16/09/2026 14:05", "16/09/2026 14:40", false, "FULL"],        // Expired
 
-            ["VVCI", "01/07/2026", "", "16/09/2026 14:00", "16/09/2026 14:08", false, "A321_ATR"],              // Active
-            ["VVVD", "01/10/2026", "", "16/09/2026 13:55", "16/09/2026 14:03", false, "FULL"],                  // Scheduled
-            ["VVDN", "01/01/2026", "31/07/2026", "16/09/2026 13:50", "16/09/2026 14:30", false, "FULL"],        // Expired
+            ["HPH", "01/07/2026", "", "16/09/2026 14:00", "16/09/2026 14:08", false, "A321_ATR"],              // Active
+            ["VDO", "01/10/2026", "", "16/09/2026 13:55", "16/09/2026 14:03", false, "FULL"],                  // Scheduled
+            ["DAD", "01/01/2026", "31/07/2026", "16/09/2026 13:50", "16/09/2026 14:30", false, "FULL"],        // Expired
 
-            ["VVVH", "01/09/2026", "", "16/09/2026 13:45", "16/09/2026 13:53", false, "FULL"],                  // Active
-            ["VVPC", "01/11/2026", "", "16/09/2026 13:40", "16/09/2026 13:48", false, "FULL"],                  // Scheduled
-            ["VVPK", "01/07/2026", "31/10/2026", "16/09/2026 13:35", "16/09/2026 14:25", false, "FULL"],        // Expired
+            ["VII", "01/09/2026", "", "16/09/2026 13:45", "16/09/2026 13:53", false, "FULL"],                  // Active
+            ["UIH", "01/11/2026", "", "16/09/2026 13:40", "16/09/2026 13:48", false, "FULL"],                  // Scheduled
+            ["PXU", "01/07/2026", "31/10/2026", "16/09/2026 13:35", "16/09/2026 14:25", false, "FULL"],        // Expired
 
-            ["VVPB", "01/06/2026", "", "16/09/2026 13:30", "16/09/2026 13:38", false, "A350_B787"],             // Active
-            ["VVDB", "01/01/2027", "", "16/09/2026 13:25", "16/09/2026 13:33", false, "B787_ATR"],              // Scheduled
-            ["VVCR", "01/01/2026", "31/07/2026", "16/09/2026 13:20", "16/09/2026 14:15", false, "A321_A350"],   // Expired
+            ["HUI", "01/06/2026", "", "16/09/2026 13:30", "16/09/2026 13:38", false, "A350_B787"],             // Active
+            ["DIN", "01/01/2027", "", "16/09/2026 13:25", "16/09/2026 13:33", false, "B787_ATR"],              // Scheduled
+            ["CXR", "01/01/2026", "31/07/2026", "16/09/2026 13:20", "16/09/2026 14:15", false, "A321_A350"],   // Expired
 
-            ["VVDL", "01/06/2026", "", "16/09/2026 13:15", "16/09/2026 13:23", false, "JET3"],                  // Active
-            ["VVRG", "01/10/2026", "", "16/09/2026 13:10", "16/09/2026 13:18", false, "A321_A350"],             // Scheduled
-            ["VVTX", "01/01/2026", "30/09/2026", "16/09/2026 13:05", "16/09/2026 14:10", false, "FULL"],        // Expired
-            ["VVVD", "01/07/2026", "30/09/2026", "16/09/2026 13:00", "16/09/2026 13:55", false, "FULL"],        // Expired
+            ["DLI", "01/06/2026", "", "16/09/2026 13:15", "16/09/2026 13:23", false, "JET3"],                  // Active
+            ["VKG", "01/10/2026", "", "16/09/2026 13:10", "16/09/2026 13:18", false, "A321_A350"],             // Scheduled
+            ["THD", "01/01/2026", "30/09/2026", "16/09/2026 13:05", "16/09/2026 14:10", false, "FULL"],        // Expired
+            ["VDO", "01/07/2026", "30/09/2026", "16/09/2026 13:00", "16/09/2026 13:55", false, "FULL"],        // Expired
 
             // ===== PAGE 2 — remaining records =====
-            ["VVBM", "01/07/2026", "", "15/09/2026 17:00", "15/09/2026 17:10", false, "FULL"],                  // Active
-            ["VVTH", "01/07/2026", "", "15/09/2026 16:50", "15/09/2026 17:00", false, "JET3"],                  // Active
-            ["VVCS", "01/08/2026", "", "15/09/2026 16:40", "15/09/2026 16:50", false, "FULL"],                  // Active
-            ["VVDH", "01/07/2026", "", "15/09/2026 16:30", "15/09/2026 16:40", false, "FULL"],                  // Active
+            ["BMV", "01/07/2026", "", "15/09/2026 17:00", "15/09/2026 17:10", false, "FULL"],                  // Active
+            ["TBB", "01/07/2026", "", "15/09/2026 16:50", "15/09/2026 17:00", false, "JET3"],                  // Active
+            ["VCS", "01/08/2026", "", "15/09/2026 16:40", "15/09/2026 16:50", false, "FULL"],                  // Active
+            ["VDH", "01/07/2026", "", "15/09/2026 16:30", "15/09/2026 16:40", false, "FULL"],                  // Active
 
-            ["VVBM", "01/11/2026", "", "15/09/2026 16:20", "15/09/2026 16:30", false, "FULL"],                  // Scheduled
-            ["VVTH", "01/12/2026", "", "15/09/2026 16:10", "15/09/2026 16:20", false, "JET3"],                  // Scheduled
-            ["VVCS", "01/01/2027", "", "15/09/2026 16:00", "15/09/2026 16:10", false, "FULL"],                  // Scheduled
+            ["BMV", "01/11/2026", "", "15/09/2026 16:20", "15/09/2026 16:30", false, "FULL"],                  // Scheduled
+            ["TBB", "01/12/2026", "", "15/09/2026 16:10", "15/09/2026 16:20", false, "JET3"],                  // Scheduled
+            ["VCS", "01/01/2027", "", "15/09/2026 16:00", "15/09/2026 16:10", false, "FULL"],                  // Scheduled
 
-            ["VVPC", "01/07/2026", "31/10/2026", "15/09/2026 15:50", "16/09/2026 13:40", false, "B787_ATR"],    // Expired
-            ["VVDB", "01/08/2026", "31/12/2026", "15/09/2026 15:40", "16/09/2026 13:25", false, "FULL"],        // Expired
-            ["VVDH", "01/01/2026", "30/06/2026", "15/09/2026 15:30", "15/09/2026 16:30", false, "A321_A350"],   // Expired
-            ["VVRG", "01/08/2026", "30/09/2026", "15/09/2026 15:20", "16/09/2026 13:10", false, "FULL"]         // Expired
+            ["UIH", "01/07/2026", "31/10/2026", "15/09/2026 15:50", "16/09/2026 13:40", false, "B787_ATR"],    // Expired
+            ["DIN", "01/08/2026", "31/12/2026", "15/09/2026 15:40", "16/09/2026 13:25", false, "FULL"],        // Expired
+            ["VDH", "01/01/2026", "30/06/2026", "15/09/2026 15:30", "15/09/2026 16:30", false, "A321_A350"],   // Expired
+            ["VKG", "01/08/2026", "30/09/2026", "15/09/2026 15:20", "16/09/2026 13:10", false, "FULL"]         // Expired
         ];
 
 
@@ -1964,12 +2005,12 @@ Business-consistent mock data rule:
         const mockUsers = ["quan.nm", "huyen.ntt", "nam.lh", "ha.tt", "admin"];
 
         let configs = fakeRows.map((r, idx) => {
-            const [icao, from, to, createdAt, updatedAt, toApiError, fleetProfile] = r;
-            const a = airportMaster[icao];
+            const [iata, from, to, createdAt, updatedAt, toApiError, fleetProfile] = r;
+            const a = airportMaster[iata];
             return {
                 id: idx + 1,
                 airport: a.name,
-                icao,
+                iata,
                 from,
                 to,
                 toApiError,
@@ -2011,9 +2052,9 @@ Business-consistent mock data rule:
         }
 
         function detailMatrix(c) {
-            return `<div class="detail-box"><div class="detail-title"><span>Min Ground Time Matrix — ${c.airport} (${c.icao})</span><span style="color:#72838c;font-weight:500">Unit: minutes</span></div>
+            return `<div class="detail-box"><div class="detail-title"><span>Min Ground Time Matrix — ${c.airport} (${c.iata})</span><span style="color:#72838c;font-weight:500">Unit: minutes</span></div>
   <table class="matrix"><thead><tr><th>Previous Sector - Next Sector</th><th>A320</th><th>A321</th><th>A350</th><th>B787</th><th>ATR</th></tr></thead>
-  <tbody>${routes.map(r => { let x = c.matrix[r]; return `<tr><td class="route">${r}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td class="${x[k] === "" ? "blank" : ""}">${x[k] === "" ? "—" : x[k]}</td>`).join("")}</tr>` }).join("")}</tbody></table></div>`;
+  <tbody>${routes.map(r => { let x = c.matrix[r]; return `<tr><td class="route">${routeLabel(r)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td class="${x[k] === "" ? "blank" : ""}">${x[k] === "" ? "—" : x[k]}</td>`).join("")}</tr>` }).join("")}</tbody></table></div>`;
         }
 
 
@@ -2084,7 +2125,7 @@ Business-consistent mock data rule:
                 tb.insertAdjacentHTML("beforeend", `
       <tr class="main-row" onclick="openDrawer(${c.id})" style="cursor:pointer">
         <td class="center">${start + i + 1}</td>
-        <td><b>${c.icao}</b></td>
+        <td><b>${c.iata}</b></td>
         <td>${c.from || ""}</td>
         <td>${effectiveToHtml(c)}</td>
         <td>${c.updatedAt || ""}</td>
@@ -2131,10 +2172,10 @@ Business-consistent mock data rule:
         function openDrawer(id) {
             const c = configs.find(x => x.id === id);
             if (!c) return;
-            document.getElementById("drawerTitle").textContent = `Min Ground Time — ${c.icao}`;
+            document.getElementById("drawerTitle").textContent = `Min Ground Time — ${c.iata}`;
             document.getElementById("drawerSub").textContent = c.airport;
             document.getElementById("drawerAirport").textContent = c.airport;
-            document.getElementById("drawerIcao").textContent = c.icao;
+            document.getElementById("drawerIata").textContent = c.iata;
             document.getElementById("drawerFrom").textContent = c.from || "";
             document.getElementById("drawerTo").innerHTML = effectiveToHtml(c);
             document.getElementById("drawerUpdatedAt").textContent = c.updatedAt || "";
@@ -2144,7 +2185,7 @@ Business-consistent mock data rule:
                 let x = c.matrix[r];
                 return `<tr>
       <td>${idx + 1}</td>
-      <td class="route-name">${r}</td>
+      <td class="route-name">${routeLabel(r)}</td>
       <td>${x.A320 === "" ? "—" : x.A320}</td>
       <td>${x.A321 === "" ? "—" : x.A321}</td>
       <td>${x.A350 === "" ? "—" : x.A350}</td>
@@ -2174,7 +2215,7 @@ Business-consistent mock data rule:
         function editRows(matrix) {
             document.getElementById("editMatrixBody").innerHTML = routes.map(r => {
                 let x = matrix[r] || { A320: "", A321: "", A350: "", B787: "", ATR: "" };
-                return `<tr><td>${r}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td><input type="number" min="0" data-route="${r}" data-fleet="${k}" value="${x[k]}"></td>`).join("")}</tr>`
+                return `<tr><td>${routeLabel(r)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td><input type="number" min="0" data-route="${r}" data-fleet="${k}" value="${x[k]}"></td>`).join("")}</tr>`
             }).join("");
         }
         function emptyMatrix() { return Object.fromEntries(routes.map(r => [r, { A320: "", A321: "", A350: "", B787: "", ATR: "" }])) }
@@ -2203,7 +2244,7 @@ Business-consistent mock data rule:
             const c = configs.find(x => x.id === id);
             document.getElementById("editTitle").textContent = "Edit Min Ground Time";
             const airportField = document.getElementById("mAirport");
-            airportField.value = c.icao;
+            airportField.value = c.iata;
             airportField.disabled = true;
             const fromField = document.getElementById("mFrom");
             fromField.value = toISODate(c.from);
@@ -2226,11 +2267,11 @@ Business-consistent mock data rule:
 
         document.getElementById("add").onclick = openAdd;
         document.getElementById("save").onclick = () => {
-            const icao = document.getElementById("mAirport").value;
+            const iata = document.getElementById("mAirport").value;
             const fromRaw = document.getElementById("mFrom").value;
 
-            if (!icao) {
-                alert("Please select ICAO.");
+            if (!iata) {
+                alert("Please select IATA.");
                 return;
             }
             if (!fromRaw) {
@@ -2238,7 +2279,7 @@ Business-consistent mock data rule:
                 return;
             }
 
-            const a = airportMaster[icao];
+            const a = airportMaster[iata];
             const from = fmtDate(fromRaw);
             const matrix = readMatrix();
             if (editingId) {
@@ -2249,7 +2290,7 @@ Business-consistent mock data rule:
                 c.updatedBy = "admin";
                 showToast("Update successful", "Min Ground Time configuration has been updated successfully.");
             } else {
-                configs.unshift({ id: Date.now(), airport: a.name, icao, from, to: "", toApiError: false, createdAt: "16/09/2026 14:10", updatedAt: "16/09/2026 14:10", updatedBy: "admin", matrix });
+                configs.unshift({ id: Date.now(), airport: a.name, iata, from, to: "", toApiError: false, createdAt: "16/09/2026 14:10", updatedAt: "16/09/2026 14:10", updatedBy: "admin", matrix });
                 configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
                 showToast("Add successful", "Min Ground Time configuration has been added successfully.");
             }
@@ -2257,7 +2298,7 @@ Business-consistent mock data rule:
             currentPage = 1;
             render(); document.getElementById("editOverlay").classList.remove("show");
         };
-        function openDelete(id) { closeDrawer(); deletingId = id; let c = configs.find(x => x.id === id); document.getElementById("deleteName").textContent = `ICAO: ${c.icao} | Airport: ${c.airport} | Effective From: ${c.from}`; document.getElementById("deleteOverlay").classList.add("show") }
+        function openDelete(id) { closeDrawer(); deletingId = id; let c = configs.find(x => x.id === id); document.getElementById("deleteName").textContent = `IATA: ${c.iata} | Airport: ${c.airport} | Effective From: ${c.from}`; document.getElementById("deleteOverlay").classList.add("show") }
         document.getElementById("deleteConfirm").onclick = () => {
             configs = configs.filter(x => x.id !== deletingId);
             visible = visible.filter(x => x.id !== deletingId);
@@ -2274,7 +2315,7 @@ Business-consistent mock data rule:
                     time: c.updatedAt || "16/09/2026 15:05",
                     action: "Update",
                     details: `<div class="history-detail-main">Min Ground Time updated</div>
-               <div class="history-detail-sub">Fleet matrix values changed for ${c.icao}. Example: <span class="history-old">A321 / DOM → DOM: 30</span> → <span class="history-new">35</span></div>`,
+               <div class="history-detail-sub">Fleet matrix values changed for ${c.iata}. Example: <span class="history-old">A321 / DOM → DOM: 30</span> → <span class="history-new">35</span></div>`,
                     by: user
                 },
                 {
@@ -2288,7 +2329,7 @@ Business-consistent mock data rule:
                     time: c.createdAt || "15/09/2026 09:30",
                     action: "Import",
                     details: `<div class="history-detail-main">Import from file</div>
-               <div class="history-detail-sub">${c.icao}: route-pair matrix imported from min-ground-time-template.xlsx</div>`,
+               <div class="history-detail-sub">${c.iata}: route-pair matrix imported from min-ground-time-template.xlsx</div>`,
                     by: user
                 },
                 {
@@ -2344,7 +2385,7 @@ Business-consistent mock data rule:
             currentHistoryRecordId = id;
             const c = configs.find(x => x.id === id);
             document.getElementById("historyTitle").textContent =
-                `Change History - ${c.icao} - ${c.from} - ${c.to || "Ongoing"}`;
+                `Change History - ${c.iata} - ${c.from} - ${c.to || "Ongoing"}`;
 
             document.getElementById("historyFromDate").value = "";
             document.getElementById("historyToDate").value = "";
@@ -2397,12 +2438,12 @@ Business-consistent mock data rule:
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `Change_History_${c.icao}_${c.from.replaceAll("/", "-")}.csv`;
+            a.download = `Change_History_${c.iata}_${c.from.replaceAll("/", "-")}.csv`;
             a.click();
             URL.revokeObjectURL(url);
         };
         document.getElementById("search").onclick = () => {
-            let icao = document.getElementById("fIcao").value.trim().toUpperCase();
+            let iata = document.getElementById("fIata").value.trim().toUpperCase();
             let fromValue = document.getElementById("fEffectiveFromNative").value;
             let toValue = document.getElementById("fEffectiveToNative").value;
             let status = document.getElementById("fStatus").value;
@@ -2411,7 +2452,7 @@ Business-consistent mock data rule:
             let toTs = toValue ? Date.parse(toValue + "T23:59:59Z") : null;
 
             visible = configs.filter(c => {
-                if (icao && !c.icao.toUpperCase().includes(icao)) return false;
+                if (iata && !c.iata.toUpperCase().includes(iata)) return false;
                 if (status && deriveStatus(c) !== status) return false;
 
                 if (fromTs !== null || toTs !== null) {
@@ -2433,7 +2474,7 @@ Business-consistent mock data rule:
             render();
         };
         document.getElementById("clear").onclick = () => {
-            ["fIcao", "fEffectiveFrom", "fEffectiveTo", "fEffectiveFromNative", "fEffectiveToNative", "fStatus"].forEach(id => {
+            ["fIata", "fEffectiveFrom", "fEffectiveTo", "fEffectiveFromNative", "fEffectiveToNative", "fStatus"].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.value = "";
             });
@@ -2447,9 +2488,9 @@ Business-consistent mock data rule:
             render(); showToast("Refreshed", "Latest Min Ground Time data loaded.");
         };
         document.getElementById("export").onclick = () => {
-            const head = ["Airport", "ICAO", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector - Next Sector", "A320", "A321", "A350", "B787", "ATR"];
+            const head = ["Airport", "IATA", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector - Next Sector", "A320", "A321", "A350", "B787", "ATR"];
             const rows = [head];
-            visible.forEach(c => routes.forEach(r => { let x = c.matrix[r]; rows.push([c.airport, c.icao, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", c.updatedBy || "", deriveStatus(c), r, x.A320, x.A321, x.A350, x.B787, x.ATR]) }));
+            visible.forEach(c => routes.forEach(r => { let x = c.matrix[r]; rows.push([c.airport, c.iata, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", c.updatedBy || "", deriveStatus(c), r, x.A320, x.A321, x.A350, x.B787, x.ATR]) }));
             let csv = rows.map(row => row.map(v => `"${String(v ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
             let blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
             a.href = url; a.download = "Min_Ground_Time.csv"; a.click(); URL.revokeObjectURL(url); showToast("Export successful", "Min Ground Time matrix has been exported.");
@@ -2508,21 +2549,21 @@ Business-consistent mock data rule:
         function periodDisplay(from, to) {
             return `${from} → ${to || "Ongoing"}`;
         }
-        function getAirportRecords(icao) {
+        function getAirportRecords(iata) {
             return configs
-                .filter(c => c.icao === icao && !c.toApiError)
+                .filter(c => c.iata === iata && !c.toApiError)
                 .slice()
                 .sort((a, b) => dateToTs(a.from) - dateToTs(b.from));
         }
-        function buildSingleImportPlan(icao, newFrom) {
-            const records = getAirportRecords(icao);
+        function buildSingleImportPlan(iata, newFrom) {
+            const records = getAirportRecords(iata);
             const newTs = dateToTs(newFrom);
             const same = records.find(r => dateToTs(r.from) === newTs);
             if (same) {
                 return {
                     invalid: true,
-                    icao,
-                    airport: airportMaster[icao]?.name || icao,
+                    iata,
+                    airport: airportMaster[iata]?.name || iata,
                     newFrom,
                     reason: "Duplicate Effective From"
                 };
@@ -2538,8 +2579,8 @@ Business-consistent mock data rule:
 
             return {
                 invalid: false,
-                icao,
-                airport: airportMaster[icao]?.name || icao,
+                iata,
+                airport: airportMaster[iata]?.name || iata,
                 newFrom,
                 newTo: next ? addDaysDisplay(next.from, -1) : "",
                 previous,
@@ -2553,14 +2594,14 @@ Business-consistent mock data rule:
           Prototype behavior:
           Browser mock does not parse .xlsx content.
           The uploaded file is represented as a multi-airport batch so the UX can be tested.
-          The real backend will read ICAO + Effective From + 16 route-pair rows from the workbook.
+          The real backend will read IATA + Effective From + 16 route-pair rows from the workbook.
         */
         function mockBatchFromExcel() {
             return [
-                buildSingleImportPlan("VVNB", "01/10/2026"),
-                buildSingleImportPlan("VVCM", "01/10/2026"),
-                buildSingleImportPlan("VVCA", "01/11/2026"),
-                buildSingleImportPlan("VVTS", "15/07/2026")
+                buildSingleImportPlan("HAN", "01/10/2026"),
+                buildSingleImportPlan("CAH", "01/10/2026"),
+                buildSingleImportPlan("VCL", "01/11/2026"),
+                buildSingleImportPlan("SGN", "15/07/2026")
             ];
         }
 
@@ -2622,7 +2663,7 @@ Business-consistent mock data rule:
         <table class="period-table">
           <thead>
             <tr>
-              <th>ICAO</th>
+              <th>IATA</th>
               <th>NEW EFFECTIVE PERIOD</th>
               <th>RESULT</th>
             </tr>
@@ -2630,7 +2671,7 @@ Business-consistent mock data rule:
           <tbody>
             ${valid.map(p => `
               <tr>
-                <td><b>${p.icao}</b><span class="period-sub">${p.airport}</span></td>
+                <td><b>${p.iata}</b><span class="period-sub">${p.airport}</span></td>
                 <td><span class="new-period">${periodDisplay(p.newFrom, p.newTo)}</span></td>
                 <td>${scenarioText(p)}</td>
               </tr>
@@ -2655,7 +2696,7 @@ Business-consistent mock data rule:
             <tbody>
               ${closing.map(p => `
                 <tr>
-                  <td><b>${p.icao}</b></td>
+                  <td><b>${p.iata}</b></td>
                   <td><span class="old-period">${periodDisplay(p.previous.from, p.previous.to)}</span></td>
                   <td><span class="new-period">${periodDisplay(p.previous.from, p.previousNewTo)}</span></td>
                 </tr>
@@ -2673,10 +2714,10 @@ Business-consistent mock data rule:
         <div class="confirm-card-title warning">${invalid.length} row group(s) cannot be imported</div>
         <div class="confirm-card-content">
           <table class="period-table">
-            <thead><tr><th>ICAO</th><th>EFFECTIVE FROM</th><th>REASON</th></tr></thead>
+            <thead><tr><th>IATA</th><th>EFFECTIVE FROM</th><th>REASON</th></tr></thead>
             <tbody>
               ${invalid.map(p => `
-                <tr><td><b>${p.icao}</b></td><td>${p.newFrom}</td><td>${p.reason}</td></tr>
+                <tr><td><b>${p.iata}</b></td><td>${p.newFrom}</td><td>${p.reason}</td></tr>
               `).join("")}
             </tbody>
           </table>
@@ -2695,8 +2736,8 @@ Business-consistent mock data rule:
             document.getElementById("importExcelOverlay").classList.remove("show");
             document.getElementById("importConfirmOverlay").classList.add("show");
         }
-        function mockImportedMatrix(icao) {
-            return matrixWithFleetProfile(airportMaster[icao]?.type || "OTHER", "FULL");
+        function mockImportedMatrix(iata) {
+            return matrixWithFleetProfile(airportMaster[iata]?.type || "OTHER", "FULL");
         }
         function applyImportBatch(batch) {
             batch.filter(x => !x.invalid).forEach((plan, index) => {
@@ -2709,7 +2750,7 @@ Business-consistent mock data rule:
                 configs.push({
                     id: Date.now() + index,
                     airport: plan.airport,
-                    icao: plan.icao,
+                    iata: plan.iata,
                     from: plan.newFrom,
                     to: plan.newTo,
                     toApiError: false,
@@ -2717,7 +2758,7 @@ Business-consistent mock data rule:
                     updatedAt: "16/09/2026 17:02",
                     updatedBy: "admin",
                     fleetProfile: "FULL",
-                    matrix: mockImportedMatrix(plan.icao)
+                    matrix: mockImportedMatrix(plan.iata)
                 });
             });
 
