@@ -1610,7 +1610,8 @@ Business-consistent mock data rule:
                     </div>
                 </div>
                 <p class="note">Min Ground Time is configured in minutes for each Previous Sector - Next Sector
-                    combination and each fleet type.</p>
+                    combination and each fleet type. Effective To is calculated automatically from the next period for
+                    the same IATA.</p>
                 <table class="edit-matrix">
                     <thead>
                         <tr>
@@ -2032,14 +2033,33 @@ Business-consistent mock data rule:
             return Date.UTC(y, m - 1, d);
         }
         function utcToday() {
-            // Mockup reference date: 16/09/2026 UTC.
-            return Date.UTC(2026, 8, 16);
+            // Business rule: status is evaluated by the current UTC calendar date.
+            const now = new Date();
+            return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+        }
+        function currentUtcDateTime() {
+            const now = new Date();
+            const d = String(now.getUTCDate()).padStart(2, "0");
+            const m = String(now.getUTCMonth() + 1).padStart(2, "0");
+            const y = now.getUTCFullYear();
+            const hh = String(now.getUTCHours()).padStart(2, "0");
+            const mm = String(now.getUTCMinutes()).padStart(2, "0");
+            return `${d}/${m}/${y} ${hh}:${mm}`;
         }
         function deriveStatus(c) {
             if (c.toApiError) return "";
+            const today = utcToday();
             const effectiveFrom = parseEffectiveDate(c.from);
-            if (effectiveFrom !== null && effectiveFrom > utcToday()) return "Scheduled";
-            return c.to ? "Expired" : "Active";
+            const effectiveTo = parseEffectiveDate(c.to);
+
+            // Scheduled: period has not started yet.
+            if (effectiveFrom !== null && today < effectiveFrom) return "Scheduled";
+            // Expired: period has actually ended before today.
+            if (effectiveTo !== null && today > effectiveTo) return "Expired";
+            // Active: today is inside the effective period, including a period that already
+            // has a future Effective To because a newer Scheduled period exists.
+            if (effectiveFrom !== null && today >= effectiveFrom && (effectiveTo === null || today <= effectiveTo)) return "Active";
+            return "";
         }
         function statusHtml(c) {
             const s = deriveStatus(c);
@@ -2219,6 +2239,66 @@ Business-consistent mock data rule:
             }).join("");
         }
         function emptyMatrix() { return Object.fromEntries(routes.map(r => [r, { A320: "", A321: "", A350: "", B787: "", ATR: "" }])) }
+
+        function getProspectivePeriod(iata, from) {
+            if (!iata || !from) return { duplicate: false, to: "" };
+            const ts = parseEffectiveDate(from);
+            const records = configs
+                .filter(c => c.iata === iata && !c.toApiError)
+                .slice()
+                .sort((a, b) => parseEffectiveDate(a.from) - parseEffectiveDate(b.from));
+            const duplicate = records.some(c => parseEffectiveDate(c.from) === ts);
+            if (duplicate) return { duplicate: true, to: "" };
+            const next = records.find(c => parseEffectiveDate(c.from) > ts) || null;
+            return { duplicate: false, to: next ? addDaysDisplay(next.from, -1) : "" };
+        }
+
+        function refreshAddEffectiveToPreview() {
+            if (editingId) return;
+            const iata = document.getElementById("mAirport").value;
+            const raw = document.getElementById("mFrom").value;
+            const from = fmtDate(raw);
+            const toField = document.getElementById("mTo");
+            if (!iata || !from) {
+                toField.value = "Ongoing";
+                return;
+            }
+            const plan = getProspectivePeriod(iata, from);
+            toField.value = plan.duplicate ? "Duplicate Effective From" : (plan.to || "Ongoing");
+        }
+
+        function recalculateAirportTimeline(iata, touchAudit = true) {
+            const records = configs
+                .filter(c => c.iata === iata && !c.toApiError)
+                .slice()
+                .sort((a, b) => parseEffectiveDate(a.from) - parseEffectiveDate(b.from));
+            const stamp = currentUtcDateTime();
+            records.forEach((record, idx) => {
+                const next = records[idx + 1] || null;
+                const calculatedTo = next ? addDaysDisplay(next.from, -1) : "";
+                if (record.to !== calculatedTo) {
+                    record.to = calculatedTo;
+                    record.toApiError = false;
+                    if (touchAudit) {
+                        record.updatedAt = stamp;
+                        record.updatedBy = "admin";
+                    }
+                }
+            });
+        }
+
+        function validateEditMatrix() {
+            const inputs = [...document.querySelectorAll("#editMatrixBody input")];
+            for (const inp of inputs) {
+                const value = inp.value.trim();
+                if (value === "") continue;
+                if (!/^\d+$/.test(value)) {
+                    return "Min Ground Time must be a non-negative integer.";
+                }
+            }
+            return "";
+        }
+
         function openAdd() {
             editingId = null;
             document.getElementById("editTitle").textContent = "Add Min Ground Time";
@@ -2266,6 +2346,9 @@ Business-consistent mock data rule:
         function fmtDate(v) { if (!v) return ""; let [y, m, d] = v.split("-"); return `${d}/${m}/${y}` } function toISODate(v) { if (!v) return ""; let [d, m, y] = v.split("/"); return `${y}-${m}-${d}` }
 
         document.getElementById("add").onclick = openAdd;
+        document.getElementById("mAirport").addEventListener("change", refreshAddEffectiveToPreview);
+        document.getElementById("mFrom").addEventListener("change", refreshAddEffectiveToPreview);
+
         document.getElementById("save").onclick = () => {
             const iata = document.getElementById("mAirport").value;
             const fromRaw = document.getElementById("mFrom").value;
@@ -2279,31 +2362,71 @@ Business-consistent mock data rule:
                 return;
             }
 
+            const matrixError = validateEditMatrix();
+            if (matrixError) {
+                alert(matrixError);
+                return;
+            }
+
             const a = airportMaster[iata];
             const from = fmtDate(fromRaw);
             const matrix = readMatrix();
+            const stamp = currentUtcDateTime();
+
             if (editingId) {
                 const c = configs.find(x => x.id === editingId);
-                c.from = from;
                 c.matrix = matrix;
-                c.updatedAt = "16/09/2026 14:10";
+                c.updatedAt = stamp;
                 c.updatedBy = "admin";
                 showToast("Update successful", "Min Ground Time configuration has been updated successfully.");
             } else {
-                configs.unshift({ id: Date.now(), airport: a.name, iata, from, to: "", toApiError: false, createdAt: "16/09/2026 14:10", updatedAt: "16/09/2026 14:10", updatedBy: "admin", matrix });
-                configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
-                showToast("Add successful", "Min Ground Time configuration has been added successfully.");
+                const plan = getProspectivePeriod(iata, from);
+                if (plan.duplicate) {
+                    alert("A Min Ground Time record with the same IATA and Effective From already exists.");
+                    refreshAddEffectiveToPreview();
+                    return;
+                }
+
+                configs.push({
+                    id: Date.now(),
+                    airport: a.name,
+                    iata,
+                    from,
+                    to: plan.to,
+                    toApiError: false,
+                    createdAt: stamp,
+                    updatedAt: stamp,
+                    updatedBy: "admin",
+                    fleetProfile: "FULL",
+                    matrix
+                });
+
+                // Recalculate the complete timeline for this airport. Previous periods are
+                // closed at D-1 of the next period; the latest period stays Ongoing.
+                recalculateAirportTimeline(iata, true);
+                const created = configs.find(c => c.iata === iata && c.from === from);
+                const periodText = created ? periodDisplay(created.from, created.to) : from;
+                showToast("Add successful", `Min Ground Time has been added: ${periodText}.`);
             }
-            visible = [...configs].sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+
+            configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            visible = [...configs];
             currentPage = 1;
-            render(); document.getElementById("editOverlay").classList.remove("show");
+            render();
+            document.getElementById("editOverlay").classList.remove("show");
         };
         function openDelete(id) { closeDrawer(); deletingId = id; let c = configs.find(x => x.id === id); document.getElementById("deleteName").textContent = `IATA: ${c.iata} | Airport: ${c.airport} | Effective From: ${c.from}`; document.getElementById("deleteOverlay").classList.add("show") }
         document.getElementById("deleteConfirm").onclick = () => {
+            const deleted = configs.find(x => x.id === deletingId);
+            const iata = deleted?.iata;
             configs = configs.filter(x => x.id !== deletingId);
-            visible = visible.filter(x => x.id !== deletingId);
+            if (iata) recalculateAirportTimeline(iata, true);
+            configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
+            visible = [...configs];
+            currentPage = 1;
             render();
-            document.getElementById("deleteOverlay").classList.remove("show"); showToast("Delete successful", "Min Ground Time configuration has been deleted successfully.");
+            document.getElementById("deleteOverlay").classList.remove("show");
+            showToast("Delete successful", "Min Ground Time configuration has been deleted and the airport timeline has been recalculated.");
         };
         let currentHistoryRecordId = null;
         let currentHistoryRows = [];
@@ -2591,23 +2714,142 @@ Business-consistent mock data rule:
         }
 
         /*
-          Prototype behavior:
-          Browser mock does not parse .xlsx content.
-          The uploaded file is represented as a multi-airport batch so the UX can be tested.
-          The real backend will read IATA + Effective From + 16 route-pair rows from the workbook.
+          Prototype behavior for import test cases:
+          The browser still does not parse workbook cell content.
+          Instead, the selected TC01..TC17 filename drives the matching test scenario so
+          the Confirm Import UX and timeline rules can be demonstrated with the 17 test files.
+          Real implementation should parse the .xlsx content on backend/frontend as designed.
         */
-        function mockBatchFromExcel() {
-            return [
-                buildSingleImportPlan("HAN", "01/10/2026"),
-                buildSingleImportPlan("CAH", "01/10/2026"),
-                buildSingleImportPlan("VCL", "01/11/2026"),
-                buildSingleImportPlan("SGN", "15/07/2026")
-            ];
+        let currentImportCaseLabel = "";
+        let currentImportNotes = [];
+
+        function invalidImportPlan(iata, newFrom, reason) {
+            return {
+                invalid: true,
+                iata: iata || "(blank)",
+                airport: iata && airportMaster[iata] ? airportMaster[iata].name : "",
+                newFrom: newFrom || "(blank)",
+                reason
+            };
+        }
+
+        function manualValidPlan(iata, newFrom, newTo, scenario) {
+            return {
+                invalid: false,
+                iata,
+                airport: airportMaster[iata]?.name || iata,
+                newFrom,
+                newTo: newTo || "",
+                previous: null,
+                previousNewTo: "",
+                next: null,
+                scenario: scenario || "FIRST"
+            };
+        }
+
+        function testCaseBatchFromFile(fileName) {
+            const normalizedName = (fileName || "").toLowerCase();
+            currentImportNotes = [];
+
+            // Mixed batch template: 3 valid airports + 3 invalid/non-existing IATA codes.
+            if (normalizedName.includes("mgt_import_mixed_valid_invalid_airports")) {
+                currentImportCaseLabel = "Mixed batch — 3 valid / 3 invalid airports";
+                currentImportNotes = [
+                    "Valid groups are ready to import.",
+                    "Invalid groups are excluded and shown with the validation reason."
+                ];
+                return [
+                    buildSingleImportPlan("VCL", "01/10/2026"),
+                    buildSingleImportPlan("CAH", "01/11/2026"),
+                    buildSingleImportPlan("VKG", "01/11/2026"),
+                    invalidImportPlan("XXX", "01/10/2026", "Invalid IATA. Airport does not exist in Airport master."),
+                    invalidImportPlan("ABC", "01/11/2026", "Invalid IATA. Airport does not exist in Airport master."),
+                    invalidImportPlan("ZZZ", "01/01/2027", "Invalid IATA. Airport does not exist in Airport master.")
+                ];
+            }
+
+            const match = (fileName || "").match(/TC(\d{2})_/i);
+            const tc = match ? Number(match[1]) : 0;
+
+            switch (tc) {
+                case 1:
+                    currentImportCaseLabel = "TC01 — Create first period";
+                    return [buildSingleImportPlan("VCL", "01/10/2026")];
+                case 2:
+                    currentImportCaseLabel = "TC02 — Create new latest period";
+                    return [buildSingleImportPlan("HAN", "01/10/2026")];
+                case 3:
+                    currentImportCaseLabel = "TC03 — Insert period in the middle";
+                    return [buildSingleImportPlan("HAN", "15/07/2026")];
+                case 4:
+                    currentImportCaseLabel = "TC04 — Create earlier period";
+                    return [buildSingleImportPlan("HAN", "01/03/2026")];
+                case 5:
+                    currentImportCaseLabel = "TC05 — Duplicate IATA + Effective From";
+                    return [buildSingleImportPlan("HAN", "01/09/2026")];
+                case 6:
+                    currentImportCaseLabel = "TC06 — Same Group_ID with different IATA";
+                    return [invalidImportPlan("HAN / SGN", "01/10/2026", "IATA must be consistent within the same Group_ID.")];
+                case 7:
+                    currentImportCaseLabel = "TC07 — Same Group_ID with different Effective_From";
+                    return [invalidImportPlan("HAN", "01/10/2026 / 01/11/2026", "Effective_From must be consistent within the same Group_ID.")];
+                case 8:
+                    currentImportCaseLabel = "TC08 — Missing IATA on first row";
+                    return [invalidImportPlan("", "01/10/2026", "IATA is required on the first row of Group_ID.")];
+                case 9:
+                    currentImportCaseLabel = "TC09 — Missing Effective_From on first row";
+                    return [invalidImportPlan("VCL", "", "Effective_From is required on the first row of Group_ID.")];
+                case 10:
+                    currentImportCaseLabel = "TC10 — Missing Sector Pair";
+                    return [invalidImportPlan("VCL", "01/10/2026", "Each Group_ID must contain exactly 16 sector pairs.")];
+                case 11:
+                    currentImportCaseLabel = "TC11 — Duplicate Sector Pair";
+                    return [invalidImportPlan("VCL", "01/10/2026", "Duplicate/invalid Sector Pair in Group_ID.")];
+                case 12:
+                    currentImportCaseLabel = "TC12 — Invalid Sector Pair";
+                    return [invalidImportPlan("VCL", "01/10/2026", "Invalid Sector Pair value.")];
+                case 13:
+                    currentImportCaseLabel = "TC13 — Invalid MGT value";
+                    return [invalidImportPlan("VCL", "01/10/2026", "Min Ground Time must be a non-negative integer.")];
+                case 14:
+                    currentImportCaseLabel = "TC14 — Blank MGT allowed";
+                    currentImportNotes = ["Blank MGT cells are accepted and kept as not configured."];
+                    return [buildSingleImportPlan("VCL", "01/10/2026")];
+                case 15:
+                    currentImportCaseLabel = "TC15 — Empty group ignored";
+                    currentImportNotes = ["1 completely empty template group was detected and ignored. No record will be created for that empty group."];
+                    return [buildSingleImportPlan("VCL", "01/10/2026")];
+                case 16:
+                    currentImportCaseLabel = "TC16 — Multiple airports in one file";
+                    return [
+                        buildSingleImportPlan("VCL", "01/10/2026"),
+                        buildSingleImportPlan("CAH", "01/11/2026"),
+                        buildSingleImportPlan("HAN", "01/10/2026")
+                    ];
+                case 17:
+                    currentImportCaseLabel = "TC17 — Same airport, multiple periods";
+                    currentImportNotes = ["Periods from the same file are sorted by Effective From before commit."];
+                    return [
+                        manualValidPlan("VCL", "01/10/2026", "31/12/2026", "FIRST"),
+                        manualValidPlan("VCL", "01/01/2027", "", "CLOSE_PREVIOUS")
+                    ];
+                default:
+                    currentImportCaseLabel = "Demo import — unrecognized test filename";
+                    currentImportNotes = ["Filename is not a recognized TC01_ ... TC17_ or mixed-batch template. Showing the default multi-airport demo batch."];
+                    return [
+                        buildSingleImportPlan("HAN", "01/10/2026"),
+                        buildSingleImportPlan("CAH", "01/10/2026"),
+                        buildSingleImportPlan("VCL", "01/11/2026"),
+                        buildSingleImportPlan("SGN", "15/07/2026")
+                    ];
+            }
         }
 
         function openImportExcelPopup() {
             selectedExcel = null;
             pendingImportBatch = [];
+            currentImportCaseLabel = "";
+            currentImportNotes = [];
             document.getElementById("excelFileInput").value = "";
             document.getElementById("selectedExcelFile").classList.remove("show");
             document.getElementById("selectedExcelName").textContent = "";
@@ -2656,6 +2898,12 @@ Business-consistent mock data rule:
             const valid = batch.filter(x => !x.invalid);
 
             let html = `
+    <div class="confirm-card">
+      <div class="confirm-card-title neutral">${currentImportCaseLabel || "Import preview"}</div>
+      <div class="confirm-card-content">
+        <p><b>Selected file:</b> ${selectedExcel ? selectedExcel.name : ""}</p>
+      </div>
+    </div>
     <div class="confirm-card">
       <div class="confirm-card-title info">${valid.length} airport period(s) ready to import</div>
       <div class="confirm-card-content">
@@ -2727,6 +2975,17 @@ Business-consistent mock data rule:
     `;
             }
 
+            if (currentImportNotes.length) {
+                html += `
+      <div class="confirm-card">
+        <div class="confirm-card-title neutral">Import note</div>
+        <div class="confirm-card-content">
+          ${currentImportNotes.map(n => `<p>• ${n}</p>`).join("")}
+        </div>
+      </div>
+    `;
+            }
+
             return html;
         }
         function openImportConfirmPopup(batch) {
@@ -2740,13 +2999,11 @@ Business-consistent mock data rule:
             return matrixWithFleetProfile(airportMaster[iata]?.type || "OTHER", "FULL");
         }
         function applyImportBatch(batch) {
-            batch.filter(x => !x.invalid).forEach((plan, index) => {
-                if (plan.previous) {
-                    plan.previous.to = plan.previousNewTo;
-                    plan.previous.updatedAt = "16/09/2026 17:02";
-                    plan.previous.updatedBy = "admin";
-                }
+            const valid = batch.filter(x => !x.invalid);
+            const affectedIatas = new Set();
+            const stamp = currentUtcDateTime();
 
+            valid.forEach((plan, index) => {
                 configs.push({
                     id: Date.now() + index,
                     airport: plan.airport,
@@ -2754,13 +3011,18 @@ Business-consistent mock data rule:
                     from: plan.newFrom,
                     to: plan.newTo,
                     toApiError: false,
-                    createdAt: "16/09/2026 17:02",
-                    updatedAt: "16/09/2026 17:02",
+                    createdAt: stamp,
+                    updatedAt: stamp,
                     updatedBy: "admin",
                     fleetProfile: "FULL",
                     matrix: mockImportedMatrix(plan.iata)
                 });
+                affectedIatas.add(plan.iata);
             });
+
+            // Apply the same effective-period rule used by Add New so list fields, status,
+            // detail view and import results all use one consistent timeline.
+            affectedIatas.forEach(iata => recalculateAirportTimeline(iata, true));
 
             configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
             visible = [...configs];
@@ -2810,7 +3072,7 @@ Business-consistent mock data rule:
 
         document.getElementById("confirmImportExcel").onclick = () => {
             if (!selectedExcel) return;
-            openImportConfirmPopup(mockBatchFromExcel());
+            openImportConfirmPopup(testCaseBatchFromFile(selectedExcel.name));
         };
 
         document.getElementById("closeImportConfirm").onclick = closeImportConfirmPopup;
