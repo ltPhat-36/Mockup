@@ -607,59 +607,198 @@
             z-index: 90
         }
 
-        .history-common-modal {
-            width: min(1080px, 96vw);
-            height: min(720px, 92vh);
-            max-height: 92vh;
-            background: #f3f5f7
+        .modal.history.history-common-modal {
+            width: min(1180px, 97vw);
+            height: min(720px, 94vh);
+            max-height: 94vh;
+            background: #fff
         }
 
         .history-head {
             height: 54px;
             font-size: 16px;
-            background: #f3f5f7
+            background: #fff
         }
 
-        .history-filter {
-            padding: 8px 14px 12px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto auto;
-            gap: 10px;
+        .history-toolbar {
+            padding: 12px 14px 10px;
+            border-bottom: 1px solid #e3e8ec;
+            background: #fff;
+            position: relative
+        }
+
+        .history-toolbar-top {
+            display: flex;
             align-items: center;
-            background: #f3f5f7
+            justify-content: space-between;
+            margin-bottom: 10px
+        }
+
+        .history-filter-label {
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-weight: 800;
+            color: #263944;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer
+        }
+
+        .history-filter-label .chev {
+            font-size: 9px;
+            transition: transform .15s ease
+        }
+
+        .history-filter-label.collapsed .chev {
+            transform: rotate(-90deg)
+        }
+
+        .history-export-btn {
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            padding: 0 12px;
+            background: var(--orange);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .history-filter-content {
+            display: grid;
+            grid-template-columns: 230px 170px minmax(230px, 1fr) 190px auto auto;
+            gap: 10px;
+            align-items: center
+        }
+
+        .history-filter-content.collapsed {
+            display: none
+        }
+
+        .history-time-wrap {
+            position: relative;
+            min-width: 0
+        }
+
+        .history-time-control {
+            width: 100%;
+            height: 35px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #fff;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #697b85;
+            cursor: pointer;
+            text-align: left
+        }
+
+        .history-time-label.has-value {
+            color: #354a55
+        }
+
+        .history-time-popover {
+            display: none;
+            position: absolute;
+            top: 41px;
+            left: 0;
+            z-index: 110;
+            width: 310px;
+            background: #fff;
+            border: 1px solid #dce5ea;
+            border-radius: 8px;
+            box-shadow: 0 10px 28px rgba(31, 51, 60, .18);
+            padding: 12px
+        }
+
+        .history-time-popover.show {
+            display: block
+        }
+
+        .history-time-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .history-time-field label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #647781;
+            margin-bottom: 5px
+        }
+
+        .history-time-field input {
+            width: 100%;
+            height: 34px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 0 8px;
+            color: #536671
+        }
+
+        .history-time-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 7px;
+            margin-top: 10px
+        }
+
+        .history-action-select,
+        .history-details-search,
+        .history-user-search {
+            height: 35px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #fff;
+            padding: 0 10px;
+            color: #5f7079;
+            min-width: 0
+        }
+
+        .history-details-search {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .history-search-btn {
+            height: 35px;
+            border: none;
+            border-radius: 7px;
+            background: var(--teal);
+            color: #fff;
+            padding: 0 16px;
+            cursor: pointer;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .history-clear-btn {
+            height: 35px;
+            border: none;
+            background: #fff;
+            color: #596a73;
+            cursor: pointer;
+            white-space: nowrap
         }
 
         .history-card {
-            margin: 0 14px 14px;
+            margin: 0;
             background: #fff;
-            border: 1px solid #e0e6ea;
-            border-radius: 9px;
             display: flex;
             flex-direction: column;
             min-height: 0;
             flex: 1;
             overflow: hidden
-        }
-
-        .history-download-row {
-            min-height: 42px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 7px 10px;
-            border-bottom: 1px solid #e4eaee
-        }
-
-        .history-download-btn {
-            height: 29px;
-            border: 1px solid #dfe6ea;
-            background: #fff;
-            border-radius: 6px;
-            padding: 0 11px;
-            color: #536671;
-            font-size: 10px;
-            font-weight: 700;
-            cursor: pointer
         }
 
         .history-table-wrap {
@@ -670,7 +809,7 @@
 
         .history-table {
             width: 100%;
-            min-width: 900px;
+            min-width: 980px;
             border-collapse: collapse
         }
 
@@ -678,78 +817,97 @@
             position: sticky;
             top: 0;
             z-index: 2;
-            height: 34px;
+            height: 38px;
             background: #eef1f4;
             color: #344954;
             border-right: 1px solid #dfe5e9;
             border-bottom: 1px solid #d8e0e5;
-            padding: 0 8px;
-            font-size: 10px
+            padding: 0 9px;
+            font-size: 10px;
+            text-align: left
         }
 
         .history-table td {
-            height: auto;
-            min-height: 38px;
-            padding: 8px;
+            height: 50px;
+            padding: 8px 9px;
             border-right: 1px solid #e6ebee;
             border-bottom: 1px solid #e6ebee;
             vertical-align: top;
             white-space: normal;
             font-size: 11px;
-            line-height: 1.4
+            line-height: 1.45
         }
 
-        .history-action-tag {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 7px;
-            border-radius: 5px;
-            border: 1px solid #69b8ff;
-            background: #eef8ff;
-            color: #258ae0;
-            font-size: 10px
+        .history-table th:first-child,
+        .history-table td:first-child {
+            text-align: center
         }
 
-        .history-action-tag.delete {
-            border-color: #ff9f9f;
-            background: #fff3f3;
-            color: #e35454
+        .history-row:hover {
+            background: #fafcfd
         }
 
-        .history-action-tag.import {
-            border-color: #87c9b1;
-            background: #effbf5;
-            color: #17865c
+        .history-action-text {
+            font-weight: 800;
+            color: #344954;
+            text-transform: capitalize
         }
 
-        .history-detail-main {
-            font-weight: 700;
-            color: #2e414c
+        .history-action-text.delete {
+            color: #d84e4e
         }
 
-        .history-detail-sub {
-            color: #6f8089;
-            margin-top: 2px
+        .history-action-text.import {
+            color: #15885c
         }
 
-        .history-old {
+        .history-action-text.create {
+            color: #258ae0
+        }
+
+        .history-details-text {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            color: #425761;
+            white-space: pre-line;
+            cursor: default
+        }
+
+        .history-details-text .detail-head {
+            font-weight: 800;
+            color: #2f424d
+        }
+
+        .history-details-text .detail-line {
+            display: block;
+            margin-top: 1px
+        }
+
+        .history-old-inline {
             text-decoration: line-through;
-            color: #87949b
+            color: #84929a
         }
 
-        .history-new {
+        .history-new-inline {
             font-weight: 700;
-            color: #2f414c
+            color: #263944
+        }
+
+        .history-empty {
+            color: #87969e
         }
 
         .history-footer {
-            min-height: 45px;
+            min-height: 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 12px;
+            padding: 0 14px;
             border-top: 1px solid #e0e6ea;
-            font-size: 11px
+            font-size: 11px;
+            background: #fff
         }
 
         .history-pager {
@@ -758,13 +916,32 @@
             gap: 6px
         }
 
+        .history-show-label {
+            color: #667983;
+            margin-right: 4px
+        }
+
+        .history-page-size {
+            height: 30px;
+            border: 1px solid #e1e7eb;
+            border-radius: 7px;
+            padding: 0 10px;
+            background: #fff;
+            color: #5e707a
+        }
+
         .history-common-modal .modal-body {
             padding: 0
         }
 
-        @media(max-width:900px) {
-            .history-filter {
+        @media(max-width:1000px) {
+            .history-filter-content {
                 grid-template-columns: 1fr 1fr 1fr
+            }
+
+            .history-search-btn,
+            .history-clear-btn {
+                width: 100%
             }
         }
 
@@ -822,9 +999,11 @@
 
         .field input:disabled,
         .field select:disabled {
-            background: #f3f5f6;
-            color: #89969e;
-            cursor: not-allowed
+            background: #f1f3f5;
+            color: #8a98a1;
+            border-color: #d9e0e4;
+            cursor: not-allowed;
+            opacity: 1
         }
 
         .modal-foot {
@@ -1959,35 +2138,61 @@ Business-consistent mock data rule:
                 <button class="close" data-close="historyOverlay">×</button>
             </div>
 
-            <div class="history-filter">
-                <input class="control" id="historyFromDate" type="date" title="From Date">
-                <input class="control" id="historyToDate" type="date" title="To Date">
-                <input class="control" id="historyAccount" type="text" placeholder="Account">
-                <select class="control" id="historyAction">
-                    <option value="">Action</option>
-                    <option value="Create">Create</option>
-                    <option value="Update">Update</option>
-                    <option value="Delete">Delete</option>
-                    <option value="Import">Import</option>
-                </select>
-                <button type="button" class="search" id="historySearch">⌕ Search</button>
-                <button type="button" class="clear" id="historyClear">↶ Clear Filter</button>
+            <div class="history-toolbar">
+                <div class="history-toolbar-top">
+                    <button type="button" class="history-filter-label" id="historyFilterToggle">☰ <span>Filter</span>
+                        <span class="chev">▲</span></button>
+                    <button type="button" class="history-export-btn" id="historyDownload">⇩ Export Excel</button>
+                </div>
+
+                <div class="history-filter-content" id="historyFilterContent">
+                    <div class="history-time-wrap">
+                        <button type="button" class="history-time-control" id="historyTimeToggle">
+                            <span class="history-time-label" id="historyTimeLabel">Select time</span><span>▣</span>
+                        </button>
+                        <div class="history-time-popover" id="historyTimePopover">
+                            <div class="history-time-fields">
+                                <div class="history-time-field"><label>From date</label><input id="historyFromDate"
+                                        type="date"></div>
+                                <div class="history-time-field"><label>To date</label><input id="historyToDate"
+                                        type="date"></div>
+                            </div>
+                            <div class="history-time-actions">
+                                <button type="button" class="btn" id="historyTimeClear">Clear</button>
+                                <button type="button" class="btn primary" id="historyTimeApply">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <select id="historyAction" class="history-action-select">
+                        <option value="">Select action</option>
+                        <option value="Create">Create</option>
+                        <option value="Update">Update</option>
+                        <option value="Delete">Delete</option>
+                    </select>
+
+                    <input id="historyDetails" class="history-details-search" type="text" maxlength="255"
+                        placeholder="Enter updated details" title="">
+
+                    <input id="historyAccount" class="history-user-search" list="historyUserList" type="text"
+                        placeholder="Updated by" autocomplete="off">
+                    <datalist id="historyUserList"></datalist>
+
+                    <button type="button" class="history-search-btn" id="historySearch">⌕ Search</button>
+                    <button type="button" class="history-clear-btn" id="historyClear">↶ Clear Filter</button>
+                </div>
             </div>
 
             <div class="history-card">
-                <div class="history-download-row">
-                    <button type="button" class="history-download-btn" id="historyDownload">⇩ Download file</button>
-                </div>
-
                 <div class="history-table-wrap">
                     <table class="history-table">
                         <thead>
                             <tr>
-                                <th style="width:46px">NO.</th>
-                                <th style="width:160px">Time</th>
-                                <th style="width:92px">Action</th>
-                                <th>Update Details</th>
-                                <th style="width:130px">Updated by</th>
+                                <th style="width:55px">No.</th>
+                                <th style="width:175px">Update Time</th>
+                                <th style="width:105px">Action</th>
+                                <th>Updated details</th>
+                                <th style="width:185px">Updated by</th>
                             </tr>
                         </thead>
                         <tbody id="historyBody"></tbody>
@@ -1995,21 +2200,14 @@ Business-consistent mock data rule:
                 </div>
 
                 <div class="history-footer">
-                    <span id="historyCount">0 operation(s)</span>
+                    <span id="historyCount">Total: 0</span>
                     <div class="history-pager">
-                        <span>Hiển thị</span>
-                        <select class="control" style="width:105px;height:29px" disabled>
-                            <option>25 bản ghi</option>
+                        <span class="history-show-label">Show</span>
+                        <select class="history-page-size" id="historyPageSize">
+                            <option value="10">10 records</option>
+                            <option value="25">25 records</option>
                         </select>
-                        <button class="page">«</button>
-                        <button class="page">‹</button>
-                        <button class="page active">1</button>
-                        <button class="page">2</button>
-                        <button class="page">3</button>
-                        <button class="page">4</button>
-                        <button class="page">5</button>
-                        <button class="page">›</button>
-                        <button class="page">»</button>
+                        <div id="historyPagerButtons" style="display:flex;gap:6px;align-items:center"></div>
                     </div>
                 </div>
             </div>
@@ -2242,6 +2440,17 @@ Business-consistent mock data rule:
         }
 
         const mockUsers = ["quan.nm", "huyen.ntt", "nam.lh", "ha.tt", "admin"];
+        const updatedByDisplayNames = {
+            "quan.nm": "Nguyen Minh Quan",
+            "huyen.ntt": "Nguyen Thi Thu Huyen",
+            "nam.lh": "Le Hoang Nam",
+            "ha.tt": "Tran Thu Ha",
+            "admin": "Nguyen Minh Quan",
+            "system": "System"
+        };
+        function updatedByDisplayName(value) {
+            return updatedByDisplayNames[value] || value || "";
+        }
 
         let configs = fakeRows.map((r, idx) => {
             const [iata, from, to, createdAt, updatedAt, toApiError, fleetProfile] = r;
@@ -2387,7 +2596,7 @@ Business-consistent mock data rule:
         <td>${c.from || ""}</td>
         <td>${effectiveToHtml(c)}</td>
         <td>${c.updatedAt || ""}</td>
-        <td>${c.updatedBy || ""}</td>
+        <td>${updatedByDisplayName(c.updatedBy)}</td>
         <td class="center">${statusHtml(c)}</td>
         <td class="center"><div class="action-cell">
           ${actionButtons(c)}
@@ -2739,142 +2948,318 @@ Business-consistent mock data rule:
             showToast("Delete successful", "Min Ground Time has been deleted successfully.");
         };
         let currentHistoryRecordId = null;
-        let currentHistoryRows = [];
+        let currentHistoryOperations = [];
+        let currentHistoryFilteredOperations = [];
+        let currentHistoryPage = 1;
 
-        function buildHistoryRows(c) {
-            const user = c.updatedBy || "admin";
-            const rows = [
-                {
-                    time: c.updatedAt || "16/09/2026 15:05",
-                    action: "Update",
-                    details: `<div class="history-detail-main">Min Ground Time updated</div>
-               <div class="history-detail-sub">Fleet matrix values changed for ${c.iata}. Example: <span class="history-old">A321 / DOM → DOM: 30</span> → <span class="history-new">35</span></div>`,
-                    by: user
-                },
-                {
-                    time: c.updatedAt || "16/09/2026 15:05",
-                    action: "Update",
-                    details: `<div class="history-detail-main">Effective period recalculated</div>
-               <div class="history-detail-sub">Effective To: <span class="history-old">Ongoing</span> → <span class="history-new">${c.to || "Ongoing"}</span></div>`,
-                    by: user
-                },
-                {
-                    time: c.createdAt || "15/09/2026 09:30",
-                    action: "Import",
-                    details: `<div class="history-detail-main">Import from file</div>
-               <div class="history-detail-sub">${c.iata}: route-pair matrix imported from min-ground-time-template.xlsx</div>`,
-                    by: user
-                },
-                {
-                    time: c.createdAt || "15/09/2026 09:30",
-                    action: "Create",
-                    details: `<div class="history-detail-main">Record created</div>
-               <div class="history-detail-sub">Effective period: <span class="history-new">${c.from} → ${c.to || "Ongoing"}</span></div>`,
-                    by: user
-                },
-                {
-                    time: "14/09/2026 16:18",
-                    action: "Update",
-                    details: `<div class="history-detail-main">Fleet values changed</div>
-               <div class="history-detail-sub">A350 / INT - Short → DOM: <span class="history-old">50</span> → <span class="history-new">55</span></div>`,
-                    by: "huyen.ntt"
-                },
-                {
-                    time: "13/09/2026 10:12",
-                    action: "Delete",
-                    details: `<div class="history-detail-main">Imported row removed</div>
-               <div class="history-detail-sub">A duplicate route-pair row was removed during validation.</div>`,
-                    by: "quan.nm"
-                }
-            ];
-            return rows;
+        function matrixField(route, fleet) {
+            return `${route} × ${fleet}`;
         }
 
-        function actionTag(action) {
-            const cls = action === "Delete" ? "delete" : (action === "Import" ? "import" : "");
-            return `<span class="history-action-tag ${cls}">${action}</span>`;
+        function buildHistoryOperations(c) {
+            const currentUser = c.updatedBy || "admin";
+            const currentMatrix = c.matrix?.["DOM → DOM"] || {};
+            const sixteenFieldChanges = [
+                { field: matrixField("DOM → DOM", "A321"), oldValue: "30", newValue: String(currentMatrix.A321 || "35") },
+                { field: matrixField("DOM → DOM", "A350"), oldValue: "50", newValue: String(currentMatrix.A350 || "55") },
+                { field: matrixField("DOM → DOM", "B787"), oldValue: "50", newValue: String(currentMatrix.B787 || "55") },
+                { field: matrixField("DOM → DOM", "ATR"), oldValue: "25", newValue: String(currentMatrix.ATR || "30") },
+                { field: matrixField("DOM → INT - Short", "A321"), oldValue: "50", newValue: "55" },
+                { field: matrixField("DOM → INT - Short", "A350"), oldValue: "50", newValue: "55" },
+                { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "60", newValue: "65" },
+                { field: matrixField("DOM → INT - Medium", "B787"), oldValue: "60", newValue: "65" },
+                { field: matrixField("DOM → INT - Long", "A350"), oldValue: "80", newValue: "85" },
+                { field: matrixField("DOM → INT - Long", "B787"), oldValue: "80", newValue: "85" },
+                { field: matrixField("INT - Medium → DOM", "A321"), oldValue: "45", newValue: "50" },
+                { field: matrixField("INT - Medium → DOM", "A350"), oldValue: "60", newValue: "65" },
+                { field: matrixField("INT - Medium → DOM", "B787"), oldValue: "60", newValue: "65" },
+                { field: matrixField("INT - Short → DOM", "A321"), oldValue: "40", newValue: "45" },
+                { field: matrixField("INT - Short → DOM", "A350"), oldValue: "50", newValue: "55" },
+                { field: matrixField("INT - Short → DOM", "B787"), oldValue: "50", newValue: "55" }
+            ];
+
+            return [
+                { time: c.updatedAt || "22/09/2026 13:56", by: currentUser, action: "Update", changes: sixteenFieldChanges },
+                {
+                    time: "21/09/2026 16:42", by: "huyen.ntt", action: "Update", changes: [
+                        { field: matrixField("DOM → INT - Short", "A321"), oldValue: "50", newValue: "55" },
+                        { field: matrixField("DOM → INT - Short", "A350"), oldValue: "50", newValue: "55" }]
+                },
+                {
+                    time: "20/09/2026 10:18", by: "quan.nm", action: "Update", changes: [
+                        { field: matrixField("INT - Long → DOM", "A350"), oldValue: "80", newValue: "85" },
+                        { field: matrixField("INT - Long → DOM", "B787"), oldValue: "80", newValue: "85" }]
+                },
+                {
+                    time: "19/09/2026 15:05", by: "nam.lh", action: "Update", changes: [
+                        { field: matrixField("INT - Medium → DOM", "A321"), oldValue: "45", newValue: "50" },
+                        { field: matrixField("INT - Medium → DOM", "A350"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("INT - Medium → DOM", "B787"), oldValue: "60", newValue: "65" }]
+                },
+                {
+                    time: "17/09/2026 11:35", by: "ha.tt", action: "Update", changes: [
+                        { field: matrixField("INT - Medium → INT - Medium", "A350"), oldValue: "70", newValue: "75" }]
+                },
+                {
+                    time: "15/09/2026 13:12", by: "quan.nm", action: "Update", changes: [
+                        { field: matrixField("DOM → INT - Medium", "A321"), oldValue: "45", newValue: "50" },
+                        { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("DOM → INT - Medium", "B787"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("DOM → DOM", "ATR"), oldValue: "20", newValue: "30" }]
+                },
+                {
+                    time: "12/09/2026 08:56", by: "ha.tt", action: "Update", changes: [
+                        { field: matrixField("INT - Medium → INT - Medium", "A350"), oldValue: "65", newValue: "70" },
+                        { field: matrixField("INT - Medium → INT - Medium", "B787"), oldValue: "65", newValue: "70" }]
+                },
+                {
+                    time: "10/09/2026 10:30", by: "nam.lh", action: "Update", changes: [
+                        { field: matrixField("INT - Short → DOM", "A321"), oldValue: "40", newValue: "45" },
+                        { field: matrixField("INT - Short → DOM", "A350"), oldValue: "50", newValue: "55" },
+                        { field: matrixField("INT - Short → DOM", "B787"), oldValue: "50", newValue: "55" }]
+                },
+                {
+                    time: "08/09/2026 09:15", by: "huyen.ntt", action: "Update", changes: [
+                        { field: matrixField("DOM → INT - Medium", "A321"), oldValue: "40", newValue: "45" },
+                        { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "55", newValue: "60" }]
+                },
+                {
+                    time: "05/09/2026 16:18", by: "quan.nm", action: "Update", changes: [
+                        { field: matrixField("DOM → INT - Long", "A350"), oldValue: "75", newValue: "80" }]
+                },
+                // Example: this record was created from an Excel import. Import is still logged as Create.
+                {
+                    time: c.createdAt || "01/09/2026 08:10", by: "quan.nm", action: "Create", initial: true, source: "import", changes: [
+                        { field: "Source file", oldValue: "—", newValue: "TC16_Multiple_Airports_One_File.xlsx" },
+                        { field: "IATA", oldValue: "—", newValue: c.iata },
+                        { field: "Effective From", oldValue: "—", newValue: c.from },
+                        { field: "Effective To", oldValue: "—", newValue: c.to || "Ongoing" },
+                        { field: matrixField("DOM → DOM", "A321"), oldValue: "—", newValue: String(currentMatrix.A321 || "35") },
+                        { field: matrixField("DOM → DOM", "A350"), oldValue: "—", newValue: String(currentMatrix.A350 || "55") },
+                        { field: matrixField("DOM → DOM", "B787"), oldValue: "—", newValue: String(currentMatrix.B787 || "55") },
+                        { field: matrixField("DOM → DOM", "ATR"), oldValue: "—", newValue: String(currentMatrix.ATR || "30") },
+                        { field: matrixField("DOM → INT - Short", "A321"), oldValue: "—", newValue: "55" },
+                        { field: matrixField("DOM → INT - Medium", "A321"), oldValue: "—", newValue: "50" },
+                        { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "—", newValue: "65" },
+                        { field: matrixField("DOM → INT - Medium", "B787"), oldValue: "—", newValue: "65" },
+                        { field: matrixField("INT - Medium → DOM", "A321"), oldValue: "—", newValue: "50" },
+                        { field: matrixField("INT - Medium → DOM", "A350"), oldValue: "—", newValue: "65" },
+                        { field: matrixField("INT - Medium → DOM", "B787"), oldValue: "—", newValue: "65" }
+                    ]
+                }
+            ];
+        }
+        function actionText(action) {
+            const cls = String(action || "").toLowerCase();
+            return `<span class="history-action-text ${cls}">${action || ""}</span>`;
+        }
+
+        function historyDisplayTime(value) {
+            if (!value) return "";
+            return value.replace(" ", " • ");
         }
 
         function parseHistoryTime(value) {
             return parseDateTime(value);
         }
 
-        function renderHistoryRows(rows) {
-            currentHistoryRows = rows;
-            document.getElementById("historyBody").innerHTML = rows.map((r, i) => `
-    <tr>
-      <td class="center">${i + 1}</td>
-      <td><b>${r.time}</b></td>
-      <td>${actionTag(r.action)}</td>
-      <td>${r.details}</td>
-      <td><b>${r.by}</b></td>
-    </tr>
-  `).join("");
-            document.getElementById("historyCount").textContent = `${rows.length} operation(s)`;
+        function historyDetailLines(op) {
+            return (op.changes || []).map(ch => {
+                if (op.initial || op.action === "Create") return `• ${ch.field}: ${ch.newValue ?? "—"}`;
+                return `• ${ch.field}: ${ch.oldValue ?? "—"} → ${ch.newValue ?? "—"}`;
+            });
+        }
+
+        function historyDetailsPlain(op) {
+            return historyDetailLines(op).join("\n");
+        }
+
+        function historyDetailsHtml(op) {
+            const esc = v => String(v ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+            return (op.changes || []).map(ch => {
+                const field = esc(ch.field);
+                const newValue = esc(ch.newValue ?? "—");
+                if (op.initial || op.action === "Create") {
+                    return `<span class="detail-line">• ${field}: <span class="history-new-inline">${newValue}</span></span>`;
+                }
+                const oldValue = esc(ch.oldValue ?? "—");
+                return `<span class="detail-line">• ${field}: <span class="history-old-inline">${oldValue}</span> → <span class="history-new-inline">${newValue}</span></span>`;
+            }).join("");
+        }
+        function populateHistoryUsers(operations) {
+            const list = document.getElementById("historyUserList");
+            const users = [...new Set(operations.map(o => updatedByDisplayName(o.by)).filter(Boolean))];
+            list.innerHTML = users.map(u => `<option value="${u}"></option>`).join("");
+        }
+
+        function formatIsoDate(iso) {
+            if (!iso) return "";
+            const [y, m, d] = iso.split("-");
+            return `${d}/${m}/${y}`;
+        }
+
+        function updateHistoryTimeLabel() {
+            const from = document.getElementById("historyFromDate").value;
+            const to = document.getElementById("historyToDate").value;
+            const label = document.getElementById("historyTimeLabel");
+            if (!from && !to) { label.textContent = "Select time"; label.classList.remove("has-value"); return; }
+            label.textContent = `${formatIsoDate(from) || "…"} → ${formatIsoDate(to) || "…"}`;
+            label.classList.add("has-value");
+        }
+
+        function renderHistoryRows(operations) {
+            currentHistoryFilteredOperations = operations;
+            const size = Number(document.getElementById("historyPageSize").value || 10);
+            const totalPages = Math.max(1, Math.ceil(operations.length / size));
+            if (currentHistoryPage > totalPages) currentHistoryPage = totalPages;
+            if (currentHistoryPage < 1) currentHistoryPage = 1;
+            const start = (currentHistoryPage - 1) * size;
+            const pageRows = operations.slice(start, start + size);
+
+            document.getElementById("historyBody").innerHTML = pageRows.length ? pageRows.map((op, i) => {
+                const plain = historyDetailsPlain(op);
+                return `<tr class="history-row">
+      <td>${start + i + 1}</td>
+      <td><b>${historyDisplayTime(op.time)}</b></td>
+      <td>${actionText(op.action)}</td>
+      <td><div class="history-details-text" title="${plain.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}">${historyDetailsHtml(op)}</div></td>
+      <td><b>${updatedByDisplayName(op.by)}</b></td>
+    </tr>`;
+            }).join("") : `<tr><td colspan="5" class="center history-empty" style="height:110px;vertical-align:middle">No data available.</td></tr>`;
+
+            document.getElementById("historyCount").textContent = `Total: ${operations.length}`;
+            renderHistoryPager(totalPages);
+        }
+
+        function renderHistoryPager(totalPages) {
+            const holder = document.getElementById("historyPagerButtons");
+            let pages = [];
+            if (totalPages <= 5) pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+            else {
+                const start = Math.max(1, Math.min(currentHistoryPage - 2, totalPages - 4));
+                pages = Array.from({ length: 5 }, (_, i) => start + i);
+            }
+            holder.innerHTML = `
+    <button class="page" ${currentHistoryPage === 1 ? "disabled" : ""} onclick="historyGoPage(1)">«</button>
+    <button class="page" ${currentHistoryPage === 1 ? "disabled" : ""} onclick="historyGoPage(${currentHistoryPage - 1})">‹</button>
+    ${pages.map(p => `<button class="page ${p === currentHistoryPage ? "active" : ""}" onclick="historyGoPage(${p})">${p}</button>`).join("")}
+    <button class="page" ${currentHistoryPage === totalPages ? "disabled" : ""} onclick="historyGoPage(${currentHistoryPage + 1})">›</button>
+    <button class="page" ${currentHistoryPage === totalPages ? "disabled" : ""} onclick="historyGoPage(${totalPages})">»</button>`;
+        }
+
+        function historyGoPage(page) {
+            currentHistoryPage = page;
+            renderHistoryRows(currentHistoryFilteredOperations);
         }
 
         function openHistory(id) {
             closeDrawer();
             currentHistoryRecordId = id;
             const c = configs.find(x => x.id === id);
-            document.getElementById("historyTitle").textContent =
-                `Change History - ${c.iata} - ${c.from} - ${c.to || "Ongoing"}`;
-
+            document.getElementById("historyTitle").textContent = "Change History";
             document.getElementById("historyFromDate").value = "";
             document.getElementById("historyToDate").value = "";
-            document.getElementById("historyAccount").value = "";
             document.getElementById("historyAction").value = "";
+            document.getElementById("historyDetails").value = "";
+            document.getElementById("historyAccount").value = "";
+            updateHistoryTimeLabel();
+            document.getElementById("historyTimePopover").classList.remove("show");
+            document.getElementById("historyFilterContent").classList.remove("collapsed");
+            document.getElementById("historyFilterToggle").classList.remove("collapsed");
 
-            renderHistoryRows(buildHistoryRows(c));
+            const operations = buildHistoryOperations(c).sort((a, b) => parseHistoryTime(b.time) - parseHistoryTime(a.time));
+            currentHistoryOperations = operations;
+            populateHistoryUsers(operations);
+            currentHistoryPage = 1;
+            renderHistoryRows(operations);
             document.getElementById("historyOverlay").classList.add("show");
         }
 
-        document.getElementById("historySearch").onclick = () => {
-            if (!currentHistoryRecordId) return;
-            const c = configs.find(x => x.id === currentHistoryRecordId);
+        document.getElementById("historyFilterToggle").onclick = () => {
+            const content = document.getElementById("historyFilterContent");
+            const btn = document.getElementById("historyFilterToggle");
+            const collapsed = !content.classList.contains("collapsed");
+            content.classList.toggle("collapsed", collapsed);
+            btn.classList.toggle("collapsed", collapsed);
+        };
+
+        document.getElementById("historyTimeToggle").onclick = e => {
+            e.stopPropagation();
+            document.getElementById("historyTimePopover").classList.toggle("show");
+        };
+        document.getElementById("historyTimeApply").onclick = () => {
             const from = document.getElementById("historyFromDate").value;
             const to = document.getElementById("historyToDate").value;
-            const account = document.getElementById("historyAccount").value.trim().toLowerCase();
-            const action = document.getElementById("historyAction").value;
+            if (from && to && Date.parse(from) > Date.parse(to)) {
+                showToast("Invalid date range", "From Date must be earlier than or equal to To Date.");
+                return;
+            }
+            updateHistoryTimeLabel();
+            document.getElementById("historyTimePopover").classList.remove("show");
+        };
+        document.getElementById("historyTimeClear").onclick = () => {
+            document.getElementById("historyFromDate").value = "";
+            document.getElementById("historyToDate").value = "";
+            updateHistoryTimeLabel();
+        };
+        document.addEventListener("click", e => {
+            const wrap = document.querySelector(".history-time-wrap");
+            if (wrap && !wrap.contains(e.target)) document.getElementById("historyTimePopover")?.classList.remove("show");
+        });
 
-            let rows = buildHistoryRows(c).filter(r => {
-                const ts = parseHistoryTime(r.time);
-                if (from && ts < Date.parse(from + "T00:00:00Z")) return false;
-                if (to && ts > Date.parse(to + "T23:59:59Z")) return false;
-                if (account && !r.by.toLowerCase().includes(account)) return false;
-                if (action && r.action !== action) return false;
+        document.getElementById("historyDetails").addEventListener("input", e => { e.target.title = e.target.value; });
+
+        document.getElementById("historySearch").onclick = () => {
+            if (!currentHistoryRecordId) return;
+            const from = document.getElementById("historyFromDate").value;
+            const to = document.getElementById("historyToDate").value;
+            const action = document.getElementById("historyAction").value;
+            const details = document.getElementById("historyDetails").value.trim().toLowerCase();
+            const account = document.getElementById("historyAccount").value.trim().toLowerCase();
+            const fromTs = from ? Date.parse(from + "T00:00:00Z") : null;
+            const toTs = to ? Date.parse(to + "T23:59:59Z") : null;
+
+            const filtered = currentHistoryOperations.filter(op => {
+                const ts = parseHistoryTime(op.time);
+                if (fromTs !== null && ts < fromTs) return false;
+                if (toTs !== null && ts > toTs) return false;
+                if (action && op.action !== action) return false;
+                if (details && !historyDetailsPlain(op).toLowerCase().includes(details)) return false;
+                if (account && !updatedByDisplayName(op.by).toLowerCase().includes(account)) return false;
                 return true;
             });
-            renderHistoryRows(rows);
+            currentHistoryPage = 1;
+            renderHistoryRows(filtered);
         };
 
         document.getElementById("historyClear").onclick = () => {
-            if (!currentHistoryRecordId) return;
             document.getElementById("historyFromDate").value = "";
             document.getElementById("historyToDate").value = "";
-            document.getElementById("historyAccount").value = "";
             document.getElementById("historyAction").value = "";
-            const c = configs.find(x => x.id === currentHistoryRecordId);
-            renderHistoryRows(buildHistoryRows(c));
+            document.getElementById("historyDetails").value = "";
+            document.getElementById("historyDetails").title = "";
+            document.getElementById("historyAccount").value = "";
+            updateHistoryTimeLabel();
+            currentHistoryPage = 1;
+            renderHistoryRows(currentHistoryOperations);
         };
 
+        document.getElementById("historyPageSize").onchange = () => { currentHistoryPage = 1; renderHistoryRows(currentHistoryFilteredOperations); };
+
         document.getElementById("historyDownload").onclick = () => {
-            if (!currentHistoryRecordId) return;
-            const c = configs.find(x => x.id === currentHistoryRecordId);
-            const rows = [["No.", "Time", "Action", "Update Details", "Updated by"]];
-            currentHistoryRows.forEach((r, i) => {
-                const text = r.details.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-                rows.push([i + 1, r.time, r.action, text, r.by]);
-            });
-            const csv = rows.map(row => row.map(v => `"${String(v).replaceAll('"', '""')}"`).join(",")).join("\n");
+            const rows = [["No.", "Update Time", "Action", "Updated details", "Updated by"]];
+            currentHistoryFilteredOperations.forEach((op, i) => rows.push([i + 1, historyDisplayTime(op.time), op.action, historyDetailsPlain(op), updatedByDisplayName(op.by)]));
+            const csv = rows.map(row => row.map(v => `"${String(v ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
             const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = `Change_History_${c.iata}_${c.from.replaceAll("/", "-")}.csv`;
+            a.download = "Min_Ground_Time_Change_History.csv";
             a.click();
             URL.revokeObjectURL(url);
+            showToast("Export successful", "Change History has been exported successfully.");
         };
+
         document.getElementById("search").onclick = () => {
             let iata = document.getElementById("fIata").value.trim().toUpperCase();
             let fromValue = document.getElementById("fEffectiveFromNative").value;
