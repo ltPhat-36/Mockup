@@ -440,15 +440,14 @@
         }
 
         .ongoing-tag {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 8px;
-            border-radius: 11px;
-            color: #13895e;
-            background: #effcf7;
-            border: 1px solid #75d7b1;
-            font-size: 10px;
-            font-style: italic;
+            display: inline;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+            color: #0695ae;
+            background: transparent;
+            font-size: inherit;
+            font-style: normal;
             font-weight: 600
         }
 
@@ -857,6 +856,118 @@
             color: white
         }
 
+        /* Delete confirmation */
+        .delete-confirm-modal {
+            width: min(620px, 94vw);
+            max-height: 90vh
+        }
+
+        .delete-confirm-body {
+            background: #f4f6f8;
+            padding: 14px;
+            overflow: auto
+        }
+
+        .delete-question {
+            margin: 0 0 12px;
+            color: #435761;
+            line-height: 1.45
+        }
+
+        .delete-card {
+            background: #fff;
+            border: 1px solid #e1e6ea;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px
+        }
+
+        .delete-card:last-child {
+            margin-bottom: 0
+        }
+
+        .delete-card-title {
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: 800
+        }
+
+        .delete-card-title.info {
+            background: #edf7ff
+        }
+
+        .delete-card-title.warning {
+            background: #fff4e9
+        }
+
+        .delete-card-title.neutral {
+            background: #f3f6f8
+        }
+
+        .delete-card-content {
+            padding: 10px 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #475b66
+        }
+
+        .delete-card-content p {
+            margin: 0 0 8px
+        }
+
+        .delete-card-content p:last-child {
+            margin-bottom: 0
+        }
+
+        .delete-period-table {
+            width: 100%;
+            min-width: 0;
+            border-collapse: collapse;
+            margin-top: 9px
+        }
+
+        .delete-period-table th,
+        .delete-period-table td {
+            border: 1px solid #e2e8ec;
+            padding: 7px 8px;
+            height: auto;
+            font-size: 11px;
+            white-space: normal
+        }
+
+        .delete-period-table th {
+            position: static;
+            background: #f1f4f6;
+            color: #394d58
+        }
+
+        .delete-period-table td:first-child {
+            font-weight: 700;
+            width: 38%
+        }
+
+        .delete-record-sub {
+            display: block;
+            color: #7b8991;
+            font-weight: 400;
+            margin-top: 2px
+        }
+
+        .delete-old {
+            text-decoration: line-through;
+            color: #7b8991
+        }
+
+        .delete-new {
+            font-weight: 700;
+            color: #263944
+        }
+
+        .delete-highlight {
+            font-weight: 700;
+            color: #263944
+        }
+
         .edit-matrix {
             min-width: 820px
         }
@@ -891,6 +1002,7 @@
             line-height: 1
         }
 
+        /* Common Import component */
         .import-overlay {
             z-index: 80
         }
@@ -901,8 +1013,8 @@
         }
 
         .import-modal-head {
-            font-size: 17px;
-            height: 56px
+            font-size: 16px;
+            height: 54px
         }
 
         .import-main-body {
@@ -914,34 +1026,20 @@
         .import-section {
             background: #fff;
             border: 1px solid #e0e5e9;
-            border-radius: 10px;
-            padding: 14px 16px;
-            margin-bottom: 12px
-        }
-
-        .import-section:last-child {
-            margin-bottom: 0
+            border-radius: 9px;
+            padding: 14px 16px
         }
 
         .import-section-title {
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12px;
             color: #263944;
             margin-bottom: 12px
         }
 
-        .import-card {
-            background: #fff
-        }
-
-        .import-upload-card {
-            padding: 0;
-            border: none
-        }
-
         .drop-zone {
-            min-height: 170px;
-            border: 1px dashed #b8c4cc;
+            min-height: 178px;
+            border: 1px dashed #c4cfd6;
             border-radius: 8px;
             background: #fafbfd;
             display: flex;
@@ -958,20 +1056,20 @@
         }
 
         .drop-title {
-            font-size: 17px;
+            font-size: 14px;
             font-weight: 800;
             color: #283a45
         }
 
         .drop-or {
-            margin: 12px 0;
+            margin: 10px 0;
             color: #526670;
-            font-size: 12px
+            font-size: 11px
         }
 
         .choose-file-btn {
-            height: 38px;
-            padding: 0 16px;
+            height: 34px;
+            padding: 0 14px;
             border: 1px solid #29a0be;
             border-radius: 6px;
             background: #fff;
@@ -984,15 +1082,15 @@
         }
 
         .accepted-text {
-            margin-top: 12px;
+            margin-top: 10px;
             color: #566974;
-            font-size: 11px
+            font-size: 10px
         }
 
         .selected-file {
             width: min(430px, 100%);
-            margin-top: 13px;
-            padding: 9px 11px;
+            margin-top: 12px;
+            padding: 8px 10px;
             border: 1px solid #cfe3e8;
             border-radius: 7px;
             display: none;
@@ -1006,7 +1104,7 @@
         }
 
         .selected-file-icon {
-            font-size: 20px;
+            font-size: 18px;
             color: var(--teal)
         }
 
@@ -1021,11 +1119,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            font-size: 12px
+            font-size: 11px
         }
 
         .selected-file-info span {
-            font-size: 10px;
+            font-size: 9px;
             color: #83919a;
             margin-top: 2px
         }
@@ -1040,10 +1138,10 @@
 
         .template-hint {
             text-align: center;
-            margin-top: 12px;
+            margin-top: 13px;
             line-height: 1.7;
             color: #788993;
-            font-size: 10px
+            font-size: 9px
         }
 
         .template-link {
@@ -1052,125 +1150,211 @@
             color: #278be8;
             cursor: pointer;
             padding: 0;
-            font-size: 10px
+            font-size: 9px
         }
 
         .import-foot {
             background: #fff
         }
 
-        #confirmImportExcel:disabled,
-        #confirmImportSave:disabled {
+        #confirmImportExcel:disabled {
             background: #b8c4ca;
             border-color: #b8c4ca;
             cursor: not-allowed
         }
 
-        .import-confirm-modal {
-            width: min(590px, 94vw);
-            max-height: 90vh
+        .import-state {
+            display: none
         }
 
-        .confirm-import-body {
-            background: #f4f6f8;
-            padding: 14px;
-            overflow: auto
+        .import-state.show {
+            display: block
         }
 
-        .confirm-card {
+        .import-common-card {
+            min-height: 245px;
             background: #fff;
-            border: 1px solid #e1e6ea;
-            border-radius: 8px;
-            overflow: hidden;
+            border: 1px solid #e0e5e9;
+            border-radius: 9px;
+            padding: 26px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center
+        }
+
+        .import-state-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--teal);
+            color: #fff;
+            font-size: 26px;
+            font-weight: 800;
             margin-bottom: 12px
         }
 
-        .confirm-card:last-child {
-            margin-bottom: 0
+        .import-state-icon.success {
+            background: #18b879
         }
 
-        .confirm-card-title {
-            padding: 11px 12px;
-            font-size: 13px;
+        .import-state-icon.error {
+            background: #ef5d5d
+        }
+
+        .import-state-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #2c3e48;
+            margin-bottom: 10px
+        }
+
+        .import-state-note {
+            font-size: 10px;
+            color: #6f808a;
+            line-height: 1.55;
+            max-width: 490px
+        }
+
+        .import-progress-file {
+            width: min(470px, 100%);
+            display: grid;
+            grid-template-columns: 34px 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-top: 18px;
+            padding: 10px 12px;
+            background: #f7f9fa;
+            border: 1px solid #e2e8ec;
+            border-radius: 8px;
+            text-align: left
+        }
+
+        .import-xls {
+            width: 28px;
+            height: 30px;
+            border-radius: 4px;
+            background: #eaf8ef;
+            color: #19a866;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 800;
+            border: 1px solid #bde7cd
+        }
+
+        .import-file-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #384c57;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .import-progress-track {
+            height: 6px;
+            background: #dfe5e9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 6px
+        }
+
+        .import-progress-bar {
+            height: 100%;
+            width: 0;
+            background: var(--teal);
+            transition: width .35s ease
+        }
+
+        .import-progress-percent {
+            font-size: 11px;
+            color: #61747e
+        }
+
+        .import-result-counts {
+            margin: 2px 0 10px;
+            font-size: 10px;
+            line-height: 1.7;
+            color: #657781
+        }
+
+        .import-result-counts .ok {
+            color: #18a96e;
             font-weight: 800
         }
 
-        .confirm-card-title.warning {
-            background: #fff4e9
+        .import-result-counts .fail {
+            color: #e75b5b;
+            font-weight: 800
         }
 
-        .confirm-card-title.info {
-            background: #edf7ff
-        }
-
-        .confirm-card-title.neutral {
-            background: #f3f6f8
-        }
-
-        .confirm-card-content {
-            padding: 10px 12px;
-            font-size: 11px;
-            line-height: 1.45;
-            color: #475b66
-        }
-
-        .confirm-card-content p {
-            margin: 0 0 8px
-        }
-
-        .confirm-card-content p:last-child {
-            margin-bottom: 0
-        }
-
-        .period-table {
+        .import-result-file {
+            margin-top: 10px;
             width: 100%;
-            min-width: 0;
-            border-collapse: collapse;
-            margin-top: 9px
+            display: grid;
+            grid-template-columns: 28px 1fr 34px;
+            gap: 9px;
+            align-items: center;
+            padding: 9px 10px;
+            border: 1px solid #e2e7eb;
+            border-radius: 7px;
+            background: #fff;
+            text-align: left
         }
 
-        .period-table th,
-        .period-table td {
-            border: 1px solid #e2e8ec;
-            padding: 7px 8px;
-            height: auto;
-            font-size: 11px
+        .import-result-file b {
+            font-size: 10px;
+            color: #354954
         }
 
-        .period-table th {
-            background: #f1f4f6;
-            color: #394d58
-        }
-
-        .period-table td:first-child {
-            font-weight: 700;
-            width: 38%
-        }
-
-        .period-sub {
+        .import-result-file span {
             display: block;
-            color: #7b8991;
-            font-weight: 400;
+            font-size: 9px;
+            color: #7b8b94;
             margin-top: 2px
         }
 
-        .old-period {
-            text-decoration: line-through;
-            color: #7b8991
+        .import-download-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #e0e6ea;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #5d717c
         }
 
-        .new-period {
-            font-weight: 700;
-            color: #263944
+        .import-result-bottom-note {
+            width: 100%;
+            margin-top: 9px;
+            font-size: 9px;
+            color: #7b8b94;
+            text-align: left
         }
 
-        .timeline-note {
-            font-size: 10px;
-            color: #82919a;
-            margin-top: 5px
+        .import-result-actions {
+            display: none;
+            gap: 8px
         }
 
-        @media(max-width:700px) {}
+        .import-result-actions.show {
+            display: flex
+        }
+
+        .import-upload-actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .import-upload-actions.hide {
+            display: none
+        }
 
         .toast {
             display: none;
@@ -1242,6 +1426,13 @@
             align-items: flex-start;
             justify-content: space-between;
             gap: 14px
+        }
+
+        .drawer-title-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
         }
 
         .drawer-title {
@@ -1370,18 +1561,13 @@
             font-size: 12px
         }
 
-        .drawer-table td:first-child {
-            width: 44px;
-            text-align: center
-        }
-
         .drawer-table td.route-name {
             text-align: left;
             font-weight: 600
         }
 
-        .drawer-table th:nth-child(n+3),
-        .drawer-table td:nth-child(n+3) {
+        .drawer-table th:nth-child(n+2),
+        .drawer-table td:nth-child(n+2) {
             text-align: center
         }
 
@@ -1634,26 +1820,24 @@ Business-consistent mock data rule:
 
 
     <div class="overlay import-overlay" id="importExcelOverlay">
-        <div class="modal import-modal import-main-modal">
+        <div class="modal import-main-modal">
             <div class="modal-head import-modal-head">
                 <span>Import Min Ground Time</span>
                 <button class="close" id="closeImportExcel" type="button">×</button>
             </div>
 
-            <div class="import-body import-main-body">
-                <div class="import-section">
-                    <div class="import-section-title">Upload file</div>
+            <div class="modal-body import-main-body">
 
-                    <div class="import-card import-upload-card">
+                <div class="import-state show" id="importUploadState">
+                    <div class="import-section">
+                        <div class="import-section-title">Upload file</div>
                         <div class="drop-zone" id="excelDropZone">
                             <div class="drop-title">Drag and drop files here</div>
                             <div class="drop-or">or</div>
-
                             <button type="button" class="choose-file-btn" id="chooseExcelFile">
                                 <span>☁</span> Select file
                             </button>
                             <input type="file" id="excelFileInput" accept=".xlsx" hidden>
-
                             <div class="accepted-text">Accepted formats are .xlsx (up to 5MB)</div>
 
                             <div class="selected-file" id="selectedExcelFile">
@@ -1668,46 +1852,99 @@ Business-consistent mock data rule:
                         </div>
 
                         <div class="template-hint">
-                            For accurate import results, please use the template file.
-                            <button type="button" class="template-link" id="downloadTemplateBtn">↓ Download template
+                            For accurate import results, please use the sample file.
+                            <button type="button" class="template-link" id="downloadTemplateBtn">⇩ Download sample
                                 file.</button>
                             <br>
-                            One file can contain multiple airports. Each airport/effective period is represented by 16
-                            route-pair rows.
+                            Each data row in the import file corresponds to one record.
                         </div>
                     </div>
                 </div>
+
+                <div class="import-state" id="importProcessingState">
+                    <div class="import-common-card">
+                        <div class="import-state-icon">↑</div>
+                        <div class="import-state-title">Uploading file to system...</div>
+                        <div class="import-progress-file">
+                            <div class="import-xls">XLS</div>
+                            <div>
+                                <div class="import-file-name" id="importProcessingName"></div>
+                                <div class="import-progress-track">
+                                    <div class="import-progress-bar" id="importProgressBar"></div>
+                                </div>
+                            </div>
+                            <div class="import-progress-percent" id="importProgressPercent">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="import-state" id="importResultState">
+                    <div class="import-common-card">
+                        <div class="import-state-icon success" id="importResultIcon">✓</div>
+                        <div class="import-state-title" id="importResultTitle">File upload results</div>
+                        <div class="import-result-counts">
+                            <div>Number of valid records: <span class="ok" id="importSuccessCount">0</span></div>
+                            <div>Number of invalid records: <span class="fail" id="importFailedCount">0</span></div>
+                        </div>
+                        <div class="import-state-note" id="importResultMessage"></div>
+
+                        <div class="import-result-file">
+                            <div class="import-xls">XLS</div>
+                            <div>
+                                <b id="importResultFileName"></b>
+                                <span id="importResultFileStatus">Original file</span>
+                            </div>
+                            <button type="button" class="import-download-btn" id="downloadCheckedImport"
+                                title="Download file">⇩</button>
+                        </div>
+
+                        <div class="import-result-bottom-note" id="importResultBottomNote"></div>
+                    </div>
+                </div>
+
+                <div class="import-state" id="importSuccessState">
+                    <div class="import-common-card">
+                        <div class="import-state-icon success">✓</div>
+                        <div class="import-state-title" id="importSuccessTitle">Data imported successfully</div>
+                        <div class="import-state-note" id="importSuccessMessage">All records in the selected file were
+                            imported successfully.</div>
+
+                        <div class="import-result-file">
+                            <div class="import-xls">XLS</div>
+                            <div>
+                                <b id="importSuccessFileName"></b>
+                                <span id="importSuccessFileStatus">Imported file</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="modal-foot import-foot">
-                <button type="button" class="btn" id="cancelImportExcel">Cancel</button>
-                <button type="button" class="btn primary" id="confirmImportExcel" disabled>Import</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="overlay import-overlay" id="importConfirmOverlay">
-        <div class="modal import-confirm-modal">
-            <div class="modal-head">
-                <span>Confirm Import</span>
-                <button class="close" id="closeImportConfirm" type="button">×</button>
-            </div>
-
-            <div class="modal-body confirm-import-body" id="importConfirmBody"></div>
-
-            <div class="modal-foot">
-                <button type="button" class="btn" id="backToImport">Back to Edit</button>
-                <button type="button" class="btn primary" id="confirmImportSave">Confirm & Import</button>
+                <div class="import-upload-actions" id="importUploadActions">
+                    <button type="button" class="btn" id="cancelImportExcel">Cancel</button>
+                    <button type="button" class="btn primary" id="confirmImportExcel" disabled>Import</button>
+                </div>
+                <div class="import-result-actions" id="importResultActions">
+                    <button type="button" class="btn" id="closeImportResult">Close</button>
+                    <button type="button" class="btn primary" id="selectAnotherImport">Select another file</button>
+                </div>
+                <div class="import-result-actions" id="importSuccessActions">
+                    <button type="button" class="btn" id="closeImportSuccess">Close</button>
+                    <button type="button" class="btn primary" id="saveImportSuccess">Save</button>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="overlay" id="deleteOverlay">
-        <div class="modal small">
+        <div class="modal delete-confirm-modal">
             <div class="modal-head"><span>Delete Min Ground Time</span><button class="close"
                     data-close="deleteOverlay">×</button></div>
-            <div class="modal-body">Are you sure you want to delete this Min Ground Time configuration?<div
-                    id="deleteName" style="font-weight:700;margin-top:10px"></div>
+            <div class="modal-body delete-confirm-body">
+                <p class="delete-question" id="deleteQuestion"></p>
+                <div id="deleteImpactBody"></div>
             </div>
             <div class="modal-foot"><button class="btn" data-close="deleteOverlay">Cancel</button><button
                     class="btn danger" id="deleteConfirm">Delete</button></div>
@@ -1784,17 +2021,19 @@ Business-consistent mock data rule:
         <div class="drawer-head">
             <div class="drawer-title-row">
                 <div>
-                    <h2 class="drawer-title" id="drawerTitle">Min Ground Time</h2>
-                    <div class="drawer-sub" id="drawerSub">Airport detail</div>
+                    <div class="drawer-title-main">
+                        <h2 class="drawer-title" id="drawerTitle">Min Ground Time</h2>
+                        <span id="drawerStatusTop"></span>
+                    </div>
                 </div>
                 <button class="drawer-close" onclick="closeDrawer()">×</button>
             </div>
             <div class="drawer-top-actions">
                 <button class="drawer-action-btn" id="drawerEditBtn"><span id="drawerEditIcon"></span> Edit</button>
-                <button class="drawer-action-btn" id="drawerHistoryBtn"><span id="drawerHistoryIcon"></span>
-                    History</button>
                 <button class="drawer-action-btn" id="drawerDeleteBtn"><span id="drawerDeleteIcon"></span>
                     Delete</button>
+                <button class="drawer-action-btn" id="drawerHistoryBtn"><span id="drawerHistoryIcon"></span>
+                    History</button>
             </div>
         </div>
         <div class="drawer-body">
@@ -1802,10 +2041,6 @@ Business-consistent mock data rule:
                 <div class="info-item">
                     <div class="label">Airport</div>
                     <div class="value" id="drawerAirport">Noi Bai</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Status</div>
-                    <div class="value small" id="drawerStatus"></div>
                 </div>
                 <div class="info-item">
                     <div class="label">IATA</div>
@@ -1823,17 +2058,20 @@ Business-consistent mock data rule:
                     <div class="label">Last Updated</div>
                     <div class="value small" id="drawerUpdatedAt"></div>
                 </div>
+                <div class="info-item">
+                    <div class="label">Updated By</div>
+                    <div class="value small" id="drawerUpdatedBy"></div>
+                </div>
             </div>
 
             <div class="drawer-section-title">
                 <div>
-                    <h4>Min Ground Time Matrix <span class="drawer-mini-count" id="drawerCount">(16)</span></h4>
+                    <h4>Min Ground Time Matrix</h4>
                 </div>
             </div>
             <table class="drawer-table">
                 <thead>
                     <tr>
-                        <th>No.</th>
                         <th>Previous - Next Sector</th>
                         <th>A320</th>
                         <th>A321</th>
@@ -2193,18 +2431,16 @@ Business-consistent mock data rule:
             const c = configs.find(x => x.id === id);
             if (!c) return;
             document.getElementById("drawerTitle").textContent = `Min Ground Time — ${c.iata}`;
-            document.getElementById("drawerSub").textContent = c.airport;
             document.getElementById("drawerAirport").textContent = c.airport;
             document.getElementById("drawerIata").textContent = c.iata;
             document.getElementById("drawerFrom").textContent = c.from || "";
             document.getElementById("drawerTo").innerHTML = effectiveToHtml(c);
             document.getElementById("drawerUpdatedAt").textContent = c.updatedAt || "";
-            document.getElementById("drawerStatus").innerHTML = statusHtml(c);
-            document.getElementById("drawerCount").textContent = `(${routes.length})`;
+            document.getElementById("drawerStatusTop").innerHTML = statusHtml(c);
+            document.getElementById("drawerUpdatedBy").textContent = c.updatedBy || "";
             document.getElementById("drawerMatrixBody").innerHTML = routes.map((r, idx) => {
                 let x = c.matrix[r];
                 return `<tr>
-      <td>${idx + 1}</td>
       <td class="route-name">${routeLabel(r)}</td>
       <td>${x.A320 === "" ? "—" : x.A320}</td>
       <td>${x.A321 === "" ? "—" : x.A321}</td>
@@ -2415,7 +2651,81 @@ Business-consistent mock data rule:
             render();
             document.getElementById("editOverlay").classList.remove("show");
         };
-        function openDelete(id) { closeDrawer(); deletingId = id; let c = configs.find(x => x.id === id); document.getElementById("deleteName").textContent = `IATA: ${c.iata} | Airport: ${c.airport} | Effective From: ${c.from}`; document.getElementById("deleteOverlay").classList.add("show") }
+        function buildDeleteImpact(c) {
+            const status = deriveStatus(c);
+            const records = configs
+                .filter(x => x.iata === c.iata && !x.toApiError)
+                .slice()
+                .sort((a, b) => parseEffectiveDate(a.from) - parseEffectiveDate(b.from));
+            const idx = records.findIndex(x => x.id === c.id);
+            const previous = idx > 0 ? records[idx - 1] : null;
+            const next = idx >= 0 && idx < records.length - 1 ? records[idx + 1] : null;
+
+            let html = ``;
+
+            if (previous) {
+                const previousAfterTo = next ? addDaysDisplay(next.from, -1) : "";
+                html += `
+      <div class="delete-card">
+        <div class="delete-card-title info">Previous period will be extended</div>
+        <div class="delete-card-content">
+          <table class="delete-period-table">
+            <thead><tr><th>RECORD</th><th>EFFECTIVE PERIOD</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Previous period<span class="delete-record-sub">Will be extended</span></td>
+                <td><span class="delete-old">${periodDisplay(previous.from, previous.to)}</span><br><span class="delete-new">${periodDisplay(previous.from, previousAfterTo)}</span></td>
+              </tr>
+              <tr>
+                <td>Record being deleted<span class="delete-record-sub">${status || "Current record"}</span></td>
+                <td><span class="delete-old">${periodDisplay(c.from, c.to)}</span></td>
+              </tr>
+              ${next ? `<tr><td>Next period<span class="delete-record-sub">Unchanged</span></td><td><span class="delete-new">${periodDisplay(next.from, next.to)}</span></td></tr>` : ``}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+            } else if (next) {
+                html += `
+      <div class="delete-card">
+        <div class="delete-card-title info">No previous period will replace this one</div>
+        <div class="delete-card-content">
+          <p>This is the first period in the timeline for <b>${c.iata}</b>. After deletion, no Min Ground Time configuration will be in effect before the next period starts on <b>${next.from}</b>.</p>
+          <table class="delete-period-table">
+            <thead><tr><th>RECORD</th><th>EFFECTIVE PERIOD</th></tr></thead>
+            <tbody>
+              <tr><td>Record being deleted</td><td><span class="delete-old">${periodDisplay(c.from, c.to)}</span></td></tr>
+              <tr><td>Next period<span class="delete-record-sub">Unchanged</span></td><td><span class="delete-new">${periodDisplay(next.from, next.to)}</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+            } else {
+                html += `
+      <div class="delete-card">
+        <div class="delete-card-title info">No Min Ground Time will remain for this IATA</div>
+        <div class="delete-card-content">
+          <table class="delete-period-table">
+            <thead><tr><th>RECORD</th><th>EFFECTIVE PERIOD</th></tr></thead>
+            <tbody><tr><td>Record being deleted</td><td><span class="delete-old">${periodDisplay(c.from, c.to)}</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>`;
+            }
+
+
+            return html;
+        }
+
+        function openDelete(id) {
+            closeDrawer();
+            deletingId = id;
+            const c = configs.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById("deleteQuestion").innerHTML = `Delete the Min Ground Time record for <b>${c.iata} - ${c.airport}</b>, effective <b>${periodDisplay(c.from, c.to)}</b>?`;
+            document.getElementById("deleteImpactBody").innerHTML = buildDeleteImpact(c);
+            document.getElementById("deleteOverlay").classList.add("show");
+        }
         document.getElementById("deleteConfirm").onclick = () => {
             const deleted = configs.find(x => x.id === deletingId);
             const iata = deleted?.iata;
@@ -2426,7 +2736,7 @@ Business-consistent mock data rule:
             currentPage = 1;
             render();
             document.getElementById("deleteOverlay").classList.remove("show");
-            showToast("Delete successful", "Min Ground Time configuration has been deleted and the airport timeline has been recalculated.");
+            showToast("Delete successful", "Min Ground Time has been deleted successfully.");
         };
         let currentHistoryRecordId = null;
         let currentHistoryRows = [];
@@ -2755,8 +3065,8 @@ Business-consistent mock data rule:
             if (normalizedName.includes("mgt_import_mixed_valid_invalid_airports")) {
                 currentImportCaseLabel = "Mixed batch — 3 valid / 3 invalid airports";
                 currentImportNotes = [
-                    "Valid groups are ready to import.",
-                    "Invalid groups are excluded and shown with the validation reason."
+                    "The file contains both valid and invalid records.",
+                    "Because import is all-or-nothing, no record will be written until every record is valid."
                 ];
                 return [
                     buildSingleImportPlan("VCL", "01/10/2026"),
@@ -2845,7 +3155,17 @@ Business-consistent mock data rule:
             }
         }
 
-        function openImportExcelPopup() {
+        function showImportState(state) {
+            ["importUploadState", "importProcessingState", "importResultState", "importSuccessState"].forEach(id => {
+                document.getElementById(id).classList.toggle("show", id === state);
+            });
+            const result = state === "importResultState";
+            const success = state === "importSuccessState";
+            document.getElementById("importUploadActions").classList.toggle("hide", state !== "importUploadState");
+            document.getElementById("importResultActions").classList.toggle("show", result);
+            document.getElementById("importSuccessActions").classList.toggle("show", success);
+        }
+        function resetImportComponent() {
             selectedExcel = null;
             pendingImportBatch = [];
             currentImportCaseLabel = "";
@@ -2855,14 +3175,18 @@ Business-consistent mock data rule:
             document.getElementById("selectedExcelName").textContent = "";
             document.getElementById("selectedExcelSize").textContent = "";
             document.getElementById("confirmImportExcel").disabled = true;
+            document.getElementById("excelDropZone").classList.remove("dragover");
+            document.getElementById("importProgressBar").style.width = "0%";
+            document.getElementById("importProgressPercent").textContent = "0%";
+            showImportState("importUploadState");
+        }
+        function openImportExcelPopup() {
+            resetImportComponent();
             document.getElementById("importExcelOverlay").classList.add("show");
         }
         function closeImportExcelPopup() {
             document.getElementById("importExcelOverlay").classList.remove("show");
             document.getElementById("excelDropZone").classList.remove("dragover");
-        }
-        function closeImportConfirmPopup() {
-            document.getElementById("importConfirmOverlay").classList.remove("show");
         }
         function validateExcelFile(file) {
             if (!file) return false;
@@ -2884,120 +3208,10 @@ Business-consistent mock data rule:
             document.getElementById("selectedExcelFile").classList.add("show");
             document.getElementById("confirmImportExcel").disabled = false;
         }
-
-        function scenarioText(plan) {
-            if (plan.invalid) return "Cannot import — duplicate Effective From";
-            if (plan.scenario === "CLOSE_PREVIOUS") return "Close previous period & create new period";
-            if (plan.scenario === "INSERT") return "Insert between existing periods";
-            if (plan.scenario === "INSERT_FIRST") return "Create earlier period before existing timeline";
-            return "Create first period";
-        }
-
-        function batchConfirmHtml(batch) {
-            const invalid = batch.filter(x => x.invalid);
-            const valid = batch.filter(x => !x.invalid);
-
-            let html = `
-    <div class="confirm-card">
-      <div class="confirm-card-title neutral">${currentImportCaseLabel || "Import preview"}</div>
-      <div class="confirm-card-content">
-        <p><b>Selected file:</b> ${selectedExcel ? selectedExcel.name : ""}</p>
-      </div>
-    </div>
-    <div class="confirm-card">
-      <div class="confirm-card-title info">${valid.length} airport period(s) ready to import</div>
-      <div class="confirm-card-content">
-        <p>The file contains multiple airports. TOSS will apply period rules independently for each airport.</p>
-        <table class="period-table">
-          <thead>
-            <tr>
-              <th>IATA</th>
-              <th>NEW EFFECTIVE PERIOD</th>
-              <th>RESULT</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${valid.map(p => `
-              <tr>
-                <td><b>${p.iata}</b><span class="period-sub">${p.airport}</span></td>
-                <td><span class="new-period">${periodDisplay(p.newFrom, p.newTo)}</span></td>
-                <td>${scenarioText(p)}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-
-            const closing = valid.filter(p => p.previous);
-            if (closing.length) {
-                html += `
-      <div class="confirm-card">
-        <div class="confirm-card-title warning">${closing.length} previous period(s) will be adjusted</div>
-        <div class="confirm-card-content">
-          <p>To keep each airport timeline continuous, the period immediately before each imported period will be closed automatically where applicable.</p>
-          <table class="period-table">
-            <thead>
-              <tr><th>AIRPORT</th><th>PREVIOUS PERIOD</th><th>AFTER IMPORT</th></tr>
-            </thead>
-            <tbody>
-              ${closing.map(p => `
-                <tr>
-                  <td><b>${p.iata}</b></td>
-                  <td><span class="old-period">${periodDisplay(p.previous.from, p.previous.to)}</span></td>
-                  <td><span class="new-period">${periodDisplay(p.previous.from, p.previousNewTo)}</span></td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    `;
-            }
-
-            if (invalid.length) {
-                html += `
-      <div class="confirm-card">
-        <div class="confirm-card-title warning">${invalid.length} row group(s) cannot be imported</div>
-        <div class="confirm-card-content">
-          <table class="period-table">
-            <thead><tr><th>IATA</th><th>EFFECTIVE FROM</th><th>REASON</th></tr></thead>
-            <tbody>
-              ${invalid.map(p => `
-                <tr><td><b>${p.iata}</b></td><td>${p.newFrom}</td><td>${p.reason}</td></tr>
-              `).join("")}
-            </tbody>
-          </table>
-          <div class="timeline-note">Invalid groups will not be imported. Correct the Excel file and upload again if they must be included.</div>
-        </div>
-      </div>
-    `;
-            }
-
-            if (currentImportNotes.length) {
-                html += `
-      <div class="confirm-card">
-        <div class="confirm-card-title neutral">Import note</div>
-        <div class="confirm-card-content">
-          ${currentImportNotes.map(n => `<p>• ${n}</p>`).join("")}
-        </div>
-      </div>
-    `;
-            }
-
-            return html;
-        }
-        function openImportConfirmPopup(batch) {
-            pendingImportBatch = batch;
-            document.getElementById("importConfirmBody").innerHTML = batchConfirmHtml(batch);
-            document.getElementById("confirmImportSave").disabled = batch.every(x => x.invalid);
-            document.getElementById("importExcelOverlay").classList.remove("show");
-            document.getElementById("importConfirmOverlay").classList.add("show");
-        }
         function mockImportedMatrix(iata) {
             return matrixWithFleetProfile(airportMaster[iata]?.type || "OTHER", "FULL");
         }
+
         function applyImportBatch(batch) {
             const valid = batch.filter(x => !x.invalid);
             const affectedIatas = new Set();
@@ -3020,14 +3234,78 @@ Business-consistent mock data rule:
                 affectedIatas.add(plan.iata);
             });
 
-            // Apply the same effective-period rule used by Add New so list fields, status,
-            // detail view and import results all use one consistent timeline.
             affectedIatas.forEach(iata => recalculateAirportTimeline(iata, true));
-
             configs.sort((a, b) => parseDateTime(b.createdAt) - parseDateTime(a.createdAt));
             visible = [...configs];
             currentPage = 1;
             render();
+        }
+
+        function renderImportSuccess(batch) {
+            const total = batch.length;
+            const fileName = selectedExcel ? selectedExcel.name : "import.xlsx";
+            document.getElementById("importSuccessTitle").textContent = "Data imported successfully";
+            document.getElementById("importSuccessMessage").textContent = `${total} record(s) from the selected file were imported successfully into the system.`;
+            document.getElementById("importSuccessFileName").textContent = fileName;
+            document.getElementById("importSuccessFileStatus").textContent = "Imported file";
+            showImportState("importSuccessState");
+        }
+
+        function renderImportResult(batch) {
+            const valid = batch.filter(x => !x.invalid);
+            const invalid = batch.filter(x => x.invalid);
+            const total = batch.length;
+
+            // All-or-nothing rule: if at least one record is invalid, write nothing.
+            if (invalid.length) {
+                document.getElementById("importResultTitle").textContent = "Import failed — nothing was updated";
+                document.getElementById("importSuccessCount").textContent = `${valid.length}/${total}`;
+                document.getElementById("importFailedCount").textContent = `${invalid.length}/${total}`;
+
+                const originalName = selectedExcel ? selectedExcel.name : "import.xlsx";
+                const dot = originalName.lastIndexOf(".");
+                const checkedName = dot > 0
+                    ? `${originalName.slice(0, dot)}_checked${originalName.slice(dot)}`
+                    : `${originalName}_checked.xlsx`;
+
+                document.getElementById("importResultFileName").textContent = checkedName;
+                document.getElementById("importResultFileStatus").textContent = "Original file + Error column";
+
+                const icon = document.getElementById("importResultIcon");
+                icon.textContent = "×";
+                icon.className = "import-state-icon error";
+
+                document.getElementById("importResultMessage").textContent =
+                    "No data was written. The file is imported only when every record passes validation. Download the checked file, correct the invalid records, and import it again.";
+                document.getElementById("importResultBottomNote").textContent = "Nothing has been written to the system.";
+
+                showImportState("importResultState");
+                return;
+            }
+
+            // Fully valid file: commit the whole batch, then show the success popup.
+            applyImportBatch(batch);
+            renderImportSuccess(batch);
+        }
+        function runImport() {
+            if (!selectedExcel) return;
+
+            pendingImportBatch = testCaseBatchFromFile(selectedExcel.name);
+            document.getElementById("importProcessingName").textContent = selectedExcel.name;
+            showImportState("importProcessingState");
+
+            const bar = document.getElementById("importProgressBar");
+            const pct = document.getElementById("importProgressPercent");
+            bar.style.width = "0%";
+            pct.textContent = "0%";
+
+            setTimeout(() => { bar.style.width = "40%"; pct.textContent = "40%"; }, 120);
+            setTimeout(() => { bar.style.width = "75%"; pct.textContent = "75%"; }, 360);
+            setTimeout(() => {
+                bar.style.width = "100%";
+                pct.textContent = "100%";
+                setTimeout(() => renderImportResult(pendingImportBatch), 260);
+            }, 650);
         }
 
         document.getElementById("openImportExcel").onclick = openImportExcelPopup;
@@ -3069,37 +3347,251 @@ Business-consistent mock data rule:
         document.getElementById("downloadTemplateBtn").onclick = () => {
             showToast("Template", "Use the multi-airport Min Ground Time import template (.xlsx).");
         };
+        document.getElementById("confirmImportExcel").onclick = runImport;
 
-        document.getElementById("confirmImportExcel").onclick = () => {
-            if (!selectedExcel) return;
-            openImportConfirmPopup(testCaseBatchFromFile(selectedExcel.name));
-        };
-
-        document.getElementById("closeImportConfirm").onclick = closeImportConfirmPopup;
-        document.getElementById("backToImport").onclick = () => {
-            closeImportConfirmPopup();
-            document.getElementById("importExcelOverlay").classList.add("show");
-        };
-        document.getElementById("confirmImportSave").onclick = () => {
-            if (!pendingImportBatch.length) return;
-            applyImportBatch(pendingImportBatch);
-            closeImportConfirmPopup();
+        document.getElementById("closeImportResult").onclick = closeImportExcelPopup;
+        document.getElementById("selectAnotherImport").onclick = resetImportComponent;
+        document.getElementById("closeImportSuccess").onclick = () => {
             closeImportExcelPopup();
-            selectedExcel = null;
-            pendingImportBatch = [];
-            showToast("Import successful", "Multiple airport Min Ground Time records have been imported successfully.");
+            showToast("Import successful", "Min Ground Time has been imported successfully.");
+        };
+        document.getElementById("saveImportSuccess").onclick = () => {
+            closeImportExcelPopup();
+            showToast("Import successful", "Min Ground Time has been imported successfully.");
+        };
+        function xmlEscape(value) {
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&apos;");
+        }
+
+        function excelColumnName(index) {
+            let n = index + 1, name = "";
+            while (n > 0) {
+                const r = (n - 1) % 26;
+                name = String.fromCharCode(65 + r) + name;
+                n = Math.floor((n - 1) / 26);
+            }
+            return name;
+        }
+
+        function checkedImportRows(batch) {
+            const header = ["Group_ID", "IATA", "Effective_From", "Sector_Pair", "A320", "A321", "A350", "B787", "ATR", "Error"];
+            const rows = [header];
+
+            batch.forEach((plan, planIndex) => {
+                const groupId = `G${String(planIndex + 1).padStart(3, "0")}`;
+                const matrix = (!plan.invalid && airportMaster[plan.iata]) ? mockImportedMatrix(plan.iata) : null;
+
+                routes.forEach((route, routeIndex) => {
+                    let sectorPair = route;
+                    let a320 = matrix?.[route]?.A320 ?? "";
+                    let a321 = matrix?.[route]?.A321 ?? "";
+                    let a350 = matrix?.[route]?.A350 ?? "";
+                    let b787 = matrix?.[route]?.B787 ?? "";
+                    let atr = matrix?.[route]?.ATR ?? "";
+
+                    // Make a few invalid mock cases visible inside the checked workbook.
+                    if (plan.invalid && /Missing Sector Pair/i.test(currentImportCaseLabel) && routeIndex === 15) sectorPair = "";
+                    if (plan.invalid && /Invalid Sector Pair/i.test(currentImportCaseLabel) && routeIndex === 0) sectorPair = "INVALID SECTOR";
+                    if (plan.invalid && /Invalid MGT value/i.test(currentImportCaseLabel) && routeIndex === 0) a321 = "INVALID";
+
+                    rows.push([
+                        groupId,
+                        routeIndex === 0 ? (plan.iata || "") : "",
+                        routeIndex === 0 ? (plan.newFrom || "") : "",
+                        sectorPair,
+                        a320, a321, a350, b787, atr,
+                        (plan.invalid && routeIndex === 0) ? (plan.reason || "Invalid record") : ""
+                    ]);
+                });
+            });
+
+            return rows;
+        }
+
+        function workbookSheetXml(rows) {
+            const rowXml = rows.map((row, rIdx) => {
+                const cells = row.map((value, cIdx) => {
+                    const ref = `${excelColumnName(cIdx)}${rIdx + 1}`;
+                    return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${xmlEscape(value)}</t></is></c>`;
+                }).join("");
+                return `<row r="${rIdx + 1}">${cells}</row>`;
+            }).join("");
+
+            return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <dimension ref="A1:J${rows.length}"/>
+  <sheetViews><sheetView workbookViewId="0"/></sheetViews>
+  <cols>
+    <col min="1" max="1" width="12" customWidth="1"/>
+    <col min="2" max="2" width="14" customWidth="1"/>
+    <col min="3" max="3" width="18" customWidth="1"/>
+    <col min="4" max="4" width="30" customWidth="1"/>
+    <col min="5" max="9" width="11" customWidth="1"/>
+    <col min="10" max="10" width="55" customWidth="1"/>
+  </cols>
+  <sheetData>${rowXml}</sheetData>
+</worksheet>`;
+        }
+
+        function crc32(bytes) {
+            let crc = 0xFFFFFFFF;
+            for (let i = 0; i < bytes.length; i++) {
+                crc ^= bytes[i];
+                for (let j = 0; j < 8; j++) crc = (crc >>> 1) ^ (0xEDB88320 & (-(crc & 1)));
+            }
+            return (crc ^ 0xFFFFFFFF) >>> 0;
+        }
+
+        function pushU16(arr, n) { arr.push(n & 255, (n >>> 8) & 255); }
+        function pushU32(arr, n) { arr.push(n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255); }
+
+        function makeStoredZip(files) {
+            const encoder = new TextEncoder();
+            const out = [];
+            const central = [];
+            let offset = 0;
+            const dosTime = 0;
+            const dosDate = 33; // 1980-01-01
+
+            files.forEach(file => {
+                const name = encoder.encode(file.name);
+                const data = typeof file.data === "string" ? encoder.encode(file.data) : file.data;
+                const crc = crc32(data);
+
+                const local = [];
+                pushU32(local, 0x04034b50);
+                pushU16(local, 20);
+                pushU16(local, 0x0800);
+                pushU16(local, 0);
+                pushU16(local, dosTime);
+                pushU16(local, dosDate);
+                pushU32(local, crc);
+                pushU32(local, data.length);
+                pushU32(local, data.length);
+                pushU16(local, name.length);
+                pushU16(local, 0);
+                local.push(...name, ...data);
+                out.push(...local);
+
+                const cen = [];
+                pushU32(cen, 0x02014b50);
+                pushU16(cen, 20);
+                pushU16(cen, 20);
+                pushU16(cen, 0x0800);
+                pushU16(cen, 0);
+                pushU16(cen, dosTime);
+                pushU16(cen, dosDate);
+                pushU32(cen, crc);
+                pushU32(cen, data.length);
+                pushU32(cen, data.length);
+                pushU16(cen, name.length);
+                pushU16(cen, 0);
+                pushU16(cen, 0);
+                pushU16(cen, 0);
+                pushU16(cen, 0);
+                pushU32(cen, 0);
+                pushU32(cen, offset);
+                cen.push(...name);
+                central.push(...cen);
+
+                offset += local.length;
+            });
+
+            const centralOffset = out.length;
+            out.push(...central);
+            const centralSize = central.length;
+
+            pushU32(out, 0x06054b50);
+            pushU16(out, 0);
+            pushU16(out, 0);
+            pushU16(out, files.length);
+            pushU16(out, files.length);
+            pushU32(out, centralSize);
+            pushU32(out, centralOffset);
+            pushU16(out, 0);
+
+            return new Uint8Array(out);
+        }
+
+        function buildCheckedXlsx(batch) {
+            const rows = checkedImportRows(batch);
+            const files = [
+                {
+                    name: "[Content_Types].xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+  <Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+  <Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+</Types>`},
+                {
+                    name: "_rels/.rels", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
+  <Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>
+</Relationships>`},
+                {
+                    name: "xl/workbook.xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <sheets><sheet name="Checked Import" sheetId="1" r:id="rId1"/></sheets>
+</workbook>`},
+                {
+                    name: "xl/_rels/workbook.xml.rels", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+</Relationships>`},
+                { name: "xl/worksheets/sheet1.xml", data: workbookSheetXml(rows) },
+                {
+                    name: "docProps/core.xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <dc:title>Min Ground Time checked import</dc:title><dc:creator>TOSS Mockup</dc:creator>
+</cp:coreProperties>`},
+                {
+                    name: "docProps/app.xml", data: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+  <Application>TOSS Mockup</Application>
+</Properties>`}
+            ];
+            return new Blob([makeStoredZip(files)], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        }
+
+        function checkedFileName() {
+            const originalName = selectedExcel?.name || "min-ground-time-import.xlsx";
+            const dot = originalName.lastIndexOf(".");
+            return dot > 0 ? `${originalName.slice(0, dot)}_checked.xlsx` : `${originalName}_checked.xlsx`;
+        }
+
+        document.getElementById("downloadCheckedImport").onclick = () => {
+            if (!pendingImportBatch.length) {
+                showToast("Download failed", "No checked import result is available.");
+                return;
+            }
+            const blob = buildCheckedXlsx(pendingImportBatch);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = checkedFileName();
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            showToast("Download successful", "Checked import file has been downloaded successfully.");
         };
 
         document.getElementById("importExcelOverlay").addEventListener("click", e => {
             if (e.target === document.getElementById("importExcelOverlay")) closeImportExcelPopup();
         });
-        document.getElementById("importConfirmOverlay").addEventListener("click", e => {
-            if (e.target === document.getElementById("importConfirmOverlay")) closeImportConfirmPopup();
-        });
 
 
-
-        document.addEventListener("keydown", e => { if (e.key === "Escape") { closeImportConfirmPopup(); closeImportExcelPopup(); closeDrawer(); document.getElementById("dateRangePopover").classList.remove("show"); } });
+        document.addEventListener("keydown", e => { if (e.key === "Escape") { closeImportExcelPopup(); closeDrawer(); document.getElementById("dateRangePopover").classList.remove("show"); } });
         render();
     </script>
 </body>
