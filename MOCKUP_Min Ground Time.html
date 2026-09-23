@@ -1176,6 +1176,21 @@
             margin: 0 0 10px
         }
 
+        .bidirectional-note {
+            margin-top: 10px;
+            padding: 9px 11px;
+            border: 1px solid #cfe5f5;
+            border-radius: 6px;
+            background: #eef8ff;
+            color: #326987;
+            font-size: 11px;
+            line-height: 1.45
+        }
+
+        .bidirectional-note b {
+            color: #17648f
+        }
+
         .import-excel-icon {
             font-size: 15px;
             line-height: 1
@@ -1779,6 +1794,25 @@
             grid-template-columns: 112px 20px 112px
         }
 
+        .pair-header {
+            display: grid;
+            grid-template-columns: 112px 20px 112px;
+            align-items: center;
+            width: 244px;
+            margin: 0;
+        }
+
+        .pair-header .part {
+            display: block;
+            text-align: left;
+        }
+
+        .pair-header .arrow {
+            text-align: center;
+            color: #7b8b94;
+            font-weight: 700;
+        }
+
 
         @media(max-width:1100px) {
             .sidebar {
@@ -1974,13 +2008,14 @@ Business-consistent mock data rule:
                     <div class="field"><label>Effective To</label><input id="mTo" type="text" value="Ongoing" disabled>
                     </div>
                 </div>
-                <p class="note">Min Ground Time is configured in minutes for each Previous Sector - Next Sector
-                    combination and each fleet type. Effective To is calculated automatically from the next period for
-                    the same IATA.</p>
+                <p class="note">Min Ground Time is configured in minutes for each sector pair and aircraft type.
+                    Each sector pair applies equivalently in both directions. Effective To is calculated automatically
+                    from the next period for the same IATA.</p>
                 <table class="edit-matrix">
                     <thead>
                         <tr>
-                            <th style="width:230px">Previous Sector - Next Sector</th>
+                            <th style="width:285px"><span class="pair-header"><span class="part">Previous</span><span
+                                        class="arrow">↔</span><span class="part">Next Sector</span></span></th>
                             <th>A320</th>
                             <th>A321</th>
                             <th>A350</th>
@@ -1990,6 +2025,9 @@ Business-consistent mock data rule:
                     </thead>
                     <tbody id="editMatrixBody"></tbody>
                 </table>
+                <div class="bidirectional-note"><b>Note:</b> Each sector pair is applied equivalently for the reverse
+                    direction. For example, <b>DOM ↔ INT - Short</b> covers both <b>DOM → INT - Short</b> and <b>INT -
+                        Short → DOM</b>.</div>
             </div>
             <div class="modal-foot"><button class="btn" data-close="editOverlay">Cancel</button><button
                     class="btn primary" id="save">Save</button></div>
@@ -2035,7 +2073,8 @@ Business-consistent mock data rule:
                             <button type="button" class="template-link" id="downloadTemplateBtn">⇩ Download sample
                                 file.</button>
                             <br>
-                            Each data row in the import file corresponds to one record.
+                            One file can contain multiple IATAs. Each Min Ground Time record is identified by one
+                            Group_ID and contains exactly 16 Sector Pair rows.
                         </div>
                     </div>
                 </div>
@@ -2168,7 +2207,6 @@ Business-consistent mock data rule:
                         <option value="">Select action</option>
                         <option value="Create">Create</option>
                         <option value="Update">Update</option>
-                        <option value="Delete">Delete</option>
                     </select>
 
                     <input id="historyDetails" class="history-details-search" type="text" maxlength="255"
@@ -2270,7 +2308,8 @@ Business-consistent mock data rule:
             <table class="drawer-table">
                 <thead>
                     <tr>
-                        <th>Previous - Next Sector</th>
+                        <th><span class="pair-header"><span class="part">Previous</span><span
+                                    class="arrow">↔</span><span class="part">Next Sector</span></span></th>
                         <th>A320</th>
                         <th>A321</th>
                         <th>A350</th>
@@ -2293,10 +2332,44 @@ Business-consistent mock data rule:
             "INT - Short → INT - Long", "INT - Short → INT - Medium", "INT - Short → INT - Short", "INT - Short → DOM"
         ];
 
-        function routeLabel(route) {
-            const parts = route.split(" → ");
+        // Compact UI model: reverse directions share one MGT configuration.
+        // The underlying mock matrix keeps the 16 directional keys so the existing import prototype remains compatible.
+        const bidirectionalRoutes = [
+            { label: "DOM ↔ DOM", forward: "DOM → DOM", reverse: "DOM → DOM" },
+            { label: "DOM ↔ INT - Long", forward: "DOM → INT - Long", reverse: "INT - Long → DOM" },
+            { label: "DOM ↔ INT - Medium", forward: "DOM → INT - Medium", reverse: "INT - Medium → DOM" },
+            { label: "DOM ↔ INT - Short", forward: "DOM → INT - Short", reverse: "INT - Short → DOM" },
+            { label: "INT - Long ↔ INT - Long", forward: "INT - Long → INT - Long", reverse: "INT - Long → INT - Long" },
+            { label: "INT - Long ↔ INT - Medium", forward: "INT - Long → INT - Medium", reverse: "INT - Medium → INT - Long" },
+            { label: "INT - Long ↔ INT - Short", forward: "INT - Long → INT - Short", reverse: "INT - Short → INT - Long" },
+            { label: "INT - Medium ↔ INT - Medium", forward: "INT - Medium → INT - Medium", reverse: "INT - Medium → INT - Medium" },
+            { label: "INT - Medium ↔ INT - Short", forward: "INT - Medium → INT - Short", reverse: "INT - Short → INT - Medium" },
+            { label: "INT - Short ↔ INT - Short", forward: "INT - Short → INT - Short", reverse: "INT - Short → INT - Short" }
+        ];
+
+        function routeLabel(route, arrow = "→") {
+            const parts = route.split(` ${arrow} `);
             if (parts.length !== 2) return route;
-            return `<span class="route-pair"><span class="part">${parts[0]}</span><span class="arrow">→</span><span class="part">${parts[1]}</span></span>`;
+            return `<span class="route-pair"><span class="part">${parts[0]}</span><span class="arrow">${arrow}</span><span class="part">${parts[1]}</span></span>`;
+        }
+
+        function pairLabel(pair) {
+            return routeLabel(pair.label, "↔");
+        }
+
+        function pairValue(matrix, pair, fleet) {
+            const forward = matrix?.[pair.forward]?.[fleet];
+            const reverse = matrix?.[pair.reverse]?.[fleet];
+            return forward !== "" && forward !== null && forward !== undefined ? forward : (reverse ?? "");
+        }
+
+        function setPairValue(matrix, pair, fleet, value) {
+            if (!matrix[pair.forward]) matrix[pair.forward] = { A320: "", A321: "", A350: "", B787: "", ATR: "" };
+            matrix[pair.forward][fleet] = value;
+            if (pair.reverse !== pair.forward) {
+                if (!matrix[pair.reverse]) matrix[pair.reverse] = { A320: "", A321: "", A350: "", B787: "", ATR: "" };
+                matrix[pair.reverse][fleet] = value;
+            }
         }
 
         // Values are mapped from the supplied Excel where possible:
@@ -2304,19 +2377,31 @@ Business-consistent mock data rule:
         // A320 is not populated in the source matrix, therefore it remains blank in this list mockup.
         function matrixFor(type) {
             const blank = () => ({ A320: "", A321: "", A350: "", B787: "", ATR: "" });
-            let m = Object.fromEntries(routes.map(r => [r, blank()]));
-            const set = (r, a321, a350, atr) => { m[r].A321 = a321 ?? ""; m[r].A350 = a350 ?? ""; m[r].B787 = a350 ?? ""; m[r].ATR = atr ?? ""; };
-            if (type === "HUB") {
-                set("DOM → DOM", 35, 55, 30); set("DOM → INT - Long", "", 85, ""); set("DOM → INT - Medium", 50, 65, ""); set("DOM → INT - Short", 45, 55, "");
-                set("INT - Long → INT - Long", "", 85, ""); set("INT - Long → INT - Medium", "", 85, ""); set("INT - Long → INT - Short", "", 85, ""); set("INT - Long → DOM", "", 85, "");
-                set("INT - Medium → INT - Long", "", 85, ""); set("INT - Medium → INT - Medium", 50, 75, ""); set("INT - Medium → INT - Short", 50, 65, ""); set("INT - Medium → DOM", 50, 65, "");
-                set("INT - Short → INT - Long", "", 85, ""); set("INT - Short → INT - Medium", 50, 65, ""); set("INT - Short → INT - Short", 45, 55, ""); set("INT - Short → DOM", 45, 55, "");
-            } else if (type === "DAD_CXR") {
-                set("DOM → DOM", 35, 55, 30); set("DOM → INT - Medium", 50, 65, ""); set("DOM → INT - Short", 45, 55, "");
-                set("INT - Medium → INT - Medium", 50, 65, ""); set("INT - Medium → INT - Short", 50, 65, ""); set("INT - Medium → DOM", 50, 65, "");
-                set("INT - Short → INT - Medium", 50, 65, ""); set("INT - Short → INT - Short", 45, 55, ""); set("INT - Short → DOM", 45, 55, "");
+            const m = Object.fromEntries(routes.map(r => [r, blank()]));
+            const setPair = (label, a321, a350, atr) => {
+                const pair = bidirectionalRoutes.find(p => p.label === label);
+                if (!pair) return;
+                ["A321", "A350", "B787", "ATR"].forEach(fleet => {
+                    const value = fleet === "A321" ? a321 : (fleet === "ATR" ? atr : a350);
+                    setPairValue(m, pair, fleet, value ?? "");
+                });
+            };
+
+            if (type === "HUB" || type === "DAD_CXR") {
+                setPair("DOM ↔ DOM", 35, 55, 30);
+                setPair("DOM ↔ INT - Long", "", 85, "");
+                setPair("DOM ↔ INT - Medium", 50, 65, "");
+                setPair("DOM ↔ INT - Short", 45, 55, "");
+                // INT - Long ↔ INT - Long is intentionally left blank in the supplied business table.
+                setPair("INT - Long ↔ INT - Medium", "", 85, "");
+                setPair("INT - Long ↔ INT - Short", "", 85, "");
+                setPair("INT - Medium ↔ INT - Medium", 50, 75, "");
+                setPair("INT - Medium ↔ INT - Short", 50, 65, "");
+                setPair("INT - Short ↔ INT - Short", 45, 55, "");
             } else {
-                set("DOM → DOM", 35, 55, 20); m["DOM → INT - Short"].A321 = 55; m["INT - Short → INT - Short"].A321 = 50; m["INT - Short → DOM"].A321 = 50;
+                setPair("DOM ↔ DOM", 35, "", 20);
+                setPair("DOM ↔ INT - Short", 45, "", "");
+                setPair("DOM ↔ INT - Medium", 50, "", "");
             }
             return m;
         }
@@ -2520,8 +2605,8 @@ Business-consistent mock data rule:
 
         function detailMatrix(c) {
             return `<div class="detail-box"><div class="detail-title"><span>Min Ground Time Matrix — ${c.airport} (${c.iata})</span><span style="color:#72838c;font-weight:500">Unit: minutes</span></div>
-  <table class="matrix"><thead><tr><th>Previous Sector - Next Sector</th><th>A320</th><th>A321</th><th>A350</th><th>B787</th><th>ATR</th></tr></thead>
-  <tbody>${routes.map(r => { let x = c.matrix[r]; return `<tr><td class="route">${routeLabel(r)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td class="${x[k] === "" ? "blank" : ""}">${x[k] === "" ? "—" : x[k]}</td>`).join("")}</tr>` }).join("")}</tbody></table></div>`;
+  <table class="matrix"><thead><tr><th><span class="pair-header"><span class="part">Previous</span><span class="arrow">↔</span><span class="part">Next Sector</span></span></th><th>A320</th><th>A321</th><th>A350</th><th>B787</th><th>ATR</th></tr></thead>
+  <tbody>${bidirectionalRoutes.map(pair => `<tr><td class="route">${pairLabel(pair)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => { const v = pairValue(c.matrix, pair, k); return `<td class="${v === "" ? "blank" : ""}">${v === "" ? "—" : v}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>`;
         }
 
 
@@ -2646,16 +2731,11 @@ Business-consistent mock data rule:
             document.getElementById("drawerTo").innerHTML = effectiveToHtml(c);
             document.getElementById("drawerUpdatedAt").textContent = c.updatedAt || "";
             document.getElementById("drawerStatusTop").innerHTML = statusHtml(c);
-            document.getElementById("drawerUpdatedBy").textContent = c.updatedBy || "";
-            document.getElementById("drawerMatrixBody").innerHTML = routes.map((r, idx) => {
-                let x = c.matrix[r];
+            document.getElementById("drawerUpdatedBy").textContent = updatedByDisplayName(c.updatedBy);
+            document.getElementById("drawerMatrixBody").innerHTML = bidirectionalRoutes.map(pair => {
                 return `<tr>
-      <td class="route-name">${routeLabel(r)}</td>
-      <td>${x.A320 === "" ? "—" : x.A320}</td>
-      <td>${x.A321 === "" ? "—" : x.A321}</td>
-      <td>${x.A350 === "" ? "—" : x.A350}</td>
-      <td>${x.B787 === "" ? "—" : x.B787}</td>
-      <td>${x.ATR === "" ? "—" : x.ATR}</td>
+      <td class="route-name">${pairLabel(pair)}</td>
+      ${["A320", "A321", "A350", "B787", "ATR"].map(fleet => { const v = pairValue(c.matrix, pair, fleet); return `<td>${v === "" ? "—" : v}</td>`; }).join("")}
     </tr>`;
             }).join("");
             document.getElementById("drawerEditIcon").innerHTML = editIcon();
@@ -2678,11 +2758,14 @@ Business-consistent mock data rule:
             document.getElementById("detailDrawer").classList.remove("show");
         }
         function editRows(matrix) {
-            document.getElementById("editMatrixBody").innerHTML = routes.map(r => {
-                let x = matrix[r] || { A320: "", A321: "", A350: "", B787: "", ATR: "" };
-                return `<tr><td>${routeLabel(r)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => `<td><input type="number" min="0" data-route="${r}" data-fleet="${k}" value="${x[k]}"></td>`).join("")}</tr>`
+            document.getElementById("editMatrixBody").innerHTML = bidirectionalRoutes.map((pair, pairIndex) => {
+                return `<tr><td>${pairLabel(pair)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => {
+                    const value = pairValue(matrix, pair, k);
+                    return `<td><input type="number" min="1" max="85" step="1" data-pair-index="${pairIndex}" data-fleet="${k}" value="${value}"></td>`;
+                }).join("")}</tr>`;
             }).join("");
         }
+
         function emptyMatrix() { return Object.fromEntries(routes.map(r => [r, { A320: "", A321: "", A350: "", B787: "", ATR: "" }])) }
 
         function getProspectivePeriod(iata, from) {
@@ -2734,13 +2817,16 @@ Business-consistent mock data rule:
 
         function validateEditMatrix() {
             const inputs = [...document.querySelectorAll("#editMatrixBody input")];
+            let entered = 0;
             for (const inp of inputs) {
                 const value = inp.value.trim();
                 if (value === "") continue;
-                if (!/^\d+$/.test(value)) {
-                    return "Min Ground Time must be a non-negative integer.";
+                entered++;
+                if (!/^\d+$/.test(value) || Number(value) < 1 || Number(value) > 85) {
+                    return "Min Ground Time must be an integer from 1 to 85.";
                 }
             }
+            if (entered === 0) return "At least one Min Ground Time value must be entered.";
             return "";
         }
 
@@ -2780,8 +2866,11 @@ Business-consistent mock data rule:
             document.getElementById("editOverlay").classList.add("show");
         }
         function readMatrix() {
-            let m = emptyMatrix();
-            document.querySelectorAll("#editMatrixBody input").forEach(inp => m[inp.dataset.route][inp.dataset.fleet] = inp.value);
+            const m = emptyMatrix();
+            document.querySelectorAll("#editMatrixBody input").forEach(inp => {
+                const pair = bidirectionalRoutes[Number(inp.dataset.pairIndex)];
+                setPairValue(m, pair, inp.dataset.fleet, inp.value);
+            });
             return m;
         }
         function showToast(t, s) {
@@ -2960,72 +3049,72 @@ Business-consistent mock data rule:
             const currentUser = c.updatedBy || "admin";
             const currentMatrix = c.matrix?.["DOM → DOM"] || {};
             const sixteenFieldChanges = [
-                { field: matrixField("DOM → DOM", "A321"), oldValue: "30", newValue: String(currentMatrix.A321 || "35") },
-                { field: matrixField("DOM → DOM", "A350"), oldValue: "50", newValue: String(currentMatrix.A350 || "55") },
-                { field: matrixField("DOM → DOM", "B787"), oldValue: "50", newValue: String(currentMatrix.B787 || "55") },
-                { field: matrixField("DOM → DOM", "ATR"), oldValue: "25", newValue: String(currentMatrix.ATR || "30") },
-                { field: matrixField("DOM → INT - Short", "A321"), oldValue: "50", newValue: "55" },
-                { field: matrixField("DOM → INT - Short", "A350"), oldValue: "50", newValue: "55" },
-                { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "60", newValue: "65" },
-                { field: matrixField("DOM → INT - Medium", "B787"), oldValue: "60", newValue: "65" },
-                { field: matrixField("DOM → INT - Long", "A350"), oldValue: "80", newValue: "85" },
-                { field: matrixField("DOM → INT - Long", "B787"), oldValue: "80", newValue: "85" },
-                { field: matrixField("INT - Medium → DOM", "A321"), oldValue: "45", newValue: "50" },
-                { field: matrixField("INT - Medium → DOM", "A350"), oldValue: "60", newValue: "65" },
-                { field: matrixField("INT - Medium → DOM", "B787"), oldValue: "60", newValue: "65" },
-                { field: matrixField("INT - Short → DOM", "A321"), oldValue: "40", newValue: "45" },
-                { field: matrixField("INT - Short → DOM", "A350"), oldValue: "50", newValue: "55" },
-                { field: matrixField("INT - Short → DOM", "B787"), oldValue: "50", newValue: "55" }
+                { field: matrixField("DOM ↔ DOM", "A321"), oldValue: "30", newValue: String(currentMatrix.A321 || "35") },
+                { field: matrixField("DOM ↔ DOM", "A350"), oldValue: "50", newValue: String(currentMatrix.A350 || "55") },
+                { field: matrixField("DOM ↔ DOM", "B787"), oldValue: "50", newValue: String(currentMatrix.B787 || "55") },
+                { field: matrixField("DOM ↔ DOM", "ATR"), oldValue: "25", newValue: String(currentMatrix.ATR || "30") },
+                { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "50", newValue: "55" },
+                { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" },
+                { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
+                { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" },
+                { field: matrixField("DOM ↔ INT - Long", "A350"), oldValue: "80", newValue: "85" },
+                { field: matrixField("DOM ↔ INT - Long", "B787"), oldValue: "80", newValue: "85" },
+                { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "45", newValue: "50" },
+                { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
+                { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" },
+                { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "40", newValue: "45" },
+                { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" },
+                { field: matrixField("DOM ↔ INT - Short", "B787"), oldValue: "50", newValue: "55" }
             ];
 
             return [
                 { time: c.updatedAt || "22/09/2026 13:56", by: currentUser, action: "Update", changes: sixteenFieldChanges },
                 {
                     time: "21/09/2026 16:42", by: "huyen.ntt", action: "Update", changes: [
-                        { field: matrixField("DOM → INT - Short", "A321"), oldValue: "50", newValue: "55" },
-                        { field: matrixField("DOM → INT - Short", "A350"), oldValue: "50", newValue: "55" }]
+                        { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "50", newValue: "55" },
+                        { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" }]
                 },
                 {
                     time: "20/09/2026 10:18", by: "quan.nm", action: "Update", changes: [
-                        { field: matrixField("INT - Long → DOM", "A350"), oldValue: "80", newValue: "85" },
-                        { field: matrixField("INT - Long → DOM", "B787"), oldValue: "80", newValue: "85" }]
+                        { field: matrixField("DOM ↔ INT - Long", "A350"), oldValue: "80", newValue: "85" },
+                        { field: matrixField("DOM ↔ INT - Long", "B787"), oldValue: "80", newValue: "85" }]
                 },
                 {
                     time: "19/09/2026 15:05", by: "nam.lh", action: "Update", changes: [
-                        { field: matrixField("INT - Medium → DOM", "A321"), oldValue: "45", newValue: "50" },
-                        { field: matrixField("INT - Medium → DOM", "A350"), oldValue: "60", newValue: "65" },
-                        { field: matrixField("INT - Medium → DOM", "B787"), oldValue: "60", newValue: "65" }]
+                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "45", newValue: "50" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" }]
                 },
                 {
                     time: "17/09/2026 11:35", by: "ha.tt", action: "Update", changes: [
-                        { field: matrixField("INT - Medium → INT - Medium", "A350"), oldValue: "70", newValue: "75" }]
+                        { field: matrixField("INT - Medium ↔ INT - Medium", "A350"), oldValue: "70", newValue: "75" }]
                 },
                 {
                     time: "15/09/2026 13:12", by: "quan.nm", action: "Update", changes: [
-                        { field: matrixField("DOM → INT - Medium", "A321"), oldValue: "45", newValue: "50" },
-                        { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "60", newValue: "65" },
-                        { field: matrixField("DOM → INT - Medium", "B787"), oldValue: "60", newValue: "65" },
-                        { field: matrixField("DOM → DOM", "ATR"), oldValue: "20", newValue: "30" }]
+                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "45", newValue: "50" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("DOM ↔ DOM", "ATR"), oldValue: "20", newValue: "30" }]
                 },
                 {
                     time: "12/09/2026 08:56", by: "ha.tt", action: "Update", changes: [
-                        { field: matrixField("INT - Medium → INT - Medium", "A350"), oldValue: "65", newValue: "70" },
-                        { field: matrixField("INT - Medium → INT - Medium", "B787"), oldValue: "65", newValue: "70" }]
+                        { field: matrixField("INT - Medium ↔ INT - Medium", "A350"), oldValue: "65", newValue: "70" },
+                        { field: matrixField("INT - Medium ↔ INT - Medium", "B787"), oldValue: "65", newValue: "70" }]
                 },
                 {
                     time: "10/09/2026 10:30", by: "nam.lh", action: "Update", changes: [
-                        { field: matrixField("INT - Short → DOM", "A321"), oldValue: "40", newValue: "45" },
-                        { field: matrixField("INT - Short → DOM", "A350"), oldValue: "50", newValue: "55" },
-                        { field: matrixField("INT - Short → DOM", "B787"), oldValue: "50", newValue: "55" }]
+                        { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "40", newValue: "45" },
+                        { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" },
+                        { field: matrixField("DOM ↔ INT - Short", "B787"), oldValue: "50", newValue: "55" }]
                 },
                 {
                     time: "08/09/2026 09:15", by: "huyen.ntt", action: "Update", changes: [
-                        { field: matrixField("DOM → INT - Medium", "A321"), oldValue: "40", newValue: "45" },
-                        { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "55", newValue: "60" }]
+                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "40", newValue: "45" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "55", newValue: "60" }]
                 },
                 {
                     time: "05/09/2026 16:18", by: "quan.nm", action: "Update", changes: [
-                        { field: matrixField("DOM → INT - Long", "A350"), oldValue: "75", newValue: "80" }]
+                        { field: matrixField("DOM ↔ INT - Long", "A350"), oldValue: "75", newValue: "80" }]
                 },
                 // Example: this record was created from an Excel import. Import is still logged as Create.
                 {
@@ -3034,17 +3123,17 @@ Business-consistent mock data rule:
                         { field: "IATA", oldValue: "—", newValue: c.iata },
                         { field: "Effective From", oldValue: "—", newValue: c.from },
                         { field: "Effective To", oldValue: "—", newValue: c.to || "Ongoing" },
-                        { field: matrixField("DOM → DOM", "A321"), oldValue: "—", newValue: String(currentMatrix.A321 || "35") },
-                        { field: matrixField("DOM → DOM", "A350"), oldValue: "—", newValue: String(currentMatrix.A350 || "55") },
-                        { field: matrixField("DOM → DOM", "B787"), oldValue: "—", newValue: String(currentMatrix.B787 || "55") },
-                        { field: matrixField("DOM → DOM", "ATR"), oldValue: "—", newValue: String(currentMatrix.ATR || "30") },
-                        { field: matrixField("DOM → INT - Short", "A321"), oldValue: "—", newValue: "55" },
-                        { field: matrixField("DOM → INT - Medium", "A321"), oldValue: "—", newValue: "50" },
-                        { field: matrixField("DOM → INT - Medium", "A350"), oldValue: "—", newValue: "65" },
-                        { field: matrixField("DOM → INT - Medium", "B787"), oldValue: "—", newValue: "65" },
-                        { field: matrixField("INT - Medium → DOM", "A321"), oldValue: "—", newValue: "50" },
-                        { field: matrixField("INT - Medium → DOM", "A350"), oldValue: "—", newValue: "65" },
-                        { field: matrixField("INT - Medium → DOM", "B787"), oldValue: "—", newValue: "65" }
+                        { field: matrixField("DOM ↔ DOM", "A321"), oldValue: "—", newValue: String(currentMatrix.A321 || "35") },
+                        { field: matrixField("DOM ↔ DOM", "A350"), oldValue: "—", newValue: String(currentMatrix.A350 || "55") },
+                        { field: matrixField("DOM ↔ DOM", "B787"), oldValue: "—", newValue: String(currentMatrix.B787 || "55") },
+                        { field: matrixField("DOM ↔ DOM", "ATR"), oldValue: "—", newValue: String(currentMatrix.ATR || "30") },
+                        { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "—", newValue: "55" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "—", newValue: "50" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "—", newValue: "65" },
+                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "—", newValue: "65" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "—", newValue: "50" },
+                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "—", newValue: "65" },
+                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "—", newValue: "65" }
                     ]
                 }
             ];
@@ -3306,9 +3395,11 @@ Business-consistent mock data rule:
             render(); showToast("Refreshed", "Latest Min Ground Time data loaded.");
         };
         document.getElementById("export").onclick = () => {
-            const head = ["Airport", "IATA", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector - Next Sector", "A320", "A321", "A350", "B787", "ATR"];
+            const head = ["Airport", "IATA", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector ↔ Next Sector", "A320", "A321", "A350", "B787", "ATR"];
             const rows = [head];
-            visible.forEach(c => routes.forEach(r => { let x = c.matrix[r]; rows.push([c.airport, c.iata, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", c.updatedBy || "", deriveStatus(c), r, x.A320, x.A321, x.A350, x.B787, x.ATR]) }));
+            visible.forEach(c => bidirectionalRoutes.forEach(pair => {
+                rows.push([c.airport, c.iata, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", updatedByDisplayName(c.updatedBy), deriveStatus(c), pair.label, ...["A320", "A321", "A350", "B787", "ATR"].map(fleet => pairValue(c.matrix, pair, fleet))]);
+            }));
             let csv = rows.map(row => row.map(v => `"${String(v ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
             let blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
             a.href = url; a.download = "Min_Ground_Time.csv"; a.click(); URL.revokeObjectURL(url); showToast("Export successful", "Min Ground Time matrix has been exported.");
@@ -3505,7 +3596,7 @@ Business-consistent mock data rule:
                     return [invalidImportPlan("VCL", "01/10/2026", "Invalid Sector Pair value.")];
                 case 13:
                     currentImportCaseLabel = "TC13 — Invalid MGT value";
-                    return [invalidImportPlan("VCL", "01/10/2026", "Min Ground Time must be a non-negative integer.")];
+                    return [invalidImportPlan("VCL", "01/10/2026", "Min Ground Time must be an integer from 1 to 85.")];
                 case 14:
                     currentImportCaseLabel = "TC14 — Blank MGT allowed";
                     currentImportNotes = ["Blank MGT cells are accepted and kept as not configured."];
