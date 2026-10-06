@@ -885,6 +885,74 @@
             margin-top: 1px
         }
 
+        /* Change History: compact detail + one long tooltip containing the full matrix change list. */
+        .history-details-compact {
+            color: #425761;
+            line-height: 1.45;
+        }
+
+        .history-details-compact .detail-line {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-more-link {
+            display: inline-block;
+            margin-top: 5px;
+            color: #1478e8;
+            font-weight: 600;
+            cursor: help;
+            user-select: none;
+        }
+
+        .history-long-tooltip {
+            position: fixed;
+            z-index: 10000;
+            display: none;
+            width: max-content;
+            min-width: 480px;
+            max-width: min(760px, calc(100vw - 28px));
+            max-height: calc(100vh - 28px);
+            overflow-y: auto;
+            padding: 12px 16px 14px;
+            border-radius: 8px;
+            background: #182535;
+            color: #d8e0e8;
+            box-shadow: 0 12px 34px rgba(15, 27, 39, .32);
+            font-size: 13px;
+            line-height: 1.55;
+            pointer-events: none;
+        }
+
+        .history-long-tooltip.show {
+            display: block;
+        }
+
+        .history-long-tooltip-title {
+            color: #fff;
+            font-size: 17px;
+            line-height: 1.2;
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .history-long-tooltip-line {
+            display: block;
+            white-space: nowrap;
+            color: #aeb9c8;
+        }
+
+        .history-long-tooltip-line .old {
+            text-decoration: line-through;
+        }
+
+        .history-long-tooltip-line .new {
+            color: #dfe6ee;
+        }
+
         .history-old-inline {
             text-decoration: line-through;
             color: #84929a
@@ -2008,25 +2076,23 @@ Business-consistent mock data rule:
                     <div class="field"><label>Effective To</label><input id="mTo" type="text" value="Ongoing" disabled>
                     </div>
                 </div>
-                <p class="note">Min Ground Time is configured in minutes for each sector pair and aircraft type.
+                <p class="note">Min Ground Time is configured in minutes for each sector pair and aircraft group.
                     Each sector pair applies equivalently in both directions. Effective To is calculated automatically
                     from the next period for the same IATA.</p>
                 <table class="edit-matrix">
                     <thead>
                         <tr>
                             <th style="width:285px"><span class="pair-header"><span class="part">Previous</span><span
-                                        class="arrow">↔</span><span class="part">Next Sector</span></span></th>
-                            <th>A320</th>
-                            <th>A321</th>
-                            <th>A350</th>
-                            <th>B787</th>
+                                        class="arrow">⇄</span><span class="part">Next Sector</span></span></th>
+                            <th>A320 - A321</th>
+                            <th>A350 - B787</th>
                             <th>ATR</th>
                         </tr>
                     </thead>
                     <tbody id="editMatrixBody"></tbody>
                 </table>
                 <div class="bidirectional-note"><b>Note:</b> Each sector pair is applied equivalently for the reverse
-                    direction. For example, <b>DOM ↔ INT - Short</b> covers both <b>DOM → INT - Short</b> and <b>INT -
+                    direction. For example, <b>DOM ⇄ INT - Short</b> covers both <b>DOM → INT - Short</b> and <b>INT -
                         Short → DOM</b>.</div>
             </div>
             <div class="modal-foot"><button class="btn" data-close="editOverlay">Cancel</button><button
@@ -2074,7 +2140,7 @@ Business-consistent mock data rule:
                                 file.</button>
                             <br>
                             One file can contain multiple IATAs. Each Min Ground Time record is identified by one
-                            Group_ID and contains exactly 16 Sector Pair rows.
+                            Group_ID and contains exactly 10 Sector Pair rows.
                         </div>
                     </div>
                 </div>
@@ -2309,11 +2375,9 @@ Business-consistent mock data rule:
                 <thead>
                     <tr>
                         <th><span class="pair-header"><span class="part">Previous</span><span
-                                    class="arrow">↔</span><span class="part">Next Sector</span></span></th>
-                        <th>A320</th>
-                        <th>A321</th>
-                        <th>A350</th>
-                        <th>B787</th>
+                                    class="arrow">⇄</span><span class="part">Next Sector</span></span></th>
+                        <th>A320 - A321</th>
+                        <th>A350 - B787</th>
                         <th>ATR</th>
                     </tr>
                 </thead>
@@ -2335,17 +2399,19 @@ Business-consistent mock data rule:
         // Compact UI model: reverse directions share one MGT configuration.
         // The underlying mock matrix keeps the 16 directional keys so the existing import prototype remains compatible.
         const bidirectionalRoutes = [
-            { label: "DOM ↔ DOM", forward: "DOM → DOM", reverse: "DOM → DOM" },
-            { label: "DOM ↔ INT - Long", forward: "DOM → INT - Long", reverse: "INT - Long → DOM" },
-            { label: "DOM ↔ INT - Medium", forward: "DOM → INT - Medium", reverse: "INT - Medium → DOM" },
-            { label: "DOM ↔ INT - Short", forward: "DOM → INT - Short", reverse: "INT - Short → DOM" },
-            { label: "INT - Long ↔ INT - Long", forward: "INT - Long → INT - Long", reverse: "INT - Long → INT - Long" },
-            { label: "INT - Long ↔ INT - Medium", forward: "INT - Long → INT - Medium", reverse: "INT - Medium → INT - Long" },
-            { label: "INT - Long ↔ INT - Short", forward: "INT - Long → INT - Short", reverse: "INT - Short → INT - Long" },
-            { label: "INT - Medium ↔ INT - Medium", forward: "INT - Medium → INT - Medium", reverse: "INT - Medium → INT - Medium" },
-            { label: "INT - Medium ↔ INT - Short", forward: "INT - Medium → INT - Short", reverse: "INT - Short → INT - Medium" },
-            { label: "INT - Short ↔ INT - Short", forward: "INT - Short → INT - Short", reverse: "INT - Short → INT - Short" }
+            { label: "DOM ⇄ DOM", forward: "DOM → DOM", reverse: "DOM → DOM" },
+            { label: "DOM ⇄ INT - Long", forward: "DOM → INT - Long", reverse: "INT - Long → DOM" },
+            { label: "DOM ⇄ INT - Medium", forward: "DOM → INT - Medium", reverse: "INT - Medium → DOM" },
+            { label: "DOM ⇄ INT - Short", forward: "DOM → INT - Short", reverse: "INT - Short → DOM" },
+            { label: "INT - Long ⇄ INT - Long", forward: "INT - Long → INT - Long", reverse: "INT - Long → INT - Long" },
+            { label: "INT - Long ⇄ INT - Medium", forward: "INT - Long → INT - Medium", reverse: "INT - Medium → INT - Long" },
+            { label: "INT - Long ⇄ INT - Short", forward: "INT - Long → INT - Short", reverse: "INT - Short → INT - Long" },
+            { label: "INT - Medium ⇄ INT - Medium", forward: "INT - Medium → INT - Medium", reverse: "INT - Medium → INT - Medium" },
+            { label: "INT - Medium ⇄ INT - Short", forward: "INT - Medium → INT - Short", reverse: "INT - Short → INT - Medium" },
+            { label: "INT - Short ⇄ INT - Short", forward: "INT - Short → INT - Short", reverse: "INT - Short → INT - Short" }
         ];
+
+        const aircraftGroups = ["A320 - A321", "A350 - B787", "ATR"];
 
         function routeLabel(route, arrow = "→") {
             const parts = route.split(` ${arrow} `);
@@ -2354,7 +2420,7 @@ Business-consistent mock data rule:
         }
 
         function pairLabel(pair) {
-            return routeLabel(pair.label, "↔");
+            return routeLabel(pair.label, "⇄");
         }
 
         function pairValue(matrix, pair, fleet) {
@@ -2364,44 +2430,41 @@ Business-consistent mock data rule:
         }
 
         function setPairValue(matrix, pair, fleet, value) {
-            if (!matrix[pair.forward]) matrix[pair.forward] = { A320: "", A321: "", A350: "", B787: "", ATR: "" };
+            if (!matrix[pair.forward]) matrix[pair.forward] = { "A320 - A321": "", "A350 - B787": "", ATR: "" };
             matrix[pair.forward][fleet] = value;
             if (pair.reverse !== pair.forward) {
-                if (!matrix[pair.reverse]) matrix[pair.reverse] = { A320: "", A321: "", A350: "", B787: "", ATR: "" };
+                if (!matrix[pair.reverse]) matrix[pair.reverse] = { "A320 - A321": "", "A350 - B787": "", ATR: "" };
                 matrix[pair.reverse][fleet] = value;
             }
         }
 
-        // Values are mapped from the supplied Excel where possible:
-        // source B787/A350/A330 -> A350 + B787, source A321 -> A321, source AT7 -> ATR.
-        // A320 is not populated in the source matrix, therefore it remains blank in this list mockup.
+        // Mock values follow the current business design: 10 bidirectional sector pairs × 3 aircraft groups.
         function matrixFor(type) {
-            const blank = () => ({ A320: "", A321: "", A350: "", B787: "", ATR: "" });
+            const blank = () => ({ "A320 - A321": "", "A350 - B787": "", ATR: "" });
             const m = Object.fromEntries(routes.map(r => [r, blank()]));
-            const setPair = (label, a321, a350, atr) => {
+            const setPair = (label, group1, group2, atr) => {
                 const pair = bidirectionalRoutes.find(p => p.label === label);
                 if (!pair) return;
-                ["A321", "A350", "B787", "ATR"].forEach(fleet => {
-                    const value = fleet === "A321" ? a321 : (fleet === "ATR" ? atr : a350);
-                    setPairValue(m, pair, fleet, value ?? "");
-                });
+                setPairValue(m, pair, "A320 - A321", group1 ?? "");
+                setPairValue(m, pair, "A350 - B787", group2 ?? "");
+                setPairValue(m, pair, "ATR", atr ?? "");
             };
 
             if (type === "HUB" || type === "DAD_CXR") {
-                setPair("DOM ↔ DOM", 35, 55, 30);
-                setPair("DOM ↔ INT - Long", "", 85, "");
-                setPair("DOM ↔ INT - Medium", 50, 65, "");
-                setPair("DOM ↔ INT - Short", 45, 55, "");
-                // INT - Long ↔ INT - Long is intentionally left blank in the supplied business table.
-                setPair("INT - Long ↔ INT - Medium", "", 85, "");
-                setPair("INT - Long ↔ INT - Short", "", 85, "");
-                setPair("INT - Medium ↔ INT - Medium", 50, 75, "");
-                setPair("INT - Medium ↔ INT - Short", 50, 65, "");
-                setPair("INT - Short ↔ INT - Short", 45, 55, "");
+                setPair("DOM ⇄ DOM", 55, 55, 30);
+                setPair("DOM ⇄ INT - Long", 85, 85, "");
+                setPair("DOM ⇄ INT - Medium", 65, 65, "");
+                setPair("DOM ⇄ INT - Short", 55, 55, "");
+                setPair("INT - Long ⇄ INT - Long", "", "", "");
+                setPair("INT - Long ⇄ INT - Medium", 85, 85, "");
+                setPair("INT - Long ⇄ INT - Short", 85, 85, "");
+                setPair("INT - Medium ⇄ INT - Medium", 75, 75, "");
+                setPair("INT - Medium ⇄ INT - Short", 65, 65, "");
+                setPair("INT - Short ⇄ INT - Short", 55, 55, "");
             } else {
-                setPair("DOM ↔ DOM", 35, "", 20);
-                setPair("DOM ↔ INT - Short", 45, "", "");
-                setPair("DOM ↔ INT - Medium", 50, "", "");
+                setPair("DOM ⇄ DOM", 35, 55, 20);
+                setPair("DOM ⇄ INT - Short", 45, 55, "");
+                setPair("DOM ⇄ INT - Medium", 50, 65, "");
             }
             return m;
         }
@@ -2483,34 +2546,31 @@ Business-consistent mock data rule:
         ];
 
 
-        const fleetProfiles = {
-            FULL: ["A321", "A350", "B787", "ATR"],
-            JET3: ["A321", "A350", "B787"],
-            A321_ATR: ["A321", "ATR"],
-            A350_B787: ["A350", "B787"],
-            A321_A350: ["A321", "A350"],
-            B787_ATR: ["B787", "ATR"],
-            A320_A321: ["A320", "A321"]
+        const aircraftGroupProfiles = {
+            FULL: ["A320 - A321", "A350 - B787", "ATR"],
+            JET3: ["A320 - A321", "A350 - B787"],
+            A321_ATR: ["A320 - A321", "ATR"],
+            A350_B787: ["A350 - B787"],
+            A321_A350: ["A320 - A321", "A350 - B787"],
+            B787_ATR: ["A350 - B787", "ATR"],
+            A320_A321: ["A320 - A321"]
         };
 
         function matrixWithFleetProfile(type, profileCode) {
             const m = matrixFor(type);
-            const allowed = fleetProfiles[profileCode] || fleetProfiles.FULL;
-            const defaults = { A320: 35, A321: 35, A350: 55, B787: 55, ATR: 30 };
+            const allowed = aircraftGroupProfiles[profileCode] || aircraftGroupProfiles.FULL;
+            const defaults = { "A320 - A321": 35, "A350 - B787": 55, ATR: 30 };
 
-            ["A320", "A321", "A350", "B787", "ATR"].forEach(fleet => {
+            aircraftGroups.forEach(group => {
                 routes.forEach(route => {
-                    if (!allowed.includes(fleet)) m[route][fleet] = "";
+                    if (!allowed.includes(group)) m[route][group] = "";
                 });
-
-                // Ensure every selected fleet actually has at least one MGT value
-                // so the  column is driven by real record data.
-                if (allowed.includes(fleet)) {
+                if (allowed.includes(group)) {
                     const hasValue = routes.some(route => {
-                        const v = m[route][fleet];
+                        const v = m[route][group];
                         return v !== "" && v !== null && v !== undefined;
                     });
-                    if (!hasValue) m["DOM → DOM"][fleet] = defaults[fleet];
+                    if (!hasValue) m["DOM → DOM"][group] = defaults[group];
                 }
             });
             return m;
@@ -2605,8 +2665,8 @@ Business-consistent mock data rule:
 
         function detailMatrix(c) {
             return `<div class="detail-box"><div class="detail-title"><span>Min Ground Time Matrix — ${c.airport} (${c.iata})</span><span style="color:#72838c;font-weight:500">Unit: minutes</span></div>
-  <table class="matrix"><thead><tr><th><span class="pair-header"><span class="part">Previous</span><span class="arrow">↔</span><span class="part">Next Sector</span></span></th><th>A320</th><th>A321</th><th>A350</th><th>B787</th><th>ATR</th></tr></thead>
-  <tbody>${bidirectionalRoutes.map(pair => `<tr><td class="route">${pairLabel(pair)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => { const v = pairValue(c.matrix, pair, k); return `<td class="${v === "" ? "blank" : ""}">${v === "" ? "—" : v}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>`;
+  <table class="matrix"><thead><tr><th><span class="pair-header"><span class="part">Previous</span><span class="arrow">⇄</span><span class="part">Next Sector</span></span></th>${aircraftGroups.map(g => `<th>${g}</th>`).join("")}</tr></thead>
+  <tbody>${bidirectionalRoutes.map(pair => `<tr><td class="route">${pairLabel(pair)}</td>${aircraftGroups.map(group => { const v = pairValue(c.matrix, pair, group); return `<td class="${v === "" ? "blank" : ""}">${v === "" ? "—" : v}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>`;
         }
 
 
@@ -2735,7 +2795,7 @@ Business-consistent mock data rule:
             document.getElementById("drawerMatrixBody").innerHTML = bidirectionalRoutes.map(pair => {
                 return `<tr>
       <td class="route-name">${pairLabel(pair)}</td>
-      ${["A320", "A321", "A350", "B787", "ATR"].map(fleet => { const v = pairValue(c.matrix, pair, fleet); return `<td>${v === "" ? "—" : v}</td>`; }).join("")}
+      ${aircraftGroups.map(group => { const v = pairValue(c.matrix, pair, group); return `<td>${v === "" ? "—" : v}</td>`; }).join("")}
     </tr>`;
             }).join("");
             document.getElementById("drawerEditIcon").innerHTML = editIcon();
@@ -2759,14 +2819,16 @@ Business-consistent mock data rule:
         }
         function editRows(matrix) {
             document.getElementById("editMatrixBody").innerHTML = bidirectionalRoutes.map((pair, pairIndex) => {
-                return `<tr><td>${pairLabel(pair)}</td>${["A320", "A321", "A350", "B787", "ATR"].map(k => {
-                    const value = pairValue(matrix, pair, k);
-                    return `<td><input type="number" min="1" max="85" step="1" data-pair-index="${pairIndex}" data-fleet="${k}" value="${value}"></td>`;
+                return `<tr><td>${pairLabel(pair)}</td>${aircraftGroups.map(group => {
+                    const value = pairValue(matrix, pair, group);
+                    return `<td><input type="number" min="1" max="85" step="1" data-pair-index="${pairIndex}" data-fleet="${group}" value="${value}"></td>`;
                 }).join("")}</tr>`;
             }).join("");
         }
 
-        function emptyMatrix() { return Object.fromEntries(routes.map(r => [r, { A320: "", A321: "", A350: "", B787: "", ATR: "" }])) }
+        function emptyMatrix() {
+            return Object.fromEntries(routes.map(r => [r, { "A320 - A321": "", "A350 - B787": "", ATR: "" }]));
+        }
 
         function getProspectivePeriod(iata, from) {
             if (!iata || !from) return { duplicate: false, to: "" };
@@ -3040,6 +3102,7 @@ Business-consistent mock data rule:
         let currentHistoryOperations = [];
         let currentHistoryFilteredOperations = [];
         let currentHistoryPage = 1;
+        let currentHistoryRenderedOperations = [];
 
         function matrixField(route, fleet) {
             return `${route} × ${fleet}`;
@@ -3048,92 +3111,78 @@ Business-consistent mock data rule:
         function buildHistoryOperations(c) {
             const currentUser = c.updatedBy || "admin";
             const currentMatrix = c.matrix?.["DOM → DOM"] || {};
-            const sixteenFieldChanges = [
-                { field: matrixField("DOM ↔ DOM", "A321"), oldValue: "30", newValue: String(currentMatrix.A321 || "35") },
-                { field: matrixField("DOM ↔ DOM", "A350"), oldValue: "50", newValue: String(currentMatrix.A350 || "55") },
-                { field: matrixField("DOM ↔ DOM", "B787"), oldValue: "50", newValue: String(currentMatrix.B787 || "55") },
-                { field: matrixField("DOM ↔ DOM", "ATR"), oldValue: "25", newValue: String(currentMatrix.ATR || "30") },
-                { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "50", newValue: "55" },
-                { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" },
-                { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
-                { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" },
-                { field: matrixField("DOM ↔ INT - Long", "A350"), oldValue: "80", newValue: "85" },
-                { field: matrixField("DOM ↔ INT - Long", "B787"), oldValue: "80", newValue: "85" },
-                { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "45", newValue: "50" },
-                { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
-                { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" },
-                { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "40", newValue: "45" },
-                { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" },
-                { field: matrixField("DOM ↔ INT - Short", "B787"), oldValue: "50", newValue: "55" }
+
+            // One intentionally large update case: all 10 sector pairs × all 3 aircraft groups = 30 detail lines.
+            const fullMatrixChanges = [];
+            bidirectionalRoutes.forEach((pair, pairIndex) => {
+                aircraftGroups.forEach((group, groupIndex) => {
+                    const current = pairValue(c.matrix, pair, group);
+                    const fallback = group === "ATR" ? 30 : (group === "A350 - B787" ? 55 : 35);
+                    const newValue = String(current === "" ? fallback : current);
+                    const oldValue = String(Math.max(1, Number(newValue) - 5));
+                    fullMatrixChanges.push({ field: matrixField(pair.label, group), oldValue, newValue });
+                });
+            });
+
+            // Demo Create case matching the business matrix supplied by the user.
+            // Blank MGT cells are intentionally omitted from Updated Details.
+            const sampleCreateChanges = [
+                { field: "IATA", oldValue: "—", newValue: c.iata },
+                { field: "Effective From", oldValue: "—", newValue: c.from },
+                { field: "Effective To", oldValue: "—", newValue: c.to || "Ongoing" },
+                { field: matrixField("DOM ⇄ DOM", "A320 - A321"), oldValue: "—", newValue: "55" },
+                { field: matrixField("DOM ⇄ DOM", "A350 - B787"), oldValue: "—", newValue: "55" },
+                { field: matrixField("DOM ⇄ DOM", "ATR"), oldValue: "—", newValue: "30" },
+                { field: matrixField("DOM ⇄ INT - Long", "A320 - A321"), oldValue: "—", newValue: "85" },
+                { field: matrixField("DOM ⇄ INT - Long", "A350 - B787"), oldValue: "—", newValue: "85" },
+                { field: matrixField("DOM ⇄ INT - Medium", "A320 - A321"), oldValue: "—", newValue: "65" },
+                { field: matrixField("DOM ⇄ INT - Medium", "A350 - B787"), oldValue: "—", newValue: "65" },
+                { field: matrixField("DOM ⇄ INT - Short", "A320 - A321"), oldValue: "—", newValue: "55" },
+                { field: matrixField("DOM ⇄ INT - Short", "A350 - B787"), oldValue: "—", newValue: "55" },
+                { field: matrixField("INT - Long ⇄ INT - Medium", "A320 - A321"), oldValue: "—", newValue: "85" },
+                { field: matrixField("INT - Long ⇄ INT - Medium", "A350 - B787"), oldValue: "—", newValue: "85" },
+                { field: matrixField("INT - Long ⇄ INT - Short", "A320 - A321"), oldValue: "—", newValue: "85" },
+                { field: matrixField("INT - Long ⇄ INT - Short", "A350 - B787"), oldValue: "—", newValue: "85" },
+                { field: matrixField("INT - Medium ⇄ INT - Medium", "A320 - A321"), oldValue: "—", newValue: "75" },
+                { field: matrixField("INT - Medium ⇄ INT - Medium", "A350 - B787"), oldValue: "—", newValue: "75" },
+                { field: matrixField("INT - Medium ⇄ INT - Short", "A320 - A321"), oldValue: "—", newValue: "65" },
+                { field: matrixField("INT - Medium ⇄ INT - Short", "A350 - B787"), oldValue: "—", newValue: "65" },
+                { field: matrixField("INT - Short ⇄ INT - Short", "A320 - A321"), oldValue: "—", newValue: "55" },
+                { field: matrixField("INT - Short ⇄ INT - Short", "A350 - B787"), oldValue: "—", newValue: "55" }
             ];
 
             return [
-                { time: c.updatedAt || "22/09/2026 13:56", by: currentUser, action: "Update", changes: sixteenFieldChanges },
+                { time: "16/09/2026 15:10", by: "quan.nm", action: "Create", initial: true, source: "manual", changes: sampleCreateChanges },
+                { time: c.updatedAt || "22/09/2026 13:56", by: currentUser, action: "Update", changes: fullMatrixChanges },
                 {
                     time: "21/09/2026 16:42", by: "huyen.ntt", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "50", newValue: "55" },
-                        { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" }]
+                        { field: matrixField("DOM ⇄ INT - Short", "A320 - A321"), oldValue: "50", newValue: "55" },
+                        { field: matrixField("DOM ⇄ INT - Short", "A350 - B787"), oldValue: "50", newValue: "55" }]
                 },
                 {
                     time: "20/09/2026 10:18", by: "quan.nm", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Long", "A350"), oldValue: "80", newValue: "85" },
-                        { field: matrixField("DOM ↔ INT - Long", "B787"), oldValue: "80", newValue: "85" }]
+                        { field: matrixField("DOM ⇄ INT - Long", "A350 - B787"), oldValue: "80", newValue: "85" },
+                        { field: matrixField("DOM ⇄ INT - Long", "ATR"), oldValue: "25", newValue: "30" }]
                 },
                 {
                     time: "19/09/2026 15:05", by: "nam.lh", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "45", newValue: "50" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
-                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" }]
+                        { field: matrixField("DOM ⇄ INT - Medium", "A320 - A321"), oldValue: "60", newValue: "65" },
+                        { field: matrixField("DOM ⇄ INT - Medium", "A350 - B787"), oldValue: "60", newValue: "65" }]
                 },
                 {
                     time: "17/09/2026 11:35", by: "ha.tt", action: "Update", changes: [
-                        { field: matrixField("INT - Medium ↔ INT - Medium", "A350"), oldValue: "70", newValue: "75" }]
+                        { field: matrixField("INT - Medium ⇄ INT - Medium", "A350 - B787"), oldValue: "70", newValue: "75" }]
                 },
-                {
-                    time: "15/09/2026 13:12", by: "quan.nm", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "45", newValue: "50" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "60", newValue: "65" },
-                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "60", newValue: "65" },
-                        { field: matrixField("DOM ↔ DOM", "ATR"), oldValue: "20", newValue: "30" }]
-                },
-                {
-                    time: "12/09/2026 08:56", by: "ha.tt", action: "Update", changes: [
-                        { field: matrixField("INT - Medium ↔ INT - Medium", "A350"), oldValue: "65", newValue: "70" },
-                        { field: matrixField("INT - Medium ↔ INT - Medium", "B787"), oldValue: "65", newValue: "70" }]
-                },
-                {
-                    time: "10/09/2026 10:30", by: "nam.lh", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "40", newValue: "45" },
-                        { field: matrixField("DOM ↔ INT - Short", "A350"), oldValue: "50", newValue: "55" },
-                        { field: matrixField("DOM ↔ INT - Short", "B787"), oldValue: "50", newValue: "55" }]
-                },
-                {
-                    time: "08/09/2026 09:15", by: "huyen.ntt", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "40", newValue: "45" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "55", newValue: "60" }]
-                },
-                {
-                    time: "05/09/2026 16:18", by: "quan.nm", action: "Update", changes: [
-                        { field: matrixField("DOM ↔ INT - Long", "A350"), oldValue: "75", newValue: "80" }]
-                },
-                // Example: this record was created from an Excel import. Import is still logged as Create.
                 {
                     time: c.createdAt || "01/09/2026 08:10", by: "quan.nm", action: "Create", initial: true, source: "import", changes: [
                         { field: "Source file", oldValue: "—", newValue: "TC16_Multiple_Airports_One_File.xlsx" },
                         { field: "IATA", oldValue: "—", newValue: c.iata },
                         { field: "Effective From", oldValue: "—", newValue: c.from },
                         { field: "Effective To", oldValue: "—", newValue: c.to || "Ongoing" },
-                        { field: matrixField("DOM ↔ DOM", "A321"), oldValue: "—", newValue: String(currentMatrix.A321 || "35") },
-                        { field: matrixField("DOM ↔ DOM", "A350"), oldValue: "—", newValue: String(currentMatrix.A350 || "55") },
-                        { field: matrixField("DOM ↔ DOM", "B787"), oldValue: "—", newValue: String(currentMatrix.B787 || "55") },
-                        { field: matrixField("DOM ↔ DOM", "ATR"), oldValue: "—", newValue: String(currentMatrix.ATR || "30") },
-                        { field: matrixField("DOM ↔ INT - Short", "A321"), oldValue: "—", newValue: "55" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "—", newValue: "50" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "—", newValue: "65" },
-                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "—", newValue: "65" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A321"), oldValue: "—", newValue: "50" },
-                        { field: matrixField("DOM ↔ INT - Medium", "A350"), oldValue: "—", newValue: "65" },
-                        { field: matrixField("DOM ↔ INT - Medium", "B787"), oldValue: "—", newValue: "65" }
+                        ...bidirectionalRoutes.flatMap(pair => aircraftGroups.map(group => {
+                            const v = pairValue(c.matrix, pair, group);
+                            return v === "" ? null : { field: matrixField(pair.label, group), oldValue: "—", newValue: String(v) };
+                        }).filter(Boolean))
                     ]
                 }
             ];
@@ -3165,16 +3214,82 @@ Business-consistent mock data rule:
 
         function historyDetailsHtml(op) {
             const esc = v => String(v ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
-            return (op.changes || []).map(ch => {
+            const changes = op.changes || [];
+            const visible = changes.slice(0, 2);
+            const lines = visible.map(ch => {
                 const field = esc(ch.field);
                 const newValue = esc(ch.newValue ?? "—");
                 if (op.initial || op.action === "Create") {
-                    return `<span class="detail-line">• ${field}: <span class="history-new-inline">${newValue}</span></span>`;
+                    return `<span class="detail-line">${field}: <span class="history-new-inline">${newValue}</span></span>`;
                 }
                 const oldValue = esc(ch.oldValue ?? "—");
-                return `<span class="detail-line">• ${field}: <span class="history-old-inline">${oldValue}</span> → <span class="history-new-inline">${newValue}</span></span>`;
-            }).join("");
+                return `<span class="detail-line">${field}: <span class="history-old-inline">${oldValue}</span> → <span class="history-new-inline">${newValue}</span></span>`;
+            });
+            if (changes.length > 2) {
+                lines.push(`<span class="history-more-link" data-history-op-index="${op.__renderIndex ?? ""}">+${changes.length - 2} more</span>`);
+            }
+            return `<div class="history-details-compact">${lines.join("")}</div>`;
         }
+
+        function ensureHistoryLongTooltip() {
+            let tooltip = document.getElementById("historyLongTooltip");
+            if (tooltip) return tooltip;
+            tooltip = document.createElement("div");
+            tooltip.id = "historyLongTooltip";
+            tooltip.className = "history-long-tooltip";
+            tooltip.setAttribute("role", "tooltip");
+            document.body.appendChild(tooltip);
+            return tooltip;
+        }
+
+        function historyLongTooltipHtml(op) {
+            const esc = v => String(v ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+            const rows = (op.changes || []).map(ch => {
+                const field = esc(ch.field);
+                const oldValue = esc(ch.oldValue ?? "—");
+                const newValue = esc(ch.newValue ?? "—");
+                if (op.initial || op.action === "Create") {
+                    return `<span class="history-long-tooltip-line">${field}: <span class="new">${newValue}</span></span>`;
+                }
+                return `<span class="history-long-tooltip-line">${field}: <span class="old">${oldValue}</span> → <span class="new">${newValue}</span></span>`;
+            }).join("");
+            return `<div class="history-long-tooltip-title">Updated details</div>${rows}`;
+        }
+
+        function positionHistoryLongTooltip(tooltip, anchor) {
+            const gap = 8;
+            const rect = anchor.getBoundingClientRect();
+            tooltip.style.left = `${rect.left}px`;
+            tooltip.style.top = `${rect.bottom + gap}px`;
+            const tip = tooltip.getBoundingClientRect();
+            let left = rect.left;
+            let top = rect.bottom + gap;
+            if (left + tip.width > window.innerWidth - 10) left = Math.max(10, window.innerWidth - tip.width - 10);
+            if (top + tip.height > window.innerHeight - 10) top = Math.max(10, rect.top - tip.height - gap);
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
+        }
+
+        document.addEventListener("mouseover", e => {
+            const target = e.target.closest?.(".history-more-link");
+            if (!target) return;
+            const index = Number(target.dataset.historyOpIndex);
+            const op = currentHistoryRenderedOperations?.[index];
+            if (!op) return;
+            const tooltip = ensureHistoryLongTooltip();
+            tooltip.innerHTML = historyLongTooltipHtml(op);
+            tooltip.classList.add("show");
+            positionHistoryLongTooltip(tooltip, target);
+        });
+
+        document.addEventListener("mouseout", e => {
+            const target = e.target.closest?.(".history-more-link");
+            if (!target) return;
+            const related = e.relatedTarget;
+            if (related && target.contains(related)) return;
+            document.getElementById("historyLongTooltip")?.classList.remove("show");
+        });
+
         function populateHistoryUsers(operations) {
             const list = document.getElementById("historyUserList");
             const users = [...new Set(operations.map(o => updatedByDisplayName(o.by)).filter(Boolean))];
@@ -3204,14 +3319,15 @@ Business-consistent mock data rule:
             if (currentHistoryPage < 1) currentHistoryPage = 1;
             const start = (currentHistoryPage - 1) * size;
             const pageRows = operations.slice(start, start + size);
+            currentHistoryRenderedOperations = pageRows;
+            pageRows.forEach((op, i) => { op.__renderIndex = i; });
 
             document.getElementById("historyBody").innerHTML = pageRows.length ? pageRows.map((op, i) => {
-                const plain = historyDetailsPlain(op);
                 return `<tr class="history-row">
       <td>${start + i + 1}</td>
       <td><b>${historyDisplayTime(op.time)}</b></td>
       <td>${actionText(op.action)}</td>
-      <td><div class="history-details-text" title="${plain.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")}">${historyDetailsHtml(op)}</div></td>
+      <td>${historyDetailsHtml(op)}</td>
       <td><b>${updatedByDisplayName(op.by)}</b></td>
     </tr>`;
             }).join("") : `<tr><td colspan="5" class="center history-empty" style="height:110px;vertical-align:middle">No data available.</td></tr>`;
@@ -3395,10 +3511,10 @@ Business-consistent mock data rule:
             render(); showToast("Refreshed", "Latest Min Ground Time data loaded.");
         };
         document.getElementById("export").onclick = () => {
-            const head = ["Airport", "IATA", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector ↔ Next Sector", "A320", "A321", "A350", "B787", "ATR"];
+            const head = ["Airport", "IATA", "Effective From", "Effective To", "Last Updated", "Updated By", "Status", "Previous Sector ⇄ Next Sector", "A320 - A321", "A350 - B787", "ATR"];
             const rows = [head];
             visible.forEach(c => bidirectionalRoutes.forEach(pair => {
-                rows.push([c.airport, c.iata, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", updatedByDisplayName(c.updatedBy), deriveStatus(c), pair.label, ...["A320", "A321", "A350", "B787", "ATR"].map(fleet => pairValue(c.matrix, pair, fleet))]);
+                rows.push([c.airport, c.iata, c.from, c.toApiError ? "" : (c.to || "Ongoing"), c.updatedAt || "", updatedByDisplayName(c.updatedBy), deriveStatus(c), pair.label, ...aircraftGroups.map(group => pairValue(c.matrix, pair, group))]);
             }));
             let csv = rows.map(row => row.map(v => `"${String(v ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
             let blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
@@ -3587,7 +3703,7 @@ Business-consistent mock data rule:
                     return [invalidImportPlan("VCL", "", "Effective_From is required on the first row of Group_ID.")];
                 case 10:
                     currentImportCaseLabel = "TC10 — Missing Sector Pair";
-                    return [invalidImportPlan("VCL", "01/10/2026", "Each Group_ID must contain exactly 16 sector pairs.")];
+                    return [invalidImportPlan("VCL", "01/10/2026", "Each Group_ID must contain exactly 10 sector pairs.")];
                 case 11:
                     currentImportCaseLabel = "TC11 — Duplicate Sector Pair";
                     return [invalidImportPlan("VCL", "01/10/2026", "Duplicate/invalid Sector Pair in Group_ID.")];
@@ -3855,33 +3971,30 @@ Business-consistent mock data rule:
         }
 
         function checkedImportRows(batch) {
-            const header = ["Group_ID", "IATA", "Effective_From", "Sector_Pair", "A320", "A321", "A350", "B787", "ATR", "Error"];
+            const header = ["Group_ID", "IATA", "Effective_From", "Previous_Sector-Next_Sector", "A320 - A321", "A350 - B787", "ATR", "Error"];
             const rows = [header];
 
             batch.forEach((plan, planIndex) => {
                 const groupId = `G${String(planIndex + 1).padStart(3, "0")}`;
                 const matrix = (!plan.invalid && airportMaster[plan.iata]) ? mockImportedMatrix(plan.iata) : null;
 
-                routes.forEach((route, routeIndex) => {
-                    let sectorPair = route;
-                    let a320 = matrix?.[route]?.A320 ?? "";
-                    let a321 = matrix?.[route]?.A321 ?? "";
-                    let a350 = matrix?.[route]?.A350 ?? "";
-                    let b787 = matrix?.[route]?.B787 ?? "";
-                    let atr = matrix?.[route]?.ATR ?? "";
+                bidirectionalRoutes.forEach((pair, pairIndex) => {
+                    let sectorPair = pair.label.replaceAll(" ⇄ ", "-").replaceAll(" - ", "_");
+                    let group1 = matrix ? pairValue(matrix, pair, "A320 - A321") : "";
+                    let group2 = matrix ? pairValue(matrix, pair, "A350 - B787") : "";
+                    let atr = matrix ? pairValue(matrix, pair, "ATR") : "";
 
-                    // Make a few invalid mock cases visible inside the checked workbook.
-                    if (plan.invalid && /Missing Sector Pair/i.test(currentImportCaseLabel) && routeIndex === 15) sectorPair = "";
-                    if (plan.invalid && /Invalid Sector Pair/i.test(currentImportCaseLabel) && routeIndex === 0) sectorPair = "INVALID SECTOR";
-                    if (plan.invalid && /Invalid MGT value/i.test(currentImportCaseLabel) && routeIndex === 0) a321 = "INVALID";
+                    if (plan.invalid && /Missing Sector Pair/i.test(currentImportCaseLabel) && pairIndex === 9) sectorPair = "";
+                    if (plan.invalid && /Invalid Sector Pair/i.test(currentImportCaseLabel) && pairIndex === 0) sectorPair = "INVALID SECTOR";
+                    if (plan.invalid && /Invalid MGT value/i.test(currentImportCaseLabel) && pairIndex === 0) group1 = "INVALID";
 
                     rows.push([
                         groupId,
-                        routeIndex === 0 ? (plan.iata || "") : "",
-                        routeIndex === 0 ? (plan.newFrom || "") : "",
+                        pairIndex === 0 ? (plan.iata || "") : "",
+                        pairIndex === 0 ? (plan.newFrom || "") : "",
                         sectorPair,
-                        a320, a321, a350, b787, atr,
-                        (plan.invalid && routeIndex === 0) ? (plan.reason || "Invalid record") : ""
+                        group1, group2, atr,
+                        (plan.invalid && pairIndex === 0) ? (plan.reason || "Invalid record") : ""
                     ]);
                 });
             });
@@ -3900,15 +4013,15 @@ Business-consistent mock data rule:
 
             return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-  <dimension ref="A1:J${rows.length}"/>
+  <dimension ref="A1:H${rows.length}"/>
   <sheetViews><sheetView workbookViewId="0"/></sheetViews>
   <cols>
     <col min="1" max="1" width="12" customWidth="1"/>
     <col min="2" max="2" width="14" customWidth="1"/>
     <col min="3" max="3" width="18" customWidth="1"/>
     <col min="4" max="4" width="30" customWidth="1"/>
-    <col min="5" max="9" width="11" customWidth="1"/>
-    <col min="10" max="10" width="55" customWidth="1"/>
+    <col min="5" max="7" width="18" customWidth="1"/>
+    <col min="8" max="8" width="55" customWidth="1"/>
   </cols>
   <sheetData>${rowXml}</sheetData>
 </worksheet>`;
