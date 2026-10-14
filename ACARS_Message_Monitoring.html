@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOSS | Integrated Message Data Management</title>
+<style>
+:root{--bg:#eef2f5;--surface:#ffffff;--surface-2:#f6f8fb;--sidebar:#d8dee6;--sidebar-deep:#cfd6df;--line:#d8e0e8;--line-2:#e5ebf0;--text:#263238;--muted:#71808f;--nav:#36424f;--teal:#0d7f94;--teal-2:#18a2bc;--blue:#0f98c4;--orange:#f5a623;--orange-2:#e69a1f;--green:#25b46b;--green-bg:#ecfbf3;--gray-badge:#e8edf3;--gray-text:#6b7785;--shadow:0 1px 3px rgba(15,23,42,.06),0 10px 24px rgba(15,23,42,.05);--radius:10px;--radius-sm:8px;}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+a{color:inherit;text-decoration:none}
+.app{display:flex;min-height:100vh}
+.sidebar{width:154px;background:var(--sidebar);border-right:1px solid #c5ced8;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex:none}
+.logoarea{height:58px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid #c9d3dc;gap:8px}
+.logoarea .mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(180deg,#f8c14d,#e0a417);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.logoarea .brand{font-weight:800;color:#008db2;line-height:1.05;font-size:12px}
+.logoarea .brand small{display:block;color:#758593;font-size:10px;font-weight:600}
+.sidebar nav{padding:10px 6px;overflow:auto;flex:1}.sidebar .nav-label{white-space:normal;line-height:1.35}.sidebar.collapsed{width:60px}.sidebar.collapsed .brand,.sidebar.collapsed .nav-label{display:none}.sidebar.collapsed .logoarea{justify-content:center;padding:0}.sidebar.collapsed .nav-link{justify-content:center;padding:10px 0}
+.nav-link{width:100%;display:flex;align-items:center;gap:9px;border:0;background:transparent;border-radius:6px;padding:9px 10px;color:#33404d;text-align:left;font-weight:650;margin-bottom:2px;min-height:34px}
+.nav-link:hover{background:rgba(255,255,255,.65)}
+.nav-link.active{background:#0d8ca7;color:#fff;box-shadow:inset 3px 0 0 #056278}
+.nav-link .nav-label{flex:1;white-space:nowrap;font-size:12px}
+.nav-link .arrow{opacity:.7}
+.subnav{margin:2px 0 6px 26px;padding-left:8px;border-left:1px dashed rgba(51,64,77,.2)}
+.subnav .nav-link{padding:7px 8px;font-size:11px;color:#4f5d6a;min-height:30px}
+.subnav .nav-link.active{background:#fff;color:#0d7f94;box-shadow:inset 2px 0 0 #0d7f94}
+.side-bottom{padding:8px 6px;border-top:1px solid #c9d3dc;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.35))}
+.usercard{margin-top:8px;background:#eef2f6;border:1px solid #cdd6df;border-radius:8px;padding:10px;display:grid;gap:2px}
+.usercard b{font-size:12px}
+.usercard span{font-size:10px;color:#6b7785;word-break:break-all}
+.mainwrap{flex:1;min-width:0;padding:6px}
+.workspace{background:#f8fafc;border:1px dashed #9ec9d3;border-radius:8px;min-height:calc(100vh - 12px);display:flex;flex-direction:column;overflow:hidden}
+.topstrip{padding:10px 12px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.module-tabs{display:flex;gap:4px;flex-wrap:wrap;min-width:0}
+.module-tab{height:30px;border:1px solid #cad5df;background:#eef2f6;color:#51606f;border-radius:18px;padding:0 11px;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700}
+.module-tab.active{background:#0f98c4;color:#fff;border-color:#0f98c4}
+.module-tab svg{width:14px;height:14px}
+.top-actions{display:flex;gap:8px;align-items:center;flex:none}
+.btn{height:32px;border:1px solid #cfd7df;background:#fff;color:#556575;border-radius:7px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.btn:hover:not(:disabled){filter:brightness(.98)}
+.btn.primary{background:#1097c4;border-color:#1097c4;color:#fff}
+.btn.warning{background:var(--orange);border-color:var(--orange);color:#fff}
+.btn.success{background:#0f98c4;border-color:#0f98c4;color:#fff}
+.btn.sm{height:28px;padding:0 9px;font-size:12px}
+.iconbutton{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px solid #cfd7df;background:#fff;color:#5f7080}
+.content{padding:6px 12px 12px;display:flex;flex-direction:column;gap:8px;min-height:0;flex:1}
+.hidden-metrics{display:none}
+.type-tabs{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:0 0 2px}
+.type-tab{height:28px;padding:0 10px;border:1px solid transparent;background:transparent;border-radius:6px;color:#687786;font-weight:700;font-size:12px}
+.type-tab.active{background:#ffffff;border-color:#d6dee6;color:#0f98c4;box-shadow:var(--shadow)}
+.tab-count{display:none}
+.filter-panel,.table-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.filterhead{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--line-2);font-weight:750}
+.filterhead strong{display:flex;align-items:center;gap:8px}
+.filterhead .togglemini{font-size:11px;color:#6f7f8b}
+.filterbody{padding:10px 12px;display:grid;grid-template-columns:minmax(90px,1fr) minmax(95px,1fr) minmax(68px,.73fr) minmax(68px,.73fr) minmax(115px,1fr) minmax(315px,2.85fr) auto;gap:8px;align-items:end}
+.filterbody.hidden{display:none}
+.field{display:grid;gap:4px}
+.field label{display:none}
+.field input,.field select{height:34px;border:1px solid #d4dce5;background:#fff;border-radius:10px;padding:0 12px;color:#35424f;outline:none}
+.field input::placeholder{color:#95a2af}
+.field input:focus,.field select:focus{border-color:#79bfd2;box-shadow:0 0 0 3px rgba(16,151,196,.12)}
+/* Group the two native time pickers as a single Event Time range input. */
+.time-range-field{min-width:0;gap:3px}
+.time-range-field>label{display:block;font-size:10px;font-weight:800;letter-spacing:.1px;color:#728394;line-height:13px}
+.time-range{height:34px;display:flex;align-items:center;gap:5px;border:1px solid #d4dce5;background:#fff;border-radius:10px;padding:0 7px;min-width:0;white-space:nowrap}
+.time-range:focus-within{border-color:#79bfd2;box-shadow:0 0 0 3px rgba(16,151,196,.12)}
+.time-range-clock{height:14px;width:14px;color:#8193a2}
+.time-range-caption{color:#7c8996;font-size:10px;font-weight:700}
+.time-range-arrow{font-size:14px;font-weight:800;color:#8a9ba8;padding:0 1px}
+.time-range input[type=time]{height:30px;flex:1 1 90px;width:90px;min-width:0;padding:0 1px;border:0;border-radius:0;font-size:12px;font-weight:650;outline:0;box-shadow:none;background:transparent;color:#3d505e;text-align:left;color-scheme:light}
+.time-range input[type=time]:focus{outline:none;box-shadow:none;border:0}
+.time-range input[type=time]::-webkit-calendar-picker-indicator{cursor:pointer;width:12px;height:12px;opacity:.65;margin-left:0}
+
+.filter-actions{display:flex;align-items:center;gap:8px;justify-content:flex-end;justify-self:end}
+.linkbtn{border:0;background:transparent;color:#667786;font-weight:700;display:inline-flex;align-items:center;gap:5px;padding:0}
+.linkbtn:hover{text-decoration:underline}
+.table-toolbar{padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line-2)}
+.table-toolbar strong{font-size:13px}
+.table-toolbar span{font-size:11px;color:#7d8a96}
+.tbl-scroll{overflow-x:auto;overflow-y:auto;min-height:0;max-height:calc(100vh - 270px);scrollbar-width:none;-ms-overflow-style:none}
+/* Keep horizontal scrolling available while hiding its visible track. */
+.tbl-scroll::-webkit-scrollbar{height:0;width:8px}
+.tbl-scroll::-webkit-scrollbar:horizontal{display:none;height:0}
+.tbl-scroll::-webkit-scrollbar-thumb:vertical{background:#cad5df;border-radius:8px}
+#msgTable{min-width:1490px;width:100%;border-collapse:separate;border-spacing:0}
+thead th{position:sticky;top:0;background:#edf2f6;color:#4c5b68;border-bottom:1px solid #d9e1e8;border-right:1px solid #e3e8ee;padding:9px 10px;text-align:left;font-size:12px;font-weight:800;z-index:2;white-space:nowrap}
+thead th:last-child{border-right:0}tbody td{background:#fff;border-bottom:1px solid #edf1f5;border-right:1px solid #f1f4f7;padding:8px 10px;vertical-align:top}tbody td:last-child{border-right:0}tbody tr:hover td{background:#fbfdff}.numcol{width:50px;text-align:center}.muted{color:var(--muted)}.cell-main{font-weight:700}.cell-sub{color:#7b8b95;font-size:11px;line-height:1.45}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;border:1px solid transparent;white-space:nowrap}.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}.badge.mapped{background:var(--green-bg);color:#1eaa66;border-color:#a8e4c4}.badge.review{background:#eef8fd;color:#2a99d7;border-color:#bcdff1}.badge.unmapped{background:#f3f5f8;color:#7a8794;border-color:#dde4eb}.badge.status-ok{background:#f0fbf4;color:#20ae64;border-color:#bee7cf}.badge.status-review{background:#eef8fd;color:#2a99d7;border-color:#bcdff1}.badge.status-warn{background:#f3f5f8;color:#8a95a2;border-color:#dde4eb}.badge.neutral{background:#edf1f5;color:#637180;border-color:#dce4eb}
+.scorepill{display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px}.scorepill b{font-size:13px}.scorepill span{font-size:10px;color:#8594a0}
+.actionset{display:flex;gap:6px;align-items:center}.rowbtn{width:26px;height:26px;border-radius:50%;border:1px solid #d5dce4;background:#fff;color:#667685;display:inline-flex;align-items:center;justify-content:center}.rowbtn:hover{background:#f5f9fb;color:#1097c4}
+.paginationbar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f8fafc;border-top:1px solid var(--line-2);gap:12px}.pagination-left{font-size:11px;color:#576879;font-weight:700}.pagination-right{display:flex;align-items:center;gap:10px}.pages{display:flex;align-items:center;gap:5px}.pagebtn{min-width:26px;height:26px;padding:0 7px;border-radius:50%;border:1px solid transparent;background:transparent;color:#627180;font-weight:700}.pagebtn.current{background:#1097c4;color:#fff}.pagebtn:hover:not(:disabled){border-color:#d3dbe3;background:#fff}.pagebtn:disabled{opacity:.35;cursor:not-allowed}
+.page-size{height:28px;border:1px solid #d4dce5;border-radius:8px;padding:0 8px;background:#fff}
+.overlay{position:fixed;inset:0;background:rgba(37,51,66,.22);display:none;align-items:center;justify-content:center;padding:18px;z-index:40}.overlay.open{display:flex}.modal{width:min(1100px,100%);max-height:calc(100vh - 36px);background:#fff;border-radius:14px;border:1px solid #dce4ea;box-shadow:0 18px 50px rgba(21,34,50,.18);display:flex;flex-direction:column;overflow:hidden}.modal.sm{width:min(520px,100%)}.modal.hlp{width:min(780px,100%)}.modal-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:14px 16px;border-bottom:1px solid #edf1f5;background:#f8fafc}.modal-title strong{display:block;font-size:16px}.modal-title span{display:block;font-size:12px;color:#7c8b97;margin-top:4px}.modal-body{padding:14px 16px;overflow:auto}.modal-ft{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid #edf1f5;background:#fafcfd}
+.info-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}.mini{background:#f8fafc;border:1px solid #e6ecf2;border-radius:10px;padding:10px}.mini label{display:block;color:#768692;font-size:11px;font-weight:700;margin-bottom:4px}.mini .value{font-weight:800;font-size:15px}.mini .minitext{font-size:11px;color:#7f8d98;margin-top:2px}.notice{padding:10px 12px;border-radius:10px;border:1px solid #dcecf6;background:#f4fbff;color:#35566a;line-height:1.5;margin-bottom:12px}.notice.warn{background:#fff8ed;border-color:#f2dfb8;color:#715820}.sectionlabel{font-size:12px;font-weight:800;color:#455563;margin:10px 0 8px;display:flex;align-items:center;gap:7px}.candlist{display:grid;gap:9px}.candidate{display:grid;grid-template-columns:22px 2fr 1fr 1fr .7fr 1.6fr;gap:10px;align-items:start;padding:11px 12px;border:1px solid #dde5ec;border-radius:12px;background:#fff}.candidate:hover{border-color:#89c1d1;background:#fbfeff}.candidate.selected{border-color:#1097c4;box-shadow:0 0 0 3px rgba(16,151,196,.12)}.candidate input{margin-top:3px}.candidate .flight{font-weight:800}.candidate .small{font-size:11px;color:#7c8d97;line-height:1.45}.point{font-size:20px;font-weight:850;text-align:right}.breakdown{font-size:11px;color:#6d7f8d;line-height:1.45}.manual{display:inline-flex;background:#eef8fd;color:#0f98c4;font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px}.search-manual{margin-top:12px;border-top:1px dashed #dce4eb;padding-top:12px}.search-row{display:flex;gap:8px}.search-row input{flex:1;height:34px;border:1px solid #d4dce5;border-radius:10px;padding:0 12px}.manual-result{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef2f5}.manual-result:last-child{border-bottom:0}
+.rawbox{background:#0f1720;color:#d6e3ef;border-radius:10px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;line-height:1.55;white-space:pre-wrap;max-height:260px;overflow:auto;border:1px solid #243543}
+.details-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}.detail-card{border:1px solid #e2e8ee;border-radius:10px;padding:10px;background:#fbfcfd}.detail-card h4{margin:0 0 8px;font-size:12px}.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:12px}.kv div:nth-child(odd){color:#768692}.empty{padding:36px 18px;text-align:center;color:#7e8b96}
+.toast{position:fixed;right:18px;bottom:18px;background:#1f3441;color:#fff;padding:10px 12px;border-radius:10px;box-shadow:0 14px 34px rgba(11,22,34,.25);display:none;z-index:60;font-size:12px;font-weight:700}.toast.show{display:block}.toast.success{background:#118f56}.toast.error{background:#b64040}.toast.info{background:#234458}
+.two-col{display:grid;grid-template-columns:1.1fr 1fr;gap:12px}.subpanel{border:1px solid #e2e8ee;border-radius:12px;overflow:hidden;background:#fff}.subpanel-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fafc;border-bottom:1px solid #edf1f5;font-weight:800}.subpanel-body{padding:12px}.kv{display:grid;grid-template-columns:110px 1fr;gap:7px 10px}.kv dt{color:#748691}.kv dd{margin:0;font-weight:700;word-break:break-word}.raw{margin:0;background:#101923;color:#dbe6f0;border-radius:10px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;line-height:1.55;max-height:260px;overflow:auto;white-space:pre-wrap}.mappingline{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid #e5edf3;border-radius:12px;background:#fafcfd}.mappingline .title{font-weight:800;margin-bottom:4px}.mappingline .text{font-size:12px;color:#72838f}.explain{display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+/* ACARS KPI summary: aligned with Common HTML content gutters, tables and filter styling. */
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 2px}
+.metric{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;min-height:112px;padding:16px 18px;background:#fff;border:1px solid #d9e2e9;border-radius:11px;box-shadow:var(--shadow)}
+.metric-copy{min-width:0}
+.metric-label{font-size:13px;font-weight:750;color:#637383;line-height:1.25}
+.metric-number{font-size:29px;font-weight:850;letter-spacing:-.6px;line-height:1.2;color:#273d49;margin:6px 0 3px;font-variant-numeric:tabular-nums}
+.metric-note{font-size:11px;color:#8996a3;line-height:1.35}
+.metric-icon{height:48px;width:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 48px;background:#eaf6fa;color:#0983a0}
+.metric-icon svg{width:23px;height:23px;stroke-width:1.9}
+.metric-mapped .metric-icon{background:#e9f9f0;color:#18a369}
+.metric-unmapped .metric-icon{background:#fff5e5;color:#d49324}
+@media(max-width:850px){.metrics{grid-template-columns:1fr;gap:8px}.metric{min-height:84px;padding:12px 15px}.metric-icon{height:43px;width:43px;flex-basis:43px}.metric-number{font-size:25px}}
+
+@media (max-width:1250px){.filterbody{grid-template-columns:repeat(5,minmax(0,1fr))}.time-range-field{grid-column:1 / span 3}.filter-actions{grid-column:4 / -1;justify-self:end}.info-grid,.details-grid,.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}.candidate{grid-template-columns:22px 1.6fr 1fr 1fr .7fr 1.2fr}}
+@media (max-width:1100px){.sidebar{display:none}.mainwrap{padding:0}.workspace{border-radius:0;border:0}.filterbody{grid-template-columns:repeat(2,minmax(0,1fr))}.time-range-field{grid-column:1 / -1}.filter-actions{grid-column:1 / -1;justify-self:end}.topstrip{flex-direction:column}.top-actions{width:100%;justify-content:flex-end}.candidate{grid-template-columns:22px 1fr}.info-grid,.details-grid,.two-col{grid-template-columns:1fr}}
+@media (max-width:420px){.time-range-clock{display:none}.time-range{gap:3px;padding:0 4px}.time-range input[type=time]{width:75px;font-size:11px}}
+
+/* V24 compact layout: same light palette as TOSS Common HTML, dense layout inspired by the supplied reference. */
+:root{--bg:#f4f7fa;--surface:#fff;--line:#dce4ec;--shadow:none}
+body{background:#f4f7fa;font-size:12px}
+.sidebar{width:150px;background:#e7edf3;border-right:1px solid #d1dbe4}
+.logoarea{height:45px;padding:0 9px;border-color:#d5dfe8}
+.logoarea .mark{width:22px;height:22px;font-size:13px}
+.logoarea .brand{font-size:11px}
+.logoarea .brand small{font-size:9px}
+.sidebar nav{padding:6px 5px}
+.nav-link{min-height:32px;padding:7px 8px;gap:7px}
+.nav-link .nav-label{font-size:11px}
+.sidebar .nav-link .nav-label{white-space:normal;line-height:1.23;overflow-wrap:anywhere}
+.mainwrap{padding:3px}
+.workspace{min-height:calc(100vh - 6px);background:#f8fafc;border:1px solid #dce5ec;border-radius:5px}
+.content{padding:4px 6px 6px;gap:4px}
+.filter-panel,.table-card{border-radius:4px;border-color:#dbe3eb;box-shadow:none}
+.filterhead{min-height:24px;padding:3px 9px;background:#f4f8fb;border-bottom:1px solid #e2e8ed;font-size:11px}
+.filterhead svg{width:13px;height:13px}
+.filterhead strong{gap:5px}
+.filterhead .linkbtn{font-size:10px}
+.filterbody{padding:5px 7px;gap:6px;grid-template-columns:minmax(83px,1fr) minmax(86px,1fr) minmax(62px,.68fr) minmax(62px,.68fr) minmax(95px,1fr) minmax(245px,2.65fr) auto;align-items:center}
+.field{gap:0;min-width:0}
+.field input,.field select{height:29px;border-radius:5px;padding:0 9px;font-size:11px;border-color:#d7e0e8}
+.filter-actions{gap:8px;align-self:center}
+.filter-actions .btn{height:29px;padding:0 10px;border-radius:5px;font-size:11px}
+.filter-actions .btn svg{width:14px;height:14px}
+.filter-actions .linkbtn{font-size:10px;white-space:nowrap}
+.time-range-field>label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.time-range{height:29px;border-radius:5px;padding:0 5px;gap:4px;border-color:#d7e0e8}
+.time-range-clock{width:13px;height:13px;flex:none}
+.time-range-caption{font-size:10px}
+.time-range-arrow{font-size:12px;padding:0}
+.time-range input[type=time]{height:27px;font-size:11px;flex:1 1 69px;width:69px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0}
+.metric{display:flex;flex-direction:row;align-items:center;justify-content:space-between;min-height:37px;height:37px;padding:0 11px;border-radius:4px;box-shadow:none;gap:6px;border:1px solid #d7e6f2;background:#eaf4fc;white-space:nowrap}
+.metric-left{display:flex;align-items:center;gap:7px;min-width:0}
+.metric-label{font-size:10px;font-weight:800;letter-spacing:.12px;color:#3f6789;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.metric-number{font-size:15px;line-height:1;font-weight:850;letter-spacing:0;color:#1d527a;margin:0;font-variant-numeric:tabular-nums}
+.metric-icon{width:20px;height:20px;min-width:20px;flex:0 0 20px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:transparent;color:#238dc1}
+.metric-icon svg{height:16px;width:16px;stroke-width:1.9}
+.metric-mapped{background:#e9f7ef;border-color:#cfe9da}
+.metric-mapped .metric-label,.metric-mapped .metric-number{color:#177e4d}
+.metric-mapped .metric-icon{color:#1ca86b;background:transparent}
+.metric-unmapped{background:#fff5e8;border-color:#f5e2c6}
+.metric-unmapped .metric-label,.metric-unmapped .metric-number{color:#986422}
+.metric-unmapped .metric-icon{color:#d28c2c;background:transparent}
+.type-tabs{gap:1px;padding:0 0 1px;min-height:27px;align-items:center}
+.type-tab{height:25px;padding:0 10px;border-radius:4px;font-size:11px}
+.type-tab.active{border:1px solid #cee0e8;background:#e9f6fb;color:#0486a5;box-shadow:none}
+#msgTable{min-width:1220px;font-size:11px}
+thead th{padding:6px 8px;height:27px;font-size:10px;background:#eef3f7;color:#4e6072;border-bottom:1px solid #d9e1e8}
+tbody td{padding:5px 8px;font-size:11px;line-height:1.3}
+.cell-main{font-size:11px}
+.cell-sub{font-size:10px;line-height:1.24;margin-top:1px}
+.badge{padding:2px 6px;font-size:10px;line-height:1.25}
+.badge:before{width:5px;height:5px}
+.scorepill b{font-size:11px}
+.scorepill span{font-size:9px}
+.actionset{gap:3px}
+.rowbtn{width:23px;height:23px;border-radius:5px}
+.rowbtn svg{width:13px;height:13px}
+.tbl-scroll{max-height:calc(100vh - 191px);min-height:125px}
+.paginationbar{padding:5px 9px;min-height:34px}
+.pagebtn{min-width:23px;height:23px;font-size:11px}
+.page-size{height:24px;font-size:11px}
+@media(max-width:1330px){.filterbody{grid-template-columns:repeat(5,minmax(70px,1fr))}.time-range-field{grid-column:1/span 3}.filter-actions{grid-column:4/-1;justify-self:end}.tbl-scroll{max-height:calc(100vh - 223px)}}
+@media(max-width:1100px){.filterbody{grid-template-columns:repeat(3,minmax(90px,1fr))}.time-range-field{grid-column:1/span 2}.filter-actions{grid-column:3/-1}.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.metric{min-height:37px;height:37px;padding:0 8px}.metric-label{font-size:9px}.metric-number{font-size:14px}}
+@media(max-width:650px){.filterbody{grid-template-columns:repeat(2,minmax(0,1fr))}.time-range-field{grid-column:1/-1}.filter-actions{grid-column:1/-1;justify-self:end}.metrics{grid-template-columns:1fr;gap:4px}.metric{height:32px;min-height:32px}.type-tabs{flex-wrap:nowrap;overflow-x:auto}.tbl-scroll{max-height:calc(100vh - 315px)}}
+
+/* V25: Keep all search controls on one compact horizontal row. */
+.filterbody{
+  display:flex;
+  flex-flow:row nowrap;
+  align-items:center;
+  gap:6px;
+  padding:5px 7px;
+  min-width:0;
+}
+.filterbody > .field{min-width:0;grid-column:auto;}
+.filterbody > .field:nth-child(1){flex:1 1 112px;min-width:84px;}
+.filterbody > .field:nth-child(2){flex:1 1 112px;min-width:84px;}
+.filterbody > .field:nth-child(3){flex:0.7 1 71px;min-width:55px;}
+.filterbody > .field:nth-child(4){flex:0.7 1 71px;min-width:55px;}
+.filterbody > .field:nth-child(5){flex:0.95 1 110px;min-width:92px;}
+.filterbody > .time-range-field{
+  flex:1.75 1 245px;
+  min-width:210px;
+  grid-column:auto;
+}
+.filterbody .filter-actions{
+  flex:0 0 auto;
+  min-width:0;
+  grid-column:auto;
+  justify-self:auto;
+  justify-content:flex-end;
+  gap:7px;
+  margin-left:1px;
+}
+.filterbody > .field input:not([type=time]),
+.filterbody > .field select{width:100%;min-width:0;}
+.filterbody .time-range{width:100%;min-width:0;}
+.filterbody .time-range input[type=time]{flex:1 1 66px;min-width:65px;width:66px;}
+@media(max-width:780px){
+  .filterbody{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;}
+  .filterbody>.field:nth-child(1){flex:0 0 92px;}
+  .filterbody>.field:nth-child(2){flex:0 0 92px;}
+  .filterbody>.field:nth-child(3),
+  .filterbody>.field:nth-child(4){flex:0 0 59px;}
+  .filterbody>.field:nth-child(5){flex:0 0 96px;}
+  .filterbody>.time-range-field{flex:0 0 220px;}
+  .filterbody>.filter-actions{flex:0 0 auto;}
+}
+
+/* Expanded dataset: the table is denser and scrolls within the remaining viewport. */
+.tbl-scroll{min-height:calc(100vh - 260px)}
+@media(max-width:900px){.tbl-scroll{min-height:260px}}
+
+/* V27 — Common-style slide-in detail panel (light theme). All other overlays remain centered. */
+#detailOverlay.detail-overlay{
+  display:flex;align-items:stretch;justify-content:flex-end;padding:0;
+  background:rgba(20,43,58,.28);z-index:55;visibility:hidden;opacity:0;
+  transition:opacity .2s ease,visibility .2s;
+}
+#detailOverlay.detail-overlay.open{visibility:visible;opacity:1}
+#detailOverlay .detail-drawer{
+  display:flex;flex-direction:column;min-width:0;
+  width:min(790px,84vw);height:100vh;height:100dvh;
+  max-height:none;margin:0;border:0;border-left:1px solid #d7e2ea;
+  background:#fff;box-shadow:-20px 0 50px rgba(23,43,59,.18);
+  transform:translateX(100%);transition:transform .24s ease;
+  outline:none;
+}
+#detailOverlay.open .detail-drawer{transform:translateX(0)}
+.detail-hero{background:linear-gradient(180deg,#f5fafe 0%,#fff 100%);border-bottom:1px solid #dfe8ef;flex:none}
+.detail-hero-main{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:23px 22px 16px}
+.detail-flight-block{flex:1;min-width:0}
+.detail-drawer-caption{color:#658295;font-size:10px;letter-spacing:1px;font-weight:800;margin-bottom:7px}
+.detail-flight-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.detail-flight-line strong{font-size:24px;line-height:1.1;color:#126b89;font-weight:850;letter-spacing:-.5px}
+.detail-smi-pill{border:1px solid #b8dce8;background:#e6f5fb;color:#0989ab;font-size:10px;font-weight:800;border-radius:5px;padding:3px 6px}
+.detail-aircraft{font-size:12px;color:#667e8c;margin-top:6px;font-weight:700}
+.detail-route-block{text-align:center;flex:0 1 160px;min-width:120px}
+.detail-route-time{font-size:21px;font-weight:850;color:#1e3444;font-variant-numeric:tabular-nums}
+.detail-route-place{color:#5a6e7c;font-weight:700;font-size:11px;white-space:nowrap;margin-top:3px}
+.detail-event-caption{font-size:9px;letter-spacing:.55px;color:#8699a5;margin-top:5px;font-weight:800}
+.detail-close{flex:none;align-self:flex-start;display:grid;place-items:center;height:28px;width:28px;border:0;background:#e8eef3;color:#607684;border-radius:50%;font-size:22px;line-height:1}
+.detail-close:hover{background:#d7e5ed;color:#19455a}
+.detail-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 22px;border-top:1px solid #e4ecf2;min-height:49px}
+.detail-attribute{display:inline-flex;align-items:center;background:#f0f4f7;border:1px solid #e0e8ee;border-radius:4px;color:#5a6a76;font-size:11px;font-weight:700;padding:4px 8px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.detail-subtitle{margin-left:auto;color:#788b99;font-size:11px;font-weight:600}
+.detail-status .badge{font-size:11px;border-radius:4px;padding:4px 8px}
+.detail-tabs{display:flex;gap:4px;align-items:stretch;background:#fff;padding:0 19px;border-bottom:1px solid #dfe7ee;min-height:43px;flex:none}
+.detail-tab{appearance:none;border:0;border-bottom:2.5px solid transparent;background:#fff;padding:0 14px;font-size:12px;color:#566b7b;font-weight:750;white-space:nowrap}
+.detail-tab:hover{color:#088ba8;background:#f6fbfd}
+.detail-tab.active{color:#0088a8;border-bottom-color:#00a0bf}
+.detail-drawer-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:20px 22px 26px;background:#fff}
+.detail-pane[hidden]{display:none!important}
+.detail-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#263f50;font-weight:850;font-size:13px;margin:0 0 10px}
+.detail-section-title span{font-size:10px;color:#8a9ca7;font-weight:600}
+.detail-table-wrap{overflow-x:auto;border:1px solid #e0e8ef;border-radius:6px;background:#fff}
+.detail-fields-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.detail-fields-table thead th{position:static;background:#eef4f8;color:#617486;font-size:10px;letter-spacing:.3px;font-weight:850;height:30px;padding:7px 12px;border-bottom:1px solid #e0e8ef}
+.detail-fields-table thead th:first-child{width:38%}
+.detail-fields-table tbody th,.detail-fields-table tbody td{background:#fff;border-top:1px solid #eaf0f4;padding:10px 12px;vertical-align:top;line-height:1.4}
+.detail-fields-table tbody th{font-weight:700;color:#607281;text-align:left;background:#fbfdfe}
+.detail-fields-table tbody td{font-weight:700;color:#253c4d;word-break:break-word}
+.detail-fields-table tbody tr:hover td,.detail-fields-table tbody tr:hover th{background:#f7fbfd}
+.detail-copy{display:inline-flex;align-items:center;gap:6px;background:#eff8fb;border:1px solid #bedde8;color:#0782a1;border-radius:5px;padding:6px 9px;font-size:11px;font-weight:800}
+.detail-copy svg{height:12px;width:12px}
+.detail-raw-context{font-size:11px;color:#7c8e9c;margin:4px 0 13px}
+.detail-raw{font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:none;overflow:visible;min-height:190px;background:#f6f9fc;color:#304658;border:1px solid #e0e8ef;border-radius:8px;padding:16px;margin:0}
+.detail-map-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0 0 12px}
+.detail-map-chip{background:#f5f9fb;border:1px solid #e1eaf0;border-radius:6px;min-width:0;padding:10px}
+.detail-map-chip small{display:block;font-size:9px;color:#8193a0;letter-spacing:.3px;font-weight:850;margin-bottom:6px}
+.detail-map-chip strong{color:#17637d;font-size:12px;overflow-wrap:anywhere}
+.detail-map-text{font-size:12px;color:#526a7a;line-height:1.5;padding:11px 12px;border:1px solid #dce9ef;background:#f5fbfd;border-radius:5px;margin-bottom:18px}
+.detail-candidate-table{table-layout:auto;min-width:550px}
+.detail-candidate-table thead th:first-child{width:44px}
+.detail-candidate-table tbody td{padding:8px 10px}
+.detail-table-sub{font-size:10px;color:#8999a6;margin-top:3px}
+.detail-score{white-space:nowrap}
+.detail-empty{text-align:center;color:#71818f!important;font-weight:600!important}
+.detail-note{padding:12px;border-radius:6px;background:#fff8ed;color:#7f683e;border:1px solid #f2e2c2;font-size:11px;margin-top:12px;line-height:1.5}
+.detail-drawer-footer{flex:none;min-height:64px;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 22px;border-top:1px solid #dfe8ef;background:#f8fafc}
+.detail-footer-note{font-size:11px;color:#8797a4;font-weight:600}
+.detail-footer-buttons{display:flex;gap:8px;align-items:center}
+.detail-drawer-footer .btn{min-width:86px;height:33px}
+@media(max-width:850px){#detailOverlay .detail-drawer{width:min(660px,96vw)}.detail-meta-row{gap:5px}.detail-subtitle{width:100%;margin-left:0}}
+@media(max-width:580px){#detailOverlay .detail-drawer{width:100vw}.detail-hero-main{padding:15px;gap:6px}.detail-route-block{min-width:102px}.detail-flight-line strong{font-size:20px}.detail-route-time{font-size:19px}.detail-meta-row{padding:10px 15px}.detail-tabs{padding:0 7px}.detail-tab{padding:0 10px;font-size:11px}.detail-drawer-body{padding:14px}.detail-map-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-drawer-footer{padding:10px 14px}.detail-footer-note{display:none}}
+@media(prefers-reduced-motion:reduce){#detailOverlay.detail-overlay,#detailOverlay .detail-drawer{transition:none}}
+
+
+/* V30: grouped decoded attributes, as listed in ACARS_decode source. */
+.detail-field-group{margin:0 0 17px}
+.detail-field-group:last-child{margin-bottom:0}
+.detail-field-group .detail-section-title{margin:0 0 7px;padding:0 0 6px;border-bottom:1px solid #edf2f5;color:#176680}
+.detail-field-group .detail-table-wrap{border-radius:5px}
+.detail-field-group .detail-fields-table tbody th,
+.detail-field-group .detail-fields-table tbody td{padding:8px 11px;white-space:pre-line}
+.detail-field-group .detail-fields-table tbody td.detail-missing{color:#a1abb4;font-weight:500}
+.detail-field-group .detail-fields-table thead th:first-child{width:43%}
+
+
+/* V31: compact two-column information cards in the decoded side panel.
+   Based on the paired label/value card rhythm in Common HTML's side-panel reference,
+   adapted to the light TOSS theme. */
+#detailPaneDecoded .acars-card-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  align-items:stretch;
+}
+#detailPaneDecoded .acars-data-card{
+  min-width:0;
+  border:1px solid #dce6ed;
+  background:#f7fafc;
+  border-radius:7px;
+  padding:12px 13px 14px;
+  box-shadow:0 1px 3px rgba(24,63,88,.035);
+}
+#detailPaneDecoded .acars-data-card-title{
+  margin:0 0 13px;
+  padding:0 0 9px;
+  border-bottom:1px solid #e4edf3;
+  font-size:12px;
+  color:#253c4c;
+  font-weight:850;
+  line-height:1.35;
+  text-transform:uppercase;
+  letter-spacing:.1px;
+}
+#detailPaneDecoded .acars-data-pairs{
+  margin:0;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px 14px;
+  align-content:start;
+}
+#detailPaneDecoded .acars-data-pair{
+  min-width:0;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:5px;
+  line-height:1.4;
+}
+#detailPaneDecoded .acars-data-pair.wide{grid-column:span 2}
+#detailPaneDecoded .acars-data-pair dt{
+  min-width:0;
+  margin:0;
+  font-size:9.7px;
+  font-weight:700;
+  text-transform:uppercase;
+  color:#81909e;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+#detailPaneDecoded .acars-data-pair dd{
+  margin:0;
+  color:#253c4e;
+  font-size:11px;
+  font-weight:800;
+  text-align:right;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+  white-space:pre-line;
+  flex:0 1 55%;
+}
+#detailPaneDecoded .acars-data-pair.wide dd{flex:0 1 65%}
+#detailPaneDecoded .acars-data-pair dd.detail-missing{color:#a0acb5;font-weight:600}
+#detailPaneDecoded .acars-data-card:first-child .acars-data-pair dd:not(.detail-missing){color:#116e90}
+@media (max-width:700px){
+  #detailPaneDecoded .acars-card-grid{grid-template-columns:1fr}
+  #detailPaneDecoded .acars-data-card{padding:12px}
+}
+@media (max-width:380px){
+  #detailPaneDecoded .acars-data-pairs{grid-template-columns:1fr}
+  #detailPaneDecoded .acars-data-pair.wide{grid-column:auto}
+}
+
+
+/* Common-style detail drawer overrides */
+#detailOverlay.detail-overlay{background:rgba(39,52,67,.14);justify-content:flex-end;align-items:stretch;padding:0}
+#detailOverlay .detail-drawer.detail-drawer-common{width:min(760px,96vw);height:100vh;max-height:100vh;border-left:1px solid #dbe3ea;border-radius:0;background:#fff;box-shadow:-12px 0 32px rgba(30,41,59,.14);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease}
+#detailOverlay.open .detail-drawer.detail-drawer-common{transform:translateX(0)}
+.detail-common-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px 18px 12px;border-bottom:1px solid #e7edf2;background:#fff}
+.detail-common-main{min-width:0;flex:1}
+.detail-common-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.detail-common-title-row h2{margin:0;font-size:18px;line-height:1.25;font-weight:800;color:#1f2933}
+.detail-common-sub{font-size:13px;font-weight:700;color:#617284}
+.detail-common-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.detail-common-head-actions .detail-smi-pill{margin:0}
+.common-close{background:#fff;border:1px solid #dbe4eb;color:#8a98a6;width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;line-height:1;padding:0}
+.common-close:hover{background:#f7fafc;color:#4d5d6c}
+.detail-summary-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;padding:0 18px;background:#fff;border-bottom:1px solid #e7edf2}
+.detail-summary-item{padding:11px 10px 12px 0}
+.detail-summary-item label{display:block;font-size:11px;font-weight:700;color:#8b97a3;margin-bottom:4px}
+.detail-summary-item strong{display:block;font-size:16px;font-weight:800;color:#1f2b37}
+.detail-summary-item:not(:last-child){border-right:1px solid #eef2f6;padding-right:14px;margin-right:14px}
+.detail-tabs{padding:0 18px;background:#fff;border-bottom:1px solid #e7edf2;display:flex;gap:24px}
+.detail-tab{height:46px;padding:0;border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;color:#5f6d79;font-size:13px;font-weight:800}
+.detail-tab.active{color:#18a2bc;border-color:#18a2bc;background:transparent;box-shadow:none}
+.detail-tab:hover{color:#18a2bc}
+.detail-drawer-body{padding:18px;background:#fff}
+.common-footer{padding:12px 18px;border-top:1px solid #e7edf2;background:#fff}
+.common-footer .detail-footer-buttons{display:flex;gap:8px}
+#detailPaneDecoded .acars-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#detailPaneDecoded .acars-data-card{background:#fff;border:1px solid #dfe7ee;border-radius:10px;padding:0;overflow:hidden;box-shadow:none}
+#detailPaneDecoded .acars-data-card-title{margin:0;padding:12px 14px;font-size:13px;font-weight:800;color:#22303c;background:#fff;border-bottom:1px solid #edf2f5}
+#detailPaneDecoded .acars-data-pairs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+#detailPaneDecoded .acars-data-pair{display:block;padding:12px 14px;border-bottom:1px solid #edf2f5;min-height:68px}
+#detailPaneDecoded .acars-data-pair:nth-last-child(-n+2){border-bottom:0}
+#detailPaneDecoded .acars-data-pair:nth-child(odd){border-right:1px solid #edf2f5}
+#detailPaneDecoded .acars-data-pair dt{margin:0 0 6px;font-size:12px;color:#7c8996;font-weight:700;letter-spacing:0}
+#detailPaneDecoded .acars-data-pair dd{margin:0;font-size:15px;color:#22303c;font-weight:800;line-height:1.35}
+#detailPaneDecoded .acars-data-pair.wide{grid-column:span 2}
+#detailPaneDecoded .acars-data-pair.wide:nth-child(odd){border-right:0}
+#detailPaneDecoded .acars-data-pair.wide dd{max-width:none}
+#detailPaneDecoded .acars-data-pair dd.detail-missing{color:#adb7bf;font-weight:700}
+.detail-section-title{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:800;color:#22303c;margin:0 0 10px}
+.detail-copy{height:34px;padding:0 14px;border-radius:10px;border:1px solid #d6e2ea;background:#fff;color:#445565;font-weight:800;display:inline-flex;align-items:center;gap:8px}
+.detail-copy:hover{background:#f8fbfd}
+.detail-raw{margin:0;background:#f8fafc;border:1px solid #dde6ed;color:#34424f;border-radius:10px;padding:14px;max-height:none}
+.detail-map-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.detail-map-chip{background:#fff;border:1px solid #dfe7ee;border-radius:10px;padding:12px}
+.detail-map-chip small{display:block;font-size:11px;color:#8b97a3;font-weight:700;margin-bottom:5px}
+.detail-map-chip strong{font-size:15px;color:#22303c}
+.detail-map-text{margin-bottom:12px;color:#516270;line-height:1.55}
+.detail-table-wrap{border:1px solid #dfe7ee;border-radius:10px;overflow:hidden}
+.detail-candidate-table{width:100%;border-collapse:collapse}.detail-candidate-table th{background:#f8fafc;color:#6c7b88;font-size:12px;font-weight:800;padding:10px 12px;text-align:left;border-bottom:1px solid #e8eef3}.detail-candidate-table td{padding:11px 12px;border-bottom:1px solid #edf2f5;font-size:13px;color:#22303c}.detail-candidate-table tbody tr:last-child td{border-bottom:0}.detail-table-sub{font-size:12px;color:#7b8a96;font-weight:600;margin-top:2px}.detail-score{font-weight:800}
+@media(max-width:720px){#detailOverlay .detail-drawer.detail-drawer-common{width:100vw}.detail-summary-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-summary-item:nth-child(2){border-right:0;margin-right:0;padding-right:0}.detail-tabs{gap:14px;overflow:auto}.detail-common-head{padding:14px}.detail-drawer-body{padding:14px}.common-footer{padding:10px 14px}.detail-map-summary,#detailPaneDecoded .acars-card-grid{grid-template-columns:1fr}.detail-summary-item{border-right:0!important;margin-right:0!important;padding-right:0!important}}
+
+
+/* V37: Common HTML-like detail sections: plain, unboxed, two-column definition rows. */
+#detailOverlay .detail-drawer.detail-drawer-common{
+  width:min(620px,96vw);
+}
+/* Keep the concise title/actions; remove redundant boxed hero statistics. 
+   All four values remain available in General Information. */
+#detailOverlay .detail-summary-strip{display:none}
+#detailOverlay .detail-common-head{padding:15px 18px 14px;border-bottom:1px solid #e9edf1}
+#detailOverlay .detail-common-title-row h2{font-size:18px}
+#detailOverlay .detail-common-sub{font-size:12px;color:#677785}
+#detailOverlay .detail-tabs{padding:0 18px;gap:24px}
+#detailOverlay .detail-tab{height:42px;font-size:12px}
+#detailOverlay .detail-drawer-body{padding:8px 18px 22px}
+
+/* No cards, no external containers, no table header: directly on the white panel. */
+#detailPaneDecoded .acars-card-grid{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin:0;
+}
+#detailPaneDecoded .acars-data-card{
+  display:block;
+  padding:0;
+  margin:0 0 20px;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background:transparent;
+  overflow:visible;
+}
+#detailPaneDecoded .acars-data-card:last-child{margin-bottom:0}
+#detailPaneDecoded .acars-data-card-title{
+  display:block;
+  margin:0;
+  padding:14px 0 5px;
+  border:0;
+  background:transparent;
+  color:#273340;
+  font-size:13px;
+  line-height:1.35;
+  font-weight:800;
+  text-transform:none;
+  letter-spacing:0;
+}
+#detailPaneDecoded .acars-data-pairs{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:18px;
+  row-gap:0;
+  margin:0;
+  padding:0;
+  background:transparent;
+}
+#detailPaneDecoded .acars-data-pair,
+#detailPaneDecoded .acars-data-pair:nth-last-child(-n+2),
+#detailPaneDecoded .acars-data-pair:nth-child(odd),
+#detailPaneDecoded .acars-data-pair.wide,
+#detailPaneDecoded .acars-data-pair.wide:nth-child(odd){
+  display:block;
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:12px 0 11px;
+  border:0;
+  border-bottom:1px solid #e5eaef;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  text-align:left;
+}
+#detailPaneDecoded .acars-data-pair.wide{grid-column:span 2}
+#detailPaneDecoded .acars-data-pair dt{
+  display:block;
+  margin:0 0 5px;
+  padding:0;
+  color:#788796;
+  font-size:11px;
+  font-weight:650;
+  line-height:1.4;
+  text-transform:none;
+  letter-spacing:0;
+}
+#detailPaneDecoded .acars-data-pair dd,
+#detailPaneDecoded .acars-data-pair.wide dd,
+#detailPaneDecoded .acars-data-card:first-child .acars-data-pair dd:not(.detail-missing){
+  display:block;
+  margin:0;
+  padding:0;
+  max-width:100%;
+  color:#293642;
+  text-align:left;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+  white-space:pre-line;
+}
+#detailPaneDecoded .acars-data-pair dd.detail-missing{color:#9aa6b1;font-weight:650}
+@media(max-width:720px){
+  #detailOverlay .detail-drawer.detail-drawer-common{width:100vw}
+  #detailPaneDecoded .acars-card-grid{display:flex;flex-direction:column}
+  #detailPaneDecoded .acars-data-card{padding:0}
+  #detailOverlay .detail-drawer-body{padding:8px 16px 22px}
+}
+@media(max-width:380px){
+  #detailPaneDecoded .acars-data-pairs{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}
+  #detailPaneDecoded .acars-data-pair.wide{grid-column:span 2}
+}
+
+
+/* V38 — Wider Common-style side panel with three detail fields per row. */
+#detailOverlay .detail-drawer.detail-drawer-common{
+  width:min(900px,95vw);
+}
+#detailPaneDecoded .acars-data-pairs{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  column-gap:24px;
+}
+#detailPaneDecoded .acars-data-pair.wide{
+  grid-column:1 / -1;
+}
+@media(max-width:860px){
+  #detailOverlay .detail-drawer.detail-drawer-common{width:min(720px,100vw)}
+  #detailPaneDecoded .acars-data-pairs{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:18px;
+  }
+  #detailPaneDecoded .acars-data-pair.wide{grid-column:1 / -1}
+}
+@media(max-width:510px){
+  #detailOverlay .detail-drawer.detail-drawer-common{width:100vw}
+  #detailPaneDecoded .acars-data-pairs{grid-template-columns:1fr;column-gap:0}
+  #detailPaneDecoded .acars-data-pair.wide{grid-column:1 / -1}
+}
+
+
+/* Detail header typography without auxiliary labels. */
+#detailOverlay .detail-header-field{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+#detailOverlay .detail-header-label{font-size:11px;font-weight:700;line-height:1.35;color:#7d8996}
+#detailOverlay .detail-common-title-row{align-items:center;margin-bottom:6px}
+#detailOverlay .detail-header-field h2{font-size:19px;line-height:1.2;margin:0}
+#detailOverlay .detail-header-event .detail-common-sub{font-size:13px;line-height:1.3;font-weight:800;color:#394a59}
+
+/* V48: Mapping Method derives from confirmed mapped status and mapping method. */
+#detailPaneMapping .detail-map-summary{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+#detailPaneMapping .detail-map-chip{min-width:0}
+@media(max-width:900px){#detailPaneMapping .detail-map-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){#detailPaneMapping .detail-map-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:385px){#detailPaneMapping .detail-map-summary{grid-template-columns:1fr}}
+
+
+/* v49 — Common pattern: editable mapping side panel + Add Flights picker (light) */
+#confirmOverlay{z-index:90}
+#mapOverlay.mapping-overlay{display:flex!important;align-items:stretch;justify-content:flex-end;padding:0;background:rgba(20,42,58,.28);z-index:63;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s}
+#mapOverlay.mapping-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
+#mapOverlay .mapping-drawer{width:min(1060px,96vw);height:100vh;height:100dvh;max-height:none;display:flex;flex-direction:column;min-width:0;overflow:hidden;background:#fff;box-shadow:-16px 0 46px rgba(25,40,55,.18);border-left:1px solid #dce5eb;outline:none;transform:translateX(100%);transition:transform .23s ease}
+#mapOverlay.open .mapping-drawer{transform:translateX(0)}
+.mapping-drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex:none;padding:19px 24px 16px;border-bottom:1px solid #e5ebf1;background:#fff}
+.mapping-title-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mapping-title-row h2{margin:0;font-size:19px;line-height:1.3;font-weight:850;color:#202d39}
+.mapping-subtitle{font-size:12px;color:#768796;margin-top:5px;font-weight:650}
+.mapping-close{border:1px solid #e0e7ed;background:#fff;color:#7b8996;border-radius:50%;height:32px;width:32px;display:inline-flex;align-items:center;justify-content:center;font-size:24px;line-height:1;flex:none;cursor:pointer}
+.mapping-close:hover{background:#f4f8fa;color:#31485a}
+.mapping-drawer-scroll{flex:1;min-height:0;overflow-y:auto;padding:19px 24px 26px;scrollbar-color:#d7e2ea transparent}
+.mapping-drawer-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none;padding:12px 24px;border-top:1px solid #e3eaf0;background:#fff}
+.mapping-foot-actions{display:flex;gap:8px}
+.mapping-foot-note{font-size:12px;color:#81909e}
+.mapping-section{margin-bottom:24px}
+.mapping-section-title{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:15px;font-weight:850;color:#263341;margin:0 0 13px}
+.mapping-context{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid #e4eaf0;gap:0;margin-bottom:23px}
+.mapping-context-item{padding:10px 16px 12px 0;margin-right:16px;border-bottom:1px solid #e7edf1;min-width:0}
+.mapping-context-item:nth-child(4n){margin-right:0}
+.mapping-context-item span{display:block;color:#7e8d9c;font-size:11px;font-weight:700;margin-bottom:5px}
+.mapping-context-item strong{display:block;color:#25333f;font-size:14px;font-weight:800;overflow-wrap:anywhere}
+.mapping-overview-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:26px}
+.mapping-overview-cell{border:1px solid #e2e9ee;border-radius:10px;padding:13px 15px;background:#fff;min-width:0}
+.mapping-overview-cell span{display:block;color:#8292a0;font-size:11px;font-weight:800;margin-bottom:7px}
+.mapping-overview-cell strong{color:#233441;font-size:17px;font-weight:850;overflow-wrap:anywhere}
+.mapping-section-sub{font-size:12px;font-weight:600;color:#718392;margin:-5px 0 13px}
+.mapping-flight-table-wrap{width:100%;overflow-x:auto;border:1px solid #dfe7ed;border-radius:9px;background:#fff}
+.mapping-flight-table{width:100%;border-collapse:collapse;table-layout:auto;font-size:12px;min-width:810px}
+.mapping-flight-table thead{background:#f7fafc}
+.mapping-flight-table th{text-align:left;white-space:nowrap;font-weight:800;font-size:11px;color:#627484;border-bottom:1px solid #dfe7ed;padding:12px 10px}
+.mapping-flight-table td{border-bottom:1px solid #eaf0f4;padding:12px 10px;color:#2d3c48;font-weight:650;vertical-align:middle}
+.mapping-flight-table tbody tr:last-child td{border-bottom:none}
+.mapping-flight-table tbody tr:hover{background:#f8fcff}
+.mapping-flight-table tbody tr.is-mapped{background:#f0faff}
+.mapping-flight-table .map-radio{accent-color:#09a0bf;width:16px;height:16px;cursor:pointer}
+.mapping-flight-table td:first-child,.mapping-flight-table th:first-child{text-align:center;width:48px}
+.mapping-flight-table .map-flight-num{color:#1d3342;font-size:13px;font-weight:850}
+.mapping-flight-table .map-source{font-size:10px;color:#8394a2;margin-top:4px}
+.mapping-flight-table .map-score{font-weight:800;color:#187f99}
+.mapping-flight-table .map-icon-delete{width:28px;height:28px;background:#fff;border:1px solid #e0e8ee;border-radius:6px;color:#778794;cursor:pointer;font-size:17px}
+.mapping-flight-table .map-icon-delete:hover{color:#bc4c4c;background:#fff6f6}
+.mapping-flight-table .map-empty{padding:28px 18px;text-align:center;font-weight:650;color:#81909d}
+.mapping-table-bottom{padding:12px 0 8px;text-align:center}
+.map-add-flights{border:0;background:transparent;color:#0898b7;font-size:12px;font-weight:850;cursor:pointer;display:inline-flex;gap:7px;align-items:center;padding:6px 13px}
+.map-add-flights:hover{background:#effaff;border-radius:7px}
+.mapping-note{padding:10px 12px;background:#f6fbfd;border:1px solid #e0edf4;border-radius:8px;color:#62798a;font-size:12px;line-height:1.5}
+.mapping-current{font-size:12px;color:#607789;margin-top:8px}
+#flightPickerOverlay.flight-picker-overlay{z-index:76;background:rgba(24,42,60,.45);padding:20px}
+.flight-picker-dialog{width:min(1130px,98vw);max-height:min(790px,95vh);background:#fff;border:1px solid #d7e2e9;border-radius:12px;box-shadow:0 18px 52px rgba(21,38,58,.23);display:flex;flex-direction:column;overflow:hidden;outline:none}
+.flight-picker-head{padding:20px 22px 15px;border-bottom:1px solid #e7edf1;display:flex;align-items:flex-start;justify-content:space-between}
+.flight-picker-head h2{margin:0;font-size:18px;font-weight:850;color:#243441}
+.flight-picker-subtitle{font-size:12px;color:#7d8b98;margin-top:5px}
+.flight-picker-content{padding:15px 22px 12px;overflow:auto;min-height:0}
+.picker-filter-toggle{font-size:12px;font-weight:850;color:#455b69;margin-bottom:12px}
+.picker-filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;align-items:end;margin-bottom:14px}
+.picker-filters label{display:block;min-width:0}
+.picker-filters label span{display:block;font-size:10px;color:#7d8f9e;font-weight:850;margin-bottom:5px}
+.picker-filters input{display:block;width:100%;height:35px;border:1px solid #d8e2e9;background:#fff;border-radius:6px;padding:0 9px;color:#324653;min-width:0;font-size:12px}
+.picker-filters input:focus{border-color:#1d9bbc;outline:2px solid rgba(29,155,188,.12)}
+.picker-filter-buttons{display:flex;align-items:center;justify-content:flex-end;gap:8px;grid-column:1/-1}
+.picker-filter-buttons .btn{height:32px}
+.picker-selection-hint{font-size:11px;color:#7b8c98;margin-bottom:9px}
+.picker-table-wrap{border:1px solid #dde7ed;border-radius:8px;overflow-x:auto;max-height:365px;overflow-y:auto}
+.picker-table{width:100%;border-collapse:collapse;table-layout:auto;min-width:660px}
+.picker-table thead th{position:sticky;top:0;text-align:left;background:#f4f8fa;color:#607280;font-size:11px;font-weight:850;padding:10px 12px;border-bottom:1px solid #dfe7ed;z-index:1}
+.picker-table tbody td{font-size:12px;font-weight:650;color:#2c3c47;padding:10px 12px;border-bottom:1px solid #ecf0f3}
+.picker-table tbody tr:last-child td{border-bottom:0}
+.picker-table tbody tr:hover{background:#f7fcff}
+.picker-table tr.is-checked{background:#f0fbfe}
+.picker-table input[type=checkbox]{accent-color:#10ac7c;width:15px;height:15px;cursor:pointer}
+.picker-table .picker-checkbox-cell{width:46px;text-align:center}
+.picker-table .picker-empty{text-align:center;padding:32px 12px;color:#8b98a4}
+.picker-pagination{padding:13px 2px 3px;display:flex;align-items:center;gap:12px;font-size:12px;color:#586e7e;font-weight:700}
+#flightPickerSelectionCount{color:#0898b7}
+.picker-pages{margin-left:auto;display:flex;align-items:center;gap:5px}
+.picker-pages button{width:30px;height:29px;border-radius:5px;border:1px solid #e3e9ee;background:#fff;color:#607585;cursor:pointer;font-size:12px;font-weight:800}
+.picker-pages button.active{background:#119abe;color:#fff;border-color:#119abe}
+.picker-pages button:disabled{cursor:default;color:#b5c0c8;background:#f8f9fa}
+.flight-picker-foot{padding:12px 22px;border-top:1px solid #e4ebf0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff}
+.flight-picker-foot>div{display:flex;align-items:center;gap:8px}
+.picker-caption{font-size:11px;color:#8593a0}
+@media(max-width:900px){#mapOverlay .mapping-drawer{width:96vw}.mapping-overview-row{grid-template-columns:repeat(3,minmax(0,1fr))}.mapping-context{grid-template-columns:repeat(2,minmax(0,1fr))}.picker-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.mapping-context-item:nth-child(2n){margin-right:0}}
+@media(max-width:560px){#mapOverlay .mapping-drawer{width:100vw}.mapping-drawer-head,.mapping-drawer-scroll,.mapping-drawer-foot{padding-left:15px;padding-right:15px}.mapping-overview-row{grid-template-columns:repeat(2,minmax(0,1fr))}.picker-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.flight-picker-head,.flight-picker-content,.flight-picker-foot{padding-left:13px;padding-right:13px}.flight-picker-foot .picker-caption,.mapping-foot-note{display:none}.flight-picker-dialog{max-height:96vh}.picker-pagination{flex-wrap:wrap}.picker-pages{margin-left:0}.mapping-title-row h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){#mapOverlay .mapping-drawer,#mapOverlay.mapping-overlay{transition:none}}
+
+
+/* v53 — Compact Common Mapping Overview: four cards in one desktop row. */
+#mapOverlay .mapping-overview-section{margin:0 0 23px}
+#mapOverlay .mapping-overview-section .mapping-section-title{margin-bottom:13px}
+#mapOverlay .mapping-overview-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0}
+#mapOverlay .mapping-overview-cell{border:1px solid #dce6ee;border-radius:13px;padding:16px 18px;background:#fff;min-width:0;min-height:90px}
+#mapOverlay .mapping-overview-cell span{display:block;color:#8495a4;font-size:12px;font-weight:850;line-height:1.25;letter-spacing:.01em;margin:0 0 11px}
+#mapOverlay .mapping-overview-cell strong{display:block;color:#263641;font-size:20px;font-weight:850;line-height:1.25;overflow-wrap:anywhere}
+@media(max-width:680px){#mapOverlay .mapping-overview-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#mapOverlay .mapping-overview-cell{min-height:80px;padding:13px 14px}}
+@media(max-width:380px){#mapOverlay .mapping-overview-row{grid-template-columns:1fr}}
+
+/* V56 - Common HTML left navigation, Data Source Monitoring directly below Leg Type. */
+.sidebar.common-sidebar{width:232px;min-width:232px;background:linear-gradient(165deg,#e0e8ec 0%,#e1e7ee 74%,#dce5ef 100%);border-right:1px solid #c9d4dd;box-shadow:inset -1px 0 0 rgba(255,255,255,.35);z-index:3;transition:width .18s ease,min-width .18s ease;overflow:visible}
+.sidebar.common-sidebar .logoarea.common-logoarea{height:61px;flex:0 0 61px;border:0;padding:12px 12px 9px 18px;gap:0;white-space:nowrap;justify-content:flex-start;overflow:hidden}
+.common-logo-lotus{width:39px;height:31px;flex:none;display:flex;align-items:center}.common-logo-lotus svg{display:block;width:39px;height:31px}
+.common-brand{font-family:Georgia,'Times New Roman',serif;font-size:17px;color:#006a93;letter-spacing:-.6px;margin-left:-1px}
+.common-brand-symbol{margin-left:auto;color:#3b83ad;font-size:20px;font-weight:700}
+.sidebar-collapse-btn{position:absolute;right:-12px;top:57px;z-index:10;width:24px;height:24px;border-radius:50%;background:#fff;border:1px solid #dfe7ee;color:#5f7185;display:grid;place-items:center;box-shadow:0 1px 5px rgba(0,0,0,.08);padding:3px}
+.sidebar-collapse-btn:hover{color:#0e839e;background:#f7fcfe}
+.sidebar-collapse-icon{width:15px;height:15px}
+.sidebar.common-sidebar .common-side-nav{padding:1px 14px 8px;overflow-y:auto;overflow-x:hidden;flex:1;scrollbar-width:thin;scrollbar-color:transparent transparent}
+.sidebar.common-sidebar .common-side-nav:hover{scrollbar-color:#b7c9d3 transparent}
+.sidebar.common-sidebar .common-side-nav::-webkit-scrollbar{width:4px}
+.sidebar.common-sidebar .common-side-nav::-webkit-scrollbar-thumb{background:#b7c9d3;border-radius:6px}
+.sidebar.common-sidebar .nav-link{font-size:13px;font-weight:650;color:#1e2b39;min-height:37px;padding:8px 8px;gap:12px;border-radius:6px;margin:0 0 1px;width:100%;text-align:left;display:flex;align-items:center;justify-content:flex-start;line-height:1.25}
+.sidebar.common-sidebar .nav-link .nav-label{font-size:13px;line-height:1.3;font-weight:650;white-space:nowrap;overflow:visible;overflow-wrap:normal;flex:1}
+.sidebar.common-sidebar .nav-link:hover:not(.active){background:rgba(255,255,255,.50)}
+.sidebar.common-sidebar .nav-link.active{color:#fff;background:#008aa6;box-shadow:none;font-weight:750}
+.sidebar.common-sidebar .nav-link.active .nav-label{font-weight:750}
+.sidebar.common-sidebar .side-nav-icon{width:20px;height:20px;flex:0 0 20px;stroke-width:1.75}
+.sidebar.common-sidebar .common-sidebar-bottom{flex:none;margin:0 14px 0;padding:0 0 0}
+.common-bottom-links{padding:9px 0 8px;border-top:1px solid rgba(255,255,255,.73)}
+.common-bottom-links .nav-link{height:41px}
+.common-user-area{border-top:1px solid rgba(255,255,255,.75);padding:10px 0 9px}
+.common-user-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.common-user-avatar{font-size:24px;width:38px;height:34px;position:relative;line-height:1.2}
+.common-online-dot{position:absolute;bottom:2px;right:3px;width:10px;height:10px;border:1.5px solid #fff;background:#20c878;border-radius:50%}
+.sidebar-theme-toggle{border-radius:20px;padding:3px;display:inline-flex;gap:0;background:#f6f8fb;align-items:center;height:32px}
+.sidebar-theme-toggle button{background:transparent;border:0;padding:3px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#37495b}
+.sidebar-theme-toggle button.selected{background:#fff;color:#019ac1;box-shadow:0 1px 4px rgba(21,56,78,.15)}
+.sidebar-theme-toggle .theme-icon{width:16px;height:16px}
+.common-user-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:6px}
+.common-user-info{display:grid;min-width:0;gap:2px;line-height:1.3}
+.common-user-info strong{font-size:13px;color:#162533}
+.common-user-info span{font-size:12px;color:#64778a;white-space:nowrap}
+.common-logout{width:35px;height:35px;flex:none;border:0;border-radius:10px;background:#fff;color:#4c6173;display:grid;place-items:center}
+.common-logout:hover{background:#f1f8fb}
+.common-logout .logout-icon{width:19px;height:19px}
+.sidebar.common-sidebar.collapsed{width:65px;min-width:65px}
+.sidebar.common-sidebar.collapsed .logoarea.common-logoarea{padding:12px 13px;justify-content:center}
+.sidebar.common-sidebar.collapsed .common-logo-lotus{width:36px}
+.sidebar.common-sidebar.collapsed .common-logo-lotus svg{width:36px}
+.sidebar.common-sidebar.collapsed .common-brand,.sidebar.common-sidebar.collapsed .common-brand-symbol,.sidebar.common-sidebar.collapsed .nav-label,.sidebar.common-sidebar.collapsed .common-user-info,.sidebar.common-sidebar.collapsed .sidebar-theme-toggle{display:none}
+.sidebar.common-sidebar.collapsed .common-side-nav{padding:1px 8px 8px}
+.sidebar.common-sidebar.collapsed .nav-link{padding:8px 0;justify-content:center;min-height:38px}
+.sidebar.common-sidebar.collapsed .common-sidebar-bottom{margin:0 8px}
+.sidebar.common-sidebar.collapsed .common-user-top{justify-content:center}
+.sidebar.common-sidebar.collapsed .common-user-bottom{justify-content:center}
+.sidebar.common-sidebar.collapsed .common-user-avatar{font-size:24px}
+.sidebar.common-sidebar.collapsed .sidebar-collapse-icon{transform:rotate(180deg)}
+.sidebar.common-sidebar.sidebar-dark{background:linear-gradient(160deg,#182c3c,#1e3446 75%,#253d52);border-color:#1e3446}
+.sidebar.common-sidebar.sidebar-dark .nav-link{color:#d7e2ec}
+.sidebar.common-sidebar.sidebar-dark .nav-link:hover:not(.active){background:#30495b}
+.sidebar.common-sidebar.sidebar-dark .nav-link.active{background:#058aa4;color:white}
+.sidebar.common-sidebar.sidebar-dark .common-user-info strong{color:#f0f6fa}
+.sidebar.common-sidebar.sidebar-dark .common-user-info span{color:#b0c2d0}
+.sidebar.common-sidebar.sidebar-dark .common-user-area,.sidebar.common-sidebar.sidebar-dark .common-bottom-links{border-color:#3b5264}
+.sidebar.common-sidebar.sidebar-dark .sidebar-theme-toggle{background:#132837}
+@media(max-width:1100px){.sidebar.common-sidebar{display:flex}}
+@media(max-width:860px){.sidebar.common-sidebar{width:65px;min-width:65px}.sidebar.common-sidebar .common-brand,.sidebar.common-sidebar .common-brand-symbol,.sidebar.common-sidebar .nav-label,.sidebar.common-sidebar .common-user-info,.sidebar.common-sidebar .sidebar-theme-toggle{display:none}.sidebar.common-sidebar .common-side-nav{padding:1px 8px}.sidebar.common-sidebar .nav-link{padding:8px 0;justify-content:center}.sidebar.common-sidebar .common-sidebar-bottom{margin:0 8px}.sidebar.common-sidebar .logoarea.common-logoarea{padding-left:13px}.sidebar.common-sidebar .common-user-top,.sidebar.common-sidebar .common-user-bottom{justify-content:center}.sidebar.common-sidebar .sidebar-collapse-btn{display:none}}
+
+
+/* v57 - Data Source Monitoring expandable navigation, Common sidebar style. */
+.sidebar.common-sidebar .common-nav-group{width:100%;min-width:0;margin-bottom:1px}
+.sidebar.common-sidebar .nav-parent{position:relative;gap:9px}
+.sidebar.common-sidebar .common-nav-group.current .nav-parent{background:rgba(255,255,255,.45);color:#0a7792}
+.sidebar.common-sidebar .common-nav-group.current .nav-parent:hover{background:rgba(255,255,255,.70)}
+.sidebar.common-sidebar .nav-parent .nav-label{white-space:normal;line-height:1.2;font-size:12.5px;min-width:0}
+.sidebar.common-sidebar .nav-chevron{width:14px;height:14px;flex:0 0 14px;margin-left:auto;color:#74889b;transition:transform .16s ease}
+.sidebar.common-sidebar .nav-parent[aria-expanded="true"] .nav-chevron{transform:rotate(180deg)}
+.sidebar.common-sidebar .common-nav-children{margin:4px 0 8px 17px;padding:0 0 0 9px;border-left:1px solid #b8c8d2}
+.sidebar.common-sidebar .common-nav-children[hidden]{display:none!important}
+.sidebar.common-sidebar .nav-child{min-height:36px;margin:0;padding:8px 9px;gap:9px;align-items:center}
+.sidebar.common-sidebar .nav-child .side-nav-icon{width:16px;height:16px;flex-basis:16px}
+.sidebar.common-sidebar .nav-child .nav-label{font-size:12px;white-space:normal;line-height:1.2;overflow-wrap:normal}
+.sidebar.common-sidebar.collapsed .common-nav-children{display:none!important}
+.sidebar.common-sidebar.collapsed .nav-chevron{display:none}
+.sidebar.common-sidebar.collapsed .nav-parent{gap:0}
+.sidebar.common-sidebar.sidebar-dark .common-nav-group.current .nav-parent{background:rgba(255,255,255,.09);color:#8bdeea}
+.sidebar.common-sidebar.sidebar-dark .common-nav-group.current .nav-parent:hover{background:rgba(255,255,255,.15)}
+.sidebar.common-sidebar.sidebar-dark .common-nav-children{border-left-color:#597185}
+.sidebar.common-sidebar.sidebar-dark .nav-chevron{color:#b5c8d7}
+@media(max-width:860px){.sidebar.common-sidebar .common-nav-children{display:none!important}.sidebar.common-sidebar .nav-chevron{display:none}.sidebar.common-sidebar .nav-parent{justify-content:center}}
+
+
+/* v59 - Common-style full-height message list, pagination anchored to viewport bottom.
+   The Filter Collapse control gives its freed space to the table, not to whitespace. */
+html,body{height:100%;overflow:hidden}
+.app{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+.mainwrap{height:100%;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.workspace{height:100%;min-height:0;flex:1 1 auto;overflow:hidden}
+.content{height:100%;min-height:0;flex:1 1 auto;overflow:hidden;display:flex;flex-direction:column}
+.filter-panel,.metrics,.type-tabs{flex:0 0 auto}
+.table-card{min-height:0;flex:1 1 0;display:flex;flex-direction:column;overflow:hidden}
+.table-card .tbl-scroll{flex:1 1 0;min-height:0!important;max-height:none!important;overflow-x:auto;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.table-card .tbl-scroll::-webkit-scrollbar{width:7px;height:0}
+.table-card .tbl-scroll::-webkit-scrollbar-thumb{background:#ced9e2;border-radius:7px}
+.table-card .paginationbar{flex:0 0 auto;position:relative;margin-top:auto;z-index:3;border-top:1px solid #e0e7ed;background:#fff}
+#msgTable thead th{position:sticky;top:0;z-index:2}
+@media(max-height:480px){.content{overflow-y:auto}.table-card{flex:0 0 auto;height:270px}.table-card .tbl-scroll{min-height:0!important}}
+
+
+/* v60 — Match Suggested Flight to the Mapping Flights block (without ETD). */
+.mapping-flight-table{min-width:710px}
+#detailPaneMapping .detail-suggested-flights{margin-top:18px;margin-bottom:0}
+#detailPaneMapping .detail-suggested-flights .mapping-section-title{margin-bottom:12px}
+#detailPaneMapping .mapping-flight-table{min-width:710px}
+#detailPaneMapping .mapping-flight-table th,
+#detailPaneMapping .mapping-flight-table td{padding:11px 9px}
+.detail-map-flight-action{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #dfe8ee;border-radius:7px;background:#fff;color:#198ead;font-size:15px;cursor:pointer}
+.detail-map-flight-action:hover{border-color:#8bcfe2;background:#f0fbff}
+#detailPaneMapping .mapping-flight-table tbody tr.is-mapped{background:#effaff}
+
+
+/* Common Event Time filter: consistent UTC 24-hour HH:mm, independent of browser locale. */
+.filter-panel{position:relative;overflow:visible}
+.filterbody > .time-range-field .time-range{gap:4px}
+.time-24-control{display:inline-flex;align-items:center;flex:1 1 75px;min-width:0;height:27px;gap:0}
+.filterbody > .time-range-field .time-range input.time-24h-input{
+  flex:1 1 auto;min-width:0;width:100%;height:27px;margin:0;padding:0 1px;
+  border:0;border-radius:0;background:transparent;box-shadow:none;
+  color:#304555;font-size:11px;font-weight:700;letter-spacing:.15px;font-variant-numeric:tabular-nums;text-align:left;
+}
+.filterbody > .time-range-field .time-range input.time-24h-input:focus{outline:0;box-shadow:none;border:0}
+.time-24h-input::placeholder{color:#8596a4;opacity:1}
+.time-24h-input:invalid:not(:placeholder-shown){color:#c83d47!important}
+.time-24-trigger{width:19px;height:25px;padding:2px;border:0;background:transparent;color:#8594a1;flex:0 0 19px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.time-24-trigger:hover{color:#138aad}
+.time-24-trigger svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.time-24-popover[hidden]{display:none!important}
+.time-24-popover{position:fixed;z-index:1800;width:208px;padding:12px;border:1px solid #d9e4eb;border-radius:9px;background:#fff;box-shadow:0 12px 36px rgba(29,47,65,.18);color:#263744}
+.time-24-picker-title{font-size:12px;font-weight:800;margin-bottom:10px}
+.time-24-picker-selects{display:flex;align-items:flex-end;gap:6px}
+.time-24-picker-selects label{display:flex;flex:1;flex-direction:column;gap:4px;color:#758594;font-weight:700;font-size:10px}
+.time-24-picker-selects select{height:31px;width:100%;background:#fff;border:1px solid #d8e2e9;border-radius:5px;color:#263744;padding:0 6px;font-size:13px;font-variant-numeric:tabular-nums}
+.time-24-picker-sep{align-self:end;line-height:31px;font-size:16px;font-weight:800}
+.time-24-picker-actions{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
+.time-24-picker-actions .btn{min-width:72px}
+@media(max-width:780px){.time-24-popover{z-index:1900}}
+/* Explicit confirmation required for any mapping state. */
+#flightPickerRows input[type=radio]{accent-color:#0f98c4;width:16px;height:16px;cursor:pointer}
+#flightPickerRows input[type=radio]:disabled{cursor:default;opacity:.55}
+#flightPickerRows tr[data-pick-row]:hover td{background:#f0fbff}
+
+
+/* Hide no internal calculation, only retire score-specific presentation columns. */
+#msgTable{min-width:1080px}
+#detailPaneMapping .detail-map-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+#mapOverlay .mapping-overview-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mapping-flight-table{min-width:640px}
+#detailPaneMapping .mapping-flight-table{min-width:570px}
+@media(max-width:560px){#detailPaneMapping .detail-map-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* v70 — Toast above all mapping and picker overlays */
+.toast{z-index:200;display:none;align-items:center;gap:8px;max-width:min(420px,calc(100vw - 36px));line-height:1.5}
+.toast.show{display:flex}
+.toast svg{stroke:#fff;width:17px;height:17px}
+
+/* v71: display and filter date + 24-hour time in UTC, while retaining the Common compact layout. */
+.filterbody > .time-range-field{flex:3.2 1 505px;min-width:480px}
+.filterbody .time-range{gap:5px;padding:0 7px;min-width:0}
+.filterbody .time-range .date-range-input{display:block;flex:0 1 111px;min-width:103px;width:111px;height:26px;line-height:26px;padding:0 2px;border:0!important;border-radius:0;background:transparent;box-shadow:none!important;color:#344b5d;font-size:11px;font-weight:700;color-scheme:light;outline:0}
+.filterbody .time-range .date-range-input::-webkit-calendar-picker-indicator{margin:0;padding:0;cursor:pointer;opacity:.65;width:12px}
+.filterbody .time-range .time-24-control{flex:0 1 82px;min-width:75px}
+.filterbody .time-range .time-range-caption{flex:0 0 auto;font-size:10px}
+.filterbody .time-range .time-range-arrow{margin:0 1px}
+@media(max-width:1250px){.filterbody{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}.filterbody > .time-range-field{flex:0 0 490px}}
+@media(max-width:780px){.filterbody > .time-range-field{flex:0 0 490px}}
+#msgTable th:nth-child(8),#msgTable td:nth-child(8){min-width:130px}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar common-sidebar" id="sidebar">
+    <div class="logoarea common-logoarea">
+      <div class="common-logo-lotus" aria-hidden="true">
+        <svg viewBox="0 0 45 31"><path fill="#dda500" d="M22.5 22C16 13 17 8 22.5 0 28 8 29 13 22.5 22Zm-3 1C10 21 5 16 3 8c9 2 15 6 16.5 15Zm6 0C35 21 40 16 42 8c-9 2-15 6-16.5 15ZM20 24C11 28 6 25 0 22c8-2 14-2 20 2Zm5 0c9 4 14 1 20-2-8-2-14-2-20 2Z"/></svg>
+      </div>
+      <span class="common-brand">VietnamAirlines</span>
+      <span class="common-brand-symbol" aria-hidden="true">◉</span>
+    </div>
+    <button class="sidebar-collapse-btn" type="button" id="sidebarCollapse" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar"><svg class="sidebar-collapse-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button>
+    <nav aria-label="Main navigation" class="common-side-nav">
+      <button type="button" class="nav-link common-side-item" data-nav="Pilot Category" title="Pilot Category"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="10" rx="9" ry="5"/><path d="M3 10v6c3.5 3 14.5 3 18 0v-6M7 10h10M8 7l4 3 4-3M8 16h8"/></svg><span class="nav-label">Pilot Category</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Cabin Crew Category" title="Cabin Crew Category"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="m4 8 8 5 8-5M7 11l-2 5M17 11l2 5"/></svg><span class="nav-label">Cabin Crew Category</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Carrier" title="Carrier"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="12" height="16" rx="2"/><path d="M8 8h4M8 12h4M8 16h3M16 8h4v12h-9"/></svg><span class="nav-label">Carrier</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Country Category" title="Country Category"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v5l-3 2 1 4 4 2-1 5M5 8l4 1M15 6l5 2M14 16l6 2"/></svg><span class="nav-label">Country Category</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="FIR Category" title="FIR Category"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 10h18M10 3v18"/></svg><span class="nav-label">FIR Category</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Email List" title="Email List"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-3M3 9l7 5 7-5M4 13h5"/></svg><span class="nav-label">Email List</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="ULD Category" title="ULD Category"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="4"/><path d="M9 9h6M9 15h6"/></svg><span class="nav-label">ULD Category</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="ULD" title="ULD"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l5 5v8l-5 5H8l-5-5V8zM10 7l6 5-6 5M8 12h8"/></svg><span class="nav-label">ULD</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Flight Routes" title="Flight Routes"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 18c5 0 12-12 12-12M18 6a3 3 0 0 0-3-3M6 21v-3"/></svg><span class="nav-label">Flight Routes</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Flight Fleet" title="Flight Fleet"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 12 6-3 4 1 5-5 3 1-4 6 5 2-1 3-8-2-5 4-2-2 3-4zM1 12h4"/></svg><span class="nav-label">Flight Fleet</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="AC Subtype" title="AC Subtype"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 21 2-8-8 3-2-3 9-6V3a2 2 0 0 1 4 0v4l5 3-1 3-6-2-1 10z"/></svg><span class="nav-label">AC Subtype</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Aircraft" title="Aircraft"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 16 18-5M7 18l7-2m-8-5 4 3m5-7 1 5M3 20h18"/></svg><span class="nav-label">Aircraft</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Airport" title="Airport"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3h4v18h-4zM7 7h10M5 19h14M8 14h8M12 1v2M8 22h8"/></svg><span class="nav-label">Airport</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="OTP-OSP" title="OTP-OSP"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h9l5 5v14H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM14 2v6h6M8 12h8M8 16h8"/></svg><span class="nav-label">OTP-OSP</span></button>
+      <button type="button" class="nav-link common-side-item" data-nav="Leg Type" title="Leg Type"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6c3-6 7 2 7 5s4 1 6-2M3 7l2-3 3 3M18 19v-6M15 16l3-3 3 3"/></svg><span class="nav-label">Leg Type</span></button>
+      <div class="common-nav-group current" id="dataSourceMonitoringGroup">
+        <button type="button" class="nav-link common-side-item nav-parent" id="dataSourceMonitoringToggle" aria-expanded="false" aria-controls="dataSourceMonitoringChildren" title="Data Source">
+          <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 8h5M7 12h10M7 16h7M15 5v6M12 8h6"/></svg>
+          <span class="nav-label">Data Source</span>
+          <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="common-nav-children" id="dataSourceMonitoringChildren" hidden>
+          <button type="button" class="nav-link common-side-item nav-child active" id="acarsMessageMonitoringLink" aria-current="page" title="ACARS Message Monitoring">
+            <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M7.5 9h9M7.5 12.5h6M7.5 16h7"/></svg>
+            <span class="nav-label">ACARS Message Monitoring</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="common-sidebar-bottom">
+      <div class="common-bottom-links">
+        <button type="button" class="nav-link" data-nav="Notification" title="Notification"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 20a2 2 0 0 0 4 0"/></svg><span class="nav-label">Notification</span></button>
+        <button type="button" class="nav-link" data-nav="Setting" title="Setting"><svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 3h5l.6 2.3 1.8 1 2.2-.8 2.5 4.4-1.7 1.5v2.2l1.7 1.6-2.5 4.3-2.3-.7-1.8 1-.5 2.2h-5l-.6-2.2-1.8-1-2.3.7-2.5-4.3 1.7-1.6v-2.2L3.3 10l2.5-4.4 2.3.8 1.8-1z"/><circle cx="12" cy="12" r="3"/></svg><span class="nav-label">Setting</span></button>
+      </div>
+      <div class="common-user-area">
+        <div class="common-user-top">
+          <div class="common-user-avatar" aria-label="Admin profile">👨🏻‍✈️<span class="common-online-dot"></span></div>
+          <div class="sidebar-theme-toggle" role="group" aria-label="Sidebar theme">
+            <button type="button" id="sidebarThemeLight" class="selected" title="Light theme" aria-label="Light theme"><svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+            <button type="button" id="sidebarThemeDark" title="Dark theme" aria-label="Dark theme"><svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.5A8 8 0 0 1 8.5 4 8 8 0 1 0 20 15.5z"/></svg></button>
+          </div>
+        </div>
+        <div class="common-user-bottom">
+          <div class="common-user-info"><strong>Admin</strong><span>admin@viettel.com</span></div>
+          <button type="button" class="common-logout" title="Sign out (prototype)" data-nav="Sign Out" aria-label="Sign out"><svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4M12 7l5 5-5 5M7 12h10"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="mainwrap">
+    <div class="workspace">
+      <main class="content">
+        <section class="filter-panel">
+          <div class="filterhead">
+            <strong><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>Filter</strong>
+            <button class="linkbtn" id="toggleFilters"><span class="togglemini">Collapse</span> <span>⌃</span></button>
+          </div>
+          <form class="filterbody" id="filterForm">
+            <div class="field"><label for="fFlight">FLT NO</label><input id="fFlight" placeholder="FLT NO" autocomplete="off"></div>
+            <div class="field"><label for="fReg">AC REG</label><input id="fReg" placeholder="AC REG" autocomplete="off"></div>
+            <div class="field"><label for="fDep">DEP</label><input id="fDep" placeholder="DEP" autocomplete="off"></div>
+            <div class="field"><label for="fArr">ARR</label><input id="fArr" placeholder="ARR" autocomplete="off"></div>
+            <div class="field"><label for="fStatus">Status</label><select id="fStatus"><option value="">Status</option><option value="mapped">Mapped</option><option value="review">Needs Review</option><option value="unmapped">Unmapped</option></select></div>
+            <div class="field time-range-field">
+              <label for="fDateFrom">Event Time (UTC)</label>
+              <div class="time-range" role="group" aria-label="Event Time date and time range (UTC)" title="Filter by UTC date and time; dates and times are optional">
+                <span class="time-range-caption">From</span>
+                <input id="fDateFrom" class="date-range-input" type="date" lang="en-GB" aria-label="Event date From (UTC)" title="From date (UTC)">
+                <span class="time-24-control">
+                  <input id="fTimeFrom" class="time-24h-input" type="text" inputmode="numeric" autocomplete="off" maxlength="5" pattern="(?:[01][0-9]|2[0-3]):[0-5][0-9]" placeholder="--:--" aria-label="Event time From (UTC), 24-hour HH:mm" title="24-hour format (00:00–23:59)">
+                  <button type="button" class="time-24-trigger" data-time-for="fTimeFrom" aria-label="Choose From time in 24-hour format" title="Choose From time"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></button>
+                </span>
+                <span class="time-range-arrow" aria-hidden="true">→</span>
+                <span class="time-range-caption">To</span>
+                <input id="fDateTo" class="date-range-input" type="date" lang="en-GB" aria-label="Event date To (UTC)" title="To date (UTC)">
+                <span class="time-24-control">
+                  <input id="fTimeTo" class="time-24h-input" type="text" inputmode="numeric" autocomplete="off" maxlength="5" pattern="(?:[01][0-9]|2[0-3]):[0-5][0-9]" placeholder="--:--" aria-label="Event time To (UTC), 24-hour HH:mm" title="24-hour format (00:00–23:59)">
+                  <button type="button" class="time-24-trigger" data-time-for="fTimeTo" aria-label="Choose To time in 24-hour format" title="Choose To time"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></button>
+                </span>
+              </div>
+            </div>
+            <div class="filter-actions"><button class="btn primary" type="submit"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Search</button><button class="linkbtn" id="clearFilters" type="button">Clear Filter</button></div>
+          </form>
+          <div class="time-24-popover" id="time24Picker" role="dialog" aria-modal="false" aria-label="Choose time (24-hour format)" hidden>
+            <div class="time-24-picker-title">Select time (24-hour)</div>
+            <div class="time-24-picker-selects">
+              <label>Hour <select id="time24Hour" aria-label="Hour from 00 to 23"></select></label>
+              <span class="time-24-picker-sep">:</span>
+              <label>Minute <select id="time24Minute" aria-label="Minute from 00 to 59"></select></label>
+            </div>
+            <div class="time-24-picker-actions"><button type="button" id="time24Clear" class="btn sm">Clear</button><button type="button" id="time24Apply" class="btn primary sm">Apply</button></div>
+          </div>
+        </section>
+
+<section class="metrics" aria-label="ACARS statistics: today's messages, today's mapped, and all-time not mapped">
+          <article class="metric metric-total" aria-label="Total ACARS messages received today">
+            <div class="metric-left"><span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="metric-label">TOTAL MESSAGES TODAY</span></div>
+            <strong class="metric-number" id="countAll" aria-live="polite">0</strong>
+          </article>
+          <article class="metric metric-mapped" aria-label="Messages received today (UTC) and mapped to a flight">
+            <div class="metric-left"><span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span><span class="metric-label">MAPPED TODAY</span></div>
+            <strong class="metric-number" id="countMapped" aria-live="polite">0</strong>
+          </article>
+          <article class="metric metric-unmapped" aria-label="All-time messages without a mapped flight, including Needs Review and Unmapped">
+            <div class="metric-left"><span class="metric-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 17h.01"/></svg></span><span class="metric-label">NOT MAPPED</span></div>
+            <strong class="metric-number" id="countUnmapped" aria-live="polite">0</strong>
+          </article>
+        </section>
+
+        <div class="type-tabs" id="typeTabs"></div>
+
+        <section class="table-card panel">
+          <div class="tbl-scroll"><table id="msgTable"><thead><tr>
+            <th class="numcol">No.</th>
+            <th>SMI</th>
+            <th>Decoded Event</th>
+            <th>FLT NO</th>
+            <th>AC REG</th>
+            <th>DEP</th>
+            <th>ARR</th>
+            <th>Event Time (UTC)</th>
+            <th>Candidate</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr></thead><tbody id="rows"></tbody></table></div>
+          <div class="paginationbar">
+            <div class="pagination-left" id="totalText">Total: 0</div>
+            <div class="pagination-right"><label class="muted">Show</label><select class="page-size" id="pageSize" aria-label="Rows per page"><option value="auto" selected>Auto</option><option value="10">10</option><option value="25">25</option><option value="50">50</option></select><div class="pages" id="pagination"></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div class="overlay detail-overlay" id="detailOverlay">
+  <aside class="detail-drawer detail-drawer-common" role="dialog" aria-modal="true" aria-labelledby="detailTitle" tabindex="-1">
+    <div class="detail-common-head">
+      <div class="detail-common-main">
+        <div class="detail-common-title-row">
+          <div class="detail-header-field">
+            <h2 id="detailHeaderSmi">—</h2>
+          </div>
+          <span id="detailStatus">—</span>
+        </div>
+        <div class="detail-header-field detail-header-event">
+          <div class="detail-common-sub" id="detailHeaderDecodedEvent">—</div>
+        </div>
+      </div>
+      <div class="detail-common-head-actions">
+        <button class="btn sm primary" id="detailMappingBtn" type="button">Map / Remap</button>
+        <button type="button" class="detail-close common-close" data-close="detailOverlay" title="Close details" aria-label="Close details">×</button>
+      </div>
+    </div>
+    <div class="detail-summary-strip">
+      <div class="detail-summary-item"><label>DEP</label><strong id="detailDep">—</strong></div>
+      <div class="detail-summary-item"><label>ARR</label><strong id="detailArr">—</strong></div>
+      <div class="detail-summary-item"><label>Event</label><strong id="detailEvent">—</strong></div>
+      <div class="detail-summary-item"><label>Event Time (UTC)</label><strong id="detailTime">--:--</strong></div>
+      <div class="detail-route-hidden" id="detailRoute" hidden></div>
+      <div class="detail-drawer-caption" id="detailTitle" hidden>Message Details</div>
+    </div>
+    <div class="detail-tabs" role="tablist" aria-label="Message detail sections">
+      <button class="detail-tab active" data-detail-tab="decoded" role="tab" id="detailTabDecoded" aria-selected="true" aria-controls="detailPaneDecoded">Decoded Field</button>
+      <button class="detail-tab" data-detail-tab="raw" role="tab" id="detailTabRaw" aria-selected="false" aria-controls="detailPaneRaw">Raw Message</button>
+      <button class="detail-tab" data-detail-tab="mapping" role="tab" id="detailTabMapping" aria-selected="false" aria-controls="detailPaneMapping">Mapping Info</button>
+    </div>
+    <div class="detail-drawer-body" id="detailBody"></div>
+    <div class="detail-drawer-footer common-footer">
+      <div></div>
+      <div class="detail-footer-buttons">
+        <button class="btn" data-close="detailOverlay" type="button">Close</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="overlay mapping-overlay" id="mapOverlay">
+  <aside class="mapping-drawer" role="dialog" aria-modal="true" aria-labelledby="mapTitle" tabindex="-1">
+    <div class="mapping-drawer-head">
+      <div class="mapping-title-wrap">
+        <div class="mapping-title-row"><h2 id="mapTitle">Map / Remap Flight</h2><span id="mapStatus"></span></div>
+        <div class="mapping-subtitle" id="mapSubtitle">Select a flight for the ACARS message</div>
+      </div>
+      <button class="mapping-close" data-close="mapOverlay" type="button" title="Close panel" aria-label="Close mapping panel">×</button>
+    </div>
+    <div class="mapping-drawer-scroll" id="mapBody"></div>
+    <div class="mapping-drawer-foot"><div class="mapping-foot-actions"><button class="btn" data-close="mapOverlay" type="button">Cancel</button><button class="btn primary" id="saveMapping" type="button" disabled>Confirm Mapping</button></div></div>
+  </aside>
+</div>
+
+<div class="overlay flight-picker-overlay" id="flightPickerOverlay">
+  <section class="flight-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="flightPickerTitle" tabindex="-1">
+    <div class="flight-picker-head"><div><h2 id="flightPickerTitle">Select Another Flight</h2><div class="flight-picker-subtitle">Search and select one flight to map immediately</div></div><button type="button" class="mapping-close" data-close="flightPickerOverlay" title="Close" aria-label="Close Select Another Flight">×</button></div>
+    <div class="flight-picker-content">
+      <div class="picker-filter-toggle"><span>⌕ &nbsp;Filter</span></div>
+      <form id="flightPickerFilters" class="picker-filters">
+        <label><span>FLT NO</span><input id="pickFlight" placeholder="FLT NO" autocomplete="off"></label>
+        <label><span>AC REG</span><input id="pickReg" placeholder="AC REG" autocomplete="off"></label>
+        <label><span>DEP</span><input id="pickDep" placeholder="DEP" autocomplete="off"></label>
+        <label><span>ARR</span><input id="pickArr" placeholder="ARR" autocomplete="off"></label>
+        <label><span>ETD (UTC)</span><input id="pickEtd" type="time" aria-label="Filter ETD (UTC)"></label>
+        <label><span>ETA (UTC)</span><input id="pickEta" type="time" aria-label="Filter ETA (UTC)"></label>
+        <div class="picker-filter-buttons"><button class="btn primary" type="submit">Search</button><button class="btn" id="flightPickerClear" type="button">Clear Filter</button></div>
+      </form>
+      <div class="picker-selection-hint">Select a flight to map the message immediately.</div>
+      <div class="picker-table-wrap"><table class="picker-table"><thead><tr><th class="picker-checkbox-cell">SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD</th><th>ETA</th></tr></thead><tbody id="flightPickerRows"></tbody></table></div>
+      <div class="picker-pagination"><span id="flightPickerTotal">Total: 0</span><span id="flightPickerSelectionCount">0 selected</span><div id="flightPickerPages" class="picker-pages"></div></div>
+    </div>
+    <div class="flight-picker-foot"><span class="picker-caption">Prototype flight schedule · UTC</span><div><button class="btn" type="button" data-close="flightPickerOverlay">Cancel</button><button class="btn primary" type="button" id="applyFlightPicker" disabled>Confirm Mapping</button></div></div>
+  </section>
+</div>
+
+<div class="overlay" id="confirmOverlay">
+  <div class="modal sm">
+    <div class="modal-hd"><div class="modal-title"><strong>Confirm</strong><span>Please verify the selected flight leg before saving.</span></div><button class="iconbutton" data-close="confirmOverlay">✕</button></div>
+    <div class="modal-body" id="confirmBody"></div>
+    <div class="modal-ft"><button class="btn" data-close="confirmOverlay">Cancel</button><button class="btn primary" id="confirmYes">Confirm</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="helpOverlay">
+  <div class="modal hlp">
+    <div class="modal-hd"><div class="modal-title"><strong>Prototype Notes</strong><span>Scope and behavior of the ACARS mapping mockup.</span></div><button class="iconbutton" data-close="helpOverlay">✕</button></div>
+    <div class="modal-body">
+      <div class="notice">This mockup manages ACARS messages only. Backend is assumed to handle message parsing, candidate search, assignment decisions and flight mapping updates.</div>
+      <div class="details-grid">
+        <div class="detail-card"><h4>Statuses</h4><div class="kv"><div>Mapped</div><div>LEG_NO assigned</div><div>Needs Review</div><div>Suggested candidates only, not mapped</div><div>Unmapped</div><div>No selected LEG_NO yet</div></div></div>
+        <div class="detail-card"><h4>Monitoring</h4><div class="kv"><div>Window</div><div>Today and historical dates (UTC)</div><div>Tabs</div><div>9 fixed ACARS message types</div><div>Search</div><div>Can add manual LEG candidates</div></div></div>
+      </div>
+    </div>
+    <div class="modal-ft"><button class="btn primary" data-close="helpOverlay">Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+'use strict';
+const icons={check:'<svg viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></svg>',warning:'<svg viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3zM12 9v5M12 18h.01"/></svg>',eye:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/></svg>',swap:'<svg viewBox="0 0 24 24"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/></svg>'};
+const pad=n=>String(n).padStart(2,'0');
+const utcStamp=d=>`${pad(d.getUTCDate())}/${pad(d.getUTCMonth()+1)}/${d.getUTCFullYear()} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+const utcDate=d=>`${pad(d.getUTCDate())}/${pad(d.getUTCMonth()+1)}/${d.getUTCFullYear()}`;
+const now=new Date(),dayStart=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
+const elapsed=Math.max(0,now-dayStart),slot=n=>new Date(dayStart.getTime()+Math.min(elapsed-1000,Math.max(0,elapsed*(n/16))));
+const fmtTime=(d)=>`${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+const esc=v=>String(v===undefined||v===null?'—':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s||'').replace(/[^A-Z0-9]/gi,'').toUpperCase();
+const scoreOf=(m,c)=>{if(c.origin==='MANUAL')return null;if(c.timeBand==='outside')return null;let score=(norm(m.flight)&&norm(m.flight)!=='—'&&norm(m.flight)===norm(c.flight)?40:0)+(norm(m.reg)&&norm(m.reg)!=='—'&&norm(m.reg)===norm(c.reg)?20:0)+(m.dep&&m.dep!=='—'&&norm(m.dep)===norm(c.dep)?15:0)+(m.arr&&m.arr!=='—'&&norm(m.arr)===norm(c.arr)?15:0)+(c.timeBand==='buffer'?50:100);return score};
+const types=['M49','M11-M14','M44 DOOR','A80','WATER','APM','APU','FML','POSRPT'];
+function leg(no,flight,reg,dep,arr,band='in',shift=0){return{legNo:no,whatIf:'DEMO',flight,reg,dep,arr,timeBand:band,shift,origin:'AUTO'}}
+const rowsSeed=[
+{id:'ACR-001',type:'M49',smi:'M49',event:'TAXI → TAKEOFF',flight:'VN254',reg:'VNA874',dep:'SGN',arr:'HAN',pos:15,status:'review',meaning:'B787 phase transition from Taxi Out to Takeoff',raw:'QU HANASVN\n.BKKXCXA 131016\nM49\nFI VN0254/AN VN-A874\n- 01TATO HVN254/131016VVTSVVNB\n+ 56107.8+32.5017200741206',candidates:[leg(106254,'VN254','VNA874','SGN','HAN'),leg(106260,'VN254','VNA875','SGN','HAN')]},
+{id:'ACR-002',type:'M11-M14',smi:'M11',event:'OUT',flight:'VN334',reg:'VNA879',dep:'HAN',arr:'KIX',pos:14,status:'mapped',mappedLeg:106334,method:'AUTO',meaning:'Boeing OUT Report',raw:'QU HANASVN\n.QXSXMXS 131111\nM11\nFI VN0334/AN VN-A879\n- OUT02 HVN334/131111VVNBRJBB\n171102770277******',candidates:[leg(106334,'VN334','VNA879','HAN','KIX')]},
+{id:'ACR-003',type:'M49',smi:'M49',event:'IN',flight:'VN250',reg:'VNA879',dep:'SGN',arr:'HAN',pos:13,status:'mapped',mappedLeg:106250,method:'AUTO',meaning:'B787 Phase IN',raw:'QU HANASVN\n.BKKXCXA 131006\nM49\nFI VN250/AN VN-A879\n- 01IN HVN250/131006VVTSVVNB\n+ 52*****+36.900760075****',candidates:[leg(106250,'VN250','VNA879','SGN','HAN')]},
+{id:'ACR-004',type:'M44 DOOR',smi:'M44',event:'FIRST DOOR OPEN',flight:'VN216',reg:'VNA879',dep:'SGN',arr:'HAN',pos:12,status:'review',meaning:'First aircraft door open event',raw:'QU HANASVN\n.BKKXCXA 131114\nM44\nFI VN216/AN VN-A879\n- FIRST DOOR OPEN TIME HVN216/131114VVTSVVNB\n1114',candidates:[leg(106216,'VN216','VNA879','SGN','HAN'),leg(106217,'VN216','VNA880','SGN','HAN')]},
+{id:'ACR-005',type:'A80',smi:'A80',event:'OUT',flight:'VN7190',reg:'VNA513',dep:'DAD',arr:'HAN',pos:11,status:'mapped',mappedLeg:107190,method:'AUTO',meaning:'Rockwell Collins OUT Report',raw:'QU HANASVN\n.QXSXMXS 131708\nA80\nFI VN7190/AN VN-A513\n- 1001 OUTRP 7190/ VVDN/VVNB VN-A513\n/OUT 1708/FOB 0096/UNT LITERS/TYP A',candidates:[leg(107190,'VN7190','VNA513','DAD','HAN')]},
+{id:'ACR-006',type:'WATER',smi:'DFD',event:'POTABLE WATER',flight:'VN321',reg:'VNA892',dep:'—',arr:'—',pos:10,status:'review',meaning:'A350 DFD REP040 - Potable Water',raw:'QU HANASVN\nDFD\nAN VN-A892/FI VN0321\n- A350,000007,1,1,TB000000/REP040,01,04;H01...',candidates:[leg(106321,'VN321','VNA892','SGN','KIX'),leg(106253,'VN253','VNA892','HAN','SGN','buffer')]},
+{id:'ACR-007',type:'APU',smi:'DFD',event:'APU STATUS',flight:'VN38',reg:'VNA868',dep:'—',arr:'—',pos:9,status:'review',meaning:'DFD generic - APU',raw:'QU HANASVN\n.BKKXCXA 132108\nDFD\nFI VN38/AN VN-A868\nA- EB0011AA_2021081',candidates:[leg(106038,'VN38','VNA868','CPH','SGN'),leg(106032,'VN32','VNA868','MUC','SGN')]},
+{id:'ACR-008',type:'FML',smi:'FML',event:'PROGRESS',flight:'VN334',reg:'VNA879',dep:'—',arr:'KIX',pos:8,status:'mapped',mappedLeg:106334,method:'AUTO',meaning:'Progress Report (FML)',raw:'QU HVNPMXS\n.HANASVN 131722\nFML\nFI VN0334/AN VN-A879\n- PRG/TS172236,110626/DTRJBB,06R',candidates:[leg(106334,'VN334','VNA879','HAN','KIX')]},
+{id:'ACR-009',type:'POSRPT',smi:'A80',event:'POSITION',flight:'VN1641',reg:'VNA513',dep:'HAN',arr:'VCA',pos:7,status:'mapped',mappedLeg:101641,method:'AUTO',meaning:'Honeywell Position Report',raw:'QU HANASVN\n.QXSXMXS 130152\nA80\nFI VN1641/AN VN-A513\n- 3N01 POSRPT 1641/ VVNB/VVCA VN-A513\n/POS N15467E108249/ALT 074/FOB 0042',candidates:[leg(101641,'VN1641','VNA513','HAN','VCA')]},
+{id:'ACR-011',type:'M44 DOOR',smi:'M44',event:'FIRST DOOR OPEN',flight:'—',reg:'VNA887',dep:'—',arr:'—',pos:5,status:'unmapped',meaning:'M44 door event · Flight No and route missing',raw:'QU HANASVN\nM44\nAN VN-A887\nDT 130006\n- FIRST DOOR OPEN TIME\n...(Flight No and route unavailable)',candidates:[leg(106067,'VN67','VNA887','BKK','HAN'),leg(106123,'VN123','VNA887','HAN','DAD')]},
+{id:'ACR-012',type:'A80',smi:'A80',event:'OUT (UNPARSED)',flight:'—',reg:'—',dep:'—',arr:'—',pos:4,status:'unmapped',meaning:'A80 report · insufficient fields for mapping',raw:'QU HANASVN\nA80\n...####????????\n[Unable to decode Flight No, REG or route]',candidates:[]},
+{id:'ACR-013',type:'A80',smi:'A80',event:'OOOI SUMMARY',flight:'VN101',reg:'VNA341',dep:'HAN',arr:'SGN',pos:3,status:'mapped',mappedLeg:106101,method:'AUTO',meaning:'A80 Summary - may contain multiple OOOI milestones',raw:'QU HANASVN\nA80\nFI VN101/AN VN-A341\n- SUMMRY VN101 / OUT / OFF / ON / IN ...',candidates:[leg(106101,'VN101','VNA341','HAN','SGN')]},
+{id:'ACR-014',type:'POSRPT',smi:'M16',event:'POSITION',flight:'VN932',reg:'VNA876',dep:'SGN',arr:'HAN',pos:2,status:'mapped',mappedLeg:106932,method:'AUTO',meaning:'B787 Position Report',raw:'QU HANASVN\nM16\nFI VN0932/AN VN-A876\n- POSITION REPORT: TIME, LAT, LONG, ETA...',candidates:[leg(106932,'VN932','VNA876','SGN','HAN')]},
+{id:'ACR-015',type:'APM',smi:'DFD',event:'APM REPORT',flight:'VN228',reg:'VNA389',dep:'—',arr:'—',pos:1,status:'mapped',mappedLeg:106228,method:'AUTO',meaning:'A321 DFD REP002 APM',raw:'QU HANASVN\nDFD\nFI VN228/AN VN-A389\n- A320,012439,1,1,TB000000/REP002...',candidates:[leg(106228,'VN228','VNA389','HAN','SGN')]}
+];
+
+// Expanded demo dataset, modeled on supplied ACARS_decode samples.
+// Only visual/demo records are synthesized: no parser, mapping engine or airline feed is implemented here.
+const referenceMessages=[{"type":"M49","smi":"M49","event":"INIT","flight":"VN334","reg":"VNA879","dep":"HAN","arr":"KIX","meaning":"B787 Flight Phase INIT (M49)","raw":"QU HANASVN\n.QXSXMXS 111710\n M49\nFI VN0334/AN VN-A879\nDT QXT APK1 111710 M01A\n-  01INIT    HVN334/111709VVNBRJBB\n+   78*****+ 29.7027700662116"},{"type":"M49","smi":"M49","event":"POWER ON","flight":"VN250","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Eng Shutdown to Power On (M49)","raw":"QU HANASVN\n.BKKXCXA 131005\n M49\nFI VN250/AN VN-A879\nDT BKK HAN 131005 M26A\n-  01SDPO    HVN250/131005VVTSVVNB\n+   52*****+ 36.800760075****"},{"type":"M49","smi":"M49","event":"ENGINE START","flight":"VN254","reg":"VNA874","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Power On to Engine Start (M49)","raw":"QU HANASVN\n.QXSXMXS 131006\n M49\nFI VN0254/AN VN-A874\nDT QXS SGN7 131006 M04A\n-  01POES    HVN254/131006VVTSVVNB\n+   29*****+ 34.7017400781155"},{"type":"M49","smi":"M49","event":"TAXI OUT","flight":"VN254","reg":"VNA874","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Engine Start to Taxi Out (M49)","raw":"QU HANASVN\n.QXSXMXS 131007\n M49\nFI VN0254/AN VN-A874\nDT QXS SGN7 131007 M05A\n-  01ESTA    HVN254/131007VVTSVVNB\n+   25*****+ 35.1017400781157"},{"type":"M49","smi":"M49","event":"OUT","flight":"VN334","reg":"VNA879","dep":"HAN","arr":"KIX","meaning":"B787 Flight Phase OUT (M49)","raw":"QU HANASVN\n.QXSXMXS 111712\nM49\nFI VN0334/AN VN-A879\nDT QXT APK1 111712 M03A\n-  01OUT     HVN334/111711VVNBRJBB\n+   79*****+ 29.9027700662119"},{"type":"M49","smi":"M49","event":"TAKEOFF","flight":"VN254","reg":"VNA874","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Taxi Out to Take Off (M49)","raw":"QU HANASVN\n.QXSXMXS 131016\n M49\nFI VN0254/AN VN-A874\nDT QXS SGN7 131016 M06A\n-  01TATO    HVN254/131016VVTSVVNB\n+   56107.8+ 32.5017200741206"},{"type":"M49","smi":"M49","event":"OFF","flight":"VN254","reg":"VNA874","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase OFF (M49)","raw":"QU HANASVN\n.QXSXMXS 131017\n M49\nFI VN0254/AN VN-A874\nDT QXS SGN7 131017 M08A\n-  01OFF     HVN254/131017VVTSVVNB\n+   74173.1+ 35.0016900751206"},{"type":"M49","smi":"M49","event":"INITIAL CLIMB","flight":"VN254","reg":"VNA874","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Take Off to Initial Climb (M49)","raw":"QU HANASVN\n.QXSXMXS 131017\nM49\nFI VN0254/AN VN-A874\nDT QXS SGN7 131017 M09A\n-  01TOIC    HVN254/131017VVTSVVNB\n+  116175.2+ 35.1016800751206"},{"type":"M49","smi":"M49","event":"CLIMB","flight":"VN254","reg":"VNA874","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Initial Climb to Climb (M49)","raw":"QU HANASVN\n.QXSXMXS 131018\nM49\nFI VN0254/AN VN-A874\nDT QXS SGN7 131018 M10A\n-  01ICCL    HVN254/131018VVTSVVNB\n+ 1501204.3+ 33.9016200781205"},{"type":"M49","smi":"M49","event":"ENROUTE","flight":"VN38","reg":"VNA868","dep":"CPH","arr":"SGN","meaning":"B787 Flight Phase Climb to Enroute (M49)","raw":"QU HANASVN\n.QXSXMXS 131026\nM49\nFI VN0038/AN VN-A868\nDT QXS BERW 131026 M14A\n-  01CLER     HVN38/131026EKCHVVTS\n+34926285.9- 19.7066001022108"},{"type":"M49","smi":"M49","event":"DESCENT","flight":"VN216","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Enroute to Descent (M49)","raw":"QU HANASVN\n.BKKXCXA 111038\nM49\nFI VN216/AN VN-A879\nDT BKK VDH 111038 M07A\n-  01ERDC    HVN216/  VVTSVVNB\n+32966292.2+  0.3008000681109"},{"type":"M49","smi":"M49","event":"APPROACH","flight":"VN216","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Descent to Approach (M49)","raw":"QU HANASVN\n.BKKXCXA 111101\nM49\nFI VN216/AN VN-A879\nDT BKK HAN 111101 M10A\n-  01DCAP    HVN216/111101VVTSVVNB\n+ 1415153.1+ 30.2007300691103"},{"type":"M49","smi":"M49","event":"FLARE","flight":"VN258","reg":"VNA878","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Approach to Flare (M49)","raw":"QU HANASVN\n.BKKXCXA 121421\nM49\nFI VN258/AN VN-A878\nDT BKK HAN 121421 M22A\n-  01APFL    HVN258/121421VVTSVVNB\n+   66150.3+ 32.800700068****"},{"type":"M49","smi":"M49","event":"ROLLOUT","flight":"VN258","reg":"VNA878","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Flare to Rollout (M49)","raw":"QU HANASVN\n.BKKXCXA 121421\nM49\nFI VN258/AN VN-A878\nDT BKK HAN 121421 M25A\n-  01FLRO    HVN258/121421VVTSVVNB\n+   48128.0+ 32.700700068****"},{"type":"M49","smi":"M49","event":"ON","flight":"VN258","reg":"VNA878","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase ON (M49)","raw":"QU HANASVN\n.BKKXCXA 121421\nM49\nFI VN258/AN VN-A878\nDT BKK HAN 121421 M24A\n-  01ON      HVN258/121421VVTSVVNB\n+   51131.9+ 32.900700068****"},{"type":"M49","smi":"M49","event":"TAXI IN","flight":"VN258","reg":"VNA878","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Roll Out to Taxi IN (M49)","raw":"QU HANASVN\n.BKKXCXA 121421\nM49\nFI VN258/AN VN-A878\nDT BKK HAN 121421 M26A\n-  01ROTI    HVN258/121421VVTSVVNB\n+   56 73.5+ 31.100700068****"},{"type":"M49","smi":"M49","event":"SHUTDOWN","flight":"VN258","reg":"VNA878","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase Taxi to Shut Down (M49)","raw":"QU HANASVN\n.BKKXCXA 121426\nM49\nFI VN258/AN VN-A878\nDT BKK HAN 121426 M27A\n-  01TISD    HVN258/121426VVTSVVNB\n+   59*****+ 30.600670068****"},{"type":"M49","smi":"M49","event":"IN","flight":"VN250","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"B787 Flight Phase IN (M49)","raw":"QU HANASVN\n.BKKXCXA 131006\nM49\nFI VN250/AN VN-A879\nDT BKK HAN 131006 M28A\n-  01IN      HVN250/131006VVTSVVNB\n+   52*****+ 36.900760075****"},{"type":"M49","smi":"M49","event":"RETURN TO GATE","flight":"VN0","reg":"VNA864","dep":"—","arr":"—","meaning":"B787 Flight Phase Return to Gate (M49)","raw":"QU HANASVN\n.QXSXMXS 131010\nM49\nFI VN0000/AN VN-A864\nDT QXS FRAW 131010 M04A\n-  01RTG **********/131010********\n+  188*****+ 24.30075********"},{"type":"M49","smi":"M49","event":"EVENT","flight":"—","reg":"—","dep":"—","arr":"—","meaning":"ACARS M49 EVENT","raw":"QU HANOCVN\n.BKKXCXA 310830\nM49\nFI VN0/AN VN-A877\nDT BKK SGN 310830 M49A\n-  01RTG **********/310830********\n+   41*****+ 32.10067********\n"},{"type":"M11-M14","smi":"M11","event":"OUT","flight":"VN334","reg":"VNA879","dep":"HAN","arr":"KIX","meaning":"Boeing OUT Report (M11)","raw":"QU HANASVN\n.QXSXMXS 111711\n M11\nFI VN0334/AN VN-A879\nDT QXT APK1 111711 M02A\n-  OUT02    HVN334/11111711VVNBRJBB\n171102770277******"},{"type":"M11-M14","smi":"M12","event":"OFF","flight":"VN38","reg":"VNA868","dep":"CPH","arr":"SGN","meaning":"Boeing OFF Report (M12)","raw":"QU HANASVN\n.QXSXMXS 201005\nM12\nFI VN0038/AN VN-A868\nDT QXS CPHW 201005 M07A\n-  OFF02     HVN38/20201005EKCHVVTS\n100506670670"},{"type":"M11-M14","smi":"M13","event":"ON","flight":"VN216","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"Boeing ON Report (M13)","raw":"QU HANASVN\n.BKKXCXA 111103\n M13\nFI VN216/AN VN-A879\nDT BKK HAN 111103 M12A\n-  ONN02    HVN216/11111103VVTSVVNB\n110300720068"},{"type":"M11-M14","smi":"M14","event":"IN","flight":"VN216","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"Boeing IN Report (M14)","raw":"QU HANASVN\n.BKKXCXA 111114\nM14\nFI VN216/AN VN-A879\nDT BKK HAN 111114 M17A\n-  INN02    HVN216/11111114VVTSVVNB\n11100069****"},{"type":"M44 DOOR","smi":"M44","event":"FIRST DOOR OPEN","flight":"VN216","reg":"VNA879","dep":"SGN","arr":"HAN","meaning":"(default 620 downlink)","raw":"QU HANASVN\n.BKKXCXA 111114\nM44\nFI VN216/AN VN-A879\nDT BKK HAN 111114 M19A\n-  FIRST DOOR OPEN TIME    HVN216/11111114VVTS VVNB \n1114"},{"type":"M44 DOOR","smi":"M44","event":"LAST DOOR CLOSE","flight":"VN0","reg":"VNA879","dep":"—","arr":"—","meaning":"(default 620 downlink)","raw":"QU HANASVN\n.QXSXMXS 111540\n M44\nFI VN0000/AN VN-A879\nDT QXS HAN7 111540 M02A\n-  LAST DOOR CLOSE TIME**********/**111537**********\n1537"},{"type":"A80","smi":"A80","event":"OUT","flight":"VN7190","reg":"VNA513","dep":"DAD","arr":"HAN","meaning":"Rockwell Collins Format A OUT Report (A80)","raw":"QU HANASVN\n.QXSXMXS 121708\nA80\nFI VN7190/AN VN-A513\nDT QXS DAD1 121708 M78A\n-  1001 OUTRP  7190/   VVDN/VVNB VN-A513\n/OUT 1708/FOB 0096/BRD       /UNT LITERS  /TYP A"},{"type":"A80","smi":"A80","event":"OFF","flight":"VN7190","reg":"VNA513","dep":"DAD","arr":"HAN","meaning":"Rockwell Collins Format A OFF Report (A80)","raw":"QU HANASVN\n.QXSXMXS 121724\nA80\nFI VN7190/AN VN-A513\nDT QXS DAD1 121724 M79A\n-  1101 OFFRP  7190/12 VVDN/VVNB VN-A513\n/OUT 1708/OFF 1724/FOB 0092/ETA 1829"},{"type":"A80","smi":"A80","event":"ON","flight":"VN7190","reg":"VNA513","dep":"DAD","arr":"HAN","meaning":"Rockwell Collins Format A ON Report (A80)","raw":"QU HANASVN\n.QXSXMXS 121827\nA80\nFI VN7190/AN VN-A513\nDT QXS HAN1 121827 M85A\n-  1201 ONRP   7190/12 VVDN/VVNB VN-A513\n/ON  1827/FOB 0048"},{"type":"A80","smi":"A80","event":"IN","flight":"VN7190","reg":"VNA513","dep":"DAD","arr":"HAN","meaning":"Rockwell Collins Format A IN Report (A80)","raw":"QU HANASVN\n.QXSXMXS 121845\nA80\nFI VN7190/AN VN-A513\nDT QXS HAN1 121845 M86A\n-  1301 INRP   7190/12 VVDN/VVNB VN-A513\n/ON  1827/IN  1845/FOB 0047"},{"type":"A80","smi":"A80","event":"OOOI SUMMARY","flight":"VN7190","reg":"VNA513","dep":"DAD","arr":"HAN","meaning":"Rockwell Colins Format A SUMMRY Report (A80)","raw":"QU HANASVN\n.QXSXMXS 121855\nA80\nFI VN7190/AN VN-A513\nDT QXS HAN1 121855 M87A\n-  3501 SUMMRY 7190/12 VVDN/VVNB VN-A513\n/OUT 1708/FOB 0096\n/OFF 1724/FOB 0092\n/ON  1827/FOB 0048\n/IN  1845/FOB 0047\n/TKO CAPT /CRW          \n/LND CAPT /CRW          \n/APP N  /RWY    /RVR     /ALT    \n/ERR    /ERR    /ERR    \n/CPT          /FO           \n/SO1          /SO2          \n/CHK"},{"type":"A80","smi":"A80","event":"OUT","flight":"VN253","reg":"VNA892","dep":"HAN","arr":"SGN","meaning":"Honeywell OUT Report A350 (DEP) -- (raw)","raw":"QU HVNPMXS\n.HANASVN 120657\nDEP\nFI VN0253/AN VN-A892/DA VVNB/DS VVTS/OT 0657/FB 0429/BF      \nDT QXS HAN7 120657 M61A\n-  FI 0253/DD 12"},{"type":"A80","smi":"A80","event":"OFF","flight":"VN253","reg":"VNA898","dep":"PVG","arr":"SGN","meaning":"Honeywell OFF Report A350 (DEP)","raw":"QU HANASVN\n.BJSXCXA 120732\nDEP\nFI VN525/AN VN-A898/DA ZSPD/DS VVTS/OF 0732\nDT BJS PVG 120732 M49A\n-  FI 0525/DD 12/FOB 0698/ETA 1112"},{"type":"A80","smi":"A80","event":"ON","flight":"VN525","reg":"VNA898","dep":"PVG","arr":"SGN","meaning":"Honeywell ON Report A350 (ARR)","raw":"QU HANASVN\n.QXSXMXS 121117\nARR\nFI VN0525/AN VN-A898/DA ZSPD/DS VVTS/ON 1117\nDT QXS SGN7 121117 M66A\n-  FI 0525/DD 12/FOB 0223"},{"type":"A80","smi":"A80","event":"IN","flight":"VN525","reg":"VNA898","dep":"PVG","arr":"SGN","meaning":"Honeywell IN Report A350 (ARR)","raw":"QU HANASVN\n.QXSXMXS 121125\nARR\nFI VN0525/AN VN-A898/DA ZSPD/DS VVTS/IN 1125/FB 0226/LA  /LR  \nDT QXS SGN7 121125 M67A\n-  FI 0525/DD 12"},{"type":"A80","smi":"A80","event":"OOOI SUMMARY","flight":"VN525","reg":"VNA898","dep":"PVG","arr":"SGN","meaning":"MIAM TypeB Generic Downlink (MDN) -- TypeB Format","raw":"QU HANASVN\n.HANASVN 121140\nA80\nAN VN-A898/FI VN0525\nDT QXS SGN7 121140 C00A\n-  3501 SUMMRY 0525/12 ZSPD/VVTS VN-A898\n/OUT 0716/FOB 0708\n/OFF 0732/FOB 0698\n/ON  1117/FOB 0223\n/IN  1125/FOB 0226\n/TKO CAPT /CRW ---------\n/LND CAPT /CRW ---------\n/APP N  /RWY ---/RVR 0000\n/CPT ---------/FO  ---------\n/SO1 ---------/SO2 ---------"},{"type":"WATER","smi":"DFD","event":"POTABLE WATER","flight":"VN321","reg":"VNA892","dep":"—","arr":"—","meaning":"A350 DFD - Report 040 Potable Warter -- (raw)","raw":"QU HANASVN.HANASVN 190655\nDFD\nAN VN-A892/FI VN0321\nDT QXS SGN7 190655 C00A\n-  A350,000007,1,1,TB000000/REP040,01,04;H01,040,01,04,4000,00689,XXXXXXX,0,0,19,08,26,06,42,26,010/H02,---------,----------,S0385,S0685,S0142S0185/H03,  /A01,0,012/A02,0,000/A03,004/D10,060,---,000,XXX/G01,0/G02,0/G03,0/G04,0/J10,0,0/J11,0,0/J20,0,0/J21,0,0/J30,0,0/J40,0,0/J50,035,038/J51,+026,+006/J60,009,010/J61,+007,+002/M10,1502,1732/N10,033/N11,01,21,29,231,000/N12,000/N13,022/N14,06,35,26,008/N15,009/N16,---/N17,025/E01,+0000000,----/E02,------,+0000000/E03,+0000000,------/E04,------/E05,013490,007599/S01,159,159/:"},{"type":"WATER","smi":"DFD","event":"POTABLE WATER","flight":"VN980","reg":"VNA863","dep":"—","arr":"—","meaning":"B787 DFD Report 710 Potable Water","raw":"QU HANASVN\n.BKKXCXA 212305\nDFD\nFI VN980/AN VN-A863\nDT BKK HAN 212305 D53A\n<710>KEG\n9 CVN-A863HVN980    VIDPVVNB210826185307  91ES  6\nBSM5A70990054  407\nIC  019  0  0 23 1160  965 1354\nAP  403  8 12 18 1113  922 1308\nRO  407  8 12 18 1111  922 1306\n 700 90 97     75  999994111620804050114040402244240249238257248237240185191100084094  34  35  3326352524266725882502261526002575082126185255082126230352082126185255082126230354"},{"type":"APM","smi":"DFD","event":"APM REPORT","flight":"VN228","reg":"VNA389","dep":"—","arr":"—","meaning":"A321 DFD - Report (REP002) - APM","raw":"QU HANASVN.BKKXCXA 210512\nDFD\nFI VN228/AN VN-A389\nDT BKK HAN 210512 D01A-  A320,012439,1,1,TB000000/REP002,00,00,1/CCN-A389,AUG21,041824,VVTS,VVNB,0228/C0TIA05000000101/C106,69702,5000,48,0010,0,0100,47,X/CE0043,28989,285,738,6398,273,I21000/CN0043,29038,285,740,6398,273/EC012366,40999,27476,71,29,00/EE016530,35014,15868,71/N11220,1220,4416,0794,0877,1388,09380/N21220,1220,4353,0796,0875,1376,09977/S115552,0858,1416,4477,08136,058/S215335,0848,1446,4407,08141,061/T1098,081,00,028,41,203,06553,0049/T2100,081,00,018,42,182,06556,0052/V103C04,00208,08000,248,125,-133/V203C04,00208,08000,235,120,-097/V3017,002,353/V4005,003,251/X103672,-002,0017,0002,00012,-010/X203670,-003,0019,0002,00013,-011/X3-001,-002,-004,-010,-009,-001,0000/X40000,0000,0000,0000,0000,0000/X50000,0000,0000,0000,0000,0000/X63087,E1065,N183,009,275,0198,0797/X73087,E1065,N184,011,207,0186,0799/:"},{"type":"APM","smi":"DFD","event":"APM REPORT","flight":"VN98","reg":"VNA898","dep":"—","arr":"—","meaning":"A321 DFD - Report (REP002) - APM","raw":"QU HANASVN\n.HANASVN 210151\nDFD\nAN VN-A898/FI VN0098\nDT QXS OAK8 210151 C00A\n-  A350,000188,1,1,TB000000/REP002,02,04;H01,002,02,04,5000,00132,VN-A898,3,0,21,08,26,01,51,07,090/H02,VVTS KSFO,HVN98  ,S0385,S0685,S0142S0185/H03,Stable Frame/A10,21,08,26,00,37,59,+39249,-131714,+102,33,21422,044,00097,00559/A11,1,0,0,0,081,0,081,0,0,1,0,0,21043,044,00097,00559/B10,1,0,1,2,1,0407C,008,1181,1,000,000,0002/B11,1,0,1,2,1,008,0181,0,000,000/C10,+41005,0850,-129,-458,190528,0324,+00,08050,028/C11,+40978,0848,-124,-452,+02,07919,028/C12,+41013,0849,-133,-461,-03,08071/C13,+41005,0849/C14,+41005,0849/D10,4993,+024,-0021,+0001,+0025,+0000,----,+39267,+1014,0183,+0321/D11,4990,+026,-0023,-0001,+0025,-0004,----,+39266,+1016,0203,-1241/D12,4988,+023,-0023,-0003,+0020,-0002,----,+39265,+1015,0191,-1240/E10,-007,08734,008,0892,016,0866,004,+0770,+0764,+0747,+0767,08751/E11,-004,08734,010,0893,009,0867,016,+0766,+0766,+0746,+0766,08752/F10,+0829,+0824,+0824,05872,06302,06302,+003,+024,141,+105,-024/F11,+0828,+0825,+0825,05841,06049,06050,+002,+018,132,+101,-024/G10,0179,0286,0284,0537,0405,1638,0000,0000,0550,0260,+044,+0013/G11,0179,0286,0282,0535,0409,1644,0000,0000,0568,0261,+043,+0016/H10,-129,-1294,+2444,+5302,+4099,---,+477,+450,+387,-0036,-0010/H11,-129,-1294,+2467,+5304,+4130,---,+466,+453,+386,+0072,+0073/J10,+010,+315,+238,097,+1266,+1415,+045,066,078/J11,+030,+317,+194,068,+1204,+1418,+043,066,064/K10,+019,+019,+01,+03,017,020,+008,-002,0000,0010,+123,+118/K11,+017,+017,+01,+03,016,018,+007,-016,0000,0009,+080,+271/L10,+002,+001,-039,-001,+000/L20,-001,-000,-001,-001,-003,-001,-006,-000,+005,+002,+006/L30,-001,+000,-000,-001,-003,-001,-007,+000,+000,+000,+000/M10,+0000,+00007,287"},{"type":"APM","smi":"DFD","event":"APM REPORT","flight":"—","reg":"VNA363","dep":"—","arr":"—","meaning":"A321 DFD - Report (A13) -- A13 Report","raw":"QU HFDPWCR\n.HANASVN 181322\nA13/A32113,1,1/CCN-A363,AUG18,131938,VVNB,VVDN,6070/C111,44604,4000,54,0000,1,0000,51,1/CE0325,00321,---,---,----,---,I61060/E14708,83131,61977,20000/N1016517,00000,0A000,1000,0604,094/N2016037,00000,0A000,1000,0590,094/N3000000,00000,04000,1000,0432,022/S10971,0033,040,375,XXXX,129,034/S20972,0036,040,374,XXXX,130,020/S30980,0036,049,130,XXXX,128,000/V1047,0853,0445,061,0035,/"},{"type":"APM","smi":"DFD","event":"APM REPORT","flight":"VN38","reg":"VNA868","dep":"—","arr":"—","meaning":"B787 DFD Report APM","raw":"QU HANASVN\n.BKKXCXA 202100\nDFD\nFI VN38/AN VN-A868\nDT BKK SGN 202100 D86A\n-  APM    9VN-A868         HVN38   EKCHVVTS200826200414,,70990054,.850,,,265.4,,,-16.66,,,39001,,,366670,,,5060,5079,,, 88.00, 88.00,,,  0.571,489.4,,, 63.8, 64.1, 83.9, 83.8,,,0,0,1,,,,,, 14.2390,,, 100.5791,,, 121.7,,,  2.1,,, 124.0,,,   0.004, 0.000,    0,,, 6.735,  -1,     0,14473,14000,,,,,,59570,59981,,,  2.1, 35, 28, 43, 34,487222,,,23.10,,,338189,,, 76059,36376,36596,,,,,,956980,958373,,,,23.10,,,,,,103.9,104.1,,,,,,,732.6,741.7,,,,,,,-49.1,,, -2.8,,, -0.2,,,  2.2,,,  4.5, 6.2,,-10.8,-11.3,,,  0.6,,  7.0,  7.1,,, 0.0, 0.0,,, 0.00,,, 0.00,,, 0.00,,,,, -0.1"},{"type":"APU","smi":"DFD","event":"APU STATUS","flight":"VN38","reg":"VNA868","dep":"—","arr":"—","meaning":"A321 DFD Report - Generic","raw":"QU HANASVN\n.BKKXCXA 202108\nDFD\nFI VN38/AN VN-A868\nDT BKK SGN 202108 D90\nA-  EB0011AA_2021081"},{"type":"FML","smi":"FML","event":"PROGRESS","flight":"VN334","reg":"VNA879","dep":"—","arr":"—","meaning":"Progress Report (FML) -- (raw)","raw":"QU HVNPMXS\n.HANASVN 111722\nFML\nFI VN0334/AN VN-A879\nDT QXS HAN7 111722 F06A\n-  PRG/TS172236,110626/DTRJBB,06R,140,213016,042/FNHVN3342BE4"},{"type":"POSRPT","smi":"A80","event":"POSITION","flight":"VN1641","reg":"VNA513","dep":"HAN","arr":"VCA","meaning":"Honeywell Position Report (A80-POSRPT)","raw":"QU HANASVN\n.QXSXMXS 240152\nA80\nFI VN1641/AN VN-A513\nDT QXS DAD1 240152 M05A\n-  3N01 POSRPT 1641/   VVNB/VVCA VN-A513\n/POS N15467E108249/ALT 074/MCH 043/FOB 0042"},{"type":"POSRPT","smi":"A80","event":"POSITION","flight":"VN524","reg":"VNA898","dep":"SGN","arr":"PVG","meaning":"Honeywell Position Report (A80-POSRPT)","raw":"QU HANASVN\n.BJSXCXA 240210\nA80\nFI VN524/AN VN-A898\nDT BJS HAK 240210 M60A\n-  3N01 POSRPT 0524/23 VVTS/ZSPD VN-A898\n/POS N19121E113198/ALT 370/MCH 852/FOB 0428\n/TME 0210/WND 82 28/OAT -43/TAS 504"},{"type":"POSRPT","smi":"M16","event":"POSITION","flight":"VN38","reg":"VNA868","dep":"CPH","arr":"SGN","meaning":"Honeywell Position Report (A80-POSRPT)","raw":"QU HANASVN\n.BKKXCXA 201922\nM16\nFI VN38/AN VN-A868\nDT BKK RGN 201922 M48A\n-  POS02     HVN38/20201922EKCHVVTS\nN17359E095547,39001,192210,+127,+075,36,473,2120,+188,264,0.845,-48,16.0"}];
+const sampleByType=Object.fromEntries(types.map(t=>[t,referenceMessages.filter(r=>r.type===t)]));
+const decodedSamples=[{"phase":"INIT","toPhase":"INIT","eta":"21:16","dateTimeCode":"111709","altitude":"+78 ft","tat":"29.7 °C","fob":"0277","fuelAtDestination":"0066","oooiFob":"0277"},{"phase":"PO (Power On)","fromPhase":"SD (Shutdown)","toPhase":"PO (Power On)","dateTimeCode":"131005","altitude":"+52 ft","tat":"36.8 °C","fob":"0076","fuelAtDestination":"0075","oooiFob":"0076"},{"phase":"ES (Engine start)","fromPhase":"PO (Power On)","toPhase":"ES (Engine start)","eta":"11:55","dateTimeCode":"131006","altitude":"+29 ft","tat":"34.7 °C","fob":"0174","fuelAtDestination":"0078","oooiFob":"0174"},{"phase":"TA (Taxi Out)","fromPhase":"ES (Engine Start)","toPhase":"TA (Taxi Out)","eta":"11:55","dateTimeCode":"131007","altitude":"+25 ft","tat":"35.1 °C","fob":"0174","fuelAtDestination":"0078","oooiFob":"0174"},{"phase":"OUT","toPhase":"OUT","eta":"21:19","dateTimeCode":"111711","altitude":"+79 ft","tat":"29.9 °C","fob":"0277","fuelAtDestination":"0066","oooiFob":"0277"},{"phase":"TO (Takeoff)","fromPhase":"TA (Taxi Out)","toPhase":"TO (Takeoff)","eta":"12:06","dateTimeCode":"131016","altitude":"+56 ft","cas":"107.8","tat":"32.5 °C","fob":"0172","fuelAtDestination":"0074","oooiFob":"0172"},{"phase":"OFF","toPhase":"OFF","eta":"12:06","dateTimeCode":"131017","altitude":"+74 ft","cas":"173.1","tat":"35 °C","fob":"0169","fuelAtDestination":"0075","oooiFob":"0169"},{"phase":"IC (Initial Climb)","fromPhase":"TO (Takeoff)","toPhase":"IC (Initial Climb)","eta":"12:06","dateTimeCode":"131017","altitude":"+116 ft","cas":"175.2","tat":"35.1 °C","fob":"0168","fuelAtDestination":"0075","oooiFob":"0168"},{"phase":"CL (Climb)","fromPhase":"IC (Initial Climb)","toPhase":"CL (Climb)","eta":"12:05","dateTimeCode":"131018","altitude":"+1501 ft","cas":"204.3","tat":"33.9 °C","fob":"0162","fuelAtDestination":"0078","oooiFob":"0162"},{"phase":"ER (Enroute)","fromPhase":"CL (Climb)","toPhase":"ER (Enroute)","eta":"21:08","dateTimeCode":"131026","altitude":"+34926 ft","cas":"285.9","tat":"-19.7 °C","fob":"0660","fuelAtDestination":"0102","oooiFob":"0660"},{"phase":"DC (Descent)","fromPhase":"ER (Enroute)","toPhase":"DC (Descent)","eta":"11:09","dateTimeCode":"111038","altitude":"+32966 ft","cas":"292.2","tat":"0.3 °C","fob":"0080","fuelAtDestination":"0068","oooiFob":"0080"},{"phase":"AP (Approach)","fromPhase":"DC (Descent)","toPhase":"AP (Approach)","eta":"11:03","dateTimeCode":"111101","altitude":"+1415 ft","cas":"153.1","tat":"30.2 °C","fob":"0073","fuelAtDestination":"0069","oooiFob":"0073"},{"phase":"FL (Flare)","fromPhase":"AP (Approach)","toPhase":"FL (Flare)","dateTimeCode":"121421","altitude":"+66 ft","cas":"150.3","tat":"32.8 °C","fob":"0070","fuelAtDestination":"0068","oooiFob":"0070"},{"phase":"RO (Rollout)","fromPhase":"FL (Flare)","toPhase":"RO (Rollout)","dateTimeCode":"121421","altitude":"+48 ft","cas":"128.0","tat":"32.7 °C","fob":"0070","fuelAtDestination":"0068","oooiFob":"0070"},{"phase":"ON","toPhase":"ON","dateTimeCode":"121421","altitude":"+51 ft","cas":"131.9","tat":"32.9 °C","fob":"0070","fuelAtDestination":"0068","oooiFob":"0070"},{"phase":"TI (Taxi In)","fromPhase":"RO (Rollout)","toPhase":"TI (Taxi In)","dateTimeCode":"121421","altitude":"+56 ft","cas":"73.5","tat":"31.1 °C","fob":"0070","fuelAtDestination":"0068","oooiFob":"0070"},{"phase":"SD (Shut Down)","fromPhase":"TI (Taxi In)","toPhase":"SD (Shut Down)","dateTimeCode":"121426","altitude":"+59 ft","tat":"30.6 °C","fob":"0067","fuelAtDestination":"0068","oooiFob":"0067"},{"phase":"IN","toPhase":"IN","dateTimeCode":"131006","altitude":"+52 ft","tat":"36.9 °C","fob":"0076","fuelAtDestination":"0075","oooiTime":"IN 1006","oooiFob":"0076"},{"phase":"RTG","toPhase":"RTG","dateTimeCode":"131010","altitude":"+188 ft","tat":"24.3 °C","fob":"0075","oooiFob":"0075"},{},{"phase":"OUT","toPhase":"OUT","dateTimeCode":"111711","fob":"0277","oooiTime":"OUT 1711","oooiFob":"0277"},{"phase":"OFF","toPhase":"OFF","dateTimeCode":"201005","fob":"0667","oooiTime":"OFF 1005","oooiFob":"0667"},{"phase":"ON","toPhase":"ON","dateTimeCode":"111103","fob":"0072","fuelAtDestination":"0068","oooiTime":"ONN 1103","oooiFob":"0072"},{"phase":"IN","toPhase":"IN","dateTimeCode":"111114","fob":"0069","oooiTime":"INN 1114","oooiFob":"0069"},{"phase":"FIRST DOOR OPEN TIME","toPhase":"FIRST DOOR OPEN TIME","dateTimeCode":"111114","firstDoorOpenTime":"111114"},{"phase":"LAST DOOR CLOSE TIME","toPhase":"LAST DOOR CLOSE TIME","dateTimeCode":"111540","lastDoorCloseTime":"111537"},{"phase":"OUT","toPhase":"OUT","dateTimeCode":"121708","fob":"0096","oooiTime":"OUT 1708","oooiFob":"0096"},{"phase":"OFF","toPhase":"OFF","eta":"18:29","dateTimeCode":"121724","fob":"0092","oooiTime":"OUT 1708","oooiFob":"0092"},{"phase":"ON","toPhase":"ON","dateTimeCode":"121827","fob":"0048","oooiTime":"ON  1827","oooiFob":"0048"},{"phase":"IN","toPhase":"IN","dateTimeCode":"121845","fob":"0047","oooiTime":"ON  1827\nIN  1845","oooiFob":"0047"},{"phase":"SUMMRY","toPhase":"SUMMRY","dateTimeCode":"121855","fob":"/FOB 0096\n/FOB 0092\n/FOB 0048\n/FOB 0047","oooiTime":"/OUT 1708\n/OFF 1724\n/ON  1827\n/IN  1845","oooiFob":"/FOB 0096\n/FOB 0092\n/FOB 0048\n/FOB 0047"},{"phase":"OUT","toPhase":"OUT","dateTimeCode":"120657","fob":"FB 0429","oooiTime":"OT DEP 0657","oooiFob":"FI 0253"},{"phase":"OFF","toPhase":"OFF","eta":"11:12","dateTimeCode":"120732","fob":"FOB 0698","oooiTime":"OF DEP 0732","oooiFob":"FOB 0698"},{"phase":"ON","toPhase":"ON","dateTimeCode":"121117","fob":"FOB 0223","oooiTime":"ON ARR 1117","oooiFob":"FOB 0698"},{"phase":"IN","toPhase":"IN","dateTimeCode":"121125","fob":"FB 0226","oooiTime":"IN ARR 1125","oooiFob":"FOB 0698"},{"phase":"SUMMRY","toPhase":"SUMMRY","dateTimeCode":"121140","oooiTime":"/OUT 0716\n/OFF 0732\n/ON  1117\n/IN  1125","oooiFob":"/FOB 0708\n/FOB 0698\n/FOB 0223\n/FOB 0226"},{"dateTimeCode":"190655","depWater":"33%","arrWater":"22%","depWaterRecordTime":"01:21:29","arrWaterRecordTime":"06:35:26","reportCode":"REP040"},{"dateTimeCode":"212305","depWater":"23%","arrWater":"18%","depWaterDuration":"0.19 giờ","reportCode":"710"},{"dateTimeCode":"AUG21  21/08 210512","reportCode":"REP002"},{"dateTimeCode":"210151","reportCode":"REP002"},{"dateTimeCode":"181322 AUG18","reportCode":"A13"},{"reportCode":"APM"},{"dateTimeCode":"202108","apuState":"1 – On"},{"reportCode":"FML"},{"dateTimeCode":"240152","altitude":"074","fob":"0042","posLat":"N15467","posLong":"E108249","positionTime":"0152","reportCode":"A80-POSRPT"},{"dateTimeCode":"240210","altitude":"370","fob":"0428","posLat":"N19121","posLong":"E113198","positionTime":"0210","reportCode":"A80-POSRPT"},{"dateTimeCode":"201922","altitude":"390","fob":"16.0\n(Note: Định dạng NNN.N )","posLat":"N17359","posLong":"E095547","positionTime":"2120","reportCode":"M16-POSRPT"}];
+const demoFlightProfiles=[
+  ['VN254','VNA874','SGN','HAN'],['VN334','VNA879','HAN','KIX'],['VN250','VNA879','SGN','HAN'],
+  ['VN216','VNA879','SGN','HAN'],['VN258','VNA878','SGN','HAN'],['VN38','VNA868','CPH','SGN'],
+  ['VN7190','VNA513','DAD','HAN'],['VN525','VNA898','PVG','SGN'],['VN253','VNA892','HAN','SGN'],
+  ['VN321','VNA892','SGN','KIX'],['VN980','VNA863','DEL','HAN'],['VN228','VNA389','SGN','HAN'],
+  ['VN98','VNA898','SGN','SFO'],['VN1641','VNA513','HAN','VCA'],['VN524','VNA898','SGN','PVG'],
+  ['VN101','VNA341','HAN','SGN'],['VN932','VNA876','SGN','HAN'],['VN67','VNA887','BKK','HAN'],
+  ['VN6070','VNA363','HAN','DAD'],['VN612','VNA867','SGN','DAD'],['VN167','VNA321','HAN','DAD'],
+  ['VN141','VNA890','HAN','DLI'],['VN551','VNA881','HAN','SIN'],['VN310','VNA342','DAD','SGN']
+];
+function simulatedRaw(source,flight,reg,dep,arr,when,serial){
+  const digits=flight.replace(/^VN/,'');
+  const aircraft=reg.replace(/^VN/,'VN-');
+  const six=pad(when.getUTCDate())+pad(when.getUTCHours())+pad(when.getUTCMinutes());
+  const hhmm=pad(when.getUTCHours())+pad(when.getUTCMinutes());
+  let s=source.raw;
+  // Adjust aircraft identity and time in the identifying ACARS header / event section.
+  s=s.replace(/\bFI\s+VN\d{1,4}\b/g,`FI VN${digits.padStart(4,'0')}`)
+     .replace(/\bAN\s+VN-A\d{3}\b/g,`AN ${aircraft}`)
+     .replace(/\bHVN\d{1,4}\b/g,`HVN${digits}`)
+     .replace(/\bVN-A\d{3}\b/g,aircraft)
+     .replace(/\b(OUTRP|OFFRP|ONRP|INRP|POSRPT|SUMMRY)\s+\d{1,4}\b/g,(_m,prefix)=>`${prefix} ${digits}`)
+     .replace(/(^\.[A-Z0-9]+\s+)\d{6}\b/m,(_m,prefix)=>prefix+six)
+     .replace(/(\bDT\s+[^\n]*?\s)\d{6}(\s+[A-Z0-9]+)/,(_m,prefix,suffix)=>prefix+six+suffix)
+     .replace(/(\bHVN\d+\s*\/\s*)\d{6}\b/g,(_m,prefix)=>prefix+six)
+     .replace(/\/(OUT|OFF|ON|IN|TME)\s+\d{4}\b/g,(_m,prefix)=>`/${prefix} ${hhmm}`);
+  if(source.type==='M49')s=s.replace(/(01[A-Z]{2,4}\s+HVN\d+\/)\d{6}/,(_m,prefix)=>prefix+six);
+  if(source.type==='APU')s=s.replace(/EB0011AA_\d{6}\d/,`EB0011AA_${six}${serial%3}`);
+  // Attach no prototype-only metadata in the displayed Raw Message; keep message format familiar.
+  return s;
+}
+const extraRows=[];
+// At least 28 records per message category, filling the visible table even on the less-common types.
+for(let groupIndex=0;groupIndex<types.length;groupIndex++){
+  const group=types[groupIndex],samples=sampleByType[group];
+  for(let i=0;i<30;i++){
+    const ref=samples[(i*7+Math.floor(i/3)+groupIndex)%samples.length];
+    const profile=demoFlightProfiles[(i*5+groupIndex*3+Math.floor(i/4))%demoFlightProfiles.length];
+    const flight=(i%13===0&&['M44 DOOR','M49'].includes(group))?'VN0000':profile[0];
+    const reg=profile[1];
+    let dep=profile[2],arr=profile[3];
+    if(['WATER','APU','APM','FML'].includes(group)&&i%7===0){dep='—';arr='—';}
+    if(group==='M44 DOOR'&&flight==='VN0000'){dep='—';arr='—';}
+    if(group==='POSRPT'&&i%11===0){arr='—';}
+    const pos=0.015+0.965*((i*17+groupIndex*11)%103)/103;
+    const receivedTime=new Date(dayStart.getTime()+Math.max(0,(now-dayStart)-5000)*pos);
+    const eventTime=new Date(receivedTime.getTime()-Math.min(90000,(now-dayStart)*.005));
+    // Purpose-built sample cases (never hard-code mapping statuses):
+    //   Low-match alternative -> Unmapped; near-equal alternatives -> Needs Review;
+    //   clear best match -> Mapped (Auto). Final status is computed by resolveDemoMapping().
+    const demoCase=([0,6].includes(i%10))?'low':([1,4,8].includes(i%10))?'ambiguous':'clear';
+    const flightProfile=flight==='VN0000'?'—':flight;
+    const legNo=300000+groupIndex*1000+i;
+    const candidates=[];
+    const routeDep=dep==='—'?profile[2]:dep,routeArr=arr==='—'?profile[3]:arr;
+    if(demoCase==='low'){
+      const other=demoFlightProfiles[(i*5+groupIndex*3+Math.floor(i/4)+3)%demoFlightProfiles.length];
+      // Time buffered + different flight ensures score stays below the auto-map threshold.
+      candidates.push(leg(legNo,other[0],other[1],other[2],other[3],'buffer'));
+    }else{
+      candidates.push(leg(legNo,flightProfile,reg,routeDep,routeArr,'in'));
+      if(demoCase==='ambiguous'){
+        // Almost identical alternative: REG mismatch makes the gap only 20 pts.
+        const altReg=reg==='VNA999'?'VNA998':'VNA999';
+        candidates.push(leg(400000+groupIndex*1000+i,flightProfile,altReg,routeDep,routeArr,'in'));
+      }else if(i%9===0){
+        // Clearly weaker alternative, never treated as an ambiguous top match.
+        const other=demoFlightProfiles[(i*5+groupIndex*3+Math.floor(i/4)+3)%demoFlightProfiles.length];
+        candidates.push(leg(400000+groupIndex*1000+i,other[0],other[1],other[2],other[3],'buffer'));
+      }
+    }
+    extraRows.push({
+      id:`ACR-${String(1000+groupIndex*30+i)}`,type:group,smi:ref.smi,event:ref.event,
+      flight:flightProfile,reg,dep,arr,
+      pos:((i*17+groupIndex*11)%103)/103,receivedTime,eventTime,
+      meaning:ref.meaning,raw:simulatedRaw(ref,flight,reg,dep,arr,eventTime,i),sampleIndex:referenceMessages.indexOf(ref),candidates
+    });
+  }
+}
+
+const pool=[leg(106254,'VN254','VNA874','SGN','HAN'),leg(106260,'VN254','VNA875','SGN','HAN'),leg(106216,'VN216','VNA879','SGN','HAN'),leg(106250,'VN250','VNA879','SGN','HAN'),leg(106334,'VN334','VNA879','HAN','KIX'),leg(106321,'VN321','VNA892','SGN','KIX'),leg(106253,'VN253','VNA892','HAN','SGN'),leg(106525,'VN525','VNA898','HAN','SGN'),leg(106067,'VN67','VNA887','BKK','HAN'),leg(106123,'VN123','VNA887','HAN','DAD'),leg(107190,'VN7190','VNA513','DAD','HAN'),leg(106038,'VN38','VNA868','CPH','SGN'),leg(109999,'VN999','VNA887','SGN','HAN'),leg(108012,'VN812','VNA888','HAN','SGN')];
+// Extend manually searchable flight-leg catalog with synthesized sample flight legs.
+for(const row of extraRows){for(const c of row.candidates){if(!pool.some(x=>x.legNo===c.legNo))pool.push({...c});}}
+const seedDecodedSampleIndex={"ACR-001":5,"ACR-002":20,"ACR-003":17,"ACR-004":24,"ACR-005":26,"ACR-006":36,"ACR-007":42,"ACR-008":43,"ACR-009":44,"ACR-011":24,"ACR-012":null,"ACR-013":30,"ACR-014":46,"ACR-015":38};
+// A high score alone is not always sufficient: an auto-map also needs a clear winner.
+// Missing/below-threshold score => Unmapped; top candidates < MIN_GAP apart => Needs Review;
+// threshold satisfied and gap >= 30 (or no second eligible candidate) => Mapped / Auto.
+const MIN_GAP=30;
+function resolveDemoMapping(message){
+  const scores=message.candidates
+    .map(flight=>({flight,points:scoreOf(message,flight)}))
+    .filter(candidate=>Number.isFinite(candidate.points))
+    .sort((a,b)=>b.points-a.points);
+  const minScore=message.reg==='—'?110:130;
+  const top=scores[0],runnerUp=scores[1];
+  const sufficient=top&&top.points>=minScore;
+  const unique=sufficient&&(!runnerUp||top.points-runnerUp.points>=MIN_GAP);
+  if(unique){message.status='mapped';message.mappedLeg=top.flight.legNo;message.method='AUTO';}
+  else{message.status=sufficient?'review':'unmapped';delete message.mappedLeg;delete message.method;}
+}
+// Historical mock records: retain all 315 messages from today, plus 240 older ones.
+// Spread past messages across recent days, previous months and previous years.
+// No real ACARS feed, backend, network service or persistent storage is involved.
+const historicalRows=Array.from({length:240},(_,i)=>{
+  const source=extraRows[(i*7+11)%extraRows.length];
+  const daysAgo=i<30?1+(i%7):i<100?8+((i*3)%23):i<200?31+((i*7)%150):181+((i*11)%550);
+  const offset=daysAgo*86400000;
+  const eventTime=new Date(source.eventTime.getTime()-offset);
+  const receivedTime=new Date(source.receivedTime.getTime()-offset);
+  const reference=referenceMessages[source.sampleIndex];
+  return {...source,id:`ACR-H${String(i+1).padStart(4,'0')}`,
+    receivedTime,eventTime,
+    meaning:reference.meaning,
+    raw:simulatedRaw(reference,source.flight,source.reg,source.dep,source.arr,eventTime,1000+i),
+    candidates:source.candidates.map(c=>({...c}))};
+});
+const data=[...extraRows,...rowsSeed,...historicalRows].map(r=>{
+  const o={...r,received:r.receivedTime||slot(r.pos),eventTime:r.eventTime||new Date(slot(r.pos).getTime()-Math.min(60000,elapsed/200)),decoded:decodedSamples[r.sampleIndex??seedDecodedSampleIndex[r.id]]||{},candidates:r.candidates.map(x=>({...x}))};
+  // Mapping state lives only in memory. Reload always restores the original demo data.
+  resolveDemoMapping(o);
+  return o;
+});
+let activeType='M49',applied={flight:'',reg:'',dep:'',arr:'',status:'',dateFrom:'',dateTo:'',timeFrom:'',timeTo:''},page=1,pageSize=25,autoPageSize=true,currentId=null,selectedLeg=null,manualQuery='',manualMatches=[],originModal='';
+const byId=id=>data.find(r=>r.id===id);
+const candidateSort=r=>[...r.candidates].sort((a,b)=>(scoreOf(r,b)??-1)-(scoreOf(r,a)??-1));
+const threshold=r=>r.reg==='—'?110:130;
+const timeFmt=r=>utcStamp(r.eventTime)+' UTC';
+function toast(msg,type='info'){const e=document.getElementById('toast');e.className='toast show '+type;e.innerHTML=(type==='success'?icons.check:icons.warning)+'<span>'+esc(msg)+'</span>';clearTimeout(toast.timer);toast.timer=setTimeout(()=>e.classList.remove('show'),3500)}
+function show(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden'}
+function hide(id){document.getElementById(id).classList.remove('open');if(!document.querySelector('.overlay.open'))document.body.style.overflow=''}
+const statusLabel=s=>({mapped:'Mapped',review:'Needs Review',unmapped:'Unmapped'}[s]);
+function activeMetric(s){document.querySelectorAll('[data-metric]').forEach(e=>e.classList.toggle('selected',e.dataset.metric===s));}
+function renderSummary(){
+  // Total Messages Today & Mapped are current UTC day; Not Mapped covers all history.
+  const tomorrow=dayStart.getTime()+86400000;
+  const today=data.filter(r=>r.received>=dayStart&&r.received.getTime()<tomorrow);
+  const mappedToday=today.filter(r=>r.status==='mapped'&&r.mappedLeg!=null).length;
+  const notMappedAll=data.filter(r=>r.status!=='mapped'||r.mappedLeg==null).length;
+  document.getElementById('countAll').textContent=today.length;
+  document.getElementById('countMapped').textContent=mappedToday;
+  document.getElementById('countUnmapped').textContent=notMappedAll;
+}
+function renderTabs(){document.getElementById('typeTabs').innerHTML=types.map(t=>`<button class="type-tab ${activeType===t?'active':''}" data-type="${esc(t)}" role="tab" aria-selected="${activeType===t}">${esc(t)}<span class="tab-count">${data.filter(x=>x.type===t).length}</span></button>`).join('')}
+const timeMinutes=value=>{const [h,m]=value.split(':').map(Number);return h*60+m};
+function matchesEventTime(r,dateFrom,timeFrom,dateTo,timeTo){
+  if(!dateFrom&&!dateTo&&!timeFrom&&!timeTo)return true;
+  const when=r.eventTime.getTime();
+  // Date constraints are inclusive. Missing time means 00:00 From or 23:59:59 To.
+  if(dateFrom){
+    const fromMs=Date.parse(dateFrom+'T'+(timeFrom||'00:00')+':00Z');
+    if(when<fromMs)return false;
+  }
+  if(dateTo){
+    const toMs=Date.parse(dateTo+'T'+(timeTo||'23:59')+':00Z')+59999;
+    if(when>toMs)return false;
+  }
+  // If no dates are selected, time-only search still works for any historical date.
+  if(!dateFrom&&!dateTo){
+    const minute=r.eventTime.getUTCHours()*60+r.eventTime.getUTCMinutes();
+    const start=timeFrom?timeMinutes(timeFrom):null,end=timeTo?timeMinutes(timeTo):null;
+    if(start!==null&&end!==null)return start<=end?(minute>=start&&minute<=end):(minute>=start||minute<=end);
+    return start!==null?minute>=start:minute<=end;
+  }
+  return true;
+}
+function filtered(){const f=applied;return data.filter(r=>r.type===activeType&&(!f.flight||r.flight.toLowerCase().includes(f.flight))&&(!f.reg||r.reg.toLowerCase().includes(f.reg))&&(!f.dep||r.dep.toLowerCase().includes(f.dep))&&(!f.arr||r.arr.toLowerCase().includes(f.arr))&&(!f.status||r.status===f.status)&&matchesEventTime(r,f.dateFrom,f.timeFrom,f.dateTo,f.timeTo))}
+function renderTable(){renderSummary();renderTabs();const all=filtered().sort((a,b)=>b.eventTime-a.eventTime),pages=Math.max(1,Math.ceil(all.length/pageSize));page=Math.min(Math.max(1,page),pages);const subset=all.slice((page-1)*pageSize,page*pageSize);document.getElementById('totalText').textContent='Total: '+all.length;document.getElementById('rows').innerHTML=subset.length?subset.map(r=>{const cs=candidateSort(r);return `<tr>
+<td class="numcol"><span class="cell-main">${(page-1)*pageSize+subset.indexOf(r)+1}</span></td>
+<td><span class="cell-main">${esc(r.smi)}</span></td>
+<td><b>${esc(r.event)}</b><div class="cell-sub" title="${esc(r.meaning)}">${esc(r.meaning.length>36?r.meaning.slice(0,36)+'…':r.meaning)}</div></td>
+<td><b>${esc(r.flight)}</b></td>
+<td>${esc(r.reg)}</td>
+<td><span style="white-space:nowrap">${esc(r.dep)}</span></td>
+<td><span style="white-space:nowrap">${esc(r.arr)}</span></td>
+<td><span style="white-space:nowrap;font-variant-numeric:tabular-nums">${esc(utcStamp(r.eventTime))}</span></td>
+<td><button class="btn sm" data-map="${esc(r.id)}" title="View candidate flight legs">${cs.length} ${cs.length===1?'flight':'flights'}</button></td>
+<td><span class="badge ${r.status}">${statusLabel(r.status)}</span></td>
+<td class="right-sticky"><div class="actionset"><button type="button" class="rowbtn" data-detail="${esc(r.id)}" title="Details" aria-label="View message details">${icons.eye}</button><button type="button" class="rowbtn" data-map="${esc(r.id)}" title="Map / Remap" aria-label="Map or remap message">${icons.swap}</button></div></td>
+</tr>`}).join(''):`<tr><td colspan="11"><div class="empty"><strong>No matching messages found</strong>Change your search criteria and try again.</div></td></tr>`;
+ let pg=`<button class="pagebtn" data-page="1" ${page===1?'disabled':''} title="First page">«</button><button class="pagebtn" data-page="${page-1}" ${page===1?'disabled':''} title="Previous page">‹</button>`;let lo=Math.max(1,page-2),hi=Math.min(pages,page+2);if(lo>1)pg+='<span>…</span>';for(let i=lo;i<=hi;i++)pg+=`<button class="pagebtn ${i===page?'current':''}" data-page="${i}">${i}</button>`;if(hi<pages)pg+='<span>…</span>';pg+=`<button class="pagebtn" data-page="${page+1}" ${page===pages?'disabled':''} title="Next page">›</button><button class="pagebtn" data-page="${pages}" ${page===pages?'disabled':''} title="Last page">»</button>`;document.getElementById('pagination').innerHTML=pg;
+}
+function detail(id){
+  const r=byId(id); if(!r)return;
+  currentId=id;
+  const cs=candidateSort(r);
+  // The decoded values are prefilled demo records derived from the supplied ACARS_decode sheet.
+  // The actual parsing, validation and missing-value handling belong to backend APIs.
+  const d=r.decoded||{};
+  const cell=(key)=>d[key]??'—';
+  const groupTable=(heading,fields)=>`<section class="acars-data-card" aria-label="${esc(heading)}"><h3 class="acars-data-card-title">${esc(heading)}</h3><dl class="acars-data-pairs">${fields.map(([label,value])=>{const text=String(value??'—');const wide=label==='Message Description'||text.length>38;return `<div class="acars-data-pair${wide?' wide':''}"><dt>${esc(label)}</dt><dd class="${text==='—'?'detail-missing':''}">${esc(text)}</dd></div>`}).join('')}</dl></section>`;
+  const groups=[
+    groupTable('Flight & Message Information',[
+      ['SMI',r.smi],['Message Type',r.type],['Decoded Event',r.event],
+      ['FLT NO',r.flight],['AC REG',r.reg],
+      ['DEP',r.dep],['ARR',r.arr],['ETA (UTC)',cell('eta')],
+      ['Event Time (UTC)',utcStamp(r.eventTime)],
+      ['Message Description',r.meaning]
+    ])
+  ];
+  if(r.type==='POSRPT')groups.push(groupTable('Aircraft Position',[
+    ['POS LAT',cell('posLat')],['POS LONG',cell('posLong')],
+    ['Position Time',cell('positionTime')],['Position Altitude',cell('altitude')]
+  ]));
+  if(r.type==='M49')groups.push(groupTable('Flight Parameters',[
+    ['Altitude',cell('altitude')],['CAS (Speed)',cell('cas')],['TAT (Temperature)',cell('tat')]
+  ]));
+  if(['M49','M11-M14','A80','POSRPT'].includes(r.type))groups.push(groupTable('Fuel Information',[
+    ['OOOI FOB',cell('oooiFob')],['Fuel at Destination',cell('fuelAtDestination')],
+    ['INIT Boarded Fuel',cell('initBoardedFuel')]
+  ]));
+  if(['M11-M14','M44 DOOR','A80'].includes(r.type))groups.push(groupTable('OOOI & Door Times',[
+    ['OOOI Time',cell('oooiTime')],['First Door Open Time',cell('firstDoorOpenTime')],
+    ['Last Door Close Time',cell('lastDoorCloseTime')]
+  ]));
+  if(r.type==='WATER')groups.push(groupTable('Potable Water Report',[
+    ['Report Code',cell('reportCode')],['DEP Water',cell('depWater')],
+    ['DEP Water Record Time',cell('depWaterRecordTime')],['ARR Water',cell('arrWater')],
+    ['ARR Water Record Time',cell('arrWaterRecordTime')],['Water Duration at DEP',cell('depWaterDuration')]
+  ]));
+  if(r.type==='APU')groups.push(groupTable('APU Report',[
+    ['APU State',cell('apuState')],['APU Event Time (UTC)',utcStamp(r.eventTime)]
+  ]));
+  if(['APM','FML'].includes(r.type))groups.push(groupTable('Report Information',[
+    ['Report Code',cell('reportCode')],['Report Time (UTC)',utcStamp(r.eventTime)]
+  ]));
+  const decodedMarkup=`<div class="acars-card-grid">${groups.join('')}</div>`;
+  document.getElementById('detailTitle').textContent='Message Details';
+  document.getElementById('detailHeaderSmi').textContent=r.smi||'—';
+  document.getElementById('detailHeaderDecodedEvent').textContent=r.event||'—';
+  document.getElementById('detailTime').textContent=utcStamp(r.eventTime);
+  document.getElementById('detailRoute').textContent=`${r.dep||'—'}  →  ${r.arr||'—'}`;const depEl=document.getElementById('detailDep'); if(depEl) depEl.textContent=r.dep||'—'; const arrEl=document.getElementById('detailArr'); if(arrEl) arrEl.textContent=r.arr||'—';
+  document.getElementById('detailEvent').textContent=r.event||'—';
+
+  document.getElementById('detailStatus').innerHTML=`<span class="badge ${r.status}">${esc(statusLabel(r.status))}</span>`;
+
+  const mappedFlight=cs.find(c=>c.legNo===r.mappedLeg)?.flight || r.flight || '—';
+  const mappingStatus=r.status==='mapped'?`<b>${esc(mappedFlight)}</b> has been assigned.`:r.status==='review'?'Candidate suggestions are available. No FLIGHT is assigned yet.':'No FLIGHT has been assigned.';
+  // Method reflects the actual assignment, not merely whether candidates exist.
+  // Unmapped/Needs Review have no confirmed mapping method.
+  const mappingMethod=r.status==='mapped'?(String(r.method||'').toUpperCase()==='AUTO'?'Auto':String(r.method||'').toUpperCase()==='MANUAL'?'Manual':'—'):'—';
+  // Suggested Flight is read-only; mapping is performed from the Map / Remap screen.
+  const candidateRows=cs.length?cs.map(c=>{
+    const times=fmtCandidateTime(c,r);
+    const isCurrent=r.status==='mapped'&&r.mappedLeg===c.legNo;
+    const origin=c.origin==='MANUAL'?'Added manually':'Suggested candidate';
+    return `<tr class="${isCurrent?'is-mapped':''}">
+      <td><div class="map-flight-num">${esc(c.flight)}</div><div class="map-source">${origin}${isCurrent?' · Current':''}</div></td>
+      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td><td>${times.eta}</td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="5" class="map-empty">No suggested flights available.</td></tr>';
+  document.getElementById('detailBody').innerHTML=`
+    <section data-detail-pane="decoded" class="detail-pane" id="detailPaneDecoded" role="tabpanel" aria-labelledby="detailTabDecoded">
+      ${decodedMarkup}
+    </section>
+    <section data-detail-pane="raw" class="detail-pane" id="detailPaneRaw" role="tabpanel" aria-labelledby="detailTabRaw" hidden>
+      <div class="detail-section-title">Original Message <button class="detail-copy" type="button" id="copyRaw">${icons.check} Export TXT</button></div>
+      <pre class="detail-raw">${esc(r.raw)}</pre>
+    </section>
+    <section data-detail-pane="mapping" class="detail-pane" id="detailPaneMapping" role="tabpanel" aria-labelledby="detailTabMapping" hidden>
+      <div class="detail-section-title">Mapping Overview</div>
+      <div class="detail-map-summary"><div class="detail-map-chip"><small>STATUS</small><strong>${esc(statusLabel(r.status))}</strong></div><div class="detail-map-chip"><small>CANDIDATES</small><strong>${cs.length}</strong></div><div class="detail-map-chip"><small>METHOD</small><strong>${mappingMethod}</strong></div></div>
+      <div class="detail-map-text">${mappingStatus}</div>
+      <section class="mapping-section detail-suggested-flights" aria-label="Suggested Flight">
+        <h3 class="mapping-section-title">Suggested Flight (${cs.length})</h3>
+        <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
+          <thead><tr><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETA</th></tr></thead>
+          <tbody>${candidateRows}</tbody>
+        </table></div>
+      </section>
+    </section>`;
+  document.querySelectorAll('[data-detail-tab]').forEach(button=>{
+    button.onclick=()=>activateDetailTab(button.dataset.detailTab);
+  });
+  const copyRaw=document.getElementById('copyRaw');
+  copyRaw.onclick=()=>exportRawMessageTxt(r);
+  document.getElementById('detailMappingBtn').onclick=()=>{hide('detailOverlay');openMap(id)};
+  activateDetailTab('decoded');
+  show('detailOverlay');
+  document.querySelector('#detailOverlay .detail-drawer')?.focus({preventScroll:true});
+}
+function activateDetailTab(tab){
+  document.querySelectorAll('[data-detail-tab]').forEach(el=>{
+    const selected=el.dataset.detailTab===tab;
+    el.classList.toggle('active',selected);
+    el.setAttribute('aria-selected',String(selected));
+    el.tabIndex=selected?0:-1;
+  });
+  document.querySelectorAll('[data-detail-pane]').forEach(el=>{el.hidden=el.dataset.detailPane!==tab});
+  const scroller=document.getElementById('detailBody'); if(scroller)scroller.scrollTop=0;
+}
+// Side-panel workflow: candidates can be browsed/added; exactly one flight is committed.
+let mappingDraftCandidates=[];
+let pickerSelected=new Set();
+let pickerPage=1;
+const pickerPageSize=10;
+let pickerApplied={flight:'',reg:'',dep:'',arr:'',etd:'',eta:''};
+const fmtCandidateTime=(c,r)=>{
+  // ETD/ETA are illustrative demo schedule values; production times come from the flight service.
+  let etd;
+  if(r.candidates.some(x=>x.legNo===c.legNo))etd=new Date(r.eventTime.getTime()-75*60000);
+  else{
+    const minutes=((Number(c.legNo)*37)%1160)+35;
+    etd=new Date(dayStart.getTime()+minutes*60000);
+  }
+  const eta=new Date(etd.getTime()+105*60000);
+  return {etd:fmtTime(etd),eta:fmtTime(eta)};
+};
+const getMappingDraft=legNo=>mappingDraftCandidates.find(c=>c.legNo===legNo);
+function openMap(id){
+  const r=byId(id);if(!r)return;
+  currentId=id;
+  selectedLeg=r.status==='mapped'?r.mappedLeg:null;
+  mappingDraftCandidates=r.candidates.map(c=>({...c}));
+  // A saved leg is always visible even when candidates have changed.
+  if(selectedLeg!=null&&!getMappingDraft(selectedLeg)){
+    const savedLeg=pool.find(c=>c.legNo===selectedLeg);
+    if(savedLeg)mappingDraftCandidates.push({...savedLeg,origin:'MANUAL'});
+  }
+  document.getElementById('mapTitle').textContent='Map / Remap Flight';
+  document.getElementById('mapSubtitle').textContent=`${r.smi} · ${r.event} · Event Time ${utcStamp(r.eventTime)} UTC`;
+  document.getElementById('mapStatus').innerHTML=`<span class="badge ${r.status}">${esc(statusLabel(r.status))}</span>`;
+  renderMapBody();
+  show('mapOverlay');
+  document.querySelector('#mapOverlay .mapping-drawer')?.focus({preventScroll:true});
+}
+function renderMapBody(){
+  const r=byId(currentId);if(!r)return;
+  const sorted=[...mappingDraftCandidates].sort((a,b)=>(scoreOf(r,b)??-1)-(scoreOf(r,a)??-1));
+  const isSame=r.status==='mapped'&&selectedLeg===r.mappedLeg;
+  const mappingMethod=r.status==='mapped'?(String(r.method||'').toUpperCase()==='AUTO'?'Auto':String(r.method||'').toUpperCase()==='MANUAL'?'Manual':'—'):'—';
+  const flightRows=sorted.map(c=>{
+    const selected=selectedLeg===c.legNo;
+    const origin=c.origin==='MANUAL'?'Added manually':'Suggested candidate';
+    const times=fmtCandidateTime(c,r);
+    const canRemove=c.origin==='MANUAL'&&!(r.status==='mapped'&&r.mappedLeg===c.legNo);
+    return `<tr class="${selected?'is-mapped':''}">
+      <td><input class="map-radio" type="radio" name="chosenMappingFlight" data-leg="${c.legNo}" ${selected?'checked':''} aria-label="Assign ${esc(c.flight)}"></td>
+      <td><div class="map-flight-num">${esc(c.flight)}</div><div class="map-source">${origin}${r.status==='mapped'&&r.mappedLeg===c.legNo?' · Current':''}</div></td>
+      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
+      <td>${times.eta}</td>
+      <td>${canRemove?`<button type="button" class="map-icon-delete" data-remove-flight="${c.legNo}" aria-label="Remove ${esc(c.flight)} from candidates" title="Remove from candidates">×</button>`:'—'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('mapBody').innerHTML=`
+    <section class="mapping-section mapping-overview-section" aria-label="Mapping Overview">
+      <h3 class="mapping-section-title">Mapping Overview</h3>
+      <div class="mapping-overview-row">
+        <div class="mapping-overview-cell"><span>STATUS</span><strong>${esc(statusLabel(r.status))}</strong></div>
+        <div class="mapping-overview-cell"><span>METHOD</span><strong>${mappingMethod}</strong></div>
+      </div>
+    </section>
+    <section class="mapping-section">
+      <h3 class="mapping-section-title">Flights (${sorted.length})</h3>
+      <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
+        <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETA</th><th>ACTION</th></tr></thead>
+        <tbody>${flightRows||'<tr><td colspan="7" class="map-empty">No flights added yet. Select a flight to continue.</td></tr>'}</tbody>
+      </table></div>
+      <div class="mapping-table-bottom"><button class="map-add-flights" id="openFlightPicker" type="button"><span aria-hidden="true">＋</span> Select Another Flight</button></div>
+    </section>`;
+  const confirmButton=document.getElementById('saveMapping');
+  // Picking a flight is only a draft choice. No mapping changes until Confirm Mapping.
+  confirmButton.disabled=selectedLeg===null||isSame;
+  document.querySelector('#mapOverlay .mapping-drawer-foot [data-close="mapOverlay"]').textContent='Cancel';
+  document.querySelectorAll('#mapBody [data-leg]').forEach(el=>el.onchange=()=>{
+    selectedLeg=Number(el.dataset.leg);
+    renderMapBody();
+  });
+  document.getElementById('openFlightPicker').onclick=openFlightPicker;
+  document.querySelectorAll('#mapBody [data-remove-flight]').forEach(el=>el.onclick=()=>{
+    const number=Number(el.dataset.removeFlight);
+    mappingDraftCandidates=mappingDraftCandidates.filter(c=>c.legNo!==number);
+    if(selectedLeg===number)selectedLeg=null;
+    renderMapBody();
+  });
+}
+function openFlightPicker(){
+  const pickerTitle=document.getElementById('flightPickerTitle');
+  pickerTitle.textContent='Select Another Flight';
+  document.querySelector('.flight-picker-subtitle').textContent='Search for another flight and confirm the mapping.';
+  document.querySelector('.picker-selection-hint').textContent='Select one flight, then click Confirm Mapping.';
+  document.querySelector('#flightPickerOverlay .mapping-close').setAttribute('aria-label','Close Select Another Flight');
+  pickerPage=1;
+  pickerSelected=new Set();
+  pickerApplied={flight:'',reg:'',dep:'',arr:'',etd:'',eta:''};
+  document.getElementById('flightPickerFilters').reset();
+  renderFlightPicker();
+  show('flightPickerOverlay');
+  document.querySelector('.flight-picker-dialog')?.focus({preventScroll:true});
+}
+function filteredFlightPool(){
+  const r=byId(currentId),filters=pickerApplied;
+  return pool.filter(c=>{
+    const times=fmtCandidateTime(c,r);
+    return (!filters.flight||norm(c.flight).includes(norm(filters.flight))||String(c.legNo).includes(norm(filters.flight)))&&
+      (!filters.reg||norm(c.reg).includes(norm(filters.reg)))&&
+      (!filters.dep||norm(c.dep).includes(norm(filters.dep)))&&
+      (!filters.arr||norm(c.arr).includes(norm(filters.arr)))&&
+      (!filters.etd||times.etd===filters.etd)&&(!filters.eta||times.eta===filters.eta);
+  }).sort((a,b)=>{
+    // Flight/aircraft/route matching rows appear first, with the rest of the catalog searchable.
+    const match=c=>(norm(c.flight)===norm(r.flight)?8:0)+(norm(c.reg)===norm(r.reg)?4:0)+(norm(c.dep)===norm(r.dep)?2:0)+(norm(c.arr)===norm(r.arr)?2:0);
+    return match(b)-match(a)||a.flight.localeCompare(b.flight)||a.legNo-b.legNo;
+  });
+}
+function renderFlightPicker(){
+  const r=byId(currentId),results=filteredFlightPool();
+  const pages=Math.max(1,Math.ceil(results.length/pickerPageSize));
+  pickerPage=Math.min(Math.max(1,pickerPage),pages);
+  const subset=results.slice((pickerPage-1)*pickerPageSize,pickerPage*pickerPageSize);
+  const pickedLeg=[...pickerSelected][0]??null;
+  document.getElementById('flightPickerRows').innerHTML=subset.length?subset.map(c=>{
+    const isCurrent=r.status==='mapped'&&r.mappedLeg===c.legNo;
+    const selected=pickedLeg===c.legNo;
+    const tm=fmtCandidateTime(c,r);
+    const note=isCurrent?'Current flight':'';
+    return `<tr class="${selected?'is-checked':''}" data-pick-row="${c.legNo}" style="cursor:pointer">
+      <td class="picker-checkbox-cell"><input type="radio" name="replacementFlight" data-remap-leg="${c.legNo}" aria-label="Select ${esc(c.flight)}" ${selected?'checked':''}></td>
+      <td><strong>${esc(c.flight)}</strong>${note?`<div class="map-source">${note}</div>`:''}</td>
+      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td><td>${tm.etd}</td><td>${tm.eta}</td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="7" class="picker-empty">No flights match the search criteria.</td></tr>';
+  document.getElementById('flightPickerTotal').textContent=`Total: ${results.length}`;
+  const picked=pool.find(c=>c.legNo===pickedLeg);
+  document.getElementById('flightPickerSelectionCount').textContent=picked?`Selected: ${picked.flight}`:'0 selected';
+  document.getElementById('applyFlightPicker').disabled=!picked||(r.status==='mapped'&&r.mappedLeg===pickedLeg);
+  let pagination=`<button type="button" data-pick-page="1" ${pickerPage===1?'disabled':''} aria-label="First page">«</button><button type="button" data-pick-page="${pickerPage-1}" ${pickerPage===1?'disabled':''} aria-label="Previous page">‹</button>`;
+  const low=Math.max(1,pickerPage-2),high=Math.min(pages,pickerPage+2);
+  for(let p=low;p<=high;p++)pagination+=`<button type="button" data-pick-page="${p}" class="${p===pickerPage?'active':''}" ${p===pickerPage?'aria-current="page"':''}>${p}</button>`;
+  pagination+=`<button type="button" data-pick-page="${pickerPage+1}" ${pickerPage===pages?'disabled':''} aria-label="Next page">›</button><button type="button" data-pick-page="${pages}" ${pickerPage===pages?'disabled':''} aria-label="Last page">»</button>`;
+  document.getElementById('flightPickerPages').innerHTML=pagination;
+  function chooseFlight(legNo){
+    pickerSelected=new Set([legNo]);
+    renderFlightPicker();
+  }
+  document.querySelectorAll('#flightPickerRows [data-remap-leg]').forEach(el=>el.onchange=()=>chooseFlight(Number(el.dataset.remapLeg)));
+  document.querySelectorAll('#flightPickerRows [data-pick-row]').forEach(el=>el.onclick=e=>{
+    if(e.target.closest('input'))return;
+    chooseFlight(Number(el.dataset.pickRow));
+  });
+  document.querySelectorAll('#flightPickerPages [data-pick-page]').forEach(el=>el.onclick=()=>{pickerPage=Number(el.dataset.pickPage);renderFlightPicker();});
+}
+// The only place that mutates a message mapping, shared by the panel and picker confirmations.
+function commitMapping(legNo){
+  const r=byId(currentId);
+  if(!r||legNo==null||(r.status==='mapped'&&r.mappedLeg===legNo))return;
+  const selected=getMappingDraft(legNo)||pool.find(c=>c.legNo===legNo);
+  if(!selected)return;
+  // Persist in page memory only after explicit confirmation; reload restores demo records.
+  for(const c of mappingDraftCandidates){
+    if(!r.candidates.some(item=>item.legNo===c.legNo))r.candidates.push({...c});
+  }
+  if(!r.candidates.some(item=>item.legNo===selected.legNo))r.candidates.push({...selected,origin:'MANUAL'});
+  r.status='mapped';
+  r.mappedLeg=selected.legNo;
+  r.method='MANUAL';
+  selectedLeg=selected.legNo;
+  hide('flightPickerOverlay');
+  hide('mapOverlay');
+  renderTable();
+  toast(`Flight ${selected.flight} mapped successfully · Method: Manual`,'success');
+}
+// Confirm inside Select Another Flight popup, no secondary confirmation step.
+function applyFlightPicker(){
+  const picked=[...pickerSelected][0];
+  if(picked!==undefined)commitMapping(picked);
+}
+// Confirm a radio selection made directly in the Mapping side panel.
+function confirmMapPanelSelection(){
+  if(selectedLeg!==null)commitMapping(selectedLeg);
+}
+function searchPickerFilters(){
+  pickerApplied={flight:document.getElementById('pickFlight').value.trim(),reg:document.getElementById('pickReg').value.trim(),dep:document.getElementById('pickDep').value.trim(),arr:document.getElementById('pickArr').value.trim(),etd:document.getElementById('pickEtd').value,eta:document.getElementById('pickEta').value};
+  pickerPage=1;renderFlightPicker();
+}
+// Events
+const $=id=>document.getElementById(id);
+$('typeTabs').addEventListener('click',e=>{const el=e.target.closest('[data-type]');if(!el)return;activeType=el.dataset.type;page=1;renderTable()});
+$('rows').addEventListener('click',e=>{const d=e.target.closest('[data-detail]'),m=e.target.closest('[data-map]');if(d)detail(d.dataset.detail);else if(m)openMap(m.dataset.map)});
+$('filterForm').addEventListener('submit',e=>{e.preventDefault();applied={flight:$('fFlight').value.trim().toLowerCase(),reg:$('fReg').value.trim().toLowerCase(),dep:$('fDep').value.trim().toLowerCase(),arr:$('fArr').value.trim().toLowerCase(),status:$('fStatus').value,dateFrom:$('fDateFrom').value,dateTo:$('fDateTo').value,timeFrom:$('fTimeFrom').value,timeTo:$('fTimeTo').value};page=1;renderTable()});
+$('clearFilters').onclick=()=>{$('filterForm').reset();applied={flight:'',reg:'',dep:'',arr:'',status:'',dateFrom:'',dateTo:'',timeFrom:'',timeTo:''};page=1;activeMetric('all');renderTable()};
+$('toggleFilters').onclick=()=>{const hidden=$('filterForm').classList.toggle('hidden');$('toggleFilters').innerHTML=(hidden?'Expand ⌄':'Collapse ⌃');requestAnimationFrame(updateAutoPageSize)};
+$('pagination').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(!b||b.disabled)return;page=Number(b.dataset.page);renderTable();document.querySelector('.table-card .tbl-scroll')?.scrollTo({top:0})});
+$('pageSize').onchange=e=>{autoPageSize=e.target.value==='auto';page=1;if(autoPageSize){updateAutoPageSize();}else{pageSize=Number(e.target.value);renderTable();}};
+document.querySelectorAll('[data-metric]').forEach(e=>e.addEventListener('click',()=>{$('fStatus').value=e.dataset.metric==='all'?'':e.dataset.metric;applied.status=$('fStatus').value;page=1;activeMetric(e.dataset.metric);renderTable()}));
+$('saveMapping').onclick=confirmMapPanelSelection;
+$('flightPickerFilters').onsubmit=e=>{e.preventDefault();searchPickerFilters()};
+$('flightPickerClear').onclick=()=>{$('flightPickerFilters').reset();pickerApplied={flight:'',reg:'',dep:'',arr:'',etd:'',eta:''};pickerPage=1;renderFlightPicker()};
+$('applyFlightPicker').onclick=applyFlightPicker;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>hide(b.dataset.close));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const open=[...document.querySelectorAll('.overlay.open')];if(open.length&&open.at(-1).id!=='confirmOverlay')hide(open.at(-1).id)}});
+
+document.querySelectorAll('[data-nav]').forEach(e=>e.onclick=()=>toast('This is a standalone prototype; section '+e.dataset.nav+' is not implemented.','info'));
+
+// Common sidebar interactions: expandable Data Source Monitoring group.
+const sidebarNode=document.getElementById('sidebar');
+const sidebarCollapse=document.getElementById('sidebarCollapse');
+function setSidebarCollapsed(isCollapsed){
+  sidebarNode.classList.toggle('collapsed',isCollapsed);
+  sidebarCollapse.setAttribute('aria-expanded',String(!isCollapsed));
+  sidebarCollapse.setAttribute('aria-label',isCollapsed?'Expand sidebar':'Collapse sidebar');
+  sidebarCollapse.setAttribute('title',isCollapsed?'Expand sidebar':'Collapse sidebar');
+}
+sidebarCollapse.addEventListener('click',()=>setSidebarCollapsed(!sidebarNode.classList.contains('collapsed')));
+const dataSourceMonitoringToggle=document.getElementById('dataSourceMonitoringToggle');
+const dataSourceMonitoringChildren=document.getElementById('dataSourceMonitoringChildren');
+const acarsMessageMonitoringLink=document.getElementById('acarsMessageMonitoringLink');
+function setDataSourceMonitoringOpen(isOpen){
+  dataSourceMonitoringToggle.setAttribute('aria-expanded',String(isOpen));
+  dataSourceMonitoringChildren.hidden=!isOpen;
+  if(isOpen){
+    // Ensure the newly opened child is visible above the fixed sidebar footer.
+    dataSourceMonitoringChildren.scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+}
+dataSourceMonitoringToggle.addEventListener('click',()=>{
+  if(sidebarNode.classList.contains('collapsed')){
+    setSidebarCollapsed(false);
+    setDataSourceMonitoringOpen(true);
+    return;
+  }
+  setDataSourceMonitoringOpen(dataSourceMonitoringToggle.getAttribute('aria-expanded')!=='true');
+});
+acarsMessageMonitoringLink.addEventListener('click',()=>{
+  setDataSourceMonitoringOpen(true);
+  acarsMessageMonitoringLink.classList.add('active');
+  acarsMessageMonitoringLink.setAttribute('aria-current','page');
+  document.querySelector('main.content')?.scrollIntoView({block:'start',behavior:'smooth'});
+});
+const sideLight=document.getElementById('sidebarThemeLight');
+const sideDark=document.getElementById('sidebarThemeDark');
+[sideLight,sideDark].forEach((b,i)=>b.addEventListener('click',()=>{
+  const dark=i===1;
+  sidebarNode.classList.toggle('sidebar-dark',dark);
+  sideLight.classList.toggle('selected',!dark);
+  sideDark.classList.toggle('selected',dark);
+  sideLight.setAttribute('aria-pressed',String(!dark));
+  sideDark.setAttribute('aria-pressed',String(dark));
+}));
+sideLight.setAttribute('aria-pressed','true');
+sideDark.setAttribute('aria-pressed','false');
+
+
+renderTable();
+
+// The number of rows per page is fluid in Auto mode, responding to Filter Collapse,
+// viewport resize, and available table space. Manual 10/25/50 options still work.
+function updateAutoPageSize(){
+  if(!autoPageSize)return;
+  const scroll=document.querySelector('.table-card .tbl-scroll');
+  if(!scroll || scroll.clientHeight<60)return;
+  const head=scroll.querySelector('thead tr');
+  const firstRow=scroll.querySelector('tbody tr:not(:has(.empty))');
+  const headHeight=head?head.getBoundingClientRect().height:27;
+  const rowHeight=firstRow?firstRow.getBoundingClientRect().height:36;
+  if(rowHeight<8)return;
+  const next=Math.max(1,Math.min(150,Math.floor((scroll.clientHeight-headHeight-2)/rowHeight)));
+  if(next!==pageSize){
+    const firstIndex=(page-1)*pageSize;
+    pageSize=next;
+    page=Math.floor(firstIndex/pageSize)+1;
+    renderTable();
+    scroll.scrollTop=0;
+  }
+}
+const messageTableScroll=document.querySelector('.table-card .tbl-scroll');
+if(typeof ResizeObserver!=='undefined' && messageTableScroll){
+  const resizeRowsObserver=new ResizeObserver(()=>requestAnimationFrame(updateAutoPageSize));
+  resizeRowsObserver.observe(messageTableScroll);
+}
+window.addEventListener('resize',()=>requestAnimationFrame(updateAutoPageSize));
+requestAnimationFrame(updateAutoPageSize);
+
+function exportRawMessageTxt(detail){
+  const raw = (detail && (detail.rawMessage || detail.raw || detail.rawText)) ? (detail.rawMessage || detail.raw || detail.rawText) : '';
+  const smi = (detail && (detail.smi || detail.type || 'ACARS')).toString().replace(/[^A-Za-z0-9_-]/g,'_');
+  const flt = (detail && (detail.flightNo || detail.flight || detail.fltNo || 'MSG')).toString().replace(/[^A-Za-z0-9_-]/g,'_');
+  const when = new Date();
+  const stamp = `${when.getUTCFullYear()}${String(when.getUTCMonth()+1).padStart(2,'0')}${String(when.getUTCDate()).padStart(2,'0')}_${String(when.getUTCHours()).padStart(2,'0')}${String(when.getUTCMinutes()).padStart(2,'0')}`;
+  const filename = `${smi}_${flt}_${stamp}.txt`;
+  const blob = new Blob([raw], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast('TXT exported successfully.', 'success');
+}
+
+
+// Locale-independent 24-hour time entry and optional HH:mm picker for the Event Time filter.
+(function initEventTime24Hour(){
+  const picker=document.getElementById('time24Picker');
+  const hour=document.getElementById('time24Hour');
+  const minute=document.getElementById('time24Minute');
+  const inputs=['fTimeFrom','fTimeTo'].map(id=>document.getElementById(id));
+  const pad=v=>String(v).padStart(2,'0');
+  hour.innerHTML=Array.from({length:24},(_,i)=>`<option value="${pad(i)}">${pad(i)}</option>`).join('');
+  minute.innerHTML=Array.from({length:60},(_,i)=>`<option value="${pad(i)}">${pad(i)}</option>`).join('');
+  let target=null;
+  const normalize=value=>{
+    const text=value.trim();
+    if(!text)return '';
+    const match=text.match(/^(\d{1,2}):(\d{1,2})$/);
+    if(!match)return text;
+    const hh=Number(match[1]),mm=Number(match[2]);
+    return hh<24&&mm<60?`${pad(hh)}:${pad(mm)}`:text;
+  };
+  const close=()=>{picker.hidden=true;target=null};
+  const validTime=value=>!value||/^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+  inputs.forEach(input=>{
+    input.addEventListener('input',()=>input.setCustomValidity(''));
+    input.addEventListener('blur',()=>{
+      input.value=normalize(input.value);
+      input.setCustomValidity(validTime(input.value)?'':'Enter a 24-hour time between 00:00 and 23:59 (HH:mm).');
+    });
+  });
+  document.querySelectorAll('[data-time-for]').forEach(button=>button.addEventListener('click',event=>{
+    event.preventDefault();
+    const next=document.getElementById(button.dataset.timeFor);
+    if(!picker.hidden&&target===next){close();return}
+    target=next;
+    const current=validTime(next.value)&&next.value?next.value.split(':'):['00','00'];
+    hour.value=current[0];minute.value=current[1];
+    const rect=button.getBoundingClientRect();
+    picker.hidden=false;
+    picker.style.left=Math.max(8,Math.min(window.innerWidth-216,rect.right-180))+'px';
+    picker.style.top=(rect.bottom+208>window.innerHeight?Math.max(8,rect.top-206):rect.bottom+8)+'px';
+    hour.focus();
+  }));
+  document.getElementById('time24Apply').addEventListener('click',()=>{
+    if(!target)return;
+    target.value=hour.value+':'+minute.value;
+    target.setCustomValidity('');
+    target.dispatchEvent(new Event('change',{bubbles:true}));
+    const focusTarget=target;close();focusTarget.focus();
+  });
+  document.getElementById('time24Clear').addEventListener('click',()=>{
+    if(!target)return;
+    target.value='';target.setCustomValidity('');
+    target.dispatchEvent(new Event('change',{bubbles:true}));
+    const focusTarget=target;close();focusTarget.focus();
+  });
+  document.addEventListener('pointerdown',event=>{
+    if(!picker.hidden&&!picker.contains(event.target)&&!event.target.closest('[data-time-for]'))close();
+  });
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!picker.hidden){event.stopPropagation();close()}});
+  document.getElementById('filterForm').addEventListener('reset',close);
+})();
+
+</script>
+</body>
+</html>
