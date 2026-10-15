@@ -1181,6 +1181,47 @@ function simulatedRaw(source,flight,reg,dep,arr,when,serial){
      .replace(/\/(OUT|OFF|ON|IN|TME)\s+\d{4}\b/g,(_m,prefix)=>`/${prefix} ${hhmm}`);
   if(source.type==='M49')s=s.replace(/(01[A-Z]{2,4}\s+HVN\d+\/)\d{6}/,(_m,prefix)=>prefix+six);
   if(source.type==='APU')s=s.replace(/EB0011AA_\d{6}\d/,`EB0011AA_${six}${serial%3}`);
+  // Rebase OOOI and door timestamps of synthetic raw messages to the
+  // generated event timestamp, preserving the offsets from the source sample.
+  const sourceDecoded=decodedSamples[referenceMessages.indexOf(source)]||{};
+  const sourceClock=/^(\d{2})(\d{2})(\d{2})$/.exec(String(sourceDecoded.dateTimeCode||''));
+  if(sourceClock){
+    const sourceHour=Number(sourceClock[2]),sourceMinute=Number(sourceClock[3]);
+    const rebasedTime=(hh,mm)=>{
+      let relativeMinutes=hh*60+mm-(sourceHour*60+sourceMinute);
+      if(relativeMinutes>0)relativeMinutes-=1440;
+      return new Date(when.getTime()+relativeMinutes*60000);
+    };
+    if(source.type==='A80'){
+      const originalClocks=[...source.raw.matchAll(/\/(OUT|OFF|ON|IN)\s+(\d{2})(\d{2})\b/g)];
+      let clockIndex=0;
+      s=s.replace(/\/(OUT|OFF|ON|IN)\s+(\d{4})\b/g,(_all,phase)=>{
+        const original=originalClocks[clockIndex++];
+        if(!original)return _all;
+        const changed=rebasedTime(Number(original[2]),Number(original[3]));
+        return '/'+phase+' '+pad(changed.getUTCHours())+pad(changed.getUTCMinutes());
+      });
+    }
+    if(source.type==='M44 DOOR'){
+      const value=sourceDecoded.firstDoorOpenTime||sourceDecoded.lastDoorCloseTime;
+      const six=/^(\d{2})(\d{2})(\d{2})$/.exec(String(value||''));
+      if(six){
+        let diff=(Number(six[2])*60+Number(six[3]))-(sourceHour*60+sourceMinute);
+        if(diff>720)diff-=1440;
+        if(diff< -720)diff+=1440;
+        const changed=new Date(when.getTime()+diff*60000);
+        const ddhhmm=pad(changed.getUTCDate())+pad(changed.getUTCHours())+pad(changed.getUTCMinutes());
+        const hhmm=ddhhmm.slice(2);
+        if(sourceDecoded.lastDoorCloseTime){
+          s=s.replace(/(LAST DOOR CLOSE TIME[^\n]*?)(\d{6})/,(_whole,prefix)=>prefix+ddhhmm);
+        }
+        if(sourceDecoded.firstDoorOpenTime){
+          s=s.replace(/(FIRST DOOR OPEN TIME[^\n]*?HVN\d+\/)(\d{8})/,(_whole,prefix)=>prefix+pad(changed.getUTCDate())+ddhhmm);
+        }
+        s=s.replace(/\n\d{4}\s*$/, '\n'+hhmm);
+      }
+    }
+  }
   // Attach no prototype-only metadata in the displayed Raw Message; keep message format familiar.
   return s;
 }
@@ -1236,6 +1277,33 @@ for(let groupIndex=0;groupIndex<types.length;groupIndex++){
 const pool=[leg(106254,'VN254','VNA874','SGN','HAN'),leg(106260,'VN254','VNA875','SGN','HAN'),leg(106216,'VN216','VNA879','SGN','HAN'),leg(106250,'VN250','VNA879','SGN','HAN'),leg(106334,'VN334','VNA879','HAN','KIX'),leg(106321,'VN321','VNA892','SGN','KIX'),leg(106253,'VN253','VNA892','HAN','SGN'),leg(106525,'VN525','VNA898','HAN','SGN'),leg(106067,'VN67','VNA887','BKK','HAN'),leg(106123,'VN123','VNA887','HAN','DAD'),leg(107190,'VN7190','VNA513','DAD','HAN'),leg(106038,'VN38','VNA868','CPH','SGN'),leg(109999,'VN999','VNA887','SGN','HAN'),leg(108012,'VN812','VNA888','HAN','SGN')];
 // Extend manually searchable flight-leg catalog with synthesized sample flight legs.
 for(const row of extraRows){for(const c of row.candidates){if(!pool.some(x=>x.legNo===c.legNo))pool.push({...c});}}
+// M49 phase terminology follows the supplied ACARS_decode table (Phase / From Phase / To Phase).
+// Identify transitions by the 01xxxx code in the message payload, including atypical RTG records.
+const m49PhaseByCode=Object.freeze({
+  INIT: {phase:'INIT',from:'—',to:'INIT'},
+  SDPO: {phase:'PO (Power On)',from:'SD (Shutdown)',to:'PO (Power On)'},
+  POES: {phase:'ES (Engine start)',from:'PO (Power On)',to:'ES (Engine start)'},
+  ESTA: {phase:'TA (Taxi Out)',from:'ES (Engine Start)',to:'TA (Taxi Out)'},
+  OUT:  {phase:'OUT',from:'—',to:'OUT'},
+  TATO: {phase:'TO (Takeoff)',from:'TA (Taxi Out)',to:'TO (Takeoff)'},
+  OFF:  {phase:'OFF',from:'—',to:'OFF'},
+  TOIC: {phase:'IC (Initial Climb)',from:'TO (Takeoff)',to:'IC (Initial Climb)'},
+  ICCL: {phase:'CL (Climb)',from:'IC (Initial Climb)',to:'CL (Climb)'},
+  CLER: {phase:'ER (Enroute)',from:'CL (Climb)',to:'ER (Enroute)'},
+  ERDC: {phase:'DC (Descent)',from:'ER (Enroute)',to:'DC (Descent)'},
+  DCAP: {phase:'AP (Approach)',from:'DC (Descent)',to:'AP (Approach)'},
+  APFL: {phase:'FL (Flare)',from:'AP (Approach)',to:'FL (Flare)'},
+  FLRO: {phase:'RO (Rollout)',from:'FL (Flare)',to:'RO (Rollout)'},
+  ON:   {phase:'ON',from:'—',to:'ON'},
+  ROTI: {phase:'TI (Taxi In)',from:'RO (Rollout)',to:'TI (Taxi In)'},
+  TISD: {phase:'SD (Shut Down)',from:'TI (Taxi In)',to:'SD (Shut Down)'},
+  IN:   {phase:'IN',from:'—',to:'IN'},
+  RTG:  {phase:'RTG',from:'—',to:'RTG'}
+});
+function m49PhaseInfo(raw){
+  const code=/\b01(INIT|SDPO|POES|ESTA|OUT|TATO|OFF|TOIC|ICCL|CLER|ERDC|DCAP|APFL|FLRO|ON|ROTI|TISD|IN|RTG)\b/i.exec(String(raw||''))?.[1]?.toUpperCase();
+  return code?m49PhaseByCode[code]||null:null;
+}
 const seedDecodedSampleIndex={"ACR-001":5,"ACR-002":20,"ACR-003":17,"ACR-004":24,"ACR-005":26,"ACR-006":36,"ACR-007":42,"ACR-008":43,"ACR-009":44,"ACR-011":24,"ACR-012":null,"ACR-013":30,"ACR-014":46,"ACR-015":38};
 // A high score alone is not always sufficient: an auto-map also needs a clear winner.
 // Missing/below-threshold score => Unmapped; top candidates < MIN_GAP apart => Needs Review;
@@ -1271,6 +1339,17 @@ const historicalRows=Array.from({length:240},(_,i)=>{
 });
 const data=[...extraRows,...rowsSeed,...historicalRows].map(r=>{
   const o={...r,received:r.receivedTime||slot(r.pos),eventTime:r.eventTime||new Date(slot(r.pos).getTime()-Math.min(60000,elapsed/200)),decoded:decodedSamples[r.sampleIndex??seedDecodedSampleIndex[r.id]]||{},candidates:r.candidates.map(x=>({...x}))};
+  // M49 Decoded Event uses the readable phase names only (no acronym or parentheses),
+  // e.g. "Climb → Initial Climb". Standalone milestones OUT/OFF/ON/IN remain unchanged.
+  // The original phase mapping and raw message are retained for reference.
+  if(o.type==='M49'){
+    const phaseInfo=m49PhaseInfo(o.raw);
+    if(phaseInfo){
+      const displayPhase=label=>String(label).replace(/^[A-Z]{2,4}\s*\(([^)]+)\)$/,'$1');
+      const fromPhase=phaseInfo.from==='—'?'':displayPhase(phaseInfo.from);
+      o.event=displayPhase(phaseInfo.phase)+(fromPhase?' → '+fromPhase:'');
+    }
+  }
   // Mapping state lives only in memory. Reload always restores the original demo data.
   resolveDemoMapping(o);
   return o;
@@ -1334,6 +1413,110 @@ function renderTable(){renderSummary();renderTabs();const all=filtered().sort((a
 </tr>`}).join(''):`<tr><td colspan="11"><div class="empty"><strong>No matching messages found</strong>Change your search criteria and try again.</div></td></tr>`;
  let pg=`<button class="pagebtn" data-page="1" ${page===1?'disabled':''} title="First page">«</button><button class="pagebtn" data-page="${page-1}" ${page===1?'disabled':''} title="Previous page">‹</button>`;let lo=Math.max(1,page-2),hi=Math.min(pages,page+2);if(lo>1)pg+='<span>…</span>';for(let i=lo;i<=hi;i++)pg+=`<button class="pagebtn ${i===page?'current':''}" data-page="${i}">${i}</button>`;if(hi<pages)pg+='<span>…</span>';pg+=`<button class="pagebtn" data-page="${page+1}" ${page===pages?'disabled':''} title="Next page">›</button><button class="pagebtn" data-page="${pages}" ${page===pages?'disabled':''} title="Last page">»</button>`;document.getElementById('pagination').innerHTML=pg;
 }
+
+/* ACARS_decode: convert OOOI / door clocks to full UTC date-time.
+   DDHHMM fields carry a calendar day; HHMM fields inherit the message date.
+   Synthetic records retain the source message's timing offsets relative to
+   their generated Event Time, so history does not inherit stale sample dates. */
+function decodedSourceTimestamp(r){
+  const code=String(r.decoded?.dateTimeCode||'').trim();
+  const parsed=/^(\d{2})(\d{2})(\d{2})$/.exec(code);
+  if(!parsed)return null;
+  const day=Number(parsed[1]),hour=Number(parsed[2]),minute=Number(parsed[3]);
+  if(day<1||day>31||hour>23||minute>59)return null;
+  const ref=r.eventTime;
+  // The source sheet provides DDHHMM but not its month or year. Resolve
+  // the latest such date in the message/reference month (or preceding month).
+  let candidate=new Date(Date.UTC(ref.getUTCFullYear(),ref.getUTCMonth(),day,hour,minute));
+  if(candidate.getUTCDate()!==day)return null;
+  if(candidate.getTime()>ref.getTime()+86400000){
+    candidate=new Date(Date.UTC(ref.getUTCFullYear(),ref.getUTCMonth()-1,day,hour,minute));
+    if(candidate.getUTCDate()!==day)return null;
+  }
+  return candidate;
+}
+function isGeneratedAcarsRow(r){return /^ACR-(?:H\d+|\d{4,})$/.test(r.id||'')}
+function dateTimeForDecodedClock(r,hh,mm,sourceDay=null){
+  const anchor=decodedSourceTimestamp(r);
+  if(!Number.isInteger(hh)||hh<0||hh>23||!Number.isInteger(mm)||mm<0||mm>59)return null;
+  let at;
+  if(sourceDay!=null){
+    const day=Number(sourceDay);
+    if(day<1||day>31)return null;
+    // Explicit DDHHMM must keep its day rather than falling back to an
+    // unrelated time in the record's arrival/receipt timestamp.
+    const context=anchor||r.eventTime;
+    at=new Date(Date.UTC(context.getUTCFullYear(),context.getUTCMonth(),day,hh,mm));
+    if(at.getUTCDate()!==day)return null;
+    if(at.getTime()>context.getTime()+86400000){
+      at=new Date(Date.UTC(context.getUTCFullYear(),context.getUTCMonth()-1,day,hh,mm));
+      if(at.getUTCDate()!==day)return null;
+    }
+  }else{
+    const context=anchor||r.eventTime;
+    at=new Date(Date.UTC(context.getUTCFullYear(),context.getUTCMonth(),context.getUTCDate(),hh,mm));
+    // Times in an OOOI report describe events at/before the message.
+    if(at.getTime()>context.getTime()+60000)at.setUTCDate(at.getUTCDate()-1);
+  }
+  // Demo/history rows reuse source decoding templates. Translate the true
+  // source-relative interval to their own date instead of reusing DD/month.
+  if(isGeneratedAcarsRow(r)&&anchor){
+    return new Date(r.eventTime.getTime()+(at.getTime()-anchor.getTime()));
+  }
+  // If the source has no DDHHMM, Event Time is the only date anchor.
+  if(isGeneratedAcarsRow(r)&&!anchor)return new Date(r.eventTime.getTime()+(at.getTime()-r.eventTime.getTime()));
+  return at;
+}
+function fullDecodedClock(r,key){
+  const raw=String(r.decoded?.[key]??'').trim();
+  if(!raw||raw==='—'||/\*{2,}|^null$/i.test(raw))return '—';
+  // From ACARS_decode, door timestamps are normally DDHHMM, e.g. 111537.
+  const six=/^(\d{2})(\d{2})(\d{2})$/.exec(raw);
+  let stamp=null;
+  if(six)stamp=dateTimeForDecodedClock(r,Number(six[2]),Number(six[3]),Number(six[1]));
+  else{
+    const hhmm=/^(\d{2}):(\d{2})$/.exec(raw)||/^(\d{2})(\d{2})$/.exec(raw);
+    if(hhmm)stamp=dateTimeForDecodedClock(r,Number(hhmm[1]),Number(hhmm[2]));
+  }
+  return stamp?utcStamp(stamp):'—';
+}
+function formattedOooiTime(r){
+  const input=String(r.decoded?.oooiTime??'').trim();
+  const rx=/(?:^|\s|\/)(OUT|OFF|ONN?|INN?|OT|OF)\s*(?:DEP|ARR)?\s*(\d{2})(\d{2})\b/gi;
+  let m,items=[];
+  while((m=rx.exec(input))!==null){
+    const hh=Number(m[2]),mm=Number(m[3]);
+    if(hh>23||mm>59)continue;
+    const name=({ONN:'ON',INN:'IN',OT:'OUT',OF:'OFF'})[m[1].toUpperCase()]||m[1].toUpperCase();
+    items.push({name,hh,mm});
+  }
+  if(!items.length){
+    // M49 reports themselves signal OUT/OFF/ON/IN even where the sheet's
+    // optional aggregated OOOI_TIME column is blank.
+    if(r.type!=='M49'||!['OUT','OFF','ON','IN'].includes(r.event))return '—';
+    const source=decodedSourceTimestamp(r);
+    const stamp=isGeneratedAcarsRow(r)?r.eventTime:source;
+    return stamp?`${r.event} ${utcStamp(stamp)}`:'—';
+  }
+  // Evaluate backwards to keep OUT <= OFF <= ON <= IN, including midnight.
+  const results=new Array(items.length);
+  const anchor=decodedSourceTimestamp(r);
+  let upper=anchor||r.eventTime;
+  for(let i=items.length-1;i>=0;i--){
+    const e=items[i];
+    let at=new Date(Date.UTC(upper.getUTCFullYear(),upper.getUTCMonth(),upper.getUTCDate(),e.hh,e.mm));
+    if(at.getTime()>upper.getTime()+60000)at.setUTCDate(at.getUTCDate()-1);
+    if(isGeneratedAcarsRow(r)&&anchor){
+      const delta=at.getTime()-anchor.getTime();
+      results[i]=`${e.name} ${utcStamp(new Date(r.eventTime.getTime()+delta))}`;
+    }else{
+      results[i]=`${e.name} ${utcStamp(at)}`;
+    }
+    upper=at;
+  }
+  return results.join('\n');
+}
+
 function detail(id){
   const r=byId(id); if(!r)return;
   currentId=id;
@@ -1363,9 +1546,9 @@ function detail(id){
     ['OOOI FOB',cell('oooiFob')],['Fuel at Destination',cell('fuelAtDestination')],
     ['INIT Boarded Fuel',cell('initBoardedFuel')]
   ]));
-  if(['M11-M14','M44 DOOR','A80'].includes(r.type))groups.push(groupTable('OOOI & Door Times',[
-    ['OOOI Time',cell('oooiTime')],['First Door Open Time',cell('firstDoorOpenTime')],
-    ['Last Door Close Time',cell('lastDoorCloseTime')]
+  if(['M49','M11-M14','M44 DOOR','A80'].includes(r.type))groups.push(groupTable('OOOI & Door Times',[
+    ['OOOI Time',formattedOooiTime(r)],['First Door Open Time',fullDecodedClock(r,'firstDoorOpenTime')],
+    ['Last Door Close Time',fullDecodedClock(r,'lastDoorCloseTime')]
   ]));
   if(r.type==='WATER')groups.push(groupTable('Potable Water Report',[
     ['Report Code',cell('reportCode')],['DEP Water',cell('depWater')],
