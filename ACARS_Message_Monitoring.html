@@ -862,7 +862,7 @@ html,body{height:100%;overflow:hidden}
 .filterbody .time-range .time-range-arrow{margin:0 1px}
 @media(max-width:1250px){.filterbody{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}.filterbody > .time-range-field{flex:0 0 490px}}
 @media(max-width:780px){.filterbody > .time-range-field{flex:0 0 490px}}
-#msgTable th:nth-child(8),#msgTable td:nth-child(8){min-width:130px}
+/* Event Time is column 10 after the v85 list-column update. */
 
 
 /* v82 — One continuous detail page using Common HTML section rhythm. */
@@ -920,6 +920,26 @@ html,body{height:100%;overflow:hidden}
 #flightPickerOverlay .picker-table td:nth-last-child(-n+2){white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:1050px){#flightPickerOverlay .picker-filters{grid-template-columns:repeat(3,minmax(0,1fr))}#flightPickerOverlay .picker-datetime-field{grid-column:span 1}#flightPickerOverlay .picker-datetime-controls{flex-wrap:wrap}#flightPickerOverlay .picker-datetime-controls input{flex-basis:100%!important}}
 @media(max-width:620px){#flightPickerOverlay .picker-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#flightPickerOverlay .picker-datetime-field{grid-column:1/-1}#flightPickerOverlay .picker-datetime-controls{flex-wrap:nowrap}#flightPickerOverlay .picker-datetime-controls input{flex-basis:0!important}#mapOverlay .matching-raw-title-row{align-items:flex-start;flex-wrap:wrap}}
+
+
+/* v85 — Message Description followed by From Phase and To Phase in the list. */
+#msgTable{min-width:1480px}
+#msgTable th:nth-child(3),#msgTable td:nth-child(3){min-width:245px;width:265px}
+#msgTable th:nth-child(4),#msgTable td:nth-child(4),
+#msgTable th:nth-child(5),#msgTable td:nth-child(5){min-width:105px}
+#msgTable th:nth-child(10),#msgTable td:nth-child(10){min-width:130px}
+#msgTable .message-description-cell{vertical-align:middle}
+#msgTable .message-description-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1.35;max-width:320px;color:#536575;font-weight:600}
+#msgTable .phase-value-cell{vertical-align:middle;white-space:nowrap;color:#33495b;font-weight:750}
+/* v86 — Preserve full M44 door phase names without pushing into adjacent cells. */
+#msgTable th:nth-child(5),#msgTable td:nth-child(5){min-width:145px;width:150px}
+#msgTable td:nth-child(5).phase-value-cell{white-space:normal;overflow-wrap:break-word;line-height:1.3}
+/* v87 — WATER/APM/APU/FML/POSRPT have no From Phase/To Phase columns. */
+#msgTable.no-phase{min-width:1110px}
+#msgTable.no-phase th:nth-child(5),
+#msgTable.no-phase td:nth-child(5){min-width:95px;width:auto}
+#msgTable.no-phase th:nth-child(8),
+#msgTable.no-phase td:nth-child(8){min-width:130px}
 
 </style>
 </head>
@@ -1051,7 +1071,9 @@ html,body{height:100%;overflow:hidden}
           <div class="tbl-scroll"><table id="msgTable"><thead><tr>
             <th class="numcol">No.</th>
             <th>SMI</th>
-            <th>Decoded Event</th>
+            <th>Message Description</th>
+            <th>From Phase</th>
+            <th>To Phase</th>
             <th>FLT NO</th>
             <th>AC REG</th>
             <th>DEP</th>
@@ -1403,6 +1425,26 @@ const data=[...extraRows,...rowsSeed,...historicalRows].map(r=>{
       o.event=displayPhase(phaseInfo.phase)+(fromPhase?' → '+fromPhase:'');
     }
   }
+  // List columns represent acars_message.from_phase / to_phase.
+  // M49 transitions use source-defined codes; for M11-M14, M44 DOOR and A80,
+  // the decode reference specifies a Phase and To Phase, but no From Phase.
+  // Never manufacture From Phase from another message or event label.
+  const phaseCode=value=>{
+    const code=/^([A-Z]{2,6})(?:\s*\(|$)/.exec(String(value||'').trim());
+    return code?code[1]:'—';
+  };
+  const transition=o.type==='M49'?m49PhaseInfo(o.raw):null;
+  o.fromPhase=o.type==='M49'?phaseCode(transition?.from??o.decoded.fromPhase):'—';
+  if(o.type==='M49'){
+    o.toPhase=phaseCode(transition?.to??o.decoded.toPhase);
+  }else if(['M11-M14','M44 DOOR','A80'].includes(o.type)){
+    // These values come from the matching per-message ACARS_decode sample row.
+    // M44's complete event names are valid To Phase values in the reference.
+    const decodedTo=String(o.decoded.toPhase||'').trim();
+    o.toPhase=/^(?:OUT|OFF|ON|IN|SUMMRY|FIRST DOOR OPEN TIME|LAST DOOR CLOSE TIME)$/.test(decodedTo)?decodedTo:'—';
+  }else{
+    o.toPhase='—';
+  }
   // Mapping state lives only in memory. Reload always restores the original demo data.
   resolveDemoMapping(o);
   return o;
@@ -1451,10 +1493,24 @@ function matchesEventTime(r,dateFrom,timeFrom,dateTo,timeTo){
   return true;
 }
 function filtered(){const f=applied;return data.filter(r=>r.type===activeType&&(!f.flight||r.flight.toLowerCase().includes(f.flight))&&(!f.reg||r.reg.toLowerCase().includes(f.reg))&&(!f.dep||r.dep.toLowerCase().includes(f.dep))&&(!f.arr||r.arr.toLowerCase().includes(f.arr))&&(!f.status||r.status===f.status)&&matchesEventTime(r,f.dateFrom,f.timeFrom,f.dateTo,f.timeTo))}
-function renderTable(){renderSummary();renderTabs();const all=filtered().sort((a,b)=>b.eventTime-a.eventTime),pages=Math.max(1,Math.ceil(all.length/pageSize));page=Math.min(Math.max(1,page),pages);const subset=all.slice((page-1)*pageSize,page*pageSize);document.getElementById('totalText').textContent='Total: '+all.length;document.getElementById('rows').innerHTML=subset.length?subset.map(r=>{const cs=candidateSort(r);return `<tr>
+function renderTable(){
+  renderSummary();renderTabs();
+  // M49 keeps From Phase / To Phase.
+  // M11-M14, M44 DOOR and A80 show a single Phase column.
+  // WATER, APM, APU, FML and POSRPT expose no phase columns.
+  const phaseMode=activeType==='M49'?'fromto':(['M11-M14','M44 DOOR','A80'].includes(activeType)?'single':'none');
+  const table=document.getElementById('msgTable');
+  table.classList.toggle('no-phase',phaseMode==='none');
+  table.querySelector('thead tr').innerHTML=`
+    <th class="numcol">No.</th><th>SMI</th><th>Message Description</th>
+    ${phaseMode==='fromto'?'<th>From Phase</th><th>To Phase</th>':(phaseMode==='single'?'<th>Phase</th>':'')}
+    <th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th>
+    <th>Event Time (UTC)</th><th>Candidate</th><th>Status</th><th>Actions</th>`;
+  const all=filtered().sort((a,b)=>b.eventTime-a.eventTime),pages=Math.max(1,Math.ceil(all.length/pageSize));page=Math.min(Math.max(1,page),pages);const subset=all.slice((page-1)*pageSize,page*pageSize);document.getElementById('totalText').textContent='Total: '+all.length;document.getElementById('rows').innerHTML=subset.length?subset.map(r=>{const cs=candidateSort(r);return `<tr>
 <td class="numcol"><span class="cell-main">${(page-1)*pageSize+subset.indexOf(r)+1}</span></td>
 <td><span class="cell-main">${esc(r.smi)}</span></td>
-<td><b>${esc(r.event)}</b><div class="cell-sub" title="${esc(r.meaning)}">${esc(r.meaning.length>36?r.meaning.slice(0,36)+'…':r.meaning)}</div></td>
+<td class="message-description-cell"><span class="message-description-text" title="${esc(r.meaning)}">${esc(r.meaning)}</span></td>
+${phaseMode==='fromto'?`<td class="phase-value-cell">${esc(r.fromPhase)}</td><td class="phase-value-cell">${esc(r.toPhase)}</td>`:(phaseMode==='single'?`<td class="phase-value-cell">${esc(r.toPhase)}</td>`:'')}
 <td><b>${esc(r.flight)}</b></td>
 <td>${esc(r.reg)}</td>
 <td><span style="white-space:nowrap">${esc(r.dep)}</span></td>
@@ -1463,7 +1519,7 @@ function renderTable(){renderSummary();renderTabs();const all=filtered().sort((a
 <td><button class="btn sm" data-map="${esc(r.id)}" title="View candidate flight legs">${cs.length} ${cs.length===1?'flight':'flights'}</button></td>
 <td><span class="badge ${r.status}">${statusLabel(r.status)}</span></td>
 <td class="right-sticky"><div class="actionset"><button type="button" class="rowbtn" data-detail="${esc(r.id)}" title="Details" aria-label="View message details">${icons.eye}</button><button type="button" class="rowbtn" data-map="${esc(r.id)}" title="Matching / Re-matching" aria-label="Open matching or re-matching for this message">${icons.swap}</button></div></td>
-</tr>`}).join(''):`<tr><td colspan="11"><div class="empty"><strong>No matching messages found</strong>Change your search criteria and try again.</div></td></tr>`;
+</tr>`}).join(''):`<tr><td colspan="${phaseMode==='fromto'?13:(phaseMode==='single'?12:11)}"><div class="empty"><strong>No matching messages found</strong>Change your search criteria and try again.</div></td></tr>`;
  let pg=`<button class="pagebtn" data-page="1" ${page===1?'disabled':''} title="First page">«</button><button class="pagebtn" data-page="${page-1}" ${page===1?'disabled':''} title="Previous page">‹</button>`;let lo=Math.max(1,page-2),hi=Math.min(pages,page+2);if(lo>1)pg+='<span>…</span>';for(let i=lo;i<=hi;i++)pg+=`<button class="pagebtn ${i===page?'current':''}" data-page="${i}">${i}</button>`;if(hi<pages)pg+='<span>…</span>';pg+=`<button class="pagebtn" data-page="${page+1}" ${page===pages?'disabled':''} title="Next page">›</button><button class="pagebtn" data-page="${pages}" ${page===pages?'disabled':''} title="Last page">»</button>`;document.getElementById('pagination').innerHTML=pg;
 }
 
