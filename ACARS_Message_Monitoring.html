@@ -941,6 +941,17 @@ html,body{height:100%;overflow:hidden}
 #msgTable.no-phase th:nth-child(8),
 #msgTable.no-phase td:nth-child(8){min-width:130px}
 
+/* v89 — Separate FLT DATE / ETD / ETA in Matching and Select Another Flight. */
+#mapOverlay .mapping-flight-table{min-width:790px}
+#flightPickerOverlay .picker-table{min-width:790px}
+#mapOverlay .flight-date-cell,#flightPickerOverlay .flight-date-cell{white-space:nowrap;font-variant-numeric:tabular-nums;min-width:110px}
+#mapOverlay .flight-time-cell,#flightPickerOverlay .flight-time-cell{white-space:nowrap;font-variant-numeric:tabular-nums;min-width:66px}
+#flightPickerOverlay .picker-filters{grid-template-columns:repeat(4,minmax(85px,1fr)) minmax(142px,1.3fr) minmax(113px,1fr) minmax(113px,1fr);gap:9px}
+#flightPickerOverlay .picker-flight-date input,#flightPickerOverlay .picker-clock-field input{width:100%;height:35px;min-width:0;padding:0 8px;background:#fff;border:1px solid #d8e2e9;border-radius:6px;font-size:11px;color:#324653;color-scheme:light;font-variant-numeric:tabular-nums}
+#flightPickerOverlay .picker-flight-date input:focus,#flightPickerOverlay .picker-clock-field input:focus{border-color:#1d9bbc;outline:2px solid rgba(29,155,188,.12)}
+#flightPickerOverlay .picker-flight-date input::-webkit-calendar-picker-indicator{margin:0;cursor:pointer}
+@media(max-width:1100px){#flightPickerOverlay .picker-filters{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:670px){#flightPickerOverlay .picker-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#flightPickerOverlay .picker-flight-date{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -1155,12 +1166,13 @@ html,body{height:100%;overflow:hidden}
         <label><span>AC REG</span><input id="pickReg" placeholder="AC REG" autocomplete="off"></label>
         <label><span>DEP</span><input id="pickDep" placeholder="DEP" autocomplete="off"></label>
         <label><span>ARR</span><input id="pickArr" placeholder="ARR" autocomplete="off"></label>
-        <div class="picker-datetime-field"><span class="picker-datetime-label">ETD (UTC)</span><div class="picker-datetime-controls"><input id="pickEtdDate" type="date" lang="en-GB" aria-label="Filter ETD date (UTC)" title="ETD date (UTC)"><input id="pickEtdTime" type="time" step="60" aria-label="Filter ETD time (UTC)" title="ETD time (UTC, 24-hour)"></div></div>
-        <div class="picker-datetime-field"><span class="picker-datetime-label">ETA (UTC)</span><div class="picker-datetime-controls"><input id="pickEtaDate" type="date" lang="en-GB" aria-label="Filter ETA date (UTC)" title="ETA date (UTC)"><input id="pickEtaTime" type="time" step="60" aria-label="Filter ETA time (UTC)" title="ETA time (UTC, 24-hour)"></div></div>
+        <label class="picker-flight-date"><span>FLT DATE</span><input id="pickFlightDate" type="date" lang="en-GB" aria-label="Filter flight date (UTC)" title="Flight date (UTC)"></label>
+        <label class="picker-clock-field"><span>ETD (UTC)</span><input id="pickEtdTime" type="time" lang="en-GB" step="60" aria-label="Filter ETD time (UTC)" title="ETD time (UTC, 24-hour)"></label>
+        <label class="picker-clock-field"><span>ETA (UTC)</span><input id="pickEtaTime" type="time" lang="en-GB" step="60" aria-label="Filter ETA time (UTC)" title="ETA time (UTC, 24-hour)"></label>
         <div class="picker-filter-buttons"><button class="btn primary" type="submit">Search</button><button class="btn" id="flightPickerClear" type="button">Clear Filter</button></div>
       </form>
       <div class="picker-selection-hint">Select a flight, then click Confirm Mapping.</div>
-      <div class="picker-table-wrap"><table class="picker-table"><thead><tr><th class="picker-checkbox-cell">SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead><tbody id="flightPickerRows"></tbody></table></div>
+      <div class="picker-table-wrap"><table class="picker-table"><thead><tr><th class="picker-checkbox-cell">SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>FLT DATE</th><th>ETD</th><th>ETA</th></tr></thead><tbody id="flightPickerRows"></tbody></table></div>
       <div class="picker-pagination"><span id="flightPickerTotal">Total: 0</span><span id="flightPickerSelectionCount">0 selected</span><div id="flightPickerPages" class="picker-pages"></div></div>
     </div>
     <div class="flight-picker-foot"><span class="picker-caption">Prototype flight schedule · UTC</span><div><button class="btn" type="button" data-close="flightPickerOverlay">Cancel</button><button class="btn primary" type="button" id="applyFlightPicker" disabled>Confirm Mapping</button></div></div>
@@ -1742,7 +1754,7 @@ let mappingRawExpanded=false;
 let pickerSelected=new Set();
 let pickerPage=1;
 const pickerPageSize=10;
-let pickerApplied={flight:'',reg:'',dep:'',arr:'',etdDate:'',etdTime:'',etaDate:'',etaTime:''};
+let pickerApplied={flight:'',reg:'',dep:'',arr:'',flightDate:'',etdTime:'',etaTime:''};
 const fmtCandidateTime=(c,r)=>{
   // ETD/ETA are illustrative demo schedule values; production times come from the flight service.
   let etd;
@@ -1752,7 +1764,10 @@ const fmtCandidateTime=(c,r)=>{
     etd=new Date(dayStart.getTime()+minutes*60000);
   }
   const eta=new Date(etd.getTime()+105*60000);
-  return {etd:fmtTime(etd),eta:fmtTime(eta),
+  // In this standalone mockup, the illustrative FLT DATE is ETD's UTC date.
+  // Production must take FLT DATE, ETD, ETA directly from the flight schedule API.
+  return {flightDate:utcDate(etd),flightDateKey:etd.toISOString().slice(0,10),
+    etd:fmtTime(etd),eta:fmtTime(eta),
     etdDay:etd.toISOString().slice(0,10),etaDay:eta.toISOString().slice(0,10),
     etdFull:utcStamp(etd),etaFull:utcStamp(eta)};
 };
@@ -1785,13 +1800,13 @@ function renderMapBody(){
     const selected=selectedLeg===c.legNo;
     const origin=c.origin==='MANUAL'?'Added manually':'Suggested candidate';
     const times=fmtCandidateTime(c,r);
-    const canRemove=c.origin==='MANUAL'&&!(r.status==='mapped'&&r.mappedLeg===c.legNo);
     return `<tr class="${selected?'is-mapped':''}">
       <td><input class="map-radio" type="radio" name="chosenMappingFlight" data-leg="${c.legNo}" ${selected?'checked':''} aria-label="Assign ${esc(c.flight)}"></td>
       <td><div class="map-flight-num">${esc(c.flight)}</div><div class="map-source">${origin}${r.status==='mapped'&&r.mappedLeg===c.legNo?' · Current':''}</div></td>
       <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
-      <td>${times.eta}</td>
-      <td>${canRemove?`<button type="button" class="map-icon-delete" data-remove-flight="${c.legNo}" aria-label="Remove ${esc(c.flight)} from candidates" title="Remove from candidates">×</button>`:'—'}</td>
+      <td class="flight-date-cell">${esc(times.flightDate)}</td>
+      <td class="flight-time-cell">${esc(times.etd)}</td>
+      <td class="flight-time-cell">${esc(times.eta)}</td>
     </tr>`;
   }).join('');
   const matchingScroller=document.getElementById('mapBody');
@@ -1817,8 +1832,8 @@ function renderMapBody(){
     <section class="mapping-section">
       <h3 class="mapping-section-title">Flights (${sorted.length})</h3>
       <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
-        <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETA</th><th>ACTION</th></tr></thead>
-        <tbody>${flightRows||'<tr><td colspan="7" class="map-empty">No flights added yet. Select a flight to continue.</td></tr>'}</tbody>
+        <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>FLT DATE</th><th>ETD</th><th>ETA</th></tr></thead>
+        <tbody>${flightRows||'<tr><td colspan="8" class="map-empty">No flights added yet. Select a flight to continue.</td></tr>'}</tbody>
       </table></div>
       <div class="mapping-table-bottom"><button class="map-add-flights" id="openFlightPicker" type="button"><span aria-hidden="true">＋</span> Select Another Flight</button></div>
     </section>`;
@@ -1834,12 +1849,6 @@ function renderMapBody(){
     renderMapBody();
   });
   document.getElementById('openFlightPicker').onclick=openFlightPicker;
-  document.querySelectorAll('#mapBody [data-remove-flight]').forEach(el=>el.onclick=()=>{
-    const number=Number(el.dataset.removeFlight);
-    mappingDraftCandidates=mappingDraftCandidates.filter(c=>c.legNo!==number);
-    if(selectedLeg===number)selectedLeg=null;
-    renderMapBody();
-  });
 }
 function openFlightPicker(){
   const pickerTitle=document.getElementById('flightPickerTitle');
@@ -1849,7 +1858,7 @@ function openFlightPicker(){
   document.querySelector('#flightPickerOverlay .mapping-close').setAttribute('aria-label','Close Select Another Flight');
   pickerPage=1;
   pickerSelected=new Set();
-  pickerApplied={flight:'',reg:'',dep:'',arr:'',etdDate:'',etdTime:'',etaDate:'',etaTime:''};
+  pickerApplied={flight:'',reg:'',dep:'',arr:'',flightDate:'',etdTime:'',etaTime:''};
   document.getElementById('flightPickerFilters').reset();
   renderFlightPicker();
   show('flightPickerOverlay');
@@ -1863,8 +1872,8 @@ function filteredFlightPool(){
       (!filters.reg||norm(c.reg).includes(norm(filters.reg)))&&
       (!filters.dep||norm(c.dep).includes(norm(filters.dep)))&&
       (!filters.arr||norm(c.arr).includes(norm(filters.arr)))&&
-      (!filters.etdDate||times.etdDay===filters.etdDate)&&(!filters.etdTime||times.etd===filters.etdTime)&&
-      (!filters.etaDate||times.etaDay===filters.etaDate)&&(!filters.etaTime||times.eta===filters.etaTime);
+      (!filters.flightDate||times.flightDateKey===filters.flightDate)&&
+      (!filters.etdTime||times.etd===filters.etdTime)&&(!filters.etaTime||times.eta===filters.etaTime);
   }).sort((a,b)=>{
     // Flight/aircraft/route matching rows appear first, with the rest of the catalog searchable.
     const match=c=>(norm(c.flight)===norm(r.flight)?8:0)+(norm(c.reg)===norm(r.reg)?4:0)+(norm(c.dep)===norm(r.dep)?2:0)+(norm(c.arr)===norm(r.arr)?2:0);
@@ -1885,9 +1894,10 @@ function renderFlightPicker(){
     return `<tr class="${selected?'is-checked':''}" data-pick-row="${c.legNo}" style="cursor:pointer">
       <td class="picker-checkbox-cell"><input type="radio" name="replacementFlight" data-remap-leg="${c.legNo}" aria-label="Select ${esc(c.flight)}" ${selected?'checked':''}></td>
       <td><strong>${esc(c.flight)}</strong>${note?`<div class="map-source">${note}</div>`:''}</td>
-      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td><td>${esc(tm.etdFull)}</td><td>${esc(tm.etaFull)}</td>
+      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
+      <td class="flight-date-cell">${esc(tm.flightDate)}</td><td class="flight-time-cell">${esc(tm.etd)}</td><td class="flight-time-cell">${esc(tm.eta)}</td>
     </tr>`;
-  }).join(''):'<tr><td colspan="7" class="picker-empty">No flights match the search criteria.</td></tr>';
+  }).join(''):'<tr><td colspan="8" class="picker-empty">No flights match the search criteria.</td></tr>';
   document.getElementById('flightPickerTotal').textContent=`Total: ${results.length}`;
   const picked=pool.find(c=>c.legNo===pickedLeg);
   document.getElementById('flightPickerSelectionCount').textContent=picked?`Selected: ${picked.flight}`:'0 selected';
@@ -1939,8 +1949,8 @@ function confirmMapPanelSelection(){
 }
 function searchPickerFilters(){
   pickerApplied={flight:document.getElementById('pickFlight').value.trim(),reg:document.getElementById('pickReg').value.trim(),dep:document.getElementById('pickDep').value.trim(),arr:document.getElementById('pickArr').value.trim(),
-    etdDate:document.getElementById('pickEtdDate').value,etdTime:document.getElementById('pickEtdTime').value,
-    etaDate:document.getElementById('pickEtaDate').value,etaTime:document.getElementById('pickEtaTime').value};
+    flightDate:document.getElementById('pickFlightDate').value,
+    etdTime:document.getElementById('pickEtdTime').value,etaTime:document.getElementById('pickEtaTime').value};
   pickerPage=1;renderFlightPicker();
 }
 // Events
@@ -1955,7 +1965,7 @@ $('pageSize').onchange=e=>{autoPageSize=e.target.value==='auto';page=1;if(autoPa
 document.querySelectorAll('[data-metric]').forEach(e=>e.addEventListener('click',()=>{$('fStatus').value=e.dataset.metric==='all'?'':e.dataset.metric;applied.status=$('fStatus').value;page=1;activeMetric(e.dataset.metric);renderTable()}));
 $('saveMapping').onclick=confirmMapPanelSelection;
 $('flightPickerFilters').onsubmit=e=>{e.preventDefault();searchPickerFilters()};
-$('flightPickerClear').onclick=()=>{$('flightPickerFilters').reset();pickerApplied={flight:'',reg:'',dep:'',arr:'',etdDate:'',etdTime:'',etaDate:'',etaTime:''};pickerPage=1;renderFlightPicker()};
+$('flightPickerClear').onclick=()=>{$('flightPickerFilters').reset();pickerApplied={flight:'',reg:'',dep:'',arr:'',flightDate:'',etdTime:'',etaTime:''};pickerPage=1;renderFlightPicker()};
 $('applyFlightPicker').onclick=applyFlightPicker;
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>hide(b.dataset.close));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const open=[...document.querySelectorAll('.overlay.open')];if(open.length&&open.at(-1).id!=='confirmOverlay')hide(open.at(-1).id)}});
