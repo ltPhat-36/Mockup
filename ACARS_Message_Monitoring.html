@@ -941,7 +941,7 @@ html,body{height:100%;overflow:hidden}
 #msgTable.no-phase th:nth-child(8),
 #msgTable.no-phase td:nth-child(8){min-width:130px}
 
-/* v89 — Separate FLT DATE / ETD / ETA in Matching and Select Another Flight. */
+/* v89 — Base flight table styling, superseded for v90 by datetime-only ETD/ETA. */
 #mapOverlay .mapping-flight-table{min-width:790px}
 #flightPickerOverlay .picker-table{min-width:790px}
 #mapOverlay .flight-date-cell,#flightPickerOverlay .flight-date-cell{white-space:nowrap;font-variant-numeric:tabular-nums;min-width:110px}
@@ -952,6 +952,65 @@ html,body{height:100%;overflow:hidden}
 #flightPickerOverlay .picker-flight-date input::-webkit-calendar-picker-indicator{margin:0;cursor:pointer}
 @media(max-width:1100px){#flightPickerOverlay .picker-filters{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:670px){#flightPickerOverlay .picker-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#flightPickerOverlay .picker-flight-date{grid-column:auto}}
+/* v90 — Seven flight columns; ETD and ETA show complete UTC date and time. */
+#mapOverlay .mapping-flight-table,#flightPickerOverlay .picker-table{min-width:790px}
+#mapOverlay .mapping-flight-table th:nth-last-child(-n+2),
+#flightPickerOverlay .picker-table th:nth-last-child(-n+2){min-width:151px;white-space:nowrap}
+#mapOverlay .mapping-flight-table td.flight-datetime-cell,
+#flightPickerOverlay .picker-table td.flight-datetime-cell{
+  white-space:nowrap;font-variant-numeric:tabular-nums;min-width:151px;
+  color:#293d4c;font-weight:750;
+}
+
+/* v91 — Read-only, non-duplicative Matching Info in Message Details.
+   Keep the candidate table and assignment actions exclusively in Mapping / Re-mapping. */
+#detailOverlay #detailPaneMapping .detail-assigned-flight-panel{
+  border:1px solid #dee9ef;border-radius:9px;background:#f9fcfe;padding:16px 19px 17px;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-label{
+  color:#768898;font-size:11px;font-weight:800;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-method{
+  display:inline-flex;align-items:center;gap:9px;font-size:11px;color:#6f8390;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-method strong{
+  display:inline-block;border:1px solid #cbe8f2;background:#eaf8fc;color:#0785a5;
+  border-radius:5px;padding:4px 9px;font-size:11px;font-weight:850;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-number{
+  font-size:24px;font-weight:850;color:#174e68;margin:7px 0 14px;letter-spacing:-.4px;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-fields{
+  border-top:1px solid #e4edf2;padding-top:12px;display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;
+}
+#detailOverlay #detailPaneMapping .detail-assigned-field{display:grid;gap:4px;min-width:0}
+#detailOverlay #detailPaneMapping .detail-assigned-field span{font-size:11px;color:#80929d;font-weight:750}
+#detailOverlay #detailPaneMapping .detail-assigned-field strong{font-size:13px;color:#243b4b;font-weight:850;overflow-wrap:anywhere}
+#detailOverlay #detailPaneMapping .detail-match-pending{
+  border:1px solid #dce8ef;border-radius:9px;background:#f8fbfd;
+  display:flex;align-items:flex-start;gap:13px;padding:17px 18px;
+}
+#detailOverlay #detailPaneMapping .detail-match-pending-icon{
+  width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;
+  border-radius:8px;background:#e7f3f8;color:#0c8aab;font-size:20px;font-weight:750;
+}
+#detailOverlay #detailPaneMapping .detail-match-pending-copy strong{
+  display:block;margin:0 0 5px;font-size:13px;color:#314758;font-weight:850;
+}
+#detailOverlay #detailPaneMapping .detail-match-pending-copy p{
+  margin:0;font-size:12px;line-height:1.65;color:#6a7f8e;font-weight:550;
+}
+#detailOverlay #detailPaneMapping .detail-match-pending-copy p b{
+  color:#375d72;font-weight:800;
+}
+@media(max-width:490px){
+  #detailOverlay #detailPaneMapping .detail-assigned-fields{grid-template-columns:1fr;gap:10px}
+  #detailOverlay #detailPaneMapping .detail-assigned-method-label{display:none}
+}
 </style>
 </head>
 <body>
@@ -1172,7 +1231,7 @@ html,body{height:100%;overflow:hidden}
         <div class="picker-filter-buttons"><button class="btn primary" type="submit">Search</button><button class="btn" id="flightPickerClear" type="button">Clear Filter</button></div>
       </form>
       <div class="picker-selection-hint">Select a flight, then click Confirm Mapping.</div>
-      <div class="picker-table-wrap"><table class="picker-table"><thead><tr><th class="picker-checkbox-cell">SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>FLT DATE</th><th>ETD</th><th>ETA</th></tr></thead><tbody id="flightPickerRows"></tbody></table></div>
+      <div class="picker-table-wrap"><table class="picker-table"><thead><tr><th class="picker-checkbox-cell">SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead><tbody id="flightPickerRows"></tbody></table></div>
       <div class="picker-pagination"><span id="flightPickerTotal">Total: 0</span><span id="flightPickerSelectionCount">0 selected</span><div id="flightPickerPages" class="picker-pages"></div></div>
     </div>
     <div class="flight-picker-foot"><span class="picker-caption">Prototype flight schedule · UTC</span><div><button class="btn" type="button" data-close="flightPickerOverlay">Cancel</button><button class="btn primary" type="button" id="applyFlightPicker" disabled>Confirm Mapping</button></div></div>
@@ -1692,47 +1751,60 @@ function detail(id){
 
   document.getElementById('detailStatus').innerHTML=`<span class="badge ${r.status}">${esc(statusLabel(r.status))}</span>`;
 
-  const mappedFlight=cs.find(c=>c.legNo===r.mappedLeg)?.flight || r.flight || '—';
-  const mappingStatus=r.status==='mapped'?`<b>${esc(mappedFlight)}</b> has been assigned.`:r.status==='review'?'Candidate suggestions are available. No FLIGHT is assigned yet.':'No FLIGHT has been assigned.';
-  // Method reflects the actual assignment, not merely whether candidates exist.
-  // Unmapped/Needs Review have no confirmed mapping method.
-  const mappingMethod=r.status==='mapped'?(String(r.method||'').toUpperCase()==='AUTO'?'Auto':String(r.method||'').toUpperCase()==='MANUAL'?'Manual':'—'):'—';
-  // Suggested Flight is read-only; mapping is performed from the Matching / Re-matching screen.
-  const candidateRows=cs.length?cs.map(c=>{
-    const times=fmtCandidateTime(c,r);
-    const isCurrent=r.status==='mapped'&&r.mappedLeg===c.legNo;
-    const origin=c.origin==='MANUAL'?'Added manually':'Suggested candidate';
-    return `<tr class="${isCurrent?'is-mapped':''}">
-      <td><div class="map-flight-num">${esc(c.flight)}</div><div class="map-source">${origin}${isCurrent?' · Current':''}</div></td>
-      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td><td>${times.eta}</td>
-    </tr>`;
-  }).join(''):'<tr><td colspan="5" class="map-empty">No suggested flights available.</td></tr>';
+  // Matching Info is a compact, read-only current-assignment summary.
+  // Candidate browsing/selection belongs exclusively to the Matching / Re-matching drawer.
+  // Never display ACARS flight fields as an assigned leg unless a saved leg is resolved.
+  const matchedLeg=r.status==='mapped'&&r.mappedLeg!=null
+    ? cs.find(c=>c.legNo===r.mappedLeg)||pool.find(c=>c.legNo===r.mappedLeg)
+    : null;
+  const mappingMethod=r.status==='mapped'
+    ? (String(r.method||'').toUpperCase()==='AUTO'?'Auto':String(r.method||'').toUpperCase()==='MANUAL'?'Manual':'—')
+    : '—';
+  const matchingInfoMarkup=r.status==='mapped'?`
+    <div class="detail-assigned-flight-panel" aria-label="Current matched flight">
+      <div class="detail-assigned-top">
+        <span class="detail-assigned-label">Assigned Flight</span>
+        <span class="detail-assigned-method"><span class="detail-assigned-method-label">Matching Method</span><strong>${esc(mappingMethod)}</strong></span>
+      </div>
+      <div class="detail-assigned-number">${esc(matchedLeg?.flight||'—')}</div>
+      <div class="detail-assigned-fields">
+        <div class="detail-assigned-field"><span>AC REG</span><strong>${esc(matchedLeg?.reg||'—')}</strong></div>
+        <div class="detail-assigned-field"><span>Route</span><strong>${esc(matchedLeg?matchedLeg.dep+' → '+matchedLeg.arr:'—')}</strong></div>
+      </div>
+    </div>`
+    :r.status==='review'?`
+    <div class="detail-match-pending" aria-label="Flight assignment pending">
+      <div class="detail-match-pending-icon" aria-hidden="true">⌕</div>
+      <div class="detail-match-pending-copy">
+        <strong>Awaiting flight confirmation</strong>
+        <p>No flight has been assigned yet. <b>${cs.length}</b> suggested ${cs.length===1?'candidate is':'candidates are'} available. Use <b>Matching / Re-matching</b> to select and confirm a flight.</p>
+      </div>
+    </div>`
+    :`
+    <div class="detail-match-pending" aria-label="No flight assignment">
+      <div class="detail-match-pending-icon" aria-hidden="true">⌕</div>
+      <div class="detail-match-pending-copy">
+        <strong>No flight assigned</strong>
+        <p>${cs.length?'No flight has been confirmed. Use <b>Matching / Re-matching</b> to select a flight.':'No suggested flight is available. Use <b>Matching / Re-matching</b> to search for and assign a flight.'}</p>
+      </div>
+    </div>`;
   document.getElementById('detailBody').innerHTML=`
     <div class="detail-unified" aria-label="Complete ACARS message details">
+      <section class="detail-merged-section" id="detailPaneMapping" aria-labelledby="mappingSectionHeading">
+        <div class="detail-merged-heading"><span class="detail-section-number">01</span><h3 id="mappingSectionHeading">Matching Info</h3><span class="detail-merged-description">Current flight assignment</span></div>
+        ${matchingInfoMarkup}
+      </section>
       <section class="detail-merged-section" id="detailPaneDecoded" aria-labelledby="decodedSectionHeading">
-        <div class="detail-merged-heading"><span class="detail-section-number">01</span><h3 id="decodedSectionHeading">Decoded Field</h3><span class="detail-merged-description">Extracted message information</span></div>
+        <div class="detail-merged-heading"><span class="detail-section-number">02</span><h3 id="decodedSectionHeading">Decoded Field</h3><span class="detail-merged-description">Extracted message information</span></div>
         ${decodedMarkup}
       </section>
       <section class="detail-merged-section" id="detailPaneRaw" aria-labelledby="rawSectionHeading">
         <div class="detail-merged-heading detail-merged-heading-actions">
-          <span class="detail-section-number">02</span><h3 id="rawSectionHeading">Raw Message</h3>
+          <span class="detail-section-number">03</span><h3 id="rawSectionHeading">Raw Message</h3>
           <button class="detail-copy" type="button" id="copyRaw">${icons.check} Export TXT</button>
         </div>
         <div class="detail-raw-toolbar"><span>Original ACARS message</span><button class="detail-raw-toggle" id="toggleRawMessage" type="button" aria-expanded="false" aria-controls="detailRawContent">Show Full Message <span aria-hidden="true">⌄</span></button></div>
         <pre class="detail-raw" id="detailRawContent">${esc(r.raw)}</pre>
-      </section>
-      <section class="detail-merged-section" id="detailPaneMapping" aria-labelledby="mappingSectionHeading">
-        <div class="detail-merged-heading"><span class="detail-section-number">03</span><h3 id="mappingSectionHeading">Matching Info</h3><span class="detail-merged-description">Flight assignment and suggestions</span></div>
-        <div class="detail-section-title detail-inline-title">Matching Overview</div>
-        <div class="detail-map-summary"><div class="detail-map-chip"><small>STATUS</small><strong>${esc(statusLabel(r.status))}</strong></div><div class="detail-map-chip"><small>CANDIDATES</small><strong>${cs.length}</strong></div><div class="detail-map-chip"><small>METHOD</small><strong>${mappingMethod}</strong></div></div>
-        <div class="detail-map-text">${mappingStatus}</div>
-        <section class="mapping-section detail-suggested-flights" aria-label="Suggested Flight">
-          <h3 class="mapping-section-title">Suggested Flight (${cs.length})</h3>
-          <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
-            <thead><tr><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETA</th></tr></thead>
-            <tbody>${candidateRows}</tbody>
-          </table></div>
-        </section>
       </section>
     </div>`;
   document.getElementById('copyRaw').onclick=()=>exportRawMessageTxt(r);
@@ -1804,9 +1876,8 @@ function renderMapBody(){
       <td><input class="map-radio" type="radio" name="chosenMappingFlight" data-leg="${c.legNo}" ${selected?'checked':''} aria-label="Assign ${esc(c.flight)}"></td>
       <td><div class="map-flight-num">${esc(c.flight)}</div><div class="map-source">${origin}${r.status==='mapped'&&r.mappedLeg===c.legNo?' · Current':''}</div></td>
       <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
-      <td class="flight-date-cell">${esc(times.flightDate)}</td>
-      <td class="flight-time-cell">${esc(times.etd)}</td>
-      <td class="flight-time-cell">${esc(times.eta)}</td>
+      <td class="flight-datetime-cell">${esc(times.etdFull)}</td>
+      <td class="flight-datetime-cell">${esc(times.etaFull)}</td>
     </tr>`;
   }).join('');
   const matchingScroller=document.getElementById('mapBody');
@@ -1832,8 +1903,8 @@ function renderMapBody(){
     <section class="mapping-section">
       <h3 class="mapping-section-title">Flights (${sorted.length})</h3>
       <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
-        <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>FLT DATE</th><th>ETD</th><th>ETA</th></tr></thead>
-        <tbody>${flightRows||'<tr><td colspan="8" class="map-empty">No flights added yet. Select a flight to continue.</td></tr>'}</tbody>
+        <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead>
+        <tbody>${flightRows||'<tr><td colspan="7" class="map-empty">No flights added yet. Select a flight to continue.</td></tr>'}</tbody>
       </table></div>
       <div class="mapping-table-bottom"><button class="map-add-flights" id="openFlightPicker" type="button"><span aria-hidden="true">＋</span> Select Another Flight</button></div>
     </section>`;
@@ -1895,9 +1966,9 @@ function renderFlightPicker(){
       <td class="picker-checkbox-cell"><input type="radio" name="replacementFlight" data-remap-leg="${c.legNo}" aria-label="Select ${esc(c.flight)}" ${selected?'checked':''}></td>
       <td><strong>${esc(c.flight)}</strong>${note?`<div class="map-source">${note}</div>`:''}</td>
       <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
-      <td class="flight-date-cell">${esc(tm.flightDate)}</td><td class="flight-time-cell">${esc(tm.etd)}</td><td class="flight-time-cell">${esc(tm.eta)}</td>
+      <td class="flight-datetime-cell">${esc(tm.etdFull)}</td><td class="flight-datetime-cell">${esc(tm.etaFull)}</td>
     </tr>`;
-  }).join(''):'<tr><td colspan="8" class="picker-empty">No flights match the search criteria.</td></tr>';
+  }).join(''):'<tr><td colspan="7" class="picker-empty">No flights match the search criteria.</td></tr>';
   document.getElementById('flightPickerTotal').textContent=`Total: ${results.length}`;
   const picked=pool.find(c=>c.legNo===pickedLeg);
   document.getElementById('flightPickerSelectionCount').textContent=picked?`Selected: ${picked.flight}`:'0 selected';
