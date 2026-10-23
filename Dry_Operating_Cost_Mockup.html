@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TOSS | Dry Operating Cost</title>
+<style>
+:root{--ink:#101f30;--muted:#6d7788;--edge:#dce4eb;--toss:#007f9f;--tossDark:#006e8c;--blue:#087af0;--white:#fff;--shell:#eaf0f4;--surface:#f6f8fa;--shadow:0 9px 28px rgba(27,54,80,.06);--radius:9px}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,"Segoe UI",Helvetica,sans-serif;font-size:13px;color:var(--ink)}body{background:var(--shell)}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:not-allowed}a{color:inherit;text-decoration:none}.icon{width:17px;height:17px;display:inline-block;vertical-align:middle;flex:none}.sicon{width:20px;height:20px}.tinyicon{width:14px;height:14px}.topline{height:25px;background:#3d3d3d;width:100%}.layout{display:flex;min-height:calc(100vh - 25px)}.sidebar{width:255px;flex:0 0 255px;background:linear-gradient(145deg,#e4ebf0 0%,#eaf0f5 68%,#e0e8ef 100%);border-right:1px solid #d4dee6;height:calc(100vh - 25px);position:sticky;top:0;overflow:auto;padding:13px 13px 20px}.brand{display:flex;align-items:center;justify-content:center;gap:2px;margin:0 0 11px;min-height:43px;color:#007596;white-space:nowrap;font-size:19px;letter-spacing:-.9px}.lotus{width:34px;height:32px;color:#d9a400}.brand-small{width:27px;height:27px;color:#5d84aa;margin-left:1px}.nav{display:flex;flex-direction:column;gap:2px}.nav-item{display:flex;align-items:center;gap:12px;min-height:38px;padding:0 11px;border:0;background:transparent;color:#172435;border-radius:7px;text-align:left;font-weight:600;width:100%;white-space:nowrap}.nav-item:hover{background:#d9e6ed}.nav-item .icon{width:19px;height:19px;stroke-width:1.7px}.nav-item .nav-label{flex:1}.nav-item.active{background:linear-gradient(110deg,#0794b7,#007c9d);color:#fff;box-shadow:0 2px 6px #0587a722}.nav-item.active .icon{color:#fff}.nav-item .chev{width:15px;height:15px;transition:transform .15s}.nav-item .chev.up{transform:rotate(180deg)}.nav-subitems{margin:0 0 2px 12px;display:flex;flex-direction:column;gap:3px}.nav-subitem{display:flex;align-items:center;gap:15px;color:#28374b;font-size:12px;padding:10px 10px 10px 12px;height:33px;border-radius:6px}.nav-subitem:hover{background:#d9e6ed}.nav-subitem .dot{width:7px;height:7px;border-radius:50%;background:#0797bd}.nav-divider{height:1px;background:#d0dce5;margin:8px 6px}.main{min-width:0;flex:1;min-height:calc(100vh - 25px);padding:18px 21px 24px;background:radial-gradient(ellipse at 6% 8%,#d9e4eb 0,#eff3f6 52%,#e6edf2 100%)}.head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:0 0 14px}.head h1{font-size:24px;margin:0;font-weight:700;letter-spacing:-.25px}.head p{margin:5px 0 0;color:#738092;font-size:12px}.btn-group{display:flex;gap:9px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:7px;padding:9px 16px;min-height:35px;border:1px solid var(--edge);background:#fff;color:#1f2e44;font-size:12px;font-weight:600;white-space:nowrap;transition:.15s}.btn:hover{filter:brightness(.98);box-shadow:0 2px 9px #10293a14}.btn-outline{border-color:#0094b7;color:#0087ac}.btn-primary{color:#fff;border-color:var(--toss);background:linear-gradient(#069bbd,#007a9a)}.btn-link{border:0;background:transparent;font-weight:500;padding:8px 6px;box-shadow:none!important}.btn-ghost{background:#fff}.panel{background:rgba(255,255,255,.88);border:1px solid #e6ebf0;border-radius:8px;box-shadow:var(--shadow)}.filter-panel{padding:14px 15px 15px;margin-bottom:12px}.filter-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}.filter-title{display:flex;align-items:center;gap:9px;font-weight:700;margin:0;color:#10202f;border:none;background:transparent;padding:0;font-size:13px}.filter-title .chev{width:13px;transition:.2s}.filter-title[aria-expanded="false"] .chev{transform:rotate(180deg)}.filter-head-actions{display:flex;align-items:center;gap:10px}.filter-head-actions .btn{min-width:107px;min-height:35px}
+/* Orange Import Excel action: matches the supplied visual reference. */
+#openImport.btn-import-excel{background:#ffa000;border:1px solid #ffa000;color:#fff;border-radius:8px;min-width:135px;min-height:36px;padding:8px 12px;gap:7px;font-size:13px;font-weight:600;line-height:1.2;box-shadow:none;letter-spacing:0;transition:background-color .15s ease,box-shadow .15s ease}
+#openImport.btn-import-excel .import-icon{width:18px;height:18px;stroke:currentColor}
+#openImport.btn-import-excel:hover{background:#ec9300;border-color:#ec9300;filter:none;box-shadow:0 3px 10px #e68c0022}
+#openImport.btn-import-excel:focus-visible{outline:3px solid #ffc863;outline-offset:3px}
+@media(max-width:700px){#openImport.btn-import-excel{min-width:125px;min-height:34px;font-size:12px;padding:7px 10px;border-radius:8px}#openImport.btn-import-excel .import-icon{width:16px;height:16px}}.filter-fields{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.calbtn{border:0;background:transparent;color:#657a90;display:inline-flex;align-items:center;justify-content:center;padding:3px 2px;cursor:pointer}.calbtn:hover{color:#0089a8}.native-date{position:fixed;left:-200px;top:-200px;width:1px;height:1px;opacity:0;pointer-events:none}.modal-date{display:flex;align-items:center;border:1px solid #dae3ea;border-radius:6px;min-height:37px;background:#fff;padding:0 7px}.modal-date input{flex:1;border:none!important;outline:0;min-width:0}.date-range{border:1px solid #d8e0e8;background:#fff;display:flex;align-items:center;gap:6px;border-radius:7px;min-height:37px;padding:0 10px;color:#677486;max-width:405px}.date-range .date{width:119px;border:0;background:transparent;color:#263548;outline:0;font-size:12px;min-width:0;height:35px}.date-range .date:focus{background:#f4fbfe}.date-range .arrow{font-size:17px;line-height:1;color:#7e8fa0}.select{width:188px;min-height:37px;background:#fff;border:1px solid #d8e0e8;border-radius:7px;padding:0 11px;outline:0;color:#293548}.filter-fields .btn-primary{height:37px;padding:0 14px}.filter-fields .btn-link{margin-left:4px}.table-panel{overflow:hidden}.table-scroll{width:100%;overflow:auto}.table{border-collapse:collapse;width:100%;min-width:1015px;table-layout:fixed;background:#fff}.table thead tr{background:#f3f6f8}.table th{padding:12px 12px;text-align:left;color:#182635;font-size:12px;font-weight:700;border-right:1px solid #e5ebef;border-bottom:1px solid #e1e7ec;white-space:nowrap}.table th:last-child,.table td:last-child{border-right:none}.table td{height:47px;padding:9px 12px;font-size:12px;color:#263448;border-right:1px solid #edf0f2;border-bottom:1px solid #e8edf0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.table tbody tr:hover td{background:#f5fbfe}.table tbody tr:last-child td{border-bottom:none}.table .number{text-align:center}.table .file-cell{font-weight:500}.table .file-cell .small-file{width:15px;height:15px;color:#1c8aa9;margin-right:6px}.table .table-action{display:inline-flex;align-items:center;gap:5px;color:#0275e9;font-weight:500;border:0;background:transparent;padding:3px 0}.table .table-action:hover{text-decoration:underline}.badge{display:inline-flex;align-items:center;padding:4px 9px;border-radius:6px;border:1px solid;font-size:11px;line-height:15px;font-weight:500}.badge.active{background:#e3fbed;border-color:#a4ecc1;color:#00954b}.badge.expired{background:#ffe9e9;border-color:#ffb6b6;color:#e61e20}.badge.scheduled{background:#e7f1ff;border-color:#c6ddff;color:#176cf2}.badge.ongoing{background:#e7f8f4;border-color:#bdebdc;color:#087f60}.table-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;min-height:61px;background:#fff;border-top:1px solid #e6ebf0;font-size:12px;color:#556376;flex-wrap:wrap}.pagination{display:flex;align-items:center;gap:6px}.pagination select{padding:7px;border:1px solid #dce5eb;border-radius:6px;background:#fff;color:#1e334b}.pagination .range{padding:0 14px}.pagebtn{min-width:31px;height:31px;border:1px solid #dce5eb;border-radius:6px;background:#fff;color:#38506a}.pagebtn.current{background:var(--toss);color:#fff;border-color:var(--toss)}.pagebtn:hover:not(:disabled){background:#e9f4f8}.pagebtn.current:hover{background:var(--toss)!important}.empty{padding:65px 15px;text-align:center;color:#738193}.empty .icon{width:36px;height:36px;margin-bottom:7px;color:#98a9b5}.footnote{font-size:11px;color:#8a98a8;margin:12px 2px}.mask{position:fixed;inset:0;background:rgba(18,31,44,.42);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}.mask.open{display:flex}.modal{width:min(100%,575px);background:white;border-radius:12px;box-shadow:0 20px 80px #07182745;max-height:min(92vh,800px);display:flex;flex-direction:column;overflow:hidden}.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 21px 15px;border-bottom:1px solid #ebeff3}.modal-head h2{font-size:18px;font-weight:700;margin:0}.icon-button{border:0;background:transparent;padding:4px;display:inline-flex;color:#536678;border-radius:6px}.icon-button:hover{background:#eef5f8}.modal-body{padding:20px 21px;overflow-y:auto}.modal-foot{display:flex;justify-content:flex-end;gap:9px;padding:14px 21px;border-top:1px solid #e8edf1}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:16px}.field label{display:block;font-weight:650;margin-bottom:7px;font-size:12px}.field label .star{color:#e74141}.field input[type="date"],.field input[type="text"]{width:100%;height:37px;border:1px solid #dae3ea;border-radius:6px;background:#fff;color:#293748;padding:8px 11px;outline:0}.field input:disabled{background:#f3f6f8;color:#8193a2}.field .hint{font-size:11px;color:#778595;margin-top:6px;line-height:1.5}.dropzone{border:1.5px dashed #9acbda;background:#f3fafc;border-radius:9px;padding:22px 18px;text-align:center;cursor:pointer;transition:.15s}.dropzone:hover,.dropzone.dragover{background:#e8f6fa;border-color:#0195b7}.dropzone svg{width:29px;height:29px;color:#0095b8}.dropzone strong{display:block;margin:8px 0 5px}.dropzone p{color:#728495;font-size:12px;margin:0}.selected-file{display:none;align-items:center;justify-content:space-between;gap:12px;border:1px solid #dae8ee;border-radius:6px;background:#fafcfd;padding:11px;margin-top:11px}.selected-file.visible{display:flex}.selected-file .filename{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}.selected-file .filesize{font-size:11px;color:#8996a2;margin-top:3px}.info-box{background:#eef7fb;border-left:3px solid #16a2c4;padding:9px 11px;font-size:12px;color:#405d70;line-height:1.5;border-radius:4px;margin-top:14px}.template{display:inline-flex;align-items:center;gap:5px;color:#0585a8;font-size:12px;border:0;background:transparent;padding:5px 0;margin-top:5px}.template:hover{text-decoration:underline}.error-message{color:#d32133;font-size:12px;min-height:14px;margin-top:8px;line-height:1.45}.toast-host{position:fixed;bottom:22px;right:22px;z-index:90;display:flex;flex-direction:column;gap:8px}.toast{min-width:280px;max-width:390px;display:flex;align-items:center;gap:9px;padding:13px 15px;background:#fff;border-radius:9px;border:1px solid #dce7ec;box-shadow:0 8px 25px #0d314124;font-weight:500;line-height:1.5;font-size:12px;animation:slidein .18s ease}.toast.success .icon{color:#08a76c}.toast.error .icon{color:#e33d43}.toast.info .icon{color:#0b97b5}@keyframes slidein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.smalltext{font-size:11px;color:#8493a2}.collapse-menu{position:absolute;right:5px;top:68px;background:#fff;border:1px solid #e1e6eb;border-radius:50%;width:25px;height:25px;display:flex;justify-content:center;align-items:center;box-shadow:0 2px 6px #071d2222}.nav-subitems[hidden],.filter-fields[hidden]{display:none}.sidebar.collapsed{width:71px;flex-basis:71px;padding:13px 8px}.sidebar.collapsed .brand span,.sidebar.collapsed .brand-small,.sidebar.collapsed .nav-label,.sidebar.collapsed .chev,.sidebar.collapsed .nav-subitems{display:none!important}.sidebar.collapsed .brand{margin-top:2px}.sidebar.collapsed .nav-item{justify-content:center;padding:0}.sidebar.collapsed .collapse-menu{right:3px}.sidebar.collapsed .collapse-menu .icon{transform:rotate(180deg)}
+@media(max-width:1040px){.sidebar{width:220px;flex-basis:220px}.main{padding:14px}.head h1{font-size:21px}}@media(max-width:700px){.sidebar{display:none}.main{padding:10px}.head{flex-wrap:wrap}.head h1{font-size:21px}.date-range{max-width:100%;width:100%;justify-content:space-between}.date-range .date{width:35%}.select{width:100%}.filter-fields .btn-primary{flex:1}.modal-body{padding:15px}.form-row{grid-template-columns:1fr}.table-footer{justify-content:center}.footnote{font-size:10px}}
+
+/* Dry Operating Cost v3: grouped DateTime range picker, preserved Action column, extended sample list. */
+.date-range{max-width:none;min-height:39px;gap:8px;padding:0 9px;white-space:nowrap}
+.date-range .range-label{color:#65778a;font-size:11px;font-weight:600}
+.date-range .date{width:186px;height:36px;min-width:0;color:#223347;font-size:12px;cursor:pointer;color-scheme:light}
+.date-range .date::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.8}
+.date-range .timezone-label{font-size:10px;font-weight:700;color:#8494a4;background:#edf3f7;padding:5px 4px;border-radius:4px}
+.date-range .arrow{margin:0 3px}
+.table{min-width:1150px}.table .table-action{white-space:nowrap}
+@media(max-width:1040px){.date-range{flex-wrap:wrap}.filter-fields{align-items:stretch}.filter-panel{padding:12px}}
+@media(max-width:680px){.sidebar{width:72px;flex-basis:72px}.main{padding:13px 10px}.head{flex-wrap:wrap}.date-range .date{width:155px}.date-range .timezone-label{display:none}}
+
+/* ===== Dry Operating Cost v4 : Date Range Picker, filter toolbar, no page heading ===== */
+.main{padding-top:14px}
+.filter-panel{margin-bottom:10px}
+.date-range-picker{width:292px;position:relative;flex:none}
+.range-trigger{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;height:37px;border:1px solid #d8e0e8;background:#fff;border-radius:7px;padding:0 11px;color:#223347;font-size:12px;text-align:left;white-space:nowrap;cursor:pointer}
+.range-trigger:hover,.range-trigger[aria-expanded="true"]{border-color:#0796b8;box-shadow:0 0 0 2px #0098c00e}
+.range-text.placeholder{color:#8291a1}.range-calendar-icon{color:#72879b}
+.range-popover[hidden]{display:none!important}
+.range-popover{position:absolute;z-index:25;left:0;top:calc(100% + 8px);width:620px;max-width:calc(100vw - 300px);background:#fff;border:1px solid #d9e2e9;box-shadow:0 14px 44px #243b5026;border-radius:10px;color:#213347;overflow:hidden}
+.range-popover-top{padding:13px 16px;border-bottom:1px solid #edf0f4;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.range-x{width:25px;height:25px;cursor:pointer;font-size:19px;color:#78889a;border:0;background:transparent}
+.range-calendars{padding:13px 15px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.range-month{min-width:0}.month-header{display:flex;align-items:center;justify-content:space-between;height:34px;margin-bottom:8px;font-size:12px}
+.month-nav,.month-nav-place{width:29px;height:29px;display:flex;align-items:center;justify-content:center}.month-nav{border:1px solid #e1e9ee;border-radius:5px;background:white;font-size:21px;color:#475c72;cursor:pointer}.month-nav:hover{background:#eef8fb}
+.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}.weekday,.day-gap{height:28px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#8a97a5;font-weight:600}
+.day-btn{height:30px;border:0;border-radius:5px;display:flex;align-items:center;justify-content:center;background:#fff;color:#24374b;cursor:pointer;font-size:12px}
+.day-btn:hover{background:#e6f3f8}.day-btn.between{background:#e1f4fa;border-radius:0;color:#007b9b}
+.day-btn.start,.day-btn.end{background:#0088a9;color:#fff;font-weight:700}.day-btn.today:not(.start):not(.end){outline:1px solid #98c8d8;outline-offset:-2px}
+.range-popover-bottom{padding:12px 15px;border-top:1px solid #edf0f4;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.range-selection{font-size:11px;color:#65778c}.range-footer-actions{display:flex;gap:7px}.range-footer-actions .btn{min-height:31px;padding:6px 12px}
+@media(max-width:1050px){.range-popover{max-width:calc(100vw - 250px)}}
+@media(max-width:700px){.date-range-picker{width:100%}.range-popover{max-width:min(620px,calc(100vw - 22px));width:min(620px,calc(100vw - 22px));}.range-calendars{grid-template-columns:1fr}.range-month:nth-child(2){display:none}.filter-head{flex-wrap:wrap}.filter-head-actions{width:100%;justify-content:flex-end}}
+
+/* ===== Dry Operating Cost | Detail side panel — common enterprise pattern ===== */
+body.detail-open{overflow:hidden}
+.file-view{border:0;background:transparent;font:inherit;color:#087c9c;font-weight:600;text-align:left;padding:0;display:inline-flex;align-items:center;gap:7px;max-width:100%;white-space:nowrap;cursor:pointer}
+.file-view:hover{text-decoration:underline}
+.table .table-action{margin-right:10px}.table .table-action:last-child{margin-right:0}
+.detail-mask{display:none;position:fixed;inset:25px 0 0;background:rgba(14,30,44,.42);z-index:65;align-items:stretch;justify-content:flex-end}
+.detail-mask.open{display:flex}
+.detail-drawer{width:min(1180px,calc(100vw - 275px));height:100%;background:#fff;box-shadow:-12px 0 44px rgba(13,38,59,.18);display:flex;flex-direction:column;min-height:0;min-width:0;animation:slideDrawer .22s ease}
+@keyframes slideDrawer{from{transform:translateX(34px);opacity:.8}to{transform:translateX(0);opacity:1}}
+.detail-header{padding:17px 23px 15px;border-bottom:1px solid #e3eaf0;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex:none}.detail-header-main{min-width:0;flex:1}.detail-title-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.detail-header h2{font-size:18px;font-weight:700;line-height:1.3;margin:0;color:#152b3d}.detail-header .header-status{font-size:12px;line-height:1.2;padding:7px 12px;border-radius:8px}.detail-header .detail-subtitle{margin-top:8px}
+.detail-header .detail-subtitle{color:#768798;font-size:12px;line-height:1.4}.detail-header-actions{display:flex;align-items:center;gap:8px;flex:none}.detail-header-actions .btn{min-height:35px}
+.detail-header .detail-close{width:31px;height:31px;display:grid;place-items:center;border:0;border-radius:6px;background:transparent;color:#536a7f}
+.detail-header .detail-close:hover{background:#edf5f8}
+.detail-main{overflow-y:auto;min-height:0;flex:1;display:flex;flex-direction:column;padding:18px 23px 10px;gap:19px}
+.detail-section-heading{font-size:13px;font-weight:700;color:#173043;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.detail-section-heading:before{content:'';height:15px;width:3px;background:#008aa9;border-radius:3px}
+.detail-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:20px;row-gap:16px;padding:17px 18px;border-radius:8px;border:1px solid #e2e9ee;background:#fafcfd}
+.detail-meta-item{min-width:0}
+.detail-meta-item .key{display:block;color:#758597;font-size:11px;margin-bottom:6px}
+.detail-meta-item .val{display:block;color:#23374a;font-weight:600;min-width:0;overflow-wrap:anywhere;line-height:1.5}
+.detail-meta-item .val .badge{font-size:11px}
+.detail-data-section{display:flex;flex-direction:column;min-height:250px;flex:1}
+.detail-dataset-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:10px}
+.detail-data-heading{display:flex;align-items:center;gap:9px;min-width:0}
+.detail-data-heading h3{font-size:13px;margin:0;font-weight:700}
+.detail-count{color:#657787;background:#edf5f8;border-radius:50px;font-size:11px;font-weight:600;padding:4px 9px}
+.detail-search{height:35px;width:274px;border:1px solid #dbe4ea;background:#fff;border-radius:7px;display:flex;align-items:center;gap:8px;padding:0 10px;color:#7b8c9d}
+.detail-search:focus-within{border-color:#008ba9;box-shadow:0 0 0 2px #008ba911}
+.detail-search input{width:100%;border:none;outline:0;color:#203447;background:transparent;font-size:12px}
+.detail-table-scroll{width:100%;max-height:440px;min-height:145px;overflow:auto;border:1px solid #dce5ec;border-radius:7px;background:white}
+.detail-table{border-collapse:separate;border-spacing:0;table-layout:fixed;min-width:1858px;width:100%;font-size:12px}
+.detail-table th{position:sticky;top:0;background:#f3f6f8;text-align:left;font-weight:700;color:#24364a;white-space:normal;line-height:1.35;height:55px;padding:9px 12px;border-bottom:1px solid #dbe3e9;border-right:1px solid #e6ebef;z-index:4}
+.detail-table td{height:43px;padding:9px 12px;white-space:nowrap;border-bottom:1px solid #ecf0f3;border-right:1px solid #eef1f4;color:#293a4c;overflow:hidden;text-overflow:ellipsis}
+.detail-table tbody tr:hover td{background:#f2f9fc}
+.detail-table th:last-child,.detail-table td:last-child{border-right:0}
+.detail-table th:nth-child(1),.detail-table td:nth-child(1){position:sticky;left:0;z-index:3;background:#fff;box-shadow:1px 0 0 #edf0f4}
+.detail-table th:nth-child(2),.detail-table td:nth-child(2){position:sticky;left:52px;z-index:3;background:#fff;box-shadow:2px 0 5px #1829370b}
+.detail-table th:nth-child(1),.detail-table th:nth-child(2){z-index:6;background:#f3f6f8}
+.detail-table tbody tr:hover td:nth-child(1),.detail-table tbody tr:hover td:nth-child(2){background:#f2f9fc}
+.detail-table .right{text-align:right;font-variant-numeric:tabular-nums}
+.detail-table .center{text-align:center}
+.detail-no-results{text-align:center;padding:35px 10px;color:#8192a0;font-size:12px}
+.detail-note{color:#8a98a5;font-size:11px;margin-top:8px;line-height:1.5}
+.detail-pagination{display:flex;align-items:center;justify-content:space-between;gap:13px;padding:12px 2px;color:#627487;font-size:12px;flex-wrap:wrap}
+.detail-pager{display:flex;align-items:center;gap:6px}
+.detail-pager select{background:white;border:1px solid #dce5eb;border-radius:6px;padding:6px;color:#26394b}
+.detail-pager .pagebtn{min-width:29px;height:29px}
+.detail-pager .range{padding:0 7px;white-space:nowrap}
+.detail-loading{font-size:12px;color:#718397;margin:12px 0;display:none}
+.detail-loading.visible{display:block}
+@media(max-width:1100px){.detail-drawer{width:min(100%,calc(100vw - 100px))}.detail-meta{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.detail-mask{inset:0}.detail-drawer{width:100%}.detail-main{padding:13px}.detail-header{padding:13px;flex-wrap:wrap}.detail-header-actions{width:100%;justify-content:flex-start}.detail-meta{grid-template-columns:1fr 1fr;padding:12px;row-gap:11px}.detail-search{width:100%}.detail-pagination{justify-content:center}}
+
+
+/* v12 — detail-only filter: Route textbox and multi-checkbox select. */
+.detail-filter-panel{flex:none;background:#f8fafc;border:1px solid #e3eaf0;border-radius:9px;padding:13px 14px 14px;margin-bottom:16px;position:relative;z-index:8}
+.detail-filter-toggle{display:flex;align-items:center;gap:8px;border:0;background:transparent;color:#152b3d;font-size:13px;font-weight:700;padding:1px 0;cursor:pointer}
+.detail-filter-toggle .detail-filter-caret{width:14px;height:14px;transform:rotate(180deg);transition:transform .18s ease}
+.detail-filter-toggle[aria-expanded="false"] .detail-filter-caret{transform:rotate(0deg)}
+.detail-filter-fields{display:flex;align-items:center;gap:9px;margin-top:12px;flex-wrap:wrap}
+.detail-filter-fields[hidden]{display:none}
+.detail-multiselect{position:relative;flex:1 1 160px;min-width:140px;max-width:240px}
+.detail-multi-trigger,.detail-route-input{height:39px;width:100%;border:1px solid #d8e1e9;border-radius:9px;padding:0 11px;background:#fff;color:#263a4c;font-size:12px;outline:none}
+.detail-multi-trigger{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;cursor:pointer}
+.detail-multi-trigger .detail-multi-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.detail-multi-trigger.is-placeholder{color:#73849a}
+.detail-multi-trigger svg{width:15px;height:15px;color:#66778a;flex:none;transition:transform .16s}
+.detail-multi-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
+.detail-route-input{flex:1 1 160px;min-width:140px;max-width:240px;cursor:text}
+.detail-route-input::placeholder{color:#73849a}
+.detail-route-input:focus,.detail-multi-trigger:focus-visible,.detail-multi-trigger[aria-expanded="true"]{border-color:#008cac;box-shadow:0 0 0 2px #008cac1a}
+.detail-multi-menu{position:absolute;top:calc(100% + 5px);left:0;z-index:80;width:max(240px,100%);max-width:min(330px,calc(100vw - 40px));background:#fff;border:1px solid #dbe4eb;border-radius:9px;box-shadow:0 12px 29px rgba(23,51,77,.19);overflow:hidden}
+.detail-multi-menu[hidden]{display:none}
+.detail-multi-top{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:10px 11px;border-bottom:1px solid #eaf0f4;font-size:11px;color:#66778a}
+.detail-multi-links{display:flex;gap:10px}
+.detail-multi-links button{background:transparent;border:0;padding:1px 0;color:#007f9f;font-size:11px;cursor:pointer}
+.detail-multi-links button:hover{text-decoration:underline}
+.detail-multi-links button:disabled{opacity:.45;text-decoration:none}
+.detail-multi-options{max-height:238px;overflow:auto;padding:5px}
+.detail-multi-option{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:5px;cursor:pointer;min-height:34px;font-size:12px;color:#263a4c}
+.detail-multi-option:hover{background:#f0f8fb}
+.detail-multi-option input{appearance:auto;accent-color:#008eab;width:15px;height:15px;margin:0;cursor:pointer;flex:none}
+.detail-multi-option:has(input:disabled){opacity:.42;cursor:not-allowed}
+.detail-multi-option:has(input:disabled) input{cursor:not-allowed}
+.detail-multi-empty{padding:15px;text-align:center;color:#8796a4;font-size:12px}
+.detail-filter-fields .detail-filter-actions{display:flex;gap:8px;align-items:center;flex:none;margin-left:auto}
+.detail-filter-fields .detail-filter-actions .btn{min-height:39px;padding:0 13px}
+.detail-filter-fields .detail-filter-actions .btn-link{padding:0 8px;min-width:83px}
+.detail-filter-panel .detail-filter-title-icon{width:16px;height:16px}
+@media(max-width:1080px){.detail-multiselect,.detail-route-input{max-width:none;flex-basis:190px}.detail-filter-fields .detail-filter-actions{margin-left:0}}
+@media(max-width:700px){.detail-multiselect,.detail-route-input{flex:1 1 43%;min-width:120px}.detail-filter-fields .detail-filter-actions{width:100%;justify-content:flex-end}.detail-multi-menu{width:max(215px,100%)}}
+/* v13 — icon-only row actions and Delete confirmation */
+.table .table-action.icon-only{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;min-width:30px;padding:0;border:1px solid transparent;border-radius:7px;margin:0 2px 0 0;color:#087f9f;vertical-align:middle}
+.table .table-action.icon-only svg{width:17px;height:17px}
+.table .table-action.icon-only:hover{background:#eaf6fa;border-color:#d1eaf1;text-decoration:none}
+.table .table-action.icon-only.delete-action{color:#dc3545}
+.table .table-action.icon-only.delete-action:hover{background:#fff1f2;border-color:#ffd5da}
+.table .table-action.icon-only:focus-visible{outline:2px solid #118eab;outline-offset:2px}
+.delete-confirm-dialog{width:min(100%,440px);background:#fff;border-radius:11px;box-shadow:0 24px 60px #17283d40;overflow:hidden}
+.delete-confirm-head{display:flex;gap:11px;align-items:center;padding:20px 22px 12px}
+.delete-confirm-mark{width:35px;height:35px;display:grid;place-items:center;background:#fff0f1;border-radius:9px;color:#d93043}
+.delete-confirm-mark svg{width:20px;height:20px}
+.delete-confirm-head h2{font-size:17px;margin:0;color:#1b2c3c}
+.delete-confirm-body{padding:0 22px 18px;font-size:13px;color:#516174;line-height:1.6}
+.delete-confirm-body strong{overflow-wrap:anywhere;color:#22384b}
+.delete-confirm-foot{border-top:1px solid #e9edf1;padding:13px 22px;display:flex;justify-content:flex-end;gap:9px}
+.btn-danger{background:#dc3545;border-color:#dc3545;color:#fff}
+.btn-danger:hover{background:#c82335;border-color:#c82335;filter:none}
+.detail-note:empty{display:none}
+
+/* Compact export action beside Import: match the approved orange button pattern. */
+#exportAll.btn-export-excel{background:#ffa000;border:1px solid #ffa000;color:#fff;border-radius:8px;min-width:135px;min-height:36px;padding:8px 12px;gap:7px;font-size:13px;font-weight:600;line-height:1.2;box-shadow:none;letter-spacing:0;transition:background-color .15s ease,box-shadow .15s ease}
+#exportAll.btn-export-excel .import-icon{width:18px;height:18px;stroke:currentColor}
+#exportAll.btn-export-excel:hover{background:#ec9300;border-color:#ec9300;filter:none;box-shadow:0 3px 10px #e68c0022}
+#exportAll.btn-export-excel:focus-visible{outline:3px solid #ffc863;outline-offset:3px}
+@media(max-width:700px){#exportAll.btn-export-excel{min-width:125px;min-height:34px;font-size:12px;padding:7px 10px;border-radius:8px}#exportAll.btn-export-excel .import-icon{width:16px;height:16px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute;overflow:hidden" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="i-plane" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M17 21v-8l-5-3V3a2 2 0 0 0-4 0v7l-5 3v8l7-3 7 3Z" transform="translate(2 0)"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M5 6h15M5 12h10M5 18h5"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 8h8M8 12h8M8 16h5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c-5 6-5 12 0 18M12 3c5 6 5 12 0 18" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6l-9-4Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m8 12 3 3 5-6" stroke="currentColor" stroke-width="1.7" fill="none"/></symbol>
+<symbol id="i-envelope" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="19" cy="19" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 5h6a4 4 0 0 1 0 8h-2a3 3 0 0 0 0 6h6" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="i-network" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="19" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m7 11 9-5M7 13l9 5" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h9l5 5v14a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M14 2v6h6M8 13h8M8 17h7" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+<symbol id="i-import-file" viewBox="0 0 32 32"><path d="M18 3.5H9.5A4.5 4.5 0 0 0 5 8v16a4.5 4.5 0 0 0 4.5 4.5h13A4.5 4.5 0 0 0 27 24V12.5L18 3.5Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 3.5v7.2c0 1 .8 1.8 1.8 1.8H27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M16 23V14m-4 4 4-4 4 4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-export-file" viewBox="0 0 32 32"><path d="M18 3.5H9.5A4.5 4.5 0 0 0 5 8v16a4.5 4.5 0 0 0 4.5 4.5h13A4.5 4.5 0 0 0 27 24V12.5L18 3.5Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 3.5v7.2c0 1 .8 1.8 1.8 1.8H27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M16 13v10m-4-4 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.3 12S5.8 6.5 12 6.5 21.7 12 21.7 12 18.2 17.5 12 17.5 2.3 12 2.3 12Z" stroke="currentColor" stroke-width="1.65" fill="none"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.65" fill="none"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 4h4m-8 3 1 14h10l1-14M10 11v6M14 11v6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 16v4h16v-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M7 3v4M17 3v4M3 10h18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 5 5" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14-5L3 9m0-5v5h5M4 13a8 8 0 0 0 14 5l3-3m0 5v-5h-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 6h18M7 11h10M10 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m7.5 12 3 3 6-6" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 7v6m0 4v.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+<div class="topline"></div>
+<div class="layout">
+<aside class="sidebar" id="sidebar" aria-label="Main menu">
+<div class="brand">
+<svg class="lotus" viewBox="0 0 64 52" aria-hidden="true"><path fill="currentColor" d="M32 5c-8 10-9 17-4 28l4 7 4-7c5-11 4-18-4-28Zm-14 8c-5 13-3 22 9 29-3-10-5-19-9-29Zm28 0c-4 10-6 19-9 29 12-7 14-16 9-29ZM6 26c1 12 8 19 22 20C23 38 15 31 6 26Zm52 0C49 31 41 38 36 46c14-1 21-8 22-20ZM18 45h28l-4 4H22l-4-4Z"/></svg><span>VietnamAirlines</span><svg class="brand-small" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="1"/><path d="M5 16c6-3 11 4 16-2 4-4 4-6 6-7M8 22c8-1 7 5 16 1M9 10c7-4 9 2 15-3" stroke="currentColor" fill="none" stroke-width="1"/></svg>
+</div>
+<button class="collapse-menu" id="collapseMenu" aria-label="Collapse sidebar" title="Collapse sidebar"><svg class="icon"><use href="#i-chevron"/></svg></button>
+<nav class="nav">
+<a href="#" class="nav-item" title="Pilot Category"><svg class="icon"><use href="#i-shield"/></svg><span class="nav-label">Pilot Category</span></a>
+<a href="#" class="nav-item" title="Cabin Crew Category"><svg class="icon"><use href="#i-envelope"/></svg><span class="nav-label">Cabin Crew Category</span></a>
+<a href="#" class="nav-item" title="Carrier"><svg class="icon"><use href="#i-box"/></svg><span class="nav-label">Carrier</span></a>
+<a href="#" class="nav-item" title="Country Category"><svg class="icon"><use href="#i-globe"/></svg><span class="nav-label">Country Category</span></a>
+<a href="#" class="nav-item" title="FIR Category"><svg class="icon"><use href="#i-globe"/></svg><span class="nav-label">FIR Category</span></a>
+<a href="#" class="nav-item" title="Email List"><svg class="icon"><use href="#i-envelope"/></svg><span class="nav-label">Email List</span></a>
+<a href="#" class="nav-item" title="ULD Category"><svg class="icon"><use href="#i-box"/></svg><span class="nav-label">ULD Category</span></a>
+<a href="#" class="nav-item" title="ULD"><svg class="icon"><use href="#i-box"/></svg><span class="nav-label">ULD</span></a>
+<a href="#" class="nav-item" title="Flight Routes"><svg class="icon"><use href="#i-route"/></svg><span class="nav-label">Flight Routes</span></a>
+<a href="#" class="nav-item" title="Flight Fleet"><svg class="icon"><use href="#i-shield"/></svg><span class="nav-label">Flight Fleet</span></a>
+<a href="#" class="nav-item" title="AC Subtype"><svg class="icon"><use href="#i-plane"/></svg><span class="nav-label">AC Subtype</span></a>
+<a href="#" class="nav-item" title="Aircraft"><svg class="icon"><use href="#i-plane"/></svg><span class="nav-label">Aircraft</span></a>
+<a href="#" class="nav-item" title="Airport"><svg class="icon"><use href="#i-box"/></svg><span class="nav-label">Airport</span></a>
+<a href="#" class="nav-item" title="OTP-OSP"><svg class="icon"><use href="#i-file"/></svg><span class="nav-label">OTP-OSP</span></a>
+<a href="#" class="nav-item" title="Leg Type"><svg class="icon"><use href="#i-route"/></svg><span class="nav-label">Leg Type</span></a>
+<button id="dataSourceToggle" class="nav-item" aria-expanded="true" type="button"><svg class="icon" style="color:#059abb"><use href="#i-network"/></svg><span class="nav-label">Data Source</span><svg class="icon chev up"><use href="#i-chevron"/></svg></button>
+<div class="nav-subitems" id="sourceSubmenu"><a href="#" class="nav-subitem"><span class="dot"></span>ACARS Message</a></div>
+<!-- BUSINESS REQUIREMENT: Dry Operating Cost is a ROOT-LEVEL ITEM immediately BELOW Data Source, NOT inside its sub-menu. -->
+<a href="#dry-operating-cost" class="nav-item active" aria-current="page" title="Dry Operating Cost"><svg class="icon"><use href="#i-file"/></svg><span class="nav-label">Dry Operating Cost</span></a>
+<div class="nav-divider"></div>
+</nav>
+</aside>
+<main class="main" id="dry-operating-cost">
+
+<section class="panel filter-panel" aria-label="Filter"><div class="filter-head"><button type="button" class="filter-title" id="filterToggle" aria-expanded="true"><svg class="icon"><use href="#i-filter"/></svg>Filter<svg class="icon chev" style="transform:rotate(180deg)"><use href="#i-chevron"/></svg></button><div class="filter-head-actions"><button type="button" class="btn btn-import-excel" id="openImport"><svg class="icon import-icon" aria-hidden="true"><use href="#i-import-file"/></svg>Import Excel</button><button type="button" class="btn btn-import-excel btn-export-excel" id="exportAll" title="Export filtered Dry Operating Cost list to Excel"><svg class="icon import-icon" aria-hidden="true"><use href="#i-export-file"/></svg>Export Excel</button></div></div><div class="filter-fields" id="filterFields"><div class="date-range-picker" id="rangeContainer"><button type="button" id="dateRangeTrigger" class="range-trigger" aria-haspopup="dialog" aria-expanded="false" aria-label="Select effective date range"><span class="range-text placeholder" id="dateRangeLabel">DD/MM/YYYY → DD/MM/YYYY</span><svg class="icon range-calendar-icon"><use href="#i-calendar"/></svg></button><div id="dateRangePopover" class="range-popover" role="dialog" aria-label="Choose effective date range" hidden><div class="range-popover-top"><span>Effective date range</span><button type="button" class="range-x" id="dateRangeClose" aria-label="Close calendar">×</button></div><div class="range-calendars" id="rangeCalendars"><section class="range-month" id="rangeMonthLeft"></section><section class="range-month" id="rangeMonthRight"></section></div><div class="range-popover-bottom"><span class="range-selection" id="dateRangeSelection">Select start and end dates</span><div class="range-footer-actions"><button type="button" class="btn btn-link" id="dateRangeReset">Clear</button><button type="button" class="btn btn-primary" id="dateRangeApply" disabled>Apply</button></div></div></div></div><select class="select" id="filterStatus" aria-label="Status"><option value="">Status — All</option><option>Active</option><option>Scheduled</option><option>Expired</option></select><button class="btn btn-primary" id="search"><svg class="icon"><use href="#i-search"/></svg>Search</button><button class="btn btn-link" id="clearFilter"><svg class="icon"><use href="#i-refresh"/></svg>Clear Filter</button></div></section>
+<section class="panel table-panel" aria-label="Dry Operating Cost List"><div class="table-scroll"><table class="table" aria-label="Dry Operating Cost list"><colgroup><col style="width:53px"/><col style="width:225px"/><col style="width:150px"/><col style="width:150px"/><col style="width:118px"/><col style="width:185px"/><col style="width:156px"/><col style="width:135px"/></colgroup><thead><tr><th class="number">No.</th><th>File Name</th><th>Effective From</th><th>Effective To</th><th>Status</th><th>Imported Time (UTC)</th><th>Imported By</th><th>Action</th></tr></thead><tbody id="listBody"></tbody></table><div class="empty" id="emptyState" hidden><svg class="icon"><use href="#i-search"/></svg><div>No data available.</div></div></div><div class="table-footer"><span id="totalText">Total records: 0</span><div class="pagination"><span>Rows per page:</span><select id="pageSize" aria-label="Rows per page"><option>10</option><option selected>25</option><option>50</option></select><span class="range" id="pageRange">0–0 of 0</span><button class="pagebtn" id="firstPage" aria-label="First page">«</button><button class="pagebtn" id="previousPage" aria-label="Previous page">‹</button><span id="pageButtons" style="display:flex;gap:6px"></span><button class="pagebtn" id="nextPage" aria-label="Next page">›</button><button class="pagebtn" id="lastPage" aria-label="Last page">»</button></div></div></section>
+<p class="footnote">UI prototype · 52 sample periods and 308 sample cost rows are for demonstration. Local file import and detail viewing work in supported browsers. No backend connection.</p>
+</main>
+</div>
+<div class="mask" id="importMask" role="dialog" aria-modal="true" aria-labelledby="importTitle"><div class="modal"><div class="modal-head"><h2 id="importTitle">Import Dry Operating Cost</h2><button class="icon-button" id="closeImport" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button></div><div class="modal-body"><div class="form-row"><div class="field"><label for="effectiveFrom">Effective From <span class="star">*</span></label><div class="modal-date"><input type="text" placeholder="DD/MM/YYYY" maxlength="10" id="effectiveFrom"/><button type="button" class="calbtn" data-date-target="effectiveFrom" aria-label="Choose import Effective From"><svg class="icon"><use href="#i-calendar"/></svg></button></div><div class="hint">Start date of the imported data set.</div></div><div class="field"><label for="effectiveTo">Effective To</label><input type="text" disabled id="effectiveTo" placeholder="Set automatically"/><div class="hint">Automatically calculated from the next period.</div></div></div><div class="field"><label>Import file <span class="star">*</span></label><div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose Excel file"><svg><use href="#i-upload"/></svg><strong>Drag & drop your file here or choose file</strong><p>.xlsx only · Maximum 5 MB · One file = one Dry Operating Cost record</p></div><input type="file" id="fileInput" accept=".xlsx" hidden/><div class="selected-file" id="selectedFile"><div style="display:flex;align-items:center;gap:9px;min-width:0"><svg class="icon" style="color:#0e91b0"><use href="#i-file"/></svg><div style="min-width:0"><div class="filename" id="filename"></div><div class="filesize" id="filesize"></div></div></div><button class="icon-button" id="removeFile" aria-label="Remove file"><svg class="icon"><use href="#i-x"/></svg></button></div><button class="template" id="downloadTemplate"><svg class="icon"><use href="#i-download"/></svg>Download template file (sample layout)</button></div><div class="info-box">Effective From / Effective To applies to the <strong>entire Excel workbook</strong>, not each row inside the workbook. Importing a new period automatically adjusts the previous period's Effective To. Duplicate Effective From and insertion into an expired period are not accepted in this demo.</div><div class="error-message" id="importError" aria-live="polite"></div></div><div class="modal-foot"><button class="btn btn-ghost" id="cancelImport">Cancel</button><button class="btn btn-primary" id="confirmImport"><svg class="icon"><use href="#i-upload"/></svg>Import</button></div></div></div>
+
+<!-- Confirm deletion of one imported period (prototype data only). -->
+<div class="mask" id="deleteMask" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+  <div class="delete-confirm-dialog">
+    <div class="delete-confirm-head"><div class="delete-confirm-mark"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></div><h2 id="deleteTitle">Delete Dry Operating Cost</h2></div>
+    <div class="delete-confirm-body">Are you sure you want to delete <strong id="deleteFileName"></strong>?<div class="smalltext" style="margin-top:8px">This will remove the selected effective period and its imported data from this local prototype.</div></div>
+    <div class="delete-confirm-foot"><button type="button" class="btn btn-ghost" id="cancelDelete">Cancel</button><button type="button" class="btn btn-danger" id="confirmDelete"><svg class="icon"><use href="#i-trash"/></svg>Delete</button></div>
+  </div>
+</div>
+
+<!-- Right-side detail panel: read-only view of one imported workbook, with paginated cost lines. -->
+<div class="detail-mask" id="detailMask" aria-hidden="true">
+  <aside class="detail-drawer" id="detailDrawer" role="dialog" aria-modal="true" aria-labelledby="detailTitle" tabindex="-1">
+    <div class="detail-header">
+      <div class="detail-header-main"><div class="detail-title-row"><h2 id="detailTitle">Dry Operating Cost Detail</h2><span class="badge header-status ongoing" id="detailHeaderStatus">Ongoing</span></div><div class="detail-subtitle" id="detailSubtitle">View imported cost data by effective period</div></div>
+      <div class="detail-header-actions"><button class="btn btn-ghost" id="detailExport" type="button" title="Download the imported Excel file"><svg class="icon"><use href="#i-download"/></svg>Download File</button></div>
+    </div>
+    <div class="detail-main">
+      <section class="detail-data-section" aria-label="Cost Detail">
+        <div class="detail-filter-panel" aria-label="Detail Filter">
+          <button type="button" class="detail-filter-toggle" id="detailFilterToggle" aria-controls="detailFilterFields" aria-expanded="true"><svg class="icon detail-filter-title-icon"><use href="#i-filter"/></svg>Filter<svg class="icon detail-filter-caret"><use href="#i-chevron"/></svg></button>
+          <div class="detail-filter-fields" id="detailFilterFields">
+            <div class="detail-multiselect" data-multi="net">
+              <button type="button" id="detailFilterNet" class="detail-multi-trigger is-placeholder" aria-haspopup="true" aria-expanded="false" aria-controls="detailFilterNetMenu"><span class="detail-multi-label">NetW3</span><svg class="icon"><use href="#i-chevron"/></svg></button>
+              <div class="detail-multi-menu" id="detailFilterNetMenu" aria-label="Select NetW3 values" hidden><div class="detail-multi-top"><span id="detailFilterNetCount">0 selected</span><div class="detail-multi-links"><button type="button" data-multi-all="net">Select all</button><button type="button" data-multi-clear="net">Clear</button></div></div><div class="detail-multi-options" id="detailFilterNetOptions"></div></div>
+            </div>
+            <input type="search" id="detailFilterRoute" class="detail-route-input" placeholder="Route" aria-label="Route" autocomplete="off" spellcheck="false" />
+            <div class="detail-multiselect" data-multi="type">
+              <button type="button" id="detailFilterType" class="detail-multi-trigger is-placeholder" aria-haspopup="true" aria-expanded="false" aria-controls="detailFilterTypeMenu"><span class="detail-multi-label">FLT TYPE</span><svg class="icon"><use href="#i-chevron"/></svg></button>
+              <div class="detail-multi-menu" id="detailFilterTypeMenu" aria-label="Select flight type values" hidden><div class="detail-multi-top"><span id="detailFilterTypeCount">0 selected</span><div class="detail-multi-links"><button type="button" data-multi-all="type">Select all</button><button type="button" data-multi-clear="type">Clear</button></div></div><div class="detail-multi-options" id="detailFilterTypeOptions"></div></div>
+            </div>
+            <div class="detail-multiselect" data-multi="ac">
+              <button type="button" id="detailFilterAc" class="detail-multi-trigger is-placeholder" aria-haspopup="true" aria-expanded="false" aria-controls="detailFilterAcMenu"><span class="detail-multi-label">AC GROUP</span><svg class="icon"><use href="#i-chevron"/></svg></button>
+              <div class="detail-multi-menu" id="detailFilterAcMenu" aria-label="Select AC group values" hidden><div class="detail-multi-top"><span id="detailFilterAcCount">0 selected</span><div class="detail-multi-links"><button type="button" data-multi-all="ac">Select all</button><button type="button" data-multi-clear="ac">Clear</button></div></div><div class="detail-multi-options" id="detailFilterAcOptions"></div></div>
+            </div>
+            <div class="detail-filter-actions"><button type="button" class="btn btn-primary" id="detailFilterSearch"><svg class="icon"><use href="#i-search"/></svg>Search</button><button type="button" class="btn btn-link" id="detailFilterClear"><svg class="icon"><use href="#i-refresh"/></svg>Clear Filter</button></div>
+          </div>
+        </div>
+        <div class="detail-dataset-toolbar">
+          <div class="detail-data-heading"><h3>Cost Detail</h3><span class="detail-count" id="detailCount">0 rows</span></div>
+        </div>
+        <div class="detail-loading" id="detailLoading" role="status">Loading cost details...</div>
+        <div class="detail-table-scroll" id="detailScroll" tabindex="0" aria-label="Scrollable cost detail table">
+          <table class="detail-table" aria-label="Dry Operating Cost data details">
+            <colgroup><col style="width:52px"/><col style="width:80px"/><col style="width:114px"/><col style="width:98px"/><col style="width:110px"/><col style="width:180px"/><col style="width:180px"/><col style="width:165px"/><col style="width:120px"/><col style="width:204px"/><col style="width:170px"/><col style="width:210px"/><col style="width:175px"/></colgroup>
+            <thead id="detailTableHead"></thead><tbody id="detailBody"></tbody>
+          </table>
+          <div id="detailEmpty" class="detail-no-results" hidden>No cost details available.</div>
+        </div>
+        <div class="detail-note" id="detailNote"></div>
+        <div class="detail-pagination">
+          <span id="detailTotalText">Total records: 0</span>
+          <div class="detail-pager"><span>Rows per page:</span><select id="detailPageSize" aria-label="Detail rows per page"><option>10</option><option selected>25</option><option>50</option><option>100</option></select><span class="range" id="detailPageRange">0–0 of 0</span><button class="pagebtn" id="detailFirst" aria-label="First detail page">«</button><button class="pagebtn" id="detailPrev" aria-label="Previous detail page">‹</button><span id="detailPages" style="display:flex;gap:5px"></span><button class="pagebtn" id="detailNext" aria-label="Next detail page">›</button><button class="pagebtn" id="detailLast" aria-label="Last detail page">»</button></div>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+<input type="date" class="native-date" id="nativeEffectiveFrom" aria-hidden="true" tabindex="-1"/>
+<script>
+'use strict';
+const $ = (id) => document.getElementById(id);
+const icon = (id, cls='icon') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+// A standalone, offline-friendly two-calendar Date Range Picker (date only, no time fields).
+// The UI follows daterangepicker's single-input range selection behaviour.
+let chosenDateRange={from:'',to:''};
+let pendingDateRange={from:'',to:''};
+let pickerMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+const rangeWeekDays=['Mo','Tu','We','Th','Fr','Sa','Su'];
+const monthLabels=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function dayIso(year,month,day){return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`}
+function changePickerMonth(delta){pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+delta,1);drawRangeCalendars()}
+function daySelected(iso){
+ if(!pendingDateRange.from || pendingDateRange.to){pendingDateRange={from:iso,to:''}}
+ else if(iso<pendingDateRange.from){pendingDateRange={from:iso,to:pendingDateRange.from}}
+ else {pendingDateRange.to=iso}
+ drawRangeCalendars();
+}
+function buildMonthHtml(monthOffset){
+ const dt=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+monthOffset,1),y=dt.getFullYear(),m=dt.getMonth();
+ const firstMondayIndex=(dt.getDay()+6)%7;
+ const days=new Date(y,m+1,0).getDate();
+ const offset=monthOffset===0?-1:1;
+ const prev=`<button class="month-nav" type="button" aria-label="Previous month" data-month-move="-1">‹</button>`;
+ const next=`<button class="month-nav" type="button" aria-label="Next month" data-month-move="1">›</button>`;
+ let out=`<div class="month-header">${monthOffset===0?prev:'<span class="month-nav-place"></span>'}<strong>${monthLabels[m]} ${y}</strong>${monthOffset===1?next:'<span class="month-nav-place"></span>'}</div>`;
+ out+='<div class="month-grid">'+rangeWeekDays.map(day=>`<div class="weekday">${day}</div>`).join('');
+ for(let i=0;i<firstMondayIndex;i++)out+='<span class="day-gap"></span>';
+ for(let day=1;day<=days;day++){
+  const iso=dayIso(y,m,day),isStart=iso===pendingDateRange.from,isEnd=iso===pendingDateRange.to;
+  const inRange=pendingDateRange.from&&pendingDateRange.to&&iso>pendingDateRange.from&&iso<pendingDateRange.to;
+  const classes=['day-btn',isStart?'start':'',isEnd?'end':'',inRange?'between':'',iso===new Date().toLocaleDateString('en-CA')?'today':''].filter(Boolean).join(' ');
+  out+=`<button type="button" class="${classes}" data-date-iso="${iso}" aria-label="${day}/${m+1}/${y}" aria-pressed="${isStart||isEnd?'true':'false'}">${day}</button>`;
+ }
+ out+='</div>';
+ return out;
+}
+function drawRangeCalendars(){
+ $('rangeMonthLeft').innerHTML=buildMonthHtml(0);
+ $('rangeMonthRight').innerHTML=buildMonthHtml(1);
+ $('dateRangeSelection').textContent=pendingDateRange.from
+  ?(pretty(pendingDateRange.from)+(pendingDateRange.to?' → '+pretty(pendingDateRange.to):' → Select end date'))
+  :'Select start and end dates';
+ $('dateRangeApply').disabled=!(pendingDateRange.from&&pendingDateRange.to);
+}
+function updateDateRangeLabel(){
+ const valid=chosenDateRange.from&&chosenDateRange.to;
+ $('dateRangeLabel').textContent=valid?`${pretty(chosenDateRange.from)} → ${pretty(chosenDateRange.to)}`:'DD/MM/YYYY → DD/MM/YYYY';
+ $('dateRangeLabel').classList.toggle('placeholder',!valid);
+}
+function openDateRange(){
+ pendingDateRange={...chosenDateRange};
+ if(chosenDateRange.from){const p=chosenDateRange.from.split('-');pickerMonth=new Date(+p[0],+p[1]-1,1)}
+ else{const d=new Date();pickerMonth=new Date(d.getFullYear(),d.getMonth(),1)}
+ $('dateRangePopover').hidden=false;
+ $('dateRangeTrigger').setAttribute('aria-expanded','true');
+ drawRangeCalendars();
+}
+function closeDateRange(){
+ $('dateRangePopover').hidden=true;
+ $('dateRangeTrigger').setAttribute('aria-expanded','false');
+}
+$('dateRangeTrigger').addEventListener('click',()=>{$('dateRangePopover').hidden?openDateRange():closeDateRange()});
+$('dateRangeClose').addEventListener('click',closeDateRange);
+$('rangeCalendars').addEventListener('click',event=>{
+ const move=event.target.closest('[data-month-move]');if(move){changePickerMonth(Number(move.dataset.monthMove));return}
+ const day=event.target.closest('[data-date-iso]');if(day)daySelected(day.dataset.dateIso);
+});
+$('dateRangeApply').addEventListener('click',()=>{
+ if(!pendingDateRange.from||!pendingDateRange.to)return;
+ chosenDateRange={...pendingDateRange};updateDateRangeLabel();closeDateRange();
+});
+$('dateRangeReset').addEventListener('click',()=>{
+ chosenDateRange={from:'',to:''};pendingDateRange={from:'',to:''};updateDateRangeLabel();closeDateRange();
+});
+document.addEventListener('pointerdown',event=>{
+ if(!$('dateRangePopover').hidden&&!$('rangeContainer').contains(event.target))closeDateRange();
+});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&!$('dateRangePopover').hidden){closeDateRange();$('dateRangeTrigger').focus()}
+});
+updateDateRangeLabel();
+
+const STORE_KEY='toss_doc_mockup_v2';
+const mocked=Array.from({length:52},(_,i)=>{
+ const d=new Date(Date.UTC(2023,i,1));
+ const year=d.getUTCFullYear(),month=d.getUTCMonth()+1;
+ const from=`${year}-${String(month).padStart(2,'0')}-01`;
+ const importDate=new Date(Math.min(d.getTime()-5*86400000,Date.UTC(2026,9,19)-i%12*86400000));
+ importDate.setUTCHours(3+i%11,(i*7)%60,0,0);
+ const users=['nguyen.van.a','tran.thi.b','le.van.c','pham.thi.d','hoang.van.e','vu.thi.f','do.minh.g'];
+ return {id:'demo_'+from,filename:`DOC_${year}_${String(month).padStart(2,'0')}_v1.xlsx`,from,importedAt:importDate.toISOString(),by:users[i%users.length]};
+});
+let records;try{
+ const stored=localStorage.getItem(STORE_KEY),previous=localStorage.getItem('toss_doc_mockup_v1');
+ if(stored){records=JSON.parse(stored)}
+ else {const old=previous?JSON.parse(previous):[];records=[...mocked.map(x=>({...x})),...(Array.isArray(old)?old.filter(x=>x&&typeof x.id==='string'&&!x.id.startsWith('demo')):[])];}
+ if(!Array.isArray(records))throw new Error('invalid');
+}catch{records=mocked.map(x=>({...x}));}
+
+let filters={from:'',to:'',status:''},page=1,selectedFile=null,requestBusy=false;const memoryFiles=new Map();
+const save=()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(records));}catch{}};
+const toUtcDate=s=>new Date(s+'T00:00:00Z');
+const addDays=(iso,days)=>{const d=toUtcDate(iso);d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10)};
+const todayIso=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const pretty=iso=>iso?iso.slice(8,10)+'/'+iso.slice(5,7)+'/'+iso.slice(0,4):'Ongoing';
+function parseDMY(value){if(!value.trim())return '';const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value.trim());if(!m)return null;const iso=m[3]+'-'+m[2]+'-'+m[1];const d=new Date(iso+'T00:00:00Z');return Number.isNaN(d.valueOf())||d.toISOString().slice(0,10)!==iso?null:iso;}
+
+const prettyTime=iso=>{const d=new Date(iso);return String(d.getUTCDate()).padStart(2,'0')+'/'+String(d.getUTCMonth()+1).padStart(2,'0')+'/'+d.getUTCFullYear()+' '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0')};
+const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function timeline(list=records){const ordered=[...list].sort((a,b)=>a.from.localeCompare(b.from));return ordered.map((r,i)=>({...r,to:i+1<ordered.length?addDays(ordered[i+1].from,-1):null})).reverse();}
+function getStatus(row){let now=todayIso();return row.from>now?'Scheduled':row.to&&row.to<now?'Expired':'Active';}
+function getFiltered(){return timeline().filter(r=>{
+ const status=getStatus(r);if(filters.status&&status!==filters.status)return false;
+ const effectiveStart=r.from,effectiveEnd=r.to||'9999-12-31';
+ if(filters.from&&effectiveEnd<filters.from)return false;
+ if(filters.to&&effectiveStart>filters.to)return false;
+ return true;
+});}
+function render(){const all=getFiltered(),size=Number($('pageSize').value)||10;const pages=Math.max(1,Math.ceil(all.length/size));page=Math.max(1,Math.min(page,pages));const visible=all.slice((page-1)*size,page*size);$('listBody').innerHTML=visible.map((r,i)=>{const stat=getStatus(r);return `<tr><td class="number">${(page-1)*size+i+1}</td><td class="file-cell" title="${escapeHtml(r.filename)}"><button class="file-view" type="button" data-detail="${escapeHtml(r.id)}" title="View imported data">${icon('i-file','icon small-file')}${escapeHtml(r.filename)}</button></td><td>${pretty(r.from)}</td><td>${r.to?pretty(r.to):'<span class="badge ongoing">Ongoing</span>'}</td><td><span class="badge ${stat.toLowerCase()}">${stat}</span></td><td>${prettyTime(r.importedAt)}</td><td>${escapeHtml(r.by)}</td><td><button type="button" class="table-action icon-only" data-detail="${escapeHtml(r.id)}" title="View detail" aria-label="View detail">${icon('i-eye')}</button><button type="button" class="table-action icon-only" data-export="${escapeHtml(r.id)}" title="Export Excel" aria-label="Export Excel">${icon('i-download')}</button><button type="button" class="table-action icon-only delete-action" data-delete="${escapeHtml(r.id)}" title="Delete" aria-label="Delete">${icon('i-trash')}</button></td></tr>`}).join('');$('emptyState').hidden=all.length>0;$('totalText').textContent=`Total records: ${all.length}`;$('pageRange').textContent=all.length?`${(page-1)*size+1}–${(page-1)*size+visible.length} of ${all.length}`:'0–0 of 0';$('firstPage').disabled=$('previousPage').disabled=page<=1;$('nextPage').disabled=$('lastPage').disabled=page>=pages;let low=Math.max(1,page-2),high=Math.min(pages,low+4);low=Math.max(1,high-4);$('pageButtons').innerHTML=Array.from({length:high-low+1},(_,i)=>{let p=low+i;return `<button class="pagebtn ${p===page?'current':''}" data-page="${p}" aria-label="Page ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`}).join('');}
+function toast(msg,kind='info'){const node=document.createElement('div');node.className='toast '+kind;node.innerHTML=icon(kind==='error'?'i-alert':'i-check')+`<span>${escapeHtml(msg)}</span>`;$('toastHost').appendChild(node);setTimeout(()=>node.remove(),3200);}
+function runSearch(){
+  filters={from:chosenDateRange.from,to:chosenDateRange.to,status:$('filterStatus').value};
+  page=1;render();
+}
+$('search').addEventListener('click',runSearch);
+$('filterStatus').addEventListener('keydown',e=>{if(e.key==='Enter')runSearch()});
+$('clearFilter').addEventListener('click',()=>{chosenDateRange={from:'',to:''};pendingDateRange={from:'',to:''};updateDateRangeLabel();closeDateRange();$('filterStatus').value='';filters={from:'',to:'',status:''};page=1;render()});
+$('pageSize').addEventListener('change',()=>{page=1;render()});$('pageButtons').addEventListener('click',e=>{let btn=e.target.closest('[data-page]');if(btn){page=Number(btn.dataset.page);render()}});$('firstPage').addEventListener('click',()=>{page=1;render()});$('previousPage').addEventListener('click',()=>{page--;render()});$('nextPage').addEventListener('click',()=>{page++;render()});$('lastPage').addEventListener('click',()=>{page=Math.max(1,Math.ceil(getFiltered().length/Number($('pageSize').value)));render()});
+$('listBody').addEventListener('click',async e=>{const detail=e.target.closest('[data-detail]');if(detail){await openDetail(detail.dataset.detail);return}const exported=e.target.closest('[data-export]');if(exported){await exportRecord(exported.dataset.export);return}const deleted=e.target.closest('[data-delete]');if(deleted)openDeleteConfirm(deleted.dataset.delete)});
+$('filterToggle').addEventListener('click',()=>{const open=$('filterToggle').getAttribute('aria-expanded')!=='true';$('filterToggle').setAttribute('aria-expanded',String(open));$('filterFields').hidden=!open;$('filterToggle').querySelector('.chev').style.transform=open?'rotate(180deg)':'rotate(0deg)';});$('dataSourceToggle').addEventListener('click',()=>{const open=$('dataSourceToggle').getAttribute('aria-expanded')!=='true';$('dataSourceToggle').setAttribute('aria-expanded',String(open));$('sourceSubmenu').hidden=!open;$('dataSourceToggle').querySelector('.chev').classList.toggle('up',open)});$('collapseMenu').addEventListener('click',()=>{$('sidebar').classList.toggle('collapsed')});document.querySelectorAll('.nav a:not(.active)').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+function openModal(){$('importMask').classList.add('open');$('importError').textContent='';$('effectiveFrom').value='';$('effectiveTo').value='';selectedFile=null;$('fileInput').value='';renderSelectedFile();$('effectiveFrom').focus();}
+function closeModal(){if(requestBusy)return;$('importMask').classList.remove('open');}
+$('openImport').addEventListener('click',openModal);$('closeImport').addEventListener('click',closeModal);$('cancelImport').addEventListener('click',closeModal);$('importMask').addEventListener('click',e=>{if(e.target===$('importMask'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('importMask').classList.contains('open'))closeModal()});
+function previewEffectiveTo(){const value=parseDMY($('effectiveFrom').value);if(!value){$('effectiveTo').value='';return;}const sorted=timeline().sort((a,b)=>a.from.localeCompare(b.from));const next=sorted.find(x=>x.from>value);$('effectiveTo').value=next?pretty(addDays(next.from,-1)):'Ongoing';$('importError').textContent='';}
+$('effectiveFrom').addEventListener('change',previewEffectiveTo);$('effectiveFrom').addEventListener('input',previewEffectiveTo);
+const nativePickerMap={effectiveFrom:'nativeEffectiveFrom'};
+Object.entries(nativePickerMap).forEach(([field,native])=>{$(native).addEventListener('change',()=>{$(field).value=$(native).value?pretty($(native).value):'';if(field==='effectiveFrom')previewEffectiveTo()})});
+document.querySelectorAll('[data-date-target]').forEach(button=>button.addEventListener('click',()=>{const field=button.dataset.dateTarget,native=$(nativePickerMap[field]),val=parseDMY($(field).value);native.value=val||'';try{native.showPicker()}catch{native.focus();native.click()}}));
+
+function renderSelectedFile(){$('selectedFile').classList.toggle('visible',!!selectedFile);$('filename').textContent=selectedFile?.name||'';$('filesize').textContent=selectedFile?(selectedFile.size/1024).toFixed(1)+' KB':'';$('importError').textContent='';}
+function pickFile(f){if(!f)return;selectedFile=f;renderSelectedFile()};$('dropzone').addEventListener('click',()=>$('fileInput').click());$('dropzone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click()}});$('fileInput').addEventListener('change',e=>pickFile(e.target.files?.[0]));$('removeFile').addEventListener('click',()=>{selectedFile=null;$('fileInput').value='';renderSelectedFile()});$('dropzone').addEventListener('dragover',e=>{e.preventDefault();$('dropzone').classList.add('dragover')});$('dropzone').addEventListener('dragleave',()=>$('dropzone').classList.remove('dragover'));$('dropzone').addEventListener('drop',e=>{e.preventDefault();$('dropzone').classList.remove('dragover');pickFile(e.dataTransfer.files?.[0])});
+function errorImport(message){$('importError').textContent=message;toast(message,'error')}
+// XLSX check: ensure the file is a ZIP-based Office Open XML workbook by reading its central directory.
+async function isXlsx(file){const b=new Uint8Array(await file.arrayBuffer());if(b.length<100||b[0]!==0x50||b[1]!==0x4b)return false;const v=new DataView(b.buffer);let end=-1;for(let k=b.length-22;k>=Math.max(0,b.length-65557);k--){if(v.getUint32(k,true)===0x06054b50){end=k;break;}}if(end<0)return false;let cursor=v.getUint32(end+16,true),count=v.getUint16(end+10,true),names=new Set();for(let i=0;i<count;i++){if(cursor+46>b.length||v.getUint32(cursor,true)!==0x02014b50)return false;const size=v.getUint16(cursor+28,true),extra=v.getUint16(cursor+30,true),comment=v.getUint16(cursor+32,true);names.add(new TextDecoder().decode(b.slice(cursor+46,cursor+46+size)));cursor+=46+size+extra+comment;}return names.has('[Content_Types].xml')&&names.has('xl/workbook.xml');}
+// Browser IndexedDB keeps imported workbook intact for subsequent per-record Export (not sent to a server).
+function dbOpen(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window)){reject(new Error('Storage unavailable'));return}const q=indexedDB.open('toss-doc-files-v1',1);q.onupgradeneeded=()=>q.result.createObjectStore('files');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)})}
+async function dbPut(id,file){const db=await dbOpen();return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put(file,id);tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)}})}
+async function dbGet(id){const db=await dbOpen();return new Promise((resolve,reject)=>{const tx=db.transaction('files','readonly');const req=tx.objectStore('files').get(id);req.onsuccess=()=>{db.close();resolve(req.result)};req.onerror=()=>{db.close();reject(req.error)}})}
+async function dbDelete(id){const db=await dbOpen();return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(id);tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)}})}
+let deleteRecordId=null;
+function openDeleteConfirm(id){
+ const row=records.find(r=>r.id===id);if(!row)return;
+ deleteRecordId=id;$('deleteFileName').textContent=row.filename;
+ $('deleteMask').classList.add('open');$('confirmDelete').focus();
+}
+function closeDeleteConfirm(){deleteRecordId=null;$('deleteMask').classList.remove('open')}
+$('cancelDelete').addEventListener('click',closeDeleteConfirm);
+$('deleteMask').addEventListener('click',e=>{if(e.target===$('deleteMask'))closeDeleteConfirm()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('deleteMask').classList.contains('open')){e.preventDefault();e.stopPropagation();closeDeleteConfirm()}});
+$('confirmDelete').addEventListener('click',async()=>{
+ const id=deleteRecordId;if(!id)return;
+ const found=records.find(x=>x.id===id);if(!found){closeDeleteConfirm();return}
+ const confirmButton=$('confirmDelete');confirmButton.disabled=true;
+ try{
+  // Remove the original file as well if it was stored locally; do not block deletion if local storage is unavailable.
+  memoryFiles.delete(id);
+  if(!id.startsWith('demo')){try{await dbDelete(id)}catch{}}
+  records=records.filter(r=>r.id!==id);save();closeDeleteConfirm();render();
+  toast('Dry Operating Cost deleted successfully (local prototype).','success');
+ }finally{confirmButton.disabled=false}
+});
+
+$('confirmImport').addEventListener('click',async()=>{if(requestBusy)return;const date=parseDMY($('effectiveFrom').value);if(!date){errorImport(date===null?'Invalid Effective From. Use DD/MM/YYYY.':'Effective From is required.');return}if(!selectedFile){errorImport('Please select a file to upload.');return}if(!selectedFile.name.toLowerCase().endsWith('.xlsx')){errorImport('Invalid upload file format. Only .xlsx is supported.');return}if(selectedFile.size>5*1024*1024){errorImport('File is too large. Maximum limit is 5MB.');return}const previous=timeline();if(previous.some(r=>r.from===date)){errorImport('A Dry Operating Cost record with the same Effective From already exists.');return}if(previous.some(r=>r.to&&r.to<todayIso()&&r.from<=date&&date<=r.to)){errorImport('Effective From is within an expired period. Please select another date.');return}requestBusy=true;$('confirmImport').disabled=true;$('confirmImport').textContent='Importing…';try{if(!await isXlsx(selectedFile)){errorImport('Invalid Excel workbook. Please select a valid .xlsx file.');return}const parsed=await readDocWorkbook(selectedFile);const newId='doc_'+Date.now()+'_'+Math.floor(Math.random()*1000);const f=selectedFile;const storedDoc={file:f,rows:parsed};try{await dbPut(newId,storedDoc)}catch(storageError){memoryFiles.set(newId,storedDoc)}records.push({id:newId,filename:f.name,from:date,importedAt:new Date().toISOString(),by:'current.user'});save();closeModalForce();filters={from:'',to:'',status:''};chosenDateRange={from:'',to:''};pendingDateRange={from:'',to:''};updateDateRangeLabel();closeDateRange();$('filterStatus').value='';page=1;render();toast('Dry Operating Cost imported successfully (local prototype).','success')}catch(err){errorImport('Import failed: '+(err?.message||'Unable to store the file.'))}finally{requestBusy=false;$('confirmImport').disabled=false;$('confirmImport').innerHTML=icon('i-upload')+'Import'}});
+function closeModalForce(){$('importMask').classList.remove('open')}
+function safeName(name){return String(name).replace(/[\\/:*?"<>|]/g,'_')};function downloadBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=safeName(name);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
+// XLSX writer: Office Open XML workbook packed as a valid ZIP, no CDN/external libraries required.
+const encoder=new TextEncoder();const xmlEsc=v=>String(v??'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));let crcTable=null;
+function crc32(buffer){if(!crcTable)crcTable=Array.from({length:256},(_,n)=>{for(let k=0;k<8;k++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0});let c=-1;for(let k=0;k<buffer.length;k++)c=crcTable[(c^buffer[k])&255]^(c>>>8);return(c^(-1))>>>0}
+function packZip(files){let local=[],central=[],at=0;const wr16=(dv,off,n)=>dv.setUint16(off,n,true),wr32=(dv,off,n)=>dv.setUint32(off,n,true);for(const [name,contents] of files){const nb=encoder.encode(name),data=typeof contents==='string'?encoder.encode(contents):contents,crc=crc32(data);let h=new Uint8Array(30+nb.length),v=new DataView(h.buffer);wr32(v,0,0x04034b50);wr16(v,4,20);wr16(v,6,0);wr16(v,8,0);wr32(v,14,crc);wr32(v,18,data.length);wr32(v,22,data.length);wr16(v,26,nb.length);h.set(nb,30);local.push(h,data);let c=new Uint8Array(46+nb.length),cv=new DataView(c.buffer);wr32(cv,0,0x02014b50);wr16(cv,4,20);wr16(cv,6,20);wr32(cv,16,crc);wr32(cv,20,data.length);wr32(cv,24,data.length);wr16(cv,28,nb.length);wr32(cv,42,at);c.set(nb,46);central.push(c);at+=h.length+data.length}const csize=central.reduce((s,a)=>s+a.length,0);let end=new Uint8Array(22),ev=new DataView(end.buffer);wr32(ev,0,0x06054b50);wr16(ev,8,files.length);wr16(ev,10,files.length);wr32(ev,12,csize);wr32(ev,16,at);return new Blob([...local,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+function sheetXml(rows){const letters=n=>{let s='';for(n++;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s};return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="17"/><sheetData>${rows.map((r,i)=>`<row r="${i+1}">${r.map((v,j)=>{const ref=letters(j)+(i+1);return typeof v==='number'&&Number.isFinite(v)?`<c r="${ref}"><v>${v}</v></c>`:`<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${xmlEsc(v)}</t></is></c>`}).join('')}</row>`).join('')}</sheetData></worksheet>`}
+function workbookBlob(sheets){const names=sheets.map((s,i)=>`<sheet name="${xmlEsc(s.name.slice(0,31))}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('');const rels=sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('');const contentTypes=`<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`;const entries=[['[Content_Types].xml',contentTypes],['_rels/.rels','<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],['xl/workbook.xml',`<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${names}</sheets></workbook>`],['xl/_rels/workbook.xml.rels',`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${rels}</Relationships>`]];sheets.forEach((s,i)=>entries.push([`xl/worksheets/sheet${i+1}.xml`,sheetXml(s.rows)]));return packZip(entries)}
+$('downloadTemplate').addEventListener('click',()=>{downloadBlob(workbookBlob([{name:'DOC_Data',rows:[DOC_COLS]}]),'template_import_Dry_Operating_Cost.xlsx');toast('Dry Operating Cost template downloaded.','success')});
+function timestamp(){const d=new Date();return String(d.getDate()).padStart(2,'0')+String(d.getMonth()+1).padStart(2,'0')+String(d.getFullYear()).slice(2)+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')}
+/* Export the filtered list of period records (not just the visible pagination page). */
+$('exportAll').addEventListener('click',()=>{
+ const visibleRecords=getFiltered();
+ if(!visibleRecords.length){toast('No records to export with the current filters.','info');return;}
+ const headers=['No.','File Name','Effective From','Effective To','Status','Imported Time (UTC)','Imported By'];
+ const rows=visibleRecords.map((r,i)=>[i+1,r.filename,pretty(r.from),r.to?pretty(r.to):'Ongoing',getStatus(r),prettyTime(r.importedAt),r.by]);
+ downloadBlob(workbookBlob([{name:'Dry_Operating_Cost_List',rows:[headers,...rows]}]),'Dry_Operating_Cost_List_'+timestamp()+'.xlsx');
+ toast('Exported '+visibleRecords.length+' Dry Operating Cost records to Excel.','success');
+});
+
+async function exportRecord(id){const r=records.find(x=>x.id===id);if(!r)return;try{if(id.startsWith('demo')){downloadBlob(workbookBlob([{name:'DOC_Data',rows:[DOC_COLS,...DOC_DEMO_ROWS]}]),r.filename);toast('Sample workbook exported (MCMR T5.2026 demonstration data).','info');return}let stored=memoryFiles.get(id);if(!stored){try{stored=await dbGet(id)}catch{}}const original=stored?.file||stored;if(!(original instanceof Blob)){toast('Original workbook is not available in this browser.','error');return}downloadBlob(original,r.filename);toast('Original imported Excel workbook downloaded.','success')}catch(e){toast('Unable to export file: '+(e?.message||'Unknown error'),'error')}}
+
+/* Data detail: one imported workbook = one period record; every worksheet row is one cost line. */
+const DOC_COLS=['NetW3','ROUTE_2W','FLT_TYPE','AC_GROUP','Non_Fuel_Variable_Cost','Total_Variable_Cost','Two_Way_Equivalent_Flight_Count','Block_Hours','Non_Fuel_Variable_Cost-Flight','Total_Variable_Cost-Flight','Non_Fuel_Variable_Cost-Block_Hour','Total_Variable_Cost-Block_Hour'];
+const DOC_HEADER_ALIASES=[['NetW3'],['ROUTE_2W'],['FLT_TYPE','FLT TYPE'],['AC_GROUP'],['Non_Fuel_Variable_Cost','CP BD ko NL'],['Total_Variable_Cost','Sum of CP BĐ'],['Two_Way_Equivalent_Flight_Count','CB 2 chiều'],['Block_Hours','BH'],['Non_Fuel_Variable_Cost-Flight','CPBD KO NL/CB'],['Total_Variable_Cost-Flight','CPBD/CB'],['Non_Fuel_Variable_Cost-Block_Hour','CPBD KO NL/BH'],['Total_Variable_Cost-Block_Hour','CPBD/BH']];
+const DOC_DEMO_ROWS=[["DOM","DADBMV","PXR","32B",3913.470406255,8462.536573399,20.0,39.95,195.673520313,423.12682867,97.959209168,211.828199584],["DOM","DADCXR","PXR","32B",4978.983249389,12489.763269191,30.0,72.35,165.966108313,416.325442306,68.818013122,172.629761841],["DOM","DADCXR","PXR","32N",169.805921326,382.585465012,1.0,2.166666667,169.805921326,382.585465012,78.371963689,176.577906929],["DOM","DADHPH","PXR","32B",5187.33990077,13550.437974993,31.0,78.15,167.333545186,437.110902419,66.376710183,173.390121241],["DOM","DADVCA","PXR","32B",3457.036694662,10260.237249414,20.0,59.683333333,172.851834733,513.011862471,57.922982876,171.911263604],["DOM","HANBMV","PXR","320",181.371028924,513.387623177,1.0,3.516666667,181.371028924,513.387623177,51.574700168,145.987001851],["DOM","HANBMV","PXR","32B",3553.560710059,11551.511382036,20.0,69.616666667,177.678035503,577.575569102,51.04468341,165.930256864],["DOM","HANBMV","PXR","32D",308.04783101,1166.628143276,2.0,7.0,154.023915505,583.314071638,44.006833001,166.661163325],["DOM","HANBMV","PXR","32N",1630.596192633,4417.079710632,8.0,27.966666667,203.824524079,552.134963829,58.30498901,157.940871656],["DOM","HANCXR","NTC","32D",49.880390386,262.246710424,0.5,2.116666667,99.760780772,524.493420848,23.565538765,123.896083665],["DOM","HANCXR","NTC","32N",77.883354412,265.097580419,0.5,1.95,155.766708824,530.195160838,39.94018175,135.947477138],["DOM","HANCXR","PXR","320",398.296852151,1104.044658351,2.0,7.666666667,199.148426075,552.022329176,51.951763324,144.005825002],["DOM","HANCXR","PXR","32B",20808.543680435,64818.02685691,104.5,410.733333333,199.124819908,620.268199588,50.661930727,157.810485774],["DOM","HANCXR","PXR","32D",3513.212607658,11544.133632299,19.5,76.3,180.164749111,592.006852938,46.044726182,151.299261236],["DOM","HANCXR","PXR","32N",10771.305983339,27788.892923724,45.5,178.283333333,236.731999634,610.744899423,60.416785921,155.869269461],["DOM","HANDAD","NTC","320",175.068614127,547.746824216,1.5,4.383333333,116.712409418,365.164549477,39.939607786,124.961252673],["DOM","HANDAD","NTC","32B",999.211375216,3612.548589137,8.5,24.116666667,117.554279437,425.005716369,41.432399802,149.794689252],["DOM","HANDAD","NTC","32D",221.005346213,1037.471553585,2.5,6.9,88.402138485,414.988621434,32.029760321,150.358196172],["DOM","HANDAD","NTC","32N",309.071038726,981.243544632,2.5,7.05,123.62841549,392.497417853,43.839863649,139.183481508],["DOM","HANDAD","PXR","320",12236.85241705,29225.3155391,67.5,192.083333333,181.286702475,432.967637616,63.705956184,152.149148143],["DOM","HANDAD","PXR","32B",54432.117166674,148517.3139129,302.0,834.783333333,180.238798565,491.779185142,65.205083754,177.911211188],["DOM","HANDAD","PXR","32D",9210.163726187,27695.079226187,58.5,161.383333333,157.438696174,473.420157713,57.070104675,171.610529131],["DOM","HANDAD","PXR","32N",20236.441062645,48880.444922736,105.5,292.833333333,191.814607229,463.321752822,69.105660999,166.922407249],["DOM","HANDIN","PXR","320",133.529443807,303.572325247,1.0,1.916666667,133.529443807,303.572325247,69.667535899,158.385560999],["DOM","HANDIN","PXR","32B",3980.537666927,9736.82654487,27.0,51.866666667,147.427320997,360.623205366,76.745584838,187.728018217],["DOM","HANDIN","PXR","32D",496.343308642,1350.82187912,4.0,7.816666667,124.08582716,337.70546978,63.498077865,172.813033576],["DOM","HANHUI","NTC","32B",54.088509613,173.995301141,0.5,1.083333333,108.177019225,347.990602282,49.927855027,160.611047207],["DOM","HANHUI","NTC","32N",173.831601106,561.385603892,1.5,4.166666667,115.887734071,374.257069262,41.719584266,134.732544934],["DOM","HANHUI","PXR","320",1835.993183532,4242.313390234,11.0,27.9,166.90847123,385.664853658,65.806207295,152.054243378],["DOM","HANHUI","PXR","32B",10121.32669787,26479.242980572,59.0,148.683333333,171.547910133,448.800728484,68.073041349,178.091534451],["DOM","HANHUI","PXR","32D",724.386907595,2168.65505801,5.0,12.366666667,144.877381519,433.731011602,58.575760722,175.362942696],["DOM","HANHUI","PXR","32N",1872.704914146,4514.738791347,10.5,26.966666667,178.352848966,429.975122985,69.44517605,167.419238245],["DOM","HANPQC","PXR","32B",8697.973203976,28095.641775864,37.0,161.633333333,235.080356864,759.341669618,53.812991569,173.823314761],["DOM","HANPQC","PXR","32D",850.475516684,2859.262366053,4.0,17.333333333,212.618879171,714.815591513,49.065895193,164.957444195],["DOM","HANPQC","PXR","32N",2497.951835972,6473.355012471,9.0,39.0,277.550203997,719.261668052,64.050047076,165.983461858],["DOM","HANPXU","PXR","320",1879.416059223,5214.639460498,11.0,34.583333333,170.856005384,474.058132773,54.344560749,150.784755484],["DOM","HANPXU","PXR","32B",2901.705630305,9052.158517005,17.0,52.983333333,170.688566489,532.479912765,54.76638497,170.849169871],["DOM","HANPXU","PXR","32D",149.747364288,535.462068428,1.0,3.083333333,149.747364288,535.462068428,48.566712742,173.663373544],["DOM","HANPXU","PXR","32N",383.521913238,1049.228402251,2.0,6.166666667,191.760956619,524.614201125,62.192742687,170.145146311],["DOM","HANSGN","NTC","32N",81.327576175,282.476853215,0.5,2.083333333,162.655152351,564.953706429,39.037236564,135.588889543],["DOM","HANSGN","PXR","320",229.343885763,572.418025343,1.0,4.05,229.343885763,572.418025343,56.628119942,141.337784035],["DOM","HANSGN","PXR","32B",19763.348687188,65035.497161881,97.0,405.65,203.745862755,670.469042906,48.720198908,160.324164087],["DOM","HANSGN","PXR","32D",2052.23960153,7269.273696488,11.0,46.566666667,186.567236503,660.843063317,44.071000749,156.104660626],["DOM","HANSGN","PXR","32N",8009.1992065,21104.684382669,32.5,135.5,246.436898662,649.374904082,59.108481229,155.754128285],["DOM","HANSGN","PXR","350",116074.430226734,300209.640359834,196.5,839.433333333,590.709568584,1527.784429312,138.277127697,357.633689822],["DOM","HANSGN","PXR","78A",41515.183801543,139801.685403216,121.5,515.366666667,341.688755568,1150.631155582,80.554654553,271.266448619],["DOM","HANSGN","PXR","78B",25326.724265158,86806.942134377,76.0,322.95,333.24637191,1142.196607031,78.423050829,268.793751771],["DOM","HANSGN","PXR","78C",91580.685181307,204485.475572057,142.5,608.766666667,642.671474957,1434.985793488,150.436431881,335.901235677],["DOM","HANTBB","PXR","320",1512.173701965,4143.484981831,8.0,27.933333333,189.021712746,517.935622729,54.135096729,148.334784552],["DOM","HANTBB","PXR","32B",3586.481407909,11383.176529531,19.0,66.5,188.762179364,599.114554186,53.932051247,171.17558691],["DOM","HANTBB","PXR","32D",341.519687833,1193.900233605,2.0,7.0,170.759843916,596.950116803,48.788526833,170.557176229],["DOM","HANTBB","PXR","32N",1736.818782114,4751.784306191,8.0,28.216666667,217.102347764,593.973038274,61.552939709,168.403460349],["DOM","HANUIH","NTC","32N",66.070593217,220.136966012,0.5,1.566666667,132.141186434,440.273932024,42.172719075,140.512957029],["DOM","HANUIH","PXR","320",8188.712850152,21789.796757209,45.0,143.133333333,181.97139667,484.217705716,57.21038321,152.234257736],["DOM","HANUIH","PXR","32B",879.423567319,2734.826817883,5.0,16.5,175.884713464,546.965363577,53.298398019,165.747079872],["DOM","HANUIH","PXR","32D",159.287304435,540.453417198,1.0,3.333333333,159.287304435,540.453417198,47.786191331,162.136025159],["DOM","HANUIH","PXR","32N",3130.173830874,8341.30298021,15.5,51.6,201.946698766,538.148579368,60.662283544,161.653158531],["DOM","HANVCA","PXR","32B",11468.418630207,41560.942757718,57.0,256.833333333,201.200326846,729.139346627,44.653154952,161.820672645],["DOM","HANVCA","PXR","32D",183.272716059,745.615242694,1.0,4.5,183.272716059,745.615242694,40.727270235,165.692276154],["DOM","HANVCA","PXR","32N",1040.92570019,2926.986151791,4.0,18.45,260.231425047,731.746537948,56.418737138,158.644235869],["DOM","HANVCL","PXR","320",4728.082421068,12291.943288622,30.0,82.883333333,157.602747369,409.731442954,57.045032227,148.304161938],["DOM","HANVCL","PXR","32B",159.930674708,509.661993312,1.0,2.833333333,159.930674708,509.661993312,56.446120485,179.880703522],["DOM","HANVDH","PXR","32B",4660.798548325,11437.44461545,29.0,62.9,160.717191322,394.394641912,74.098546078,181.835367495],["DOM","HANVDH","PXR","32D",274.502199966,771.863755731,2.0,4.333333333,137.251099983,385.931877865,63.346661531,178.122405169],["DOM","HANVDH","PXR","32N",631.574486203,1469.826201273,4.0,8.666666667,157.893621551,367.456550318,72.873979177,169.595330916],["DOM","HANVII","PXR","32B",7995.450936972,17782.793833083,54.0,94.35,148.06390624,329.310996909,84.742458261,188.476882174],["DOM","HANVII","PXR","32D",632.512089417,1683.604012648,5.0,9.2,126.502417883,336.72080253,68.751314067,183.000436157],["DOM","HANVII","PXR","32N",287.698106849,639.081698238,2.0,3.85,143.849053425,319.540849119,74.726781,165.995246295],["DOM","SGNBMV","NTC","32B",53.411709156,148.545977791,0.5,0.933333333,106.823418312,297.091955583,57.226831239,159.156404777],["DOM","SGNBMV","NTC","32N",42.693333741,117.155910382,0.5,0.8,85.386667482,234.311820764,53.366667177,146.444887977],["DOM","SGNBMV","PXR","32B",3618.139653298,8557.394473175,22.5,44.516666667,160.806206813,380.328643252,81.276068588,192.229003516],["DOM","SGNBMV","PXR","32D",944.220139057,2439.135600418,7.0,13.55,134.888591294,348.447942917,69.684143104,180.010007411],["DOM","SGNBMV","PXR","32N",2680.285723981,5923.810152011,17.5,34.6,153.159184227,338.503437258,77.464905317,171.208385896],["DOM","SGNCXR","NTC","320",95.253838866,248.350707004,1.0,1.9,95.253838866,248.350707004,50.133599403,130.710898423],["DOM","SGNCXR","NTC","32B",157.612954598,456.36111276,1.5,2.816666667,105.075303066,304.24074184,55.957261988,162.021696838],["DOM","SGNCXR","NTC","32D",80.013700353,312.7340656,1.0,2.166666667,80.013700353,312.7340656,36.929400163,144.338799508],["DOM","SGNCXR","NTC","32N",297.056167523,872.402691481,3.0,6.033333333,99.018722508,290.80089716,49.235828871,144.597131185],["DOM","SGNCXR","NTC","AT7",89.709909244,154.699623247,1.0,2.75,89.709909244,154.699623247,32.62178518,56.254408454],["DOM","SGNCXR","PXR","320",4773.647207677,9747.38774428,30.0,62.25,159.121573589,324.912924809,76.685095706,156.584542077],["DOM","SGNCXR","PXR","32B",7639.679587728,17412.02450881,45.0,96.716666667,169.770657505,386.933877974,78.990311091,180.031271847],["DOM","SGNCXR","PXR","32D",10685.967187629,27013.246690876,73.0,156.6,146.383112159,370.044475217,68.237338363,172.498382445],["DOM","SGNCXR","PXR","32N",4056.881032437,8666.728307213,24.5,52.833333333,165.586980916,353.744012539,76.786391781,164.039021588],["DOM","SGNCXR","PXR","AT7",1923.150299208,3221.357957286,18.0,52.783333333,106.841683289,178.96433096,36.434802006,61.02983184],["DOM","SGNDAD","NTC","32B",115.115381827,408.367576116,1.0,2.516666667,115.115381827,408.367576116,45.741211322,162.265262033],["DOM","SGNDAD","NTC","32D",43.076563739,185.440004739,0.5,1.283333333,86.153127478,370.880009477,33.566153563,144.498704991],["DOM","SGNDAD","NTC","32N",62.669629114,196.250645473,0.5,1.266666667,125.339258228,392.501290947,49.476022985,154.934720111],["DOM","SGNDAD","PXR","320",5166.558915194,12219.036685351,29.0,82.166666667,178.157203972,421.346092598,62.879013167,148.710385623],["DOM","SGNDAD","PXR","32B",42758.011895491,118105.805863829,236.5,667.65,180.794976302,499.390299636,64.042555075,176.897784564],["DOM","SGNDAD","PXR","32D",17276.723377528,51486.764758695,109.0,307.983333333,158.502049335,472.355639988,56.096293233,167.17386685],["DOM","SGNDAD","PXR","32N",25058.96516137,60576.868614147,130.5,367.566666667,192.022721543,464.190564093,68.175292903,164.805120017],["DOM","SGNHPH","PXR","32B",11469.958118951,38876.793915159,58.0,236.066666667,197.757898603,670.289550261,48.587792088,164.685656235],["DOM","SGNHPH","PXR","32D",6833.066388718,25690.563113026,38.5,158.25,177.482243863,667.287353585,43.178934526,162.341631046],["DOM","SGNHPH","PXR","32N",4675.034429489,12996.376048378,20.0,81.066666667,233.751721474,649.818802419,57.669010232,160.317138755],["DOM","SGNHUI","NTC","32D",46.282499371,210.166944489,0.5,1.416666667,92.564998742,420.333888979,32.669999556,148.353137287],["DOM","SGNHUI","NTC","32N",60.824880761,193.620248546,0.5,1.433333333,121.649761521,387.240497092,42.435963321,135.083894334],["DOM","SGNHUI","PXR","32B",10583.01135694,30312.365024261,58.5,169.933333333,180.906177042,518.160085885,62.277430504,178.377981704],["DOM","SGNHUI","PXR","32D",5606.757602168,17507.159272221,35.5,103.383333333,157.936833864,493.159416119,54.232702907,169.342182224],["DOM","SGNHUI","PXR","32N",7992.932039128,19803.004277087,40.5,118.166666667,197.356346645,488.96306857,67.641173815,167.585367648],["DOM","SGNPQC","NTC","32B",161.527365778,456.913287052,1.5,2.75,107.684910519,304.608858034,58.737223919,166.150286201],["DOM","SGNPQC","NTC","32D",39.685765192,135.796107931,0.5,1.1,79.371530383,271.592215861,36.077968356,123.45100721],["DOM","SGNPQC","NTC","32N",98.454584883,289.088436478,1.0,2.066666667,98.454584883,289.088436478,47.639315266,139.881501521],["DOM","SGNPQC","PXR","320",2107.564594477,4556.505032417,14.0,28.75,150.540328177,325.464645173,73.306594591,158.487131562],["DOM","SGNPQC","PXR","32B",13224.308676005,32215.349657742,81.5,170.4,162.261456147,395.280363899,77.607445282,189.057216301],["DOM","SGNPQC","PXR","32D",6127.73488142,16318.430377087,44.5,91.733333333,137.701907448,366.706300609,66.799435481,177.889866029],["DOM","SGNPQC","PXR","32N",7903.489713782,17980.005637596,50.0,104.316666667,158.069794276,359.600112752,75.764400516,172.359855928],["DOM","SGNPXU","NTC","32D",80.98400752,293.800446368,1.0,1.983333333,80.98400752,293.800446368,40.832272699,148.134678841],["DOM","SGNPXU","PXR","32B",4554.644089646,11115.922776718,27.0,60.666666667,168.690521839,411.700843582,75.076550928,183.22949632],["DOM","SGNPXU","PXR","32D",2993.815836216,8140.741506358,21.0,46.033333333,142.562658867,387.654357446,65.035825551,176.844493259],["DOM","SGNPXU","PXR","32N",170.609671964,395.888782225,1.0,2.25,170.609671964,395.888782225,75.826520873,175.950569878],["DOM","SGNTBB","PXR","32B",2938.711554962,7297.426694675,18.0,40.383333333,163.261753053,405.412594149,72.770405818,180.703921453],["DOM","SGNTBB","PXR","32D",696.054367653,1873.587538266,5.0,11.25,139.210873531,374.717507653,61.871499347,166.541114513],["DOM","SGNTBB","PXR","32N",1287.980272062,2974.436053469,8.0,17.816666667,160.997534008,371.804506684,72.290754279,166.946831813],["DOM","SGNTHD","PXR","32B",3849.166184525,13095.234651375,20.5,79.783333333,187.764204123,638.791934213,48.245241502,164.13496534],["DOM","SGNTHD","PXR","32D",1478.44692687,5492.352024746,9.0,34.833333333,164.271880763,610.261336083,42.443452446,157.675177744],["DOM","SGNTHD","PXR","32N",7804.554986804,21475.540913248,35.0,134.216666667,222.987285337,613.586883236,58.148925768,160.006513696],["DOM","SGNUIH","NTC","32D",40.938179738,164.013709386,0.5,1.166666667,81.876359477,328.027418772,35.089868347,140.583179474],["DOM","SGNUIH","NTC","32N",211.099603381,635.040529979,2.0,4.683333333,105.549801691,317.520264989,45.074648409,135.5958427],["DOM","SGNUIH","PXR","32B",1165.039169889,2950.845018005,7.0,16.133333333,166.434167127,421.549288286,72.213171687,182.903616818],["DOM","SGNUIH","PXR","32D",211.197646956,585.817055384,1.5,3.366666667,140.798431304,390.54470359,62.731974343,174.005065956],["DOM","SGNUIH","PXR","32N",9511.916226029,21906.482803673,57.0,128.6,166.875723264,384.324259714,73.96513395,170.345900495],["DOM","SGNVCL","PXR","32B",7106.061230093,20252.385893365,44.0,116.733333333,161.501391593,460.281497576,60.874310937,173.492740377],["DOM","SGNVCL","PXR","32D",1092.416513784,3419.133029884,8.0,20.866666667,136.552064223,427.391628735,52.352229095,163.85621549],["DOM","SGNVCL","PXR","32N",4003.486484966,10278.82188723,24.0,63.75,166.811936874,428.284245301,62.799787999,161.23642176],["DOM","SGNVCS","NTC","AT7",75.902503297,119.567639894,1.0,1.85,75.902503297,119.567639894,41.028380161,64.631156699],["DOM","SGNVCS","PXR","AT7",47368.332218851,73273.180239756,499.0,1029.933333333,94.926517473,146.840040561,45.991648863,71.143614706],["DOM","SGNVDH","PXR","32B",6037.599514172,18904.436541216,35.0,111.05,172.502843262,540.12675832,54.368298192,170.233557327],["DOM","SGNVDH","PXR","32D",1348.066512135,4626.558704201,9.0,28.2,149.785168015,514.062078245,47.803777026,164.062365397],["DOM","SGNVDH","PXR","32N",4863.410983071,12991.657871317,25.0,79.166666667,194.536439323,519.666314853,61.432559786,164.105152059],["DOM","SGNVII","PXR","320",6216.616720183,16916.582288764,31.0,116.55,200.536023232,545.696202863,53.338624798,145.144421182],["DOM","SGNVII","PXR","32B",7014.128439242,22938.118892248,37.0,137.633333333,189.571038898,619.94915925,50.962425085,166.661072116],["DOM","SGNVII","PXR","32D",5574.88991132,20390.630021653,33.0,123.083333333,168.936057919,617.897879444,45.293621487,165.665240528],["DOM","SGNVII","PXR","32N",2645.750199238,7180.800869396,12.0,44.516666667,220.47918327,598.40007245,59.432801181,161.305897478],["DOM","VCAPQC","PXR","AT7",1771.876265997,2819.592911138,21.0,41.55,84.375060286,134.266329102,42.644434801,67.860238535],["DOM","VCAVCS","PXR","AT7",1693.642980244,2691.388370567,21.0,38.3,80.649665726,128.161350979,44.220443348,70.271236829],["INT","CXRICN","PXR","32D",12443.501206269,43189.037992805,24.5,238.833333333,507.898008419,1762.817877257,52.101191373,180.833376104],["INT","CXRICN","PXR","32N",4551.522015354,11127.900127886,6.5,62.9,700.234156208,1711.984635059,72.361240308,176.914151477],["INT","CXRPUS","PXR","32D",9304.419077937,33130.006977579,19.5,188.75,477.149696304,1698.974716799,49.294935512,175.523215775],["INT","CXRPUS","PXR","32N",4259.111543497,10540.908754614,6.5,61.516666667,655.247929769,1621.678269941,69.235083341,171.350453882],["INT","DADBKK","PXR","32B",5619.778712503,12451.172396058,18.0,63.65,312.209928472,691.731799781,88.291888649,195.619362075],["INT","DADBKK","PXR","32D",294.656261235,682.390556612,1.0,3.5,294.656261235,682.390556612,84.18750321,194.968730461],["INT","DADBKK","PXR","32N",4044.227635808,7885.864554095,12.0,42.033333333,337.018969651,657.155379508,96.214773255,187.609783206],["INT","DADICN","PXR","32D",7768.491147428,26040.211282765,15.0,137.366666667,517.899409829,1736.014085518,56.552956667,189.567177501],["INT","DADICN","PXR","32N",10714.173514396,26280.546005829,16.0,146.733333333,669.63584465,1642.534125364,73.017993056,179.104129981],["INT","DADKIX","PXR","32B",13055.663189723,33835.538251638,18.0,172.083333333,725.314621651,1879.752125091,75.868260667,196.622982576],["INT","DADNRT","PXR","32B",20929.857141568,62006.913858519,31.0,337.083333333,675.156681986,2000.223027694,62.091047144,183.951289568],["INT","HANBKK","PXR","32B",15243.823920267,36418.572549903,47.0,191.216666667,324.336679155,774.863245743,79.720163446,190.457103896],["INT","HANBKK","PXR","32D",1491.392863169,4025.703930241,5.0,20.933333333,298.278572634,805.140786048,71.244881999,192.310697305],["INT","HANBKK","PXR","32N",3922.54854738,8320.664529212,11.0,46.466666667,356.595322489,756.42404811,84.416396285,179.067385851],["INT","HANBLR","PXR","32B",9127.296911686,29351.281961919,17.0,163.3,536.899818334,1726.54599776,55.892816361,179.738407605],["INT","HANBLR","PXR","32N",685.234372031,1732.190867,1.0,9.583333333,685.234372031,1732.190867,71.502717082,180.750351339],["INT","HANBOM","PXR","350",1123.60782602,3377.84809528,1.0,9.25,1123.60782602,3377.84809528,121.471116326,365.172767057],["INT","HANBOM","PXR","78A",6812.802767738,22731.646331565,8.0,75.333333333,851.600345967,2841.455791446,90.43543497,301.747517676],["INT","HANBOM","PXR","78B",6868.676741506,22694.632515591,8.0,75.25,858.584592688,2836.829064449,91.278096233,301.589800872],["INT","HANBOM","PXR","78C",1235.137723377,3383.08095209,1.0,9.25,1235.137723377,3383.08095209,133.528402527,365.738481307],["INT","HANCAN","PXR","32B",8210.08878973,18987.447068837,24.0,97.666666667,342.087032905,791.143627868,84.062342557,194.410720841],["INT","HANCAN","PXR","32D",318.687762558,775.106947372,1.0,4.083333333,318.687762558,775.106947372,78.045982667,189.822109561],["INT","HANCAN","PXR","32N",1568.294837654,3073.910910842,4.0,15.966666667,392.073709414,768.47772771,98.223058726,192.520516337],["INT","HANCDG","PXR","350",97824.87826978,308972.625860133,31.0,763.916666667,3155.641234509,9966.858898714,128.057002208,404.458548088],["INT","HANCGK","PXR","32B",7127.274742194,28309.812366809,17.5,162.05,407.272842411,1617.703563818,43.981948425,174.698009052],["INT","HANCGK","PXR","32D",828.290425519,3327.002359095,2.0,18.666666667,414.145212759,1663.501179547,44.372701367,178.232269237],["INT","HANCGK","PXR","32N",509.264722236,1454.75213004,1.0,8.616666667,509.264722236,1454.75213004,59.102288848,168.830034434],["INT","HANDEL","PXR","350",11252.558062426,31737.250539347,10.0,87.5,1125.255806243,3173.725053935,128.600663571,362.711434735],["INT","HANDEL","PXR","78A",4209.80198571,13798.100247056,5.0,44.333333333,841.960397142,2759.620049411,94.957939527,311.235343919],["INT","HANDEL","PXR","78B",1673.194596661,5299.461401515,2.0,17.5,836.59729833,2649.730700758,95.611119809,302.826365801],["INT","HANDEL","PXR","78C",1139.418755524,3028.936956306,1.0,8.966666667,1139.418755524,3028.936956306,127.072723664,337.799660555],["INT","HANFRA","PXR","78A",76340.351423504,260053.493563474,31.0,713.616666667,2462.591981403,8388.822373015,106.976693496,364.416227522],["INT","HANFUK","PXR","32B",2891.386613045,7128.35602511,4.0,33.966666667,722.846653261,1782.089006278,85.124237872,209.863278463],["INT","HANFUK","PXR","32N",19360.295336321,39036.438850917,22.0,185.633333333,880.013424378,1774.383584133,104.293205259,210.287873142],["INT","HANHKG","PXR","32B",6207.092683473,13023.476526195,15.0,62.716666667,413.806178898,868.231768413,98.970385599,207.655751148],["INT","HANHKG","PXR","32D",1555.628013543,3447.175968103,4.0,16.666666667,388.907003386,861.793992026,93.337680813,206.830558086],["INT","HANHKG","PXR","32N",891.303655137,1652.661783584,2.0,8.65,445.651827568,826.330891792,103.040884987,191.059165732],["INT","HANHND","PXR","350",5193.300726732,12778.492577893,3.0,32.316666667,1731.100242244,4259.497525964,160.700383499,395.414932787],["INT","HANHND","PXR","78A",39489.647287816,103257.117880489,28.0,292.733333333,1410.344545993,3687.754210017,134.899728836,352.734404055],["INT","HANHYD","PXR","32B",5608.90343851,18233.285764673,12.0,104.133333333,467.408619876,1519.440480389,53.862709077,175.095573925],["INT","HANHYD","PXR","32D",433.948562482,1534.850407602,1.0,8.433333333,433.948562482,1534.850407602,51.456351282,181.998072048],["INT","HANHYD","PXR","32N",611.65980312,1553.138556445,1.0,8.666666667,611.65980312,1553.138556445,70.576131129,179.208294974],["INT","HANICN","PXR","350",27306.342560896,72233.244161761,22.0,189.983333333,1241.197389132,3283.32928008,143.730200338,380.20832088],["INT","HANICN","PXR","78B",7526.970871652,22203.794688623,8.0,68.216666667,940.871358957,2775.474336078,110.339177205,325.489294238],["INT","HANICN","PXR","78C",31284.23857943,73452.288777524,24.0,203.516666667,1303.50994081,3060.512032397,153.718312568,360.915349001],["INT","HANIZO","PXC","32N",635.649253879,1658.074281317,1.0,9.233333333,635.649253879,1658.074281317,68.842879481,179.574831912],["INT","HANKHH","PXR","32B",8256.971802099,19549.17837572,18.5,96.366666667,446.322800113,1056.712344633,85.682862007,202.862452878],["INT","HANKHH","PXR","32D",4979.289927083,11831.437008175,11.5,59.583333333,432.98173279,1028.820609406,83.568502273,198.569572165],["INT","HANKHH","PXR","32N",4146.037518324,8446.052513493,8.5,43.383333333,487.769119803,993.653236882,95.567518671,194.684268463],["INT","HANKIX","PXR","32B",1533.681077163,3697.441775794,2.0,18.333333333,766.840538581,1848.720887897,83.655331482,201.678642316],["INT","HANKIX","PXR","32N",2765.578236188,5674.113543099,3.0,27.5,921.859412063,1891.371181033,100.566481316,206.331401567],["INT","HANKIX","PXR","350",1463.763954333,3750.118489995,1.0,9.516666667,1463.763954333,3750.118489995,153.810573135,394.057984938],["INT","HANKIX","PXR","78C",39094.686787734,81852.587854826,25.0,232.466666667,1563.787471509,3274.103514193,168.173301352,352.104622261],["INT","HANKUL","PXR","32B",10786.14570495,31660.817752272,27.0,178.4,399.486877961,1172.622879714,60.460457987,177.470951526],["INT","HANKUL","PXR","32D",756.1911908,2392.815913887,2.0,13.166666667,378.0955954,1196.407956944,57.432242339,181.732854219],["INT","HANKUL","PXR","32N",985.119193456,2267.006222922,2.0,13.166666667,492.559596728,1133.503111461,74.81917925,172.177687817],["INT","HANLHR","PXR","78A",31002.998920329,113824.259187727,13.0,321.583333333,2384.846070795,8755.71224521,96.407356062,353.949497345],["INT","HANLPQ","PXR","32B",2664.265197088,6803.816710634,11.0,24.25,242.205927008,618.528791876,109.866606065,280.569761263],["INT","HANLPQ","PXR","32D",208.236874737,581.500308827,1.0,2.083333333,208.236874737,581.500308827,99.953699874,279.120148237],["INT","HANMEL","PXR","350",28758.471231137,103936.867308103,14.0,266.616666667,2054.17651651,7424.061950579,107.864491709,389.83634672],["INT","HANMNL","PXR","32B",8184.868768745,24834.820129694,21.0,133.183333333,389.755655655,1182.610482366,61.455653376,186.47093077],["INT","HANMNL","PXR","32D",753.955095984,2496.186066413,2.0,12.666666667,376.977547992,1248.093033206,59.522770736,197.067321033],["INT","HANMNL","PXR","32N",949.794485944,2423.699802202,2.0,12.666666667,474.897242972,1211.849901101,74.983775206,191.344721227],["INT","HANMUC","PXR","350",2541.230823403,8019.633824103,1.0,22.166666667,2541.230823403,8019.633824103,114.641992033,361.787992065],["INT","HANMUC","PXR","78A",27322.450550551,98659.905583748,12.5,280.65,2185.796044044,7892.7924467,97.354179763,351.540728964],["INT","HANMXP","PXR","350",25463.465734813,83848.729227829,10.0,225.216666667,2546.346573481,8384.872922783,113.062084222,372.302505267],["INT","HANNGO","PXR","32B",5455.292547169,14670.308619497,7.0,68.25,779.327506738,2095.758374214,79.931026332,214.949576842],["INT","HANNGO","PXR","32N",4670.847031395,10281.614328541,5.0,48.75,934.169406279,2056.322865708,95.812246798,210.904909303],["INT","HANNGO","PXR","350",24892.226636654,68176.007269893,19.0,180.916666667,1310.117191403,3588.210908942,137.589460912,376.836521068],["INT","HANNRT","PXR","78B",5706.937869689,17341.136752628,5.0,52.666666667,1141.387573938,3468.227350526,108.359579804,329.26209024],["INT","HANNRT","PXR","78C",39291.151571744,94299.035425175,26.0,273.516666667,1511.198137375,3626.885977891,143.651763714,344.765226099],["INT","HANPEK","PXR","32B",10911.060340913,29727.404198847,22.0,167.333333333,495.957288223,1351.245645402,65.205539886,177.653809953],["INT","HANPUS","PXR","32B",609.98849314,1672.074382276,1.0,8.166666667,609.98849314,1672.074382276,74.692468548,204.743801911],["INT","HANPUS","PXR","78B",936.777669761,2661.064844766,1.0,8.0,936.777669761,2661.064844766,117.09720872,332.633105596],["INT","HANPUS","PXR","78C",32283.159888303,73986.823960832,25.0,200.183333333,1291.326395532,2959.472958433,161.267970469,369.59532409],["INT","HANPVG","PXR","32B",5598.463551902,14762.699740519,12.0,79.75,466.538629325,1230.224978377,70.20016993,185.112222452],["INT","HANPVG","PXR","32D",4072.878806786,11332.887099119,9.0,60.1,452.542089643,1259.20967768,67.768366169,188.56717303],["INT","HANPVG","PXR","32N",5015.095339518,11325.151715908,9.0,59.85,557.232815502,1258.350190656,83.794408346,189.22559258],["INT","HANSAI","PXR","32B",6467.21455479,16191.744623769,20.0,68.9,323.36072774,809.587231188,93.863781637,235.003550418],["INT","HANSAI","PXR","32D",594.700085754,1652.619309356,2.0,6.833333333,297.350042877,826.309654678,87.029280842,241.846728198],["INT","HANSAI","PXR","32N",696.49786722,1567.617337327,2.0,6.75,348.24893361,783.808668664,103.184869218,232.23960553],["INT","HANSIN","PXR","32B",8391.092516047,24636.986968063,20.0,135.55,419.554625802,1231.849348403,61.904039218,181.755713523],["INT","HANSIN","PXR","32D",798.296406476,2434.488378386,2.0,13.5,399.148203238,1217.244189193,59.133067146,180.332472473],["INT","HANSIN","PXR","32N",3084.326445224,7102.853347105,6.0,40.683333333,514.054407537,1183.808891184,75.813022005,174.588775431],["INT","HANSVO","PXR","78A",27654.350569682,85469.320073136,13.0,237.6,2127.257736129,6574.563082549,116.390364351,359.719360577],["INT","HANSYD","PXR","350",27571.261021079,100326.350479574,13.5,263.566666667,2042.315631191,7431.581517005,104.60830032,380.648857264],["INT","HANTPE","PXR","32B",8194.450562442,21227.541504962,19.5,112.566666667,420.228233971,1088.591872049,72.796421935,188.577508187],["INT","HANTPE","PXR","32D",3255.27939768,8563.736300005,8.0,45.733333333,406.90992471,1070.467037501,71.179578666,187.253709184],["INT","HANTPE","PXR","32N",1317.406631989,2833.696813284,2.5,14.583333333,526.962652795,1133.478725314,90.336454765,194.310638625],["INT","HANVTE","PXR","32B",7499.816689461,19493.630141351,30.0,72.1,249.993889649,649.787671378,104.019648952,270.369350088],["INT","HANVTE","PXR","32D",81.628740732,224.057725937,0.5,1.166666667,163.257481463,448.115451873,69.967492056,192.049479374],["INT","HANVTE","PXR","32N",93.861978827,208.341047776,0.5,1.166666667,187.723957654,416.682095551,80.453124709,178.57804095],["INT","LPQSAI","PXR","32B",2080.799821309,6272.772832777,7.0,20.933333333,297.25711733,896.110404682,99.401265349,299.654753158],["INT","SGNBKK","PXR","32B",24534.126974246,53098.748132149,77.0,261.833333333,318.62502564,689.594131586,93.701312441,202.795982682],["INT","SGNBKK","PXR","32D",288.869623604,678.782931022,1.0,3.166666667,288.869623604,678.782931022,91.221986401,214.352504533],["INT","SGNBKK","PXR","32N",1019.305199798,2076.042188122,3.0,10.516666667,339.768399933,692.014062707,96.922839917,197.40496242],["INT","SGNBOM","PXR","350",8829.831303598,29227.880062367,8.0,84.316666667,1103.72891295,3653.485007796,104.722253057,346.644159664],["INT","SGNBOM","PXR","78A",2421.729187659,9210.013475172,3.0,31.75,807.243062553,3070.004491724,76.274935044,290.079164572],["INT","SGNBOM","PXR","78B",823.788105149,3033.621164978,1.0,10.266666667,823.788105149,3033.621164978,80.239101151,295.482581004],["INT","SGNBOM","PXR","78C",1182.360817545,3376.721161212,1.0,10.583333333,1182.360817545,3376.721161212,111.719132366,319.060267201],["INT","SGNCAN","PXR","32B",3899.973131952,10900.904553529,10.0,59.15,389.997313195,1090.090455353,65.933611698,184.292553737],["INT","SGNCAN","PXR","32D",1150.804967051,3294.49684218,3.0,17.75,383.601655684,1098.16561406,64.834082651,185.605455897],["INT","SGNCAN","PXR","32N",5211.019891748,11483.56078272,11.0,65.083333333,473.729081068,1043.960071156,80.066886941,176.443955688],["INT","SGNCDG","PXR","350",57802.55059192,180679.317235356,17.5,443.0,3303.002890967,10324.532413449,130.479798176,407.853989245],["INT","SGNCGK","PXR","32B",6734.949219701,20955.157333767,19.0,119.283333333,354.471011563,1102.903017567,56.461779123,175.675484145],["INT","SGNCGK","PXR","32N",4309.474190862,10801.616311135,10.0,62.5,430.947419086,1080.161631113,68.951587054,172.825860978],["INT","SGNDEL","PXR","32B",575.166473283,1673.475686417,1.0,10.166666667,575.166473283,1673.475686417,56.57375147,164.604165877],["INT","SGNDEL","PXR","32D",1052.015577031,3617.588265564,2.0,20.333333333,526.007788516,1808.794132782,51.738471002,177.914176995],["INT","SGNDEL","PXR","32N",2155.550419039,5288.643220926,3.0,30.5,718.516806346,1762.881073642,70.673784231,173.398138391],["INT","SGNDEL","PXR","350",5969.920727245,17733.518881919,5.0,50.233333333,1193.984145449,3546.703776384,118.843810098,353.022937264],["INT","SGNDEL","PXR","78B",912.750981488,2728.975223051,1.0,9.75,912.750981488,2728.975223051,93.615485281,279.894894672],["INT","SGNDEL","PXR","78C",1267.608935669,3426.736154952,1.0,9.75,1267.608935669,3426.736154952,130.011172889,351.460118457],["INT","SGNDPS","PXR","32B",11759.918680659,41180.751311723,31.0,237.1,379.352215505,1328.411332636,49.598982204,173.685159476],["INT","SGNFRA","PXR","78A",57391.329006721,199516.43379369,22.5,548.1,2550.725733632,8867.397057497,104.709594977,364.014657533],["INT","SGNFUK","PXR","32B",6281.720758755,17502.976954111,9.0,90.366666667,697.968973195,1944.775217123,69.513693383,193.688420739],["INT","SGNHKG","PXR","32B",6909.98737617,17164.11393443,17.0,91.466666667,406.469845657,1009.653760849,75.546509215,187.654306863],["INT","SGNHKG","PXR","32N",464.252339573,988.475100226,1.0,5.416666667,464.252339573,988.475100226,85.708124229,182.487710811],["INT","SGNICN","PXR","32B",14929.182658777,49995.310056323,27.0,283.816666667,552.932691066,1851.678150234,52.601500941,176.153538281],["INT","SGNICN","PXR","78B",909.708367586,3007.273887258,1.0,10.083333333,909.708367586,3007.273887258,90.219011661,298.242038406],["INT","SGNICN","PXR","78C",32579.861540784,89126.228360094,26.0,262.066666667,1253.071597722,3427.931860004,124.318983239,340.08990725],["INT","SGNKHH","PXR","32B",10616.075701043,27582.208641312,23.5,142.75,451.747902172,1173.711006013,74.368306137,193.220375771],["INT","SGNKHH","PXR","32D",1694.564756999,4600.258246839,4.0,24.333333333,423.64118925,1150.06456171,69.639647548,189.051708774],["INT","SGNKHH","PXR","32N",6964.391580081,15614.025542062,13.5,82.6,515.880857784,1156.594484597,84.31466804,189.031786224],["INT","SGNKIX","PXR","32D",676.948981414,2070.370634131,1.0,10.666666667,676.948981414,2070.370634131,63.463967008,194.09724695],["INT","SGNKIX","PXR","32N",2667.142893109,6180.413136815,3.0,32.0,889.047631036,2060.137712272,83.34821541,193.137910525],["INT","SGNKIX","PXR","350",39431.463636846,108016.010040291,27.0,283.433333333,1460.424579142,4000.592964455,139.120770211,381.09847127],["INT","SGNKUL","PXR","32B",8453.096462061,20699.872425881,26.0,108.15,325.119094695,796.148939457,78.160854943,191.399652574],["INT","SGNKUL","PXR","32D",936.814140453,2340.465574424,3.0,12.5,312.271380151,780.155191475,74.945131236,187.237245954],["INT","SGNKUL","PXR","32N",756.977464559,1541.306661105,2.0,9.033333333,378.488732279,770.653330552,83.798243309,170.624353628],["INT","SGNLHR","PXR","78A",19996.342774707,74361.304433247,8.0,210.0,2499.542846838,9295.163054156,95.22067988,354.101449682],["INT","SGNMEL","PXR","350",52149.042837932,179379.26962088,27.5,461.55,1896.32883047,6522.882531668,112.986768146,388.645368044],["INT","SGNMEL","PXR","78A",914.391541257,3129.412057576,0.5,8.5,1828.783082515,6258.824115152,107.575475442,368.166124421],["INT","SGNMNL","PXR","32B",5444.701379004,16276.277748162,16.5,86.9,329.981901758,986.441075646,62.654791473,187.298938414],["INT","SGNMNL","PXR","32D",295.876495959,979.144908464,1.0,5.0,295.876495959,979.144908464,59.175299192,195.828981693],["INT","SGNMNL","PXR","32N",2118.859531305,5525.150438336,5.5,29.3,385.24718751,1004.57280697,72.316024959,188.571687315],["INT","SGNMUC","PXR","350",5107.731783264,16198.656847186,2.0,46.85,2553.865891632,8099.328423593,109.023090358,345.75574914],["INT","SGNMUC","PXR","78A",10920.959211151,40607.19817209,5.0,117.666666667,2184.19184223,8121.439634418,92.812684514,345.103667185],["INT","SGNNGO","PXR","32B",14402.868744283,43559.823665727,21.0,231.133333333,685.850892585,2074.277317416,62.314113402,188.461884911],["INT","SGNNRT","PXR","32B",585.686262252,2057.262962398,1.0,12.333333333,585.686262252,2057.262962398,47.488075318,166.805105059],["INT","SGNNRT","PXR","78B",2104.234500636,7050.29059676,2.0,23.166666667,1052.117250318,3525.14529838,90.830266215,304.329090508],["INT","SGNNRT","PXR","78C",40545.430436742,110523.865699626,28.0,325.033333333,1448.051087027,3947.280917844,124.742376485,340.038557172],["INT","SGNPER","PXR","78A",4307.829671773,14213.1280337,3.5,43.466666667,1230.80847765,4060.893723914,99.106510854,326.98914188],["INT","SGNPER","PXR","78B",6572.884480426,21091.034508518,5.0,62.416666667,1314.576896085,4218.206901704,105.306560434,337.90709493],["INT","SGNPKX","PXR","32B",9899.227463819,31904.450398725,19.0,188.333333333,521.01197178,1679.181599933,52.562269719,169.404161409],["INT","SGNPUS","PXR","350",1125.956374872,3415.035346729,1.0,9.5,1125.956374872,3415.035346729,118.521723671,359.477404919],["INT","SGNPUS","PXR","78B",23476.200692544,79774.716080284,27.0,256.3,869.488914539,2954.619114085,91.596569226,311.255232463],["INT","SGNPUS","PXR","78C",1200.707468723,3243.789282236,1.0,9.283333333,1200.707468723,3243.789282236,129.340122304,349.420748535],["INT","SGNPVG","PXR","32N",1297.377453553,3159.551824279,2.0,17.0,648.688726776,1579.77591214,76.316320797,185.855989663],["INT","SGNPVG","PXR","350",28882.053192632,77701.15183511,25.0,208.75,1155.282127705,3108.046073404,138.357141043,372.221086635],["INT","SGNPVG","PXR","78B",3410.042959733,10370.586271408,4.0,33.033333333,852.510739933,2592.646567852,103.23036205,313.943075825],["INT","SGNSAI","PXR","32B",7069.500782511,14975.828041194,25.0,56.266666667,282.7800313,599.033121648,125.642786419,266.158081301],["INT","SGNSAI","PXR","32D",540.205911786,1180.290488888,2.0,4.066666667,270.102955893,590.145244444,132.837519292,290.23536612],["INT","SGNSAI","PXR","32N",275.82054889,551.115527879,1.0,2.25,275.82054889,551.115527879,122.586910618,244.940234613],["INT","SGNSFO","PXR","350",43733.39329235,153553.096617385,14.0,414.333333333,3123.813806596,10968.078329813,105.551230794,370.602807604],["INT","SGNSIN","PXR","32B",13279.906139608,32108.944564256,39.0,165.483333333,340.510413836,823.306270878,80.249206202,194.031289541],["INT","SGNSIN","PXR","32D",642.827573958,1587.550539939,2.0,8.266666667,321.413786979,793.77526997,77.761400076,192.042404025],["INT","SGNSIN","PXR","32N",1884.011727334,4079.46972345,5.0,20.95,376.802345467,815.89394469,89.928960732,194.724091811],["INT","SGNSYD","PXR","350",49818.645615019,169687.588389493,26.0,450.0,1916.101754424,6526.445707288,110.708101367,377.083529754],["INT","SGNTPE","PXR","32B",7135.610988951,19544.521181698,16.5,115.166666667,432.461272058,1184.516435254,61.958995563,169.706406788],["INT","SGNTPE","PXR","32D",1537.142339563,4374.987964818,3.5,24.966666667,439.183525589,1249.996561377,61.567783961,175.23316281],["INT","SGNTPE","PXR","32N",533.966650039,1226.330780615,1.0,7.216666667,533.966650039,1226.330780615,73.990759821,169.93036221],["INT","SGNCPH","PXR","78A",17307.198240074,61109.037211079,7.0,171.566666667,2472.456891439,8729.862458726,100.877394055,356.182458973],["INT","SGNCPH","PXR","78B",5052.812627474,17690.657010036,2.0,48.95,2526.406313737,8845.328505018,103.223955617,361.402594689],["INT","SGNKTI","PXR","32B",8282.381036247,15370.307482515,30.0,61.433333333,276.079367875,512.34358275,134.819007644,250.1949129],["INT","SGNKTI","PXR","32D",175.992742772,338.601329653,0.5,1.25,351.985485545,677.202659307,140.794194218,270.881063723],["INT","SGNKTI","PXR","32N",186.109890675,323.28781268,0.5,1.25,372.219781351,646.575625359,148.88791254,258.630250144],["INT","VTEKTI","PXR","32B",9130.507694188,26382.949252782,30.0,103.816666667,304.350256473,879.431641759,87.948380422,254.130190266],["INT","VTEKTI","PXR","32D",130.063610967,517.58495328,0.5,1.75,260.127221935,1035.169906561,74.32206341,295.762830446],["INT","VTEKTI","PXR","32N",154.065939898,483.236940604,0.5,1.75,308.131879796,966.473881208,88.037679942,276.135394631],["INT","HANKTI","PXR","32B",1281.03947333,3378.064135414,4.0,15.916666667,320.259868333,844.516033853,80.484155392,212.234395942],["INT","HANCEB","PXR","32B",3262.089568498,11633.50290183,8.0,60.016666667,407.761196062,1454.187862729,54.353061402,193.837871177],["INT","HANCEB","PXR","32N",505.506442416,1376.759910827,1.0,7.566666667,505.506442416,1376.759910827,66.807018822,181.950649008],["INT","SGNLPQ","NTP","AT7",173.993251398,275.26491295,0.5,3.833333333,347.986502797,550.529825899,45.389543843,71.808238161],["INT","SGNLPQ","PXC","AT7",172.317344396,349.554154078,0.5,3.5,344.634688793,699.108308156,49.23352697,99.872615451]];
+const xmlDecoder=new TextDecoder('utf-8');
+async function zipEntry(bytes,path){
+ const v=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);let end=-1;
+ for(let at=bytes.length-22;at>=Math.max(0,bytes.length-65557);at--){if(v.getUint32(at,true)===0x06054b50){end=at;break}}
+ if(end<0)throw new Error('Invalid XLSX structure (ZIP footer not found).');
+ let off=v.getUint32(end+16,true),total=v.getUint16(end+10,true);
+ for(let i=0;i<total;i++){
+  if(off+46>bytes.length||v.getUint32(off,true)!==0x02014b50)throw new Error('Invalid XLSX structure (ZIP index).');
+  let method=v.getUint16(off+10,true),packed=v.getUint32(off+20,true),nameLen=v.getUint16(off+28,true),extra=v.getUint16(off+30,true),comment=v.getUint16(off+32,true),localOffset=v.getUint32(off+42,true);
+  const name=xmlDecoder.decode(bytes.slice(off+46,off+46+nameLen));
+  if(name===path){
+   if(v.getUint32(localOffset,true)!==0x04034b50)throw new Error('Invalid worksheet ZIP entry.');
+   let start=localOffset+30+v.getUint16(localOffset+26,true)+v.getUint16(localOffset+28,true),chunk=bytes.slice(start,start+packed);
+   if(method===0)return xmlDecoder.decode(chunk);
+   if(method===8){if(typeof DecompressionStream==='undefined')throw new Error('This browser cannot read compressed Excel files.');
+    const stream=new Blob([chunk]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return xmlDecoder.decode(await new Response(stream).arrayBuffer());}
+   throw new Error('Unsupported Excel compression format.');
+  }
+  off+=46+nameLen+extra+comment;
+ }
+ return null;
+}
+function xmlCellRows(xml,strings){
+ const doc=new DOMParser().parseFromString(xml,'application/xml');if(doc.querySelector('parsererror'))throw new Error('Unable to read Excel worksheet XML.');
+ const data=doc.getElementsByTagNameNS('*','sheetData')[0];if(!data)return [];
+ return Array.from(data.getElementsByTagNameNS('*','row'),row=>{
+  const result=[];
+  for(const c of Array.from(row.getElementsByTagNameNS('*','c'))){
+   const address=c.getAttribute('r')||'';let letters=(address.match(/^[A-Z]+/i)||[''])[0].toUpperCase(),index=0;
+   for(let i=0;i<letters.length;i++)index=index*26+letters.charCodeAt(i)-64;index--;
+   if(index<0||index>100)continue;
+   let type=c.getAttribute('t'),v=c.getElementsByTagNameNS('*','v')[0]?.textContent;
+   let value=type==='inlineStr'?(c.getElementsByTagNameNS('*','is')[0]?.textContent||''):type==='s'?(strings[Number(v)]??''):type==='b'?Number(v):v===undefined?'':v;
+   result[index]=value;
+  }
+  return result;
+ });
+}
+async function readDocWorkbook(file){
+ const bytes=new Uint8Array(await file.arrayBuffer());
+ const shared=await zipEntry(bytes,'xl/sharedStrings.xml');
+ let strings=[];
+ if(shared){const doc=new DOMParser().parseFromString(shared,'application/xml');strings=Array.from(doc.getElementsByTagNameNS('*','si'),n=>n.textContent||'')}
+ const sheet=await zipEntry(bytes,'xl/worksheets/sheet1.xml');if(!sheet)throw new Error('Excel workbook does not contain the DOC_Data worksheet.');
+ const all=xmlCellRows(sheet,strings).filter(r=>r.some(x=>String(x??'').trim()!==''));
+ if(!all.length)throw new Error('The Excel workbook contains no data.');
+ const header=all[0].slice(0,12).map(x=>String(x??'').trim());
+ if(header.length<12||!DOC_HEADER_ALIASES.every((list,i)=>list.some(alias=>alias.toLowerCase()===header[i].toLowerCase())))throw new Error('Incorrect Import template: expected the 12 Dry Operating Cost columns in the correct order.');
+ const seen=new Set(),rows=[];
+ for(let i=1;i<all.length;i++){
+  const raw=all[i];const codes=raw.slice(0,4).map(x=>String(x??'').trim().toUpperCase());
+  if(codes.some(x=>!x))throw new Error('Missing NetW3 / ROUTE_2W / FLT_TYPE / AC_GROUP at data row '+(i+1)+'.');
+  const key=codes.join('|');if(seen.has(key))throw new Error('Duplicate Network / Route / Flight Type / AC Group at data row '+(i+1)+'.');seen.add(key);
+  const amounts=[];
+  for(let j=4;j<8;j++){const text=String(raw[j]??'').trim();if(!text||!Number.isFinite(Number(text))||Number(text)<0)throw new Error('Invalid numeric value at data row '+(i+1)+', column '+DOC_COLS[j]+'.');amounts.push(Number(text));}
+  if(amounts[2]<=0||amounts[3]<=0)throw new Error('Flight Count and Block Hours must be greater than 0 at row '+(i+1)+'.');
+  const calculated=[amounts[0]/amounts[2],amounts[1]/amounts[2],amounts[0]/amounts[3],amounts[1]/amounts[3]];
+  const ratios=[];for(let j=8;j<12;j++){const t=String(raw[j]??'').trim();const n=t===''?calculated[j-8]:Number(t);if(!Number.isFinite(n)||n<0)throw new Error('Invalid numeric value at data row '+(i+1)+', column '+DOC_COLS[j]+'.');ratios.push(n);}
+  rows.push([...codes,...amounts,...ratios]);
+ }
+ if(!rows.length)throw new Error('Import file must contain at least one data row.');
+ return rows;
+}
+let detailActive=null, detailRows=[],detailFiltered=[],detailPage=1,detailLoadingToken=0,detailPrevFocus=null;
+function detailCellNumber(n){return typeof n==='number'?new Intl.NumberFormat('en-US',{maximumFractionDigits:4}).format(n):escapeHtml(n??'');}
+function renderDetailMeta(r){const stat=getStatus(r);$('detailTitle').textContent='Dry Operating Cost — '+r.filename;$('detailHeaderStatus').className='badge header-status '+stat.toLowerCase();$('detailHeaderStatus').textContent=stat;$('detailSubtitle').innerHTML='Effective From: <strong>'+pretty(r.from)+'</strong> &nbsp;•&nbsp; Effective To: <strong>'+(r.to?pretty(r.to):'Ongoing')+'</strong> &nbsp;•&nbsp; Imported Time (UTC): <strong>'+prettyTime(r.importedAt)+'</strong> &nbsp;•&nbsp; Imported By: <strong>'+escapeHtml(r.by)+'</strong>'; }
+/* Filters apply ONLY to rows inside the selected workbook.
+   OR inside each multi-select; AND across NetW3, route, FLT TYPE, and AC GROUP.
+   Route text matches anywhere in the route code, case-insensitive. */
+const DETAIL_MULTI=[
+ {key:'net',id:'detailFilterNet',idx:0,label:'NetW3'},
+ {key:'type',id:'detailFilterType',idx:2,label:'FLT TYPE'},
+ {key:'ac',id:'detailFilterAc',idx:3,label:'AC GROUP'}
+];
+let detailSelections={net:new Set(),type:new Set(),ac:new Set()};
+let detailAppliedFilters={net:[],route:'',type:[],ac:[]};
+function detailDraftFilters(){return {net:[...detailSelections.net],route:$('detailFilterRoute').value.trim().toUpperCase(),type:[...detailSelections.type],ac:[...detailSelections.ac]};}
+function detailRowMatches(row,selection,excluding){
+ if(excluding!=='net' && selection.net.length && !selection.net.includes(String(row[0])))return false;
+ if(excluding!=='route' && selection.route && !String(row[1]).toUpperCase().includes(selection.route))return false;
+ if(excluding!=='type' && selection.type.length && !selection.type.includes(String(row[2])))return false;
+ if(excluding!=='ac' && selection.ac.length && !selection.ac.includes(String(row[3])))return false;
+ return true;
+}
+function closeDetailMultis(except){
+ DETAIL_MULTI.forEach(col=>{if(col.key===except)return;$(col.id+'Menu').hidden=true;$(col.id).setAttribute('aria-expanded','false');});
+}
+function refreshDetailMultis(){
+ const draft=detailDraftFilters();
+ DETAIL_MULTI.forEach(col=>{
+  const available=new Set(detailRows.filter(row=>detailRowMatches(row,draft,col.key)).map(row=>String(row[col.idx]??'')));
+  const values=[...new Set(detailRows.map(row=>String(row[col.idx]??'')).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  const options=$(col.id+'Options');
+  options.innerHTML=values.length?values.map(v=>{
+   const checked=detailSelections[col.key].has(v),enabled=available.has(v)||checked;
+   return `<label class="detail-multi-option"><input type="checkbox" data-multi-value="${col.key}" value="${escapeHtml(v)}" ${checked?'checked':''} ${enabled?'':'disabled'}/><span>${escapeHtml(v)}</span></label>`;
+  }).join(''):'<div class="detail-multi-empty">No options available.</div>';
+  const selected=[...detailSelections[col.key]];
+  $(col.id+'Count').textContent=selected.length+' selected';
+  $(col.id).querySelector('.detail-multi-label').textContent=!selected.length?col.label:(selected.length===1?col.label+': '+selected[0]:col.label+': '+selected.length+' selected');
+  $(col.id).classList.toggle('is-placeholder',!selected.length);
+  const selectAll=document.querySelector(`[data-multi-all="${col.key}"]`),clear=document.querySelector(`[data-multi-clear="${col.key}"]`);
+  selectAll.disabled=!available.size;clear.disabled=!selected.length;
+ });
+}
+function resetDetailFilters(){
+ detailSelections={net:new Set(),type:new Set(),ac:new Set()};
+ detailAppliedFilters={net:[],route:'',type:[],ac:[]};
+ $('detailFilterRoute').value='';closeDetailMultis();refreshDetailMultis();
+ detailPage=1;detailSearchAndRender();
+}
+function detailSearchAndRender(){
+ detailFiltered=detailRows.filter(row=>detailRowMatches(row,detailAppliedFilters));
+ renderDetailTable();
+}
+function renderDetailTable(){
+ const size=Number($('detailPageSize').value)||25, total=detailFiltered.length, pages=Math.max(1,Math.ceil(total/size));
+ detailPage=Math.max(1,Math.min(detailPage,pages));const begin=(detailPage-1)*size, visible=detailFiltered.slice(begin,begin+size);
+ $('detailBody').innerHTML=visible.map((row,i)=>`<tr><td class="center">${begin+i+1}</td>${row.map((v,j)=>j<4?`<td title="${escapeHtml(v)}">${escapeHtml(v)}</td>`:`<td class="right" title="${escapeHtml(v)}">${detailCellNumber(v)}</td>`).join('')}</tr>`).join('');
+ $('detailEmpty').hidden=total>0;$('detailCount').textContent=`${total.toLocaleString('en-US')} rows`;
+ $('detailTotalText').textContent=`Total records: ${total.toLocaleString('en-US')}`;
+ $('detailPageRange').textContent=total?`${begin+1}–${begin+visible.length} of ${total}`:'0–0 of 0';
+ $('detailFirst').disabled=$('detailPrev').disabled=detailPage===1;$('detailNext').disabled=$('detailLast').disabled=detailPage>=pages;
+ let low=Math.max(1,detailPage-2),high=Math.min(pages,low+4);low=Math.max(1,high-4);
+ $('detailPages').innerHTML=Array.from({length:high-low+1},(_,i)=>{const p=low+i;return `<button class="pagebtn ${p===detailPage?'current':''}" data-detail-page="${p}" aria-label="Detail page ${p}" ${p===detailPage?'aria-current="page"':''}>${p}</button>`}).join('');
+ $('detailScroll').scrollTop=0;
+}
+async function openDetail(id){
+ const rec=timeline().find(r=>r.id===id);if(!rec)return;
+ detailActive=rec;detailRows=[];detailFiltered=[];detailPage=1;const token=++detailLoadingToken;
+ detailPrevFocus=document.activeElement;detailSelections={net:new Set(),type:new Set(),ac:new Set()};detailAppliedFilters={net:[],route:'',type:[],ac:[]};$('detailFilterRoute').value='';closeDetailMultis();refreshDetailMultis();$('detailPageSize').value='25';$('detailFilterToggle').setAttribute('aria-expanded','true');$('detailFilterFields').hidden=false;
+ renderDetailMeta(rec);$('detailNote').textContent='';$('detailLoading').classList.add('visible');
+ $('detailMask').classList.add('open');$('detailMask').setAttribute('aria-hidden','false');document.body.classList.add('detail-open');$('detailExport').focus();
+ renderDetailTable();
+ try{
+  if(rec.id.startsWith('demo')){
+   detailRows=DOC_DEMO_ROWS;
+   $('detailNote').textContent='';
+  }else{
+   let stored=memoryFiles.get(rec.id);if(!stored)stored=await dbGet(rec.id);
+   if(token!==detailLoadingToken)return;
+   if(!stored)throw new Error('The imported Excel file is not available in this browser.');
+   detailRows=Array.isArray(stored.rows)?stored.rows:await readDocWorkbook(stored.file||stored);
+   $('detailNote').textContent='';
+  }
+  if(token===detailLoadingToken){refreshDetailMultis();detailPage=1;detailSearchAndRender()}
+ }catch(e){if(token===detailLoadingToken){$('detailNote').textContent='Unable to load detail: '+(e.message||'Unknown error');toast('Unable to load cost details.','error')}}
+ finally{if(token===detailLoadingToken)$('detailLoading').classList.remove('visible')}
+}
+function closeDetail(){if(!$('detailMask').classList.contains('open'))return;closeDetailMultis();detailLoadingToken++;$('detailMask').classList.remove('open');$('detailMask').setAttribute('aria-hidden','true');document.body.classList.remove('detail-open');detailActive=null;if(detailPrevFocus?.isConnected)detailPrevFocus.focus();}
+$('detailTableHead').innerHTML='<tr><th class="center">No.</th>'+DOC_COLS.map(name=>`<th title="${escapeHtml(name)}">${escapeHtml(name).replaceAll('_','_<wbr>').replaceAll('-','-<wbr>')}</th>`).join('')+'</tr>';
+$('detailMask').addEventListener('pointerdown',e=>{if(e.target===$('detailMask'))closeDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('detailMask').classList.contains('open')){e.preventDefault();closeDetail()}});
+DETAIL_MULTI.forEach(col=>{
+ $(col.id).addEventListener('click',()=>{
+  const show=$(col.id+'Menu').hidden;closeDetailMultis();
+  $(col.id+'Menu').hidden=!show;$(col.id).setAttribute('aria-expanded',String(show));
+ });
+ $(col.id+'Options').addEventListener('change',e=>{
+  const checkbox=e.target.closest('input[data-multi-value]');if(!checkbox)return;
+  if(checkbox.checked)detailSelections[col.key].add(checkbox.value);else detailSelections[col.key].delete(checkbox.value);
+  refreshDetailMultis();
+  const newCheckbox=[...$(col.id+'Options').querySelectorAll('input[data-multi-value]')].find(x=>x.value===checkbox.value);
+  if(newCheckbox)newCheckbox.focus();
+ });
+ document.querySelector(`[data-multi-all="${col.key}"]`).addEventListener('click',()=>{
+  const available=detailRows.filter(row=>detailRowMatches(row,detailDraftFilters(),col.key)).map(row=>String(row[col.idx]));
+  available.forEach(x=>detailSelections[col.key].add(x));refreshDetailMultis();
+ });
+ document.querySelector(`[data-multi-clear="${col.key}"]`).addEventListener('click',()=>{detailSelections[col.key].clear();refreshDetailMultis()});
+});
+$('detailFilterRoute').addEventListener('input',refreshDetailMultis);
+$('detailFilterRoute').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('detailFilterSearch').click()}});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.detail-multiselect'))closeDetailMultis()});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&DETAIL_MULTI.some(col=>!$(col.id+'Menu').hidden)){
+  const focused=document.activeElement.closest('.detail-multiselect');
+  e.preventDefault();e.stopImmediatePropagation();closeDetailMultis();if(focused)focused.querySelector('.detail-multi-trigger')?.focus();
+ }
+},true);
+$('detailFilterSearch').addEventListener('click',()=>{detailAppliedFilters=detailDraftFilters();closeDetailMultis();detailPage=1;detailSearchAndRender()});
+$('detailFilterClear').addEventListener('click',resetDetailFilters);
+$('detailFilterToggle').addEventListener('click',()=>{
+ const nowOpen=$('detailFilterToggle').getAttribute('aria-expanded')!=='true';
+ $('detailFilterToggle').setAttribute('aria-expanded',String(nowOpen));
+ $('detailFilterFields').hidden=!nowOpen;
+});
+$('detailPageSize').addEventListener('change',()=>{detailPage=1;renderDetailTable()});
+$('detailPages').addEventListener('click',e=>{const b=e.target.closest('[data-detail-page]');if(b){detailPage=+b.dataset.detailPage;renderDetailTable()}});
+$('detailFirst').addEventListener('click',()=>{detailPage=1;renderDetailTable()});
+$('detailPrev').addEventListener('click',()=>{detailPage--;renderDetailTable()});
+$('detailNext').addEventListener('click',()=>{detailPage++;renderDetailTable()});
+$('detailLast').addEventListener('click',()=>{detailPage=Math.max(1,Math.ceil(detailFiltered.length/(+$('detailPageSize').value||25)));renderDetailTable()});
+$('detailExport').addEventListener('click',async()=>{if(detailActive)await exportRecord(detailActive.id)});
+
+render();
+</script>
+</body>
+</html>
