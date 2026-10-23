@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOSS | Integrated Message Data Management</title>
+<title>TOSS | ACARS Message Detail – All Types</title>
 <style>
 :root{--bg:#eef2f5;--surface:#ffffff;--surface-2:#f6f8fb;--sidebar:#d8dee6;--sidebar-deep:#cfd6df;--line:#d8e0e8;--line-2:#e5ebf0;--text:#263238;--muted:#71808f;--nav:#36424f;--teal:#0d7f94;--teal-2:#18a2bc;--blue:#0f98c4;--orange:#f5a623;--orange-2:#e69a1f;--green:#25b46b;--green-bg:#ecfbf3;--gray-badge:#e8edf3;--gray-text:#6b7785;--shadow:0 1px 3px rgba(15,23,42,.06),0 10px 24px rgba(15,23,42,.05);--radius:10px;--radius-sm:8px;}
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
@@ -1011,6 +1011,169 @@ html,body{height:100%;overflow:hidden}
   #detailOverlay #detailPaneMapping .detail-assigned-fields{grid-template-columns:1fr;gap:10px}
   #detailOverlay #detailPaneMapping .detail-assigned-method-label{display:none}
 }
+
+/* V94 – message-specific details; follows the supplied Common HTML spacing,
+   compact cards and 2-column drawer visual reference. */
+#detailOverlay .detail-drawer.detail-drawer-common{
+ width:min(1130px, 68vw); max-width:calc(100vw - 260px);
+ background:#fff;border-left:1px solid #dbe3ea;
+}
+#detailOverlay .detail-common-head{
+ padding:15px 17px 10px;flex:0 0 auto;align-items:flex-start;
+ background:linear-gradient(105deg,#fff 50%,#f5fafc 100%);border-bottom:0;
+}
+#detailOverlay .detail-common-title-row{gap:9px;margin:0 0 3px;align-items:center}
+#detailOverlay .detail-header-field h2{font-size:18px;line-height:1.32;font-weight:820;color:#172532;letter-spacing:-.25px}
+#detailOverlay .detail-header-event .detail-common-sub{font-size:13px;color:#23313e;font-weight:550;line-height:1.2}
+#detailOverlay .detail-common-head-actions{gap:8px;align-self:flex-start}
+#detailOverlay .detail-close{margin-left:12px;width:29px;height:29px;align-self:center;background:#f7f9fb}
+#detailOverlay #detailMappingBtn{height:28px;background:#008ea9;border-color:#008ea9;color:white;padding:0 11px}
+#detailOverlay #detailStatus .badge{font-size:11px;font-weight:750;border-radius:18px;padding:4px 9px}
+#detailOverlay .detail-drawer-body{
+ padding:0 17px 16px;flex:1;min-height:0;overflow:hidden;
+ background:#fff;
+}
+#detailOverlay .detail-unified.acars-detail-v94{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ gap:24px;height:100%;min-height:0;align-items:start;
+}
+#detailOverlay .acars-detail-left{height:100%;overflow-y:auto;min-height:0;padding:0 2px 24px 0;scrollbar-width:thin;scrollbar-color:#dbe5ed transparent}
+#detailOverlay .acars-detail-right{height:100%;min-height:0;display:flex;flex-direction:column;padding-bottom:0}
+#detailOverlay .detail-merged-section + .detail-merged-section{border:0;margin:0;padding:0}
+#detailOverlay .detail-merged-heading{min-height:23px;margin:4px 0 7px;display:flex;gap:6px}
+#detailOverlay .detail-merged-heading h3{font-size:15px;color:#142333;font-weight:850;margin:0}
+#detailOverlay .detail-section-number{display:none}
+#detailOverlay .detail-merged-description{display:none}
+#detailOverlay .acars-detail-v94 #detailPaneMapping{margin-bottom:3px}
+#detailOverlay .acars-detail-v94 .detail-assigned-flight-panel{
+ display:grid;grid-template-columns:1fr .95fr 1.15fr .95fr;
+ gap:11px;align-items:start;padding:12px 13px;background:#fff;
+ border:1px solid #dce5eb;border-radius:7px;box-shadow:0 1px 2px rgba(29,52,74,.045);
+}
+#detailOverlay .acars-detail-v94 .assign-cell{min-width:0;display:grid;gap:6px}
+#detailOverlay .acars-detail-v94 .assign-cell>span{font-size:11px;color:#53667a;font-weight:600;white-space:nowrap}
+#detailOverlay .acars-detail-v94 .assign-cell>strong{font-size:15px;color:#132332;font-weight:850;overflow-wrap:anywhere;white-space:nowrap}
+#detailOverlay .acars-detail-v94 .assign-cell:first-child>strong{font-size:18px}
+#detailOverlay .acars-detail-v94 .method-token{display:inline-flex;align-items:center;width:max-content;max-width:100%;gap:4px;color:#228dec;font-size:11px;font-weight:800;background:#eaf5ff;border:1px solid #72b7ff;border-radius:4px;padding:3px 5px}
+#detailOverlay .acars-detail-v94 .method-token:before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor}
+#detailOverlay .acars-detail-v94 .method-token.manual{color:#7a63b8;background:#f4efff;border-color:#cfbfed}
+#detailOverlay .acars-detail-v94 .detail-match-pending{margin:0;padding:14px 13px;border-radius:7px}
+#detailOverlay .acars-detail-v94 .detail-match-pending-copy strong{font-size:12px}
+#detailOverlay .acars-detail-v94 .detail-match-pending-copy p{font-size:11px;margin:0}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded{margin:0}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-card-grid{gap:0;display:flex;flex-direction:column}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-card{margin:0;padding:0;border:0;background:transparent;box-shadow:none}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-card-title{
+ font-size:14px;line-height:1.28;padding:10px 0 0;font-weight:850;color:#142333;border:0;margin:0;
+}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:13px;row-gap:0}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair,
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair:nth-child(odd),
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair:nth-last-child(-n+2){
+ display:block;min-width:0;padding:8px 0 9px;border:0;border-bottom:1px solid #e3eaf0;min-height:54px;
+}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair.wide{grid-column:1/-1}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair dt{font-size:11px;color:#60748b;font-weight:600;margin:0 0 5px;line-height:1.25}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair dd{font-size:13px;font-weight:800;color:#1c2e41;white-space:pre-line;overflow-wrap:anywhere;line-height:1.35}
+#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pair dd.detail-missing{color:#94a4b0}
+#detailOverlay .acars-detail-v94 .acars-report-note{font-size:10px;color:#8494a3;margin:5px 0 1px;line-height:1.35}
+#detailOverlay .acars-detail-v94 #detailPaneRaw{display:flex;flex-direction:column;min-height:0;height:100%}
+#detailOverlay .acars-detail-v94 #detailPaneRaw .detail-merged-heading{margin:4px 0 8px;justify-content:space-between;flex:0 0 auto}
+#detailOverlay .acars-detail-v94 #detailPaneRaw .detail-merged-heading .detail-copy{height:28px;border-radius:6px;padding:0 10px;font-size:11px;white-space:nowrap;margin-left:auto}
+#detailOverlay .acars-detail-v94 #detailRawContent{
+ flex:1;min-height:0;max-height:none!important;overflow:auto!important;white-space:pre-wrap;overflow-wrap:anywhere;
+ background:#f3f5f8;border:1px solid #dfe7ed;border-radius:7px;margin:0;
+ padding:13px 14px;font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:#1f2938;
+ scrollbar-width:thin;overscroll-behavior:contain;
+}
+#detailOverlay .acars-detail-v94 #detailRawContent.is-expanded{max-height:none}
+#detailOverlay .detail-drawer-footer{display:none}
+@media(max-width:1370px){#detailOverlay .detail-drawer.detail-drawer-common{width:min(1040px,74vw);max-width:calc(100vw - 210px)}#detailOverlay .detail-unified.acars-detail-v94{gap:18px}#detailOverlay .acars-detail-v94 .detail-assigned-flight-panel{gap:8px;padding:11px}}
+@media(max-width:1020px){#detailOverlay .detail-drawer.detail-drawer-common{width:90vw;max-width:none}#detailOverlay .acars-detail-v94 #detailPaneDecoded .acars-data-pairs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:690px){#detailOverlay .detail-drawer.detail-drawer-common{width:100vw;max-width:none}#detailOverlay .detail-drawer-body{overflow-y:auto}#detailOverlay .detail-unified.acars-detail-v94{display:flex;flex-direction:column;gap:16px;height:auto}#detailOverlay .acars-detail-left{height:auto;overflow:visible;width:100%}#detailOverlay .acars-detail-right{width:100%;height:320px;flex:0 0 320px}#detailOverlay .acars-detail-v94 .detail-assigned-flight-panel{grid-template-columns:repeat(2,minmax(0,1fr))}#detailOverlay .detail-common-head{padding:11px 12px}#detailOverlay .detail-drawer-body{padding:0 12px 14px}#detailOverlay .detail-header-field h2{font-size:16px}}
+
+
+/* v96 — One manually added flight; picker Add is a draft-only action. */
+#mapOverlay .suggested-flight-section{margin-bottom:16px}
+#mapOverlay .manually-added-section{margin:0 0 23px;padding-top:14px;border-top:1px solid #e4ecf2}
+#mapOverlay .manual-added-head{display:flex;gap:12px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+#mapOverlay .manual-added-head .mapping-section-title{margin:0}
+#mapOverlay .manual-counter{font-weight:800;color:#687d8a;font-size:12px}
+#mapOverlay .manual-one-hint{color:#8597a4;font-size:11px;font-weight:650}
+#mapOverlay .manual-draft-hint{font-size:11px;color:#7e8f9d;line-height:1.5;margin:9px 0 0}
+#mapOverlay .manual-draft-hint b{color:#526f7c}
+#mapOverlay .manual-remove{padding:6px 8px;border:1px solid #e4d8d8;border-radius:6px;background:#fff;color:#aa5a5a;font-size:11px;font-weight:800;white-space:nowrap}
+#mapOverlay .manual-remove:hover{background:#fff5f5;border-color:#e2bdbd}
+#mapOverlay .mapping-flight-table td.manual-actions-cell,#mapOverlay .mapping-flight-table th:last-child:has(+ .not-applicable){white-space:nowrap}
+#mapOverlay .manual-empty{background:#f9fbfd;color:#91a0ad;font-size:12px;font-weight:600;padding:22px 14px}
+#mapOverlay .manually-added-section .mapping-flight-table{min-width:930px}
+#mapOverlay .manually-added-section .mapping-flight-table th:last-child{min-width:80px}
+#mapOverlay .manually-added-section .mapping-flight-table td:first-child{background:transparent}
+#mapOverlay .mapping-table-bottom{padding:10px 0 4px}
+#flightPickerOverlay #applyFlightPicker{min-width:94px}
+
+/* v97 — Two-column Mapping / Re-matching: suggested + manual selection left; original right. */
+#mapOverlay .mapping-drawer{width:min(1210px,97vw)}
+#mapOverlay .mapping-drawer-scroll{padding:16px 19px 23px;overflow-x:hidden}
+#mapOverlay .matching-workspace-grid{
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
+  align-items:start;gap:24px;min-height:100%;
+}
+#mapOverlay .matching-workspace-left{min-width:0;display:flex;flex-direction:column;gap:17px}
+#mapOverlay .suggested-flight-section{margin:0}
+#mapOverlay .manually-added-section{margin:0;padding-top:0;border:0}
+#mapOverlay .manual-added-head{margin-bottom:10px}
+#mapOverlay .mapping-section-title{font-size:15px;margin:0 0 10px}
+#mapOverlay .manual-added-head .mapping-section-title{margin:0}
+#mapOverlay .mapping-flight-table{width:100%;min-width:550px}
+#mapOverlay .manually-added-section .mapping-flight-table{min-width:620px}
+#mapOverlay .mapping-flight-table th{padding:10px 7px;font-size:10px}
+#mapOverlay .mapping-flight-table td{padding:10px 7px;font-size:11px}
+#mapOverlay .mapping-flight-table .map-flight-num{font-size:12px}
+#mapOverlay .mapping-flight-table td:first-child,#mapOverlay .mapping-flight-table th:first-child{width:46px}
+#mapOverlay .mapping-flight-table td.flight-datetime-cell,#mapOverlay .mapping-flight-table th:nth-last-child(-n+2){min-width:116px}
+#mapOverlay .mapping-flight-table .manual-actions-cell{white-space:nowrap}
+#mapOverlay .matching-raw-section{
+  min-width:0;min-height:0;margin:0;position:sticky;top:0;
+  height:min(700px,calc(100dvh - 163px));
+  display:flex;flex-direction:column;
+}
+#mapOverlay .matching-raw-title-row{min-height:25px;margin:0 0 10px}
+#mapOverlay .matching-raw-title-row .mapping-section-title{margin:0}
+#mapOverlay .matching-raw-body{
+  flex:1;max-height:none;min-height:240px;overflow:auto;
+  border-color:#dee5ec;background:#f3f5f8;font-size:11px;
+}
+#mapOverlay .matching-raw-body.is-expanded{max-height:none;overflow:auto}
+#mapOverlay .mapping-table-bottom{text-align:center;padding:10px 0 0}
+#mapOverlay .manual-empty{padding:25px 12px}
+@media(max-width:1100px){
+  #mapOverlay .mapping-drawer{width:97vw}
+  #mapOverlay .matching-workspace-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+}
+@media(max-width:760px){
+  #mapOverlay .mapping-drawer{width:100vw}
+  #mapOverlay .mapping-drawer-scroll{padding:13px}
+  #mapOverlay .matching-workspace-grid{display:flex;flex-direction:column;gap:19px}
+  #mapOverlay .matching-workspace-left,#mapOverlay .matching-raw-section{width:100%}
+  #mapOverlay .matching-raw-section{height:360px;position:static;flex:0 0 auto}
+  #mapOverlay .matching-raw-body{min-height:240px}
+}
+
+/* v98 — Remove manual flight action moved out of the table into its section heading. */
+#mapOverlay .manual-added-head{align-items:center;min-height:31px}
+#mapOverlay .manual-remove-btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;
+ min-height:29px;padding:5px 10px;border-radius:6px;
+ border:1px solid #e8cfd2;background:#fff;color:#a64755;
+ font-size:11px;font-weight:800;white-space:nowrap;line-height:1.25;
+ transition:background .12s ease,border-color .12s ease;
+}
+#mapOverlay .manual-remove-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#mapOverlay .manual-remove-btn:hover{background:#fff1f2;border-color:#dfabb2}
+#mapOverlay .manual-remove-btn:focus-visible{outline:2px solid #0f98c4;outline-offset:2px}
+#mapOverlay .manually-added-section .mapping-flight-table{min-width:550px}
+#mapOverlay .manually-added-section .mapping-flight-table th:last-child{min-width:116px}
 </style>
 </head>
 <body>
@@ -1217,7 +1380,7 @@ html,body{height:100%;overflow:hidden}
 
 <div class="overlay flight-picker-overlay" id="flightPickerOverlay">
   <section class="flight-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="flightPickerTitle" tabindex="-1">
-    <div class="flight-picker-head"><div><h2 id="flightPickerTitle">Select Another Flight</h2><div class="flight-picker-subtitle">Search and select a flight, then confirm matching</div></div><button type="button" class="mapping-close" data-close="flightPickerOverlay" title="Close" aria-label="Close Select Another Flight">×</button></div>
+    <div class="flight-picker-head"><div><h2 id="flightPickerTitle">Select Another Flight</h2><div class="flight-picker-subtitle">Search and add a flight to the mapping screen</div></div><button type="button" class="mapping-close" data-close="flightPickerOverlay" title="Close" aria-label="Close Select Another Flight">×</button></div>
     <div class="flight-picker-content">
       <div class="picker-filter-toggle"><span>⌕ &nbsp;Filter</span></div>
       <form id="flightPickerFilters" class="picker-filters">
@@ -1230,11 +1393,11 @@ html,body{height:100%;overflow:hidden}
         <label class="picker-clock-field"><span>ETA (UTC)</span><input id="pickEtaTime" type="time" lang="en-GB" step="60" aria-label="Filter ETA time (UTC)" title="ETA time (UTC, 24-hour)"></label>
         <div class="picker-filter-buttons"><button class="btn primary" type="submit">Search</button><button class="btn" id="flightPickerClear" type="button">Clear Filter</button></div>
       </form>
-      <div class="picker-selection-hint">Select a flight, then click Confirm Mapping.</div>
+      <div class="picker-selection-hint">Select one flight, then click Add.</div>
       <div class="picker-table-wrap"><table class="picker-table"><thead><tr><th class="picker-checkbox-cell">SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead><tbody id="flightPickerRows"></tbody></table></div>
       <div class="picker-pagination"><span id="flightPickerTotal">Total: 0</span><span id="flightPickerSelectionCount">0 selected</span><div id="flightPickerPages" class="picker-pages"></div></div>
     </div>
-    <div class="flight-picker-foot"><span class="picker-caption">Prototype flight schedule · UTC</span><div><button class="btn" type="button" data-close="flightPickerOverlay">Cancel</button><button class="btn primary" type="button" id="applyFlightPicker" disabled>Confirm Mapping</button></div></div>
+    <div class="flight-picker-foot"><span class="picker-caption">Add a flight to the mapping draft · UTC</span><div><button class="btn" type="button" data-close="flightPickerOverlay">Cancel</button><button class="btn primary" type="button" id="applyFlightPicker" disabled>Add</button></div></div>
   </section>
 </div>
 
@@ -1493,7 +1656,7 @@ const data=[...extraRows,...rowsSeed,...historicalRows].map(r=>{
     if(phaseInfo){
       const displayPhase=label=>String(label).replace(/^[A-Z]{2,4}\s*\(([^)]+)\)$/,'$1');
       const fromPhase=phaseInfo.from==='—'?'':displayPhase(phaseInfo.from);
-      o.event=displayPhase(phaseInfo.phase)+(fromPhase?' → '+fromPhase:'');
+      o.event=fromPhase ? fromPhase+' → '+displayPhase(phaseInfo.phase) : displayPhase(phaseInfo.phase);
     }
   }
   // List columns represent acars_message.from_phase / to_phase.
@@ -1697,131 +1860,181 @@ function formattedOooiTime(r){
   return results.join('\n');
 }
 
+// UI-only decoded detail definitions follow the ACARS reference table.
+// Absent parsed values are deliberately not inferred from MinIO receipt timestamps.
+function formatPositionTime(source){
+  const value=String(source??'').trim();
+  if(/^\d{4}$/.test(value))return value.slice(0,2)+':'+value.slice(2);
+  if(/^\d{6}$/.test(value))return value.slice(0,2)+':'+value.slice(2,4)+':'+value.slice(4);
+  return value||'—';
+}
+function apuRawTuple(r){
+  const found=/EB0011AA_(\d{6})([012])/.exec(String(r.raw||''));
+  return found?{code:found[1],state:found[2]}:null;
+}
+function formatApuReportTime(r){
+  const explicit=r.decoded?.apuEventTime;
+  if(explicit)return explicit;
+  const tuple=apuRawTuple(r);
+  const raw=String(tuple?.code||r.decoded?.dateTimeCode||'').trim();
+  // The example in the source document explicitly resolves this time to 20/08/2026 21:08.
+  if(raw==='202108'&&!isGeneratedAcarsRow(r))return '20/08/2026 21:08';
+  if(/^\d{6}$/.test(raw)&&isGeneratedAcarsRow(r)){
+    const day=Number(raw.slice(0,2)),hh=Number(raw.slice(2,4)),mm=Number(raw.slice(4));
+    const date=r.eventTime;
+    if(day>=1&&day<=31&&hh<24&&mm<60)return `${pad(day)}/${pad(date.getUTCMonth()+1)}/${date.getUTCFullYear()} ${pad(hh)}:${pad(mm)}`;
+  }
+  // When not supplied with month/year, render the original code without fabricating a complete date.
+  return /^\d{6}$/.test(raw)?`${raw.slice(0,2)} ${raw.slice(2,4)}:${raw.slice(4)} (DDHHMM)`:'—';
+}
+function normalizeOooiFob(r){
+  const source=String(r.decoded?.oooiFob??r.decoded?.fob??'').trim();
+  if(!source||source==='—')return '—';
+  const vals=[...source.matchAll(/\/?FOB\s*([*\d.]+)/gi)].map(m=>m[1]);
+  if(vals.length>=2)return vals.map((v,i)=>`${['OUT','OFF','ON','IN'][i]||'OOOI'}: ${v}`).join('\n');
+  const phase=String(r.decoded?.phase||r.toPhase||'').match(/^(OUT|OFF|ON|IN)\b/i)?.[1]?.toUpperCase();
+  if(vals.length===1)return (phase?phase+': ':'')+vals[0];
+  return phase&&/^\d/.test(source)?`${phase}: ${source}`:source;
+}
 function detail(id){
-  const r=byId(id); if(!r)return;
+  const r=byId(id);if(!r)return;
   currentId=id;
-  const cs=candidateSort(r);
-  // The decoded values are prefilled demo records derived from the supplied ACARS_decode sheet.
-  // The actual parsing, validation and missing-value handling belong to backend APIs.
   const d=r.decoded||{};
-  const cell=(key)=>d[key]??'—';
-  const groupTable=(heading,fields)=>`<section class="acars-data-card" aria-label="${esc(heading)}"><h3 class="acars-data-card-title">${esc(heading)}</h3><dl class="acars-data-pairs">${fields.map(([label,value])=>{const text=String(value??'—');const wide=label==='Message Description'||text.length>38;return `<div class="acars-data-pair${wide?' wide':''}"><dt>${esc(label)}</dt><dd class="${text==='—'?'detail-missing':''}">${esc(text)}</dd></div>`}).join('')}</dl></section>`;
-  const groups=[
-    groupTable('Flight & Message Information',[
-      ['SMI',r.smi],['Message Type',r.type],['Decoded Event',r.event],
-      ['FLT NO',r.flight],['AC REG',r.reg],
-      ['DEP',r.dep],['ARR',r.arr],['ETA (UTC)',cell('eta')],
-      ['Event Time (UTC)',utcStamp(r.eventTime)],
-      ['Message Description',r.meaning]
-    ])
+  const cell=key=>d[key]??'—';
+  const valid=value=>value!==undefined&&value!==null&&String(value).trim()!==''&&String(value)!=='—'&&String(value)!=='--';
+  const groupTable=(heading,fields,note='')=>`<section class="acars-data-card" aria-label="${esc(heading)}"><h3 class="acars-data-card-title">${esc(heading)}</h3><dl class="acars-data-pairs">${fields.map(([label,value,wide])=>{const valueStr=valid(value)?String(value):'—';return `<div class="acars-data-pair${wide?' wide':''}"><dt>${esc(label)}</dt><dd class="${valueStr==='—'?'detail-missing':''}">${esc(valueStr)}</dd></div>`}).join('')}</dl>${note?`<p class="acars-report-note">${esc(note)}</p>`:''}</section>`;
+  const messageFields=[
+    ['SMI',r.smi],['Message Type',r.type],['Decoded Event',r.event],
+    ['FLT NO',r.flight],['AC REG',r.reg],['DEP',r.dep],
+    ['ARR',r.arr],['ETA (UTC)',cell('eta')],['Event Time (UTC)',utcStamp(r.eventTime)]
   ];
-  if(r.type==='POSRPT')groups.push(groupTable('Aircraft Position',[
-    ['POS LAT',cell('posLat')],['POS LONG',cell('posLong')],
-    ['Position Time',cell('positionTime')],['Position Altitude',cell('altitude')]
-  ]));
-  if(r.type==='M49')groups.push(groupTable('Flight Parameters',[
-    ['Altitude',cell('altitude')],['CAS (Speed)',cell('cas')],['TAT (Temperature)',cell('tat')]
-  ]));
-  if(['M49','M11-M14','A80','POSRPT'].includes(r.type))groups.push(groupTable('Fuel Information',[
-    ['OOOI FOB',cell('oooiFob')],['Fuel at Destination',cell('fuelAtDestination')],
-    ['INIT Boarded Fuel',cell('initBoardedFuel')]
-  ]));
-  if(['M49','M11-M14','M44 DOOR','A80'].includes(r.type))groups.push(groupTable('OOOI & Door Times',[
-    ['OOOI Time',formattedOooiTime(r)],['First Door Open Time',fullDecodedClock(r,'firstDoorOpenTime')],
-    ['Last Door Close Time',fullDecodedClock(r,'lastDoorCloseTime')]
-  ]));
-  if(r.type==='WATER')groups.push(groupTable('Potable Water Report',[
-    ['Report Code',cell('reportCode')],['DEP Water',cell('depWater')],
-    ['DEP Water Record Time',cell('depWaterRecordTime')],['ARR Water',cell('arrWater')],
-    ['ARR Water Record Time',cell('arrWaterRecordTime')],['Water Duration at DEP',cell('depWaterDuration')]
-  ]));
-  if(r.type==='APU')groups.push(groupTable('APU Report',[
-    ['APU State',cell('apuState')],['APU Event Time (UTC)',utcStamp(r.eventTime)]
-  ]));
-  if(['APM','FML'].includes(r.type))groups.push(groupTable('Report Information',[
-    ['Report Code',cell('reportCode')],['Report Time (UTC)',utcStamp(r.eventTime)]
-  ]));
-  const decodedMarkup=`<div class="acars-card-grid">${groups.join('')}</div>`;
-  document.getElementById('detailTitle').textContent='Message Details';
-  document.getElementById('detailHeaderSmi').textContent=r.smi||'—';
-  document.getElementById('detailHeaderDecodedEvent').textContent=r.event||'—';
-  document.getElementById('detailTime').textContent=utcStamp(r.eventTime);
-  document.getElementById('detailRoute').textContent=`${r.dep||'—'}  →  ${r.arr||'—'}`;const depEl=document.getElementById('detailDep'); if(depEl) depEl.textContent=r.dep||'—'; const arrEl=document.getElementById('detailArr'); if(arrEl) arrEl.textContent=r.arr||'—';
-  document.getElementById('detailEvent').textContent=r.event||'—';
-
-  document.getElementById('detailStatus').innerHTML=`<span class="badge ${r.status}">${esc(statusLabel(r.status))}</span>`;
-
-  // Matching Info is a compact, read-only current-assignment summary.
-  // Candidate browsing/selection belongs exclusively to the Matching / Re-matching drawer.
-  // Never display ACARS flight fields as an assigned leg unless a saved leg is resolved.
+  const groups=[groupTable('Flight & Message Information',messageFields)];
+  if(r.type==='M49'){
+    groups.push(groupTable('Flight Parameters',[
+      ['Altitude',cell('altitude')],
+      ['CAS (Speed)',valid(cell('cas'))?cell('cas'):(/\d(\*{5})[+-]/.exec(r.raw||'')?.[1]||'—')],
+      ['TAT (Temperature)',cell('tat')]
+    ]));
+    groups.push(groupTable('Fuel Information',[
+      ['OOOI FOB',cell('oooiFob')],['Fuel at Destination',cell('fuelAtDestination')],['INIT Boarded Fuel',cell('initBoardedFuel')]
+    ]));
+    groups.push(groupTable('OOOI Times',[['OOOI Time',formattedOooiTime(r),true]]));
+  }
+  if(r.type==='M11-M14'){
+    groups.push(groupTable('Fuel Information',[
+      ['OOOI FOB',normalizeOooiFob(r)],['Fuel at Destination',cell('fuelAtDestination')],['INIT Boarded Fuel',cell('initBoardedFuel')]
+    ]));
+    groups.push(groupTable('OOOI Times',[['OOOI Time',formattedOooiTime(r),true]]));
+  }
+  if(r.type==='M44 DOOR'){
+    const doorFields=[];
+    const first=fullDecodedClock(r,'firstDoorOpenTime'),last=fullDecodedClock(r,'lastDoorCloseTime');
+    if(valid(first))doorFields.push(['First Door Open Time (UTC)',first]);
+    if(valid(last))doorFields.push(['Last Door Close Time (UTC)',last]);
+    if(!doorFields.length)doorFields.push(['Door Time (UTC)','—']);
+    groups.push(groupTable('Door Times',doorFields));
+  }
+  if(r.type==='A80'){
+    groups.push(groupTable('Fuel Information',[
+      ['OOOI FOB',normalizeOooiFob(r),true],
+      ...(valid(cell('fuelAtDestination'))?[['Fuel at Destination',cell('fuelAtDestination')]]:[]),
+      ...(valid(cell('initBoardedFuel'))?[['INIT Boarded Fuel',cell('initBoardedFuel')]]:[])
+    ]));
+    groups.push(groupTable('OOOI Times',[['OOOI Time',formattedOooiTime(r),true]]));
+  }
+  if(r.type==='WATER'){
+    groups.push(groupTable('Potable Water Report',[
+      ['Report Code',cell('reportCode')],['DEP Water',cell('depWater')],['ARR Water',cell('arrWater')],
+      ['DEP Water Record Time',cell('depWaterRecordTime')],['ARR Water Record Time',cell('arrWaterRecordTime')],
+      ...(valid(cell('depWaterDuration'))?[['Water Duration at DEP',cell('depWaterDuration')]]:[])
+    ]));
+  }
+  if(r.type==='APM'){
+    groups.push(groupTable('Report Information',[
+      ['Report Code',cell('reportCode')],['Report Time (UTC)',cell('reportTime')]
+    ]));
+  }
+  if(r.type==='APU'){
+    groups.push(groupTable('APU Report',[
+      ['APU State',apuRawTuple(r)?({'0':'0 – Off','1':'1 – On','2':'2 – AIMS'}[apuRawTuple(r).state]):cell('apuState')],
+      ['APU Event Time (UTC)',formatApuReportTime(r)]
+    ]));
+  }
+  if(r.type==='FML'){
+    groups.push(groupTable('Report Information',[
+      ['Report Code',cell('reportCode')==='—'?'FML':cell('reportCode')],
+      ['Report Time (UTC)',cell('reportTime')]
+    ]));
+  }
+  if(r.type==='POSRPT'){
+    groups.push(groupTable('Aircraft Position',[
+      ['POS LAT',cell('posLat')],['POS LONG',cell('posLong')],
+      ['Position Time (UTC)',formatPositionTime(cell('positionTime'))],['Position Altitude',cell('altitude')]
+    ]));
+    groups.push(groupTable('Fuel Information',[
+      ['Position FOB',String(cell('fob')).split('\n')[0]]
+    ]));
+  }
+  const cs=candidateSort(r);
   const matchedLeg=r.status==='mapped'&&r.mappedLeg!=null
-    ? cs.find(c=>c.legNo===r.mappedLeg)||pool.find(c=>c.legNo===r.mappedLeg)
-    : null;
-  const mappingMethod=r.status==='mapped'
-    ? (String(r.method||'').toUpperCase()==='AUTO'?'Auto':String(r.method||'').toUpperCase()==='MANUAL'?'Manual':'—')
-    : '—';
-  const matchingInfoMarkup=r.status==='mapped'?`
-    <div class="detail-assigned-flight-panel" aria-label="Current matched flight">
-      <div class="detail-assigned-top">
-        <span class="detail-assigned-label">Assigned Flight</span>
-        <span class="detail-assigned-method"><span class="detail-assigned-method-label">Matching Method</span><strong>${esc(mappingMethod)}</strong></span>
-      </div>
-      <div class="detail-assigned-number">${esc(matchedLeg?.flight||'—')}</div>
-      <div class="detail-assigned-fields">
-        <div class="detail-assigned-field"><span>AC REG</span><strong>${esc(matchedLeg?.reg||'—')}</strong></div>
-        <div class="detail-assigned-field"><span>Route</span><strong>${esc(matchedLeg?matchedLeg.dep+' → '+matchedLeg.arr:'—')}</strong></div>
-      </div>
-    </div>`
-    :r.status==='review'?`
-    <div class="detail-match-pending" aria-label="Flight assignment pending">
+      ? cs.find(c=>c.legNo===r.mappedLeg)||pool.find(c=>c.legNo===r.mappedLeg) : null;
+  const mappingMethod=r.status==='mapped'?(r.method==='MANUAL'?'Manual':r.method==='AUTO'?'Auto':'—'):'—';
+  const matchingInfoMarkup=r.status==='mapped' ? `
+    <div class="detail-assigned-flight-panel" aria-label="Assigned flight information">
+      <div class="assign-cell"><span>Assigned Flight</span><strong>${esc(matchedLeg?.flight||'—')}</strong></div>
+      <div class="assign-cell"><span>AC REG</span><strong>${esc(matchedLeg?.reg||'—')}</strong></div>
+      <div class="assign-cell"><span>Route</span><strong>${esc(matchedLeg?matchedLeg.dep+' → '+matchedLeg.arr:'—')}</strong></div>
+      <div class="assign-cell"><span>Matching Method</span>${mappingMethod==='—'?'<strong>—</strong>':`<span class="method-token ${mappingMethod==='Manual'?'manual':''}">${esc(mappingMethod)}</span>`}</div>
+    </div>` : r.status==='review' ? `
+    <div class="detail-match-pending" aria-label="Matching needs review">
       <div class="detail-match-pending-icon" aria-hidden="true">⌕</div>
-      <div class="detail-match-pending-copy">
-        <strong>Awaiting flight confirmation</strong>
-        <p>No flight has been assigned yet. <b>${cs.length}</b> suggested ${cs.length===1?'candidate is':'candidates are'} available. Use <b>Matching / Re-matching</b> to select and confirm a flight.</p>
-      </div>
-    </div>`
-    :`
+      <div class="detail-match-pending-copy"><strong>Awaiting flight confirmation</strong>
+      <p>${cs.length} suggested ${cs.length===1?'flight is':'flights are'} available. Select <b>Match</b> to review and confirm.</p></div>
+    </div>` : `
     <div class="detail-match-pending" aria-label="No flight assignment">
       <div class="detail-match-pending-icon" aria-hidden="true">⌕</div>
-      <div class="detail-match-pending-copy">
-        <strong>No flight assigned</strong>
-        <p>${cs.length?'No flight has been confirmed. Use <b>Matching / Re-matching</b> to select a flight.':'No suggested flight is available. Use <b>Matching / Re-matching</b> to search for and assign a flight.'}</p>
+      <div class="detail-match-pending-copy"><strong>No flight assigned</strong>
+      <p>No eligible flight has been matched. Select <b>Match</b> to search for a flight manually.</p></div>
+    </div>`;
+  document.getElementById('detailTitle').textContent='Message Details';
+  const title=(r.type==='M44 DOOR')
+    ? (String(r.event||'').toUpperCase().includes('LAST')?'Last Door Close Time (M44)':'First Door Open Time (M44)')
+    :r.type==='WATER' ? String(r.meaning||'').replace(/Warter/g,'Water').replace(/\s*--\s*\(raw\)/gi,'') : r.meaning||r.smi||'—';
+  document.getElementById('detailHeaderSmi').textContent=title;
+  document.getElementById('detailHeaderDecodedEvent').textContent=r.smi||'—';
+  document.getElementById('detailStatus').innerHTML=`<span class="badge ${r.status}">${esc(statusLabel(r.status))}</span>`;
+  document.getElementById('detailMappingBtn').textContent=r.status==='mapped'?'↻ Re-match':'↻ Match';
+  document.getElementById('detailMappingBtn').setAttribute('aria-label',r.status==='mapped'?'Re-match flight':'Match flight');
+  document.getElementById('detailBody').innerHTML=`
+    <div class="detail-unified acars-detail-v94" aria-label="ACARS detail — ${esc(r.type)}">
+      <div class="acars-detail-left">
+        <section class="detail-merged-section" id="detailPaneMapping" aria-labelledby="matchingSectionHeading">
+          <div class="detail-merged-heading"><h3 id="matchingSectionHeading">Matching Info</h3></div>
+          ${matchingInfoMarkup}
+        </section>
+        <section class="detail-merged-section" id="detailPaneDecoded" aria-label="Decoded fields for ${esc(r.type)}">
+          <div class="acars-card-grid">${groups.join('')}</div>
+        </section>
+      </div>
+      <div class="acars-detail-right">
+        <section class="detail-merged-section" id="detailPaneRaw" aria-labelledby="rawSectionHeading">
+          <div class="detail-merged-heading"><h3 id="rawSectionHeading">Original Message</h3>
+            <button class="detail-copy" type="button" id="copyRaw">⇩ Export TXT</button></div>
+          <pre class="detail-raw" id="detailRawContent">${esc(r.raw||'')}</pre>
+        </section>
       </div>
     </div>`;
-  document.getElementById('detailBody').innerHTML=`
-    <div class="detail-unified" aria-label="Complete ACARS message details">
-      <section class="detail-merged-section" id="detailPaneMapping" aria-labelledby="mappingSectionHeading">
-        <div class="detail-merged-heading"><span class="detail-section-number">01</span><h3 id="mappingSectionHeading">Matching Info</h3><span class="detail-merged-description">Current flight assignment</span></div>
-        ${matchingInfoMarkup}
-      </section>
-      <section class="detail-merged-section" id="detailPaneDecoded" aria-labelledby="decodedSectionHeading">
-        <div class="detail-merged-heading"><span class="detail-section-number">02</span><h3 id="decodedSectionHeading">Decoded Field</h3><span class="detail-merged-description">Extracted message information</span></div>
-        ${decodedMarkup}
-      </section>
-      <section class="detail-merged-section" id="detailPaneRaw" aria-labelledby="rawSectionHeading">
-        <div class="detail-merged-heading detail-merged-heading-actions">
-          <span class="detail-section-number">03</span><h3 id="rawSectionHeading">Raw Message</h3>
-          <button class="detail-copy" type="button" id="copyRaw">${icons.check} Export TXT</button>
-        </div>
-        <div class="detail-raw-toolbar"><span>Original ACARS message</span><button class="detail-raw-toggle" id="toggleRawMessage" type="button" aria-expanded="false" aria-controls="detailRawContent">Show Full Message <span aria-hidden="true">⌄</span></button></div>
-        <pre class="detail-raw" id="detailRawContent">${esc(r.raw)}</pre>
-      </section>
-    </div>`;
   document.getElementById('copyRaw').onclick=()=>exportRawMessageTxt(r);
-  document.getElementById('toggleRawMessage').onclick=function(){
-    const raw=document.getElementById('detailRawContent');
-    const expanded=raw.classList.toggle('is-expanded');
-    this.setAttribute('aria-expanded',String(expanded));
-    this.innerHTML=expanded?'Show Less <span aria-hidden="true">⌃</span>':'Show Full Message <span aria-hidden="true">⌄</span>';
-  };
   document.getElementById('detailMappingBtn').onclick=()=>{hide('detailOverlay');openMap(id)};
-  const detailScroller=document.getElementById('detailBody');
-  if(detailScroller)detailScroller.scrollTop=0;
+  document.getElementById('detailBody').scrollTop=0;
   show('detailOverlay');
   document.querySelector('#detailOverlay .detail-drawer')?.focus({preventScroll:true});
 }
+
 // Side-panel workflow: candidates can be browsed/added; exactly one flight is committed.
 let mappingDraftCandidates=[];
+let manuallyAddedFlight=null; // At most one manual flight in the drawer draft.
+let selectedSource=null; // "suggested" or "manual"; ensures a single active radio across both blocks.
 let mappingRawExpanded=false;
 let pickerSelected=new Set();
 let pickerPage=1;
@@ -1830,7 +2043,7 @@ let pickerApplied={flight:'',reg:'',dep:'',arr:'',flightDate:'',etdTime:'',etaTi
 const fmtCandidateTime=(c,r)=>{
   // ETD/ETA are illustrative demo schedule values; production times come from the flight service.
   let etd;
-  if(r.candidates.some(x=>x.legNo===c.legNo))etd=new Date(r.eventTime.getTime()-75*60000);
+  if(r.candidates.some(x=>x.legNo===c.legNo&&x.origin!=='MANUAL'))etd=new Date(r.eventTime.getTime()-75*60000);
   else{
     const minutes=((Number(c.legNo)*37)%1160)+35;
     etd=new Date(dayStart.getTime()+minutes*60000);
@@ -1848,13 +2061,18 @@ function openMap(id){
   const r=byId(id);if(!r)return;
   currentId=id;
   selectedLeg=r.status==='mapped'?r.mappedLeg:null;
-  mappingDraftCandidates=r.candidates.map(c=>({...c}));
+  const savedManual=(r.status==='mapped'&&r.method==='MANUAL')
+    ?r.candidates.find(c=>c.origin==='MANUAL'&&c.legNo===r.mappedLeg):null;
+  manuallyAddedFlight=savedManual?{...savedManual}:null;
+  // Algorithm candidates and user-added flight belong in distinct blocks.
+  mappingDraftCandidates=r.candidates.filter(c=>c.origin!=='MANUAL').map(c=>({...c}));
+  selectedSource=(selectedLeg===null)?null:(manuallyAddedFlight?'manual':'suggested');
   mappingRawExpanded=false;
   document.getElementById('mapBody').scrollTop=0;
-  // A saved leg is always visible even when candidates have changed.
-  if(selectedLeg!=null&&!getMappingDraft(selectedLeg)){
+  // Keep existing automatically assigned flight visible even if it is absent in the candidate snapshot.
+  if(selectedLeg!=null&&!manuallyAddedFlight&&!getMappingDraft(selectedLeg)){
     const savedLeg=pool.find(c=>c.legNo===selectedLeg);
-    if(savedLeg)mappingDraftCandidates.push({...savedLeg,origin:'MANUAL'});
+    if(savedLeg)mappingDraftCandidates.push({...savedLeg,origin:'AUTO'});
   }
   document.getElementById('mapTitle').textContent='Matching / Re-matching Flight';
   document.getElementById('mapSubtitle').textContent=`${r.smi} · ${r.event} · Event Time ${utcStamp(r.eventTime)} UTC`;
@@ -1867,65 +2085,99 @@ function renderMapBody(){
   const r=byId(currentId);if(!r)return;
   const sorted=[...mappingDraftCandidates].sort((a,b)=>(scoreOf(r,b)??-1)-(scoreOf(r,a)??-1));
   const isSame=r.status==='mapped'&&selectedLeg===r.mappedLeg;
-  const mappingMethod=r.status==='mapped'?(String(r.method||'').toUpperCase()==='AUTO'?'Auto':String(r.method||'').toUpperCase()==='MANUAL'?'Manual':'—'):'—';
   const flightRows=sorted.map(c=>{
-    const selected=selectedLeg===c.legNo;
-    const origin=c.origin==='MANUAL'?'Added manually':'Suggested candidate';
+    const selected=selectedSource==='suggested'&&selectedLeg===c.legNo;
     const times=fmtCandidateTime(c,r);
     return `<tr class="${selected?'is-mapped':''}">
-      <td><input class="map-radio" type="radio" name="chosenMappingFlight" data-leg="${c.legNo}" ${selected?'checked':''} aria-label="Assign ${esc(c.flight)}"></td>
-      <td><div class="map-flight-num">${esc(c.flight)}</div><div class="map-source">${origin}${r.status==='mapped'&&r.mappedLeg===c.legNo?' · Current':''}</div></td>
+      <td><input class="map-radio" type="radio" name="chosenMappingFlight" data-leg="${c.legNo}" ${selected?'checked':''} aria-label="Select suggested flight ${esc(c.flight)}" aria-checked="${selected}"></td>
+      <td><div class="map-flight-num">${esc(c.flight)}</div></td>
+      <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
+      <td class="flight-datetime-cell">${esc(times.etdFull)}</td><td class="flight-datetime-cell">${esc(times.etaFull)}</td>
+    </tr>`;
+  }).join('');
+  const manualRows=manuallyAddedFlight?(()=>{
+    const c=manuallyAddedFlight;
+    const selected=selectedSource==='manual'&&selectedLeg===c.legNo;
+    const times=fmtCandidateTime(c,r);
+    return `<tr class="${selected?'is-mapped':''}">
+      <td><input class="map-radio" type="radio" name="chosenMappingFlight" data-manual-leg="${c.legNo}" ${selected?'checked':''} aria-label="Select manually added flight ${esc(c.flight)}" aria-checked="${selected}"></td>
+      <td><div class="map-flight-num">${esc(c.flight)}</div></td>
       <td>${esc(c.reg)}</td><td>${esc(c.dep)}</td><td>${esc(c.arr)}</td>
       <td class="flight-datetime-cell">${esc(times.etdFull)}</td>
       <td class="flight-datetime-cell">${esc(times.etaFull)}</td>
     </tr>`;
-  }).join('');
+  })():'<tr><td colspan="7" class="map-empty manual-empty">No manually added flight.</td></tr>';
   const matchingScroller=document.getElementById('mapBody');
   const previousScroll=matchingScroller.scrollTop;
   matchingScroller.innerHTML=`
-    <section class="mapping-section mapping-overview-section" aria-label="Mapping Overview">
-      <h3 class="mapping-section-title">Mapping Overview</h3>
-      <div class="mapping-overview-row">
-        <div class="mapping-overview-cell"><span>STATUS</span><strong>${esc(statusLabel(r.status))}</strong></div>
-        <div class="mapping-overview-cell"><span>METHOD</span><strong>${mappingMethod}</strong></div>
+    <div class="matching-workspace-grid">
+      <div class="matching-workspace-left">
+        <section class="mapping-section suggested-flight-section" aria-label="Suggested Flight">
+          <h3 class="mapping-section-title">Suggested Flight (${sorted.length})</h3>
+          <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
+            <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead>
+            <tbody>${flightRows||'<tr><td colspan="7" class="map-empty">No suggested flights available.</td></tr>'}</tbody>
+          </table></div>
+        </section>
+        <section class="mapping-section manually-added-section" aria-label="Manually Added Flight">
+          <div class="manual-added-head">
+            <h3 class="mapping-section-title">Manually Added Flight</h3>
+            ${manuallyAddedFlight?`<button class="manual-remove-btn" id="removeManuallyAddedFlight" type="button" title="Remove manually added flight" aria-label="Remove manually added flight ${esc(manuallyAddedFlight.flight)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v6M14 10v6"/></svg>Remove Flight</button>`:''}
+          </div>
+          <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
+            <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead>
+            <tbody>${manualRows}</tbody>
+          </table></div>
+          <div class="mapping-table-bottom"><button class="map-add-flights" id="openFlightPicker" type="button"><span aria-hidden="true">＋</span> Select Another Flight</button></div>
+        </section>
       </div>
-    </section>
-    <section class="mapping-section matching-raw-section" aria-label="Raw Message">
-      <div class="matching-raw-title-row">
-        <h3 class="mapping-section-title">Raw Message</h3>
-        <div class="matching-raw-actions">
-          <button class="matching-raw-toggle" type="button" id="mapRawToggle" aria-expanded="${mappingRawExpanded}" aria-controls="mapRawContent">${mappingRawExpanded?'Show Less ⌃':'Show Full Message ⌄'}</button>
-          <button class="matching-raw-export" type="button" id="mapRawExport">Export TXT</button>
+      <section class="mapping-section matching-raw-section" aria-label="Original ACARS message">
+        <div class="matching-raw-title-row">
+          <h3 class="mapping-section-title">Original ACARS message</h3>
+          <div class="matching-raw-actions">
+            <button class="matching-raw-toggle" type="button" id="mapRawToggle" aria-expanded="${mappingRawExpanded}" aria-controls="mapRawContent">${mappingRawExpanded?'Show Less ⌃':'Show Full Message ⌄'}</button>
+            <button class="matching-raw-export" type="button" id="mapRawExport">Export TXT</button>
+          </div>
         </div>
-      </div>
-      <pre class="matching-raw-body${mappingRawExpanded?' is-expanded':''}" id="mapRawContent">${esc(r.raw)}</pre>
-    </section>
-    <section class="mapping-section">
-      <h3 class="mapping-section-title">Flights (${sorted.length})</h3>
-      <div class="mapping-flight-table-wrap"><table class="mapping-flight-table">
-        <thead><tr><th>SELECT</th><th>FLT NO</th><th>AC REG</th><th>DEP</th><th>ARR</th><th>ETD (UTC)</th><th>ETA (UTC)</th></tr></thead>
-        <tbody>${flightRows||'<tr><td colspan="7" class="map-empty">No flights added yet. Select a flight to continue.</td></tr>'}</tbody>
-      </table></div>
-      <div class="mapping-table-bottom"><button class="map-add-flights" id="openFlightPicker" type="button"><span aria-hidden="true">＋</span> Select Another Flight</button></div>
-    </section>`;
+        <pre class="matching-raw-body${mappingRawExpanded?' is-expanded':''}" id="mapRawContent">${esc(r.raw)}</pre>
+      </section>
+    </div>`;
   matchingScroller.scrollTop=previousScroll;
   document.getElementById('mapRawToggle').onclick=()=>{mappingRawExpanded=!mappingRawExpanded;const raw=document.getElementById('mapRawContent');raw.classList.toggle('is-expanded',mappingRawExpanded);const toggle=document.getElementById('mapRawToggle');toggle.setAttribute('aria-expanded',String(mappingRawExpanded));toggle.textContent=mappingRawExpanded?'Show Less ⌃':'Show Full Message ⌄';};
   document.getElementById('mapRawExport').onclick=()=>exportRawMessageTxt(r);
   const confirmButton=document.getElementById('saveMapping');
-  // Picking a flight is only a draft choice. No mapping changes until Confirm Mapping.
   confirmButton.disabled=selectedLeg===null||isSame;
   document.querySelector('#mapOverlay .mapping-drawer-foot [data-close="mapOverlay"]').textContent='Cancel';
-  document.querySelectorAll('#mapBody [data-leg]').forEach(el=>el.onchange=()=>{
-    selectedLeg=Number(el.dataset.leg);
+  // Custom toggleable radio behavior: click selected once more to clear selection.
+  document.querySelectorAll('#mapBody [data-leg]').forEach(el=>el.onclick=e=>{
+    e.preventDefault();
+    const legNo=Number(el.dataset.leg);
+    const wasSelected=selectedSource==='suggested'&&selectedLeg===legNo;
+    selectedLeg=wasSelected?null:legNo;
+    selectedSource=wasSelected?null:'suggested';
     renderMapBody();
   });
+  document.querySelectorAll('#mapBody [data-manual-leg]').forEach(el=>el.onclick=e=>{
+    e.preventDefault();
+    const legNo=Number(el.dataset.manualLeg);
+    const wasSelected=selectedSource==='manual'&&selectedLeg===legNo;
+    selectedLeg=wasSelected?null:legNo;
+    selectedSource=wasSelected?null:'manual';
+    renderMapBody();
+  });
+  const removeButton=document.getElementById('removeManuallyAddedFlight');
+  if(removeButton)removeButton.onclick=()=>{
+    if(selectedSource==='manual'){selectedLeg=null;selectedSource=null;}
+    manuallyAddedFlight=null;
+    renderMapBody();
+  };
   document.getElementById('openFlightPicker').onclick=openFlightPicker;
 }
 function openFlightPicker(){
   const pickerTitle=document.getElementById('flightPickerTitle');
   pickerTitle.textContent='Select Another Flight';
-  document.querySelector('.flight-picker-subtitle').textContent='Search for another flight and confirm the mapping.';
-  document.querySelector('.picker-selection-hint').textContent='Select one flight, then click Confirm Mapping.';
+  document.querySelector('.flight-picker-subtitle').textContent='Search and add one flight to the Manually Added Flight block.';
+  document.querySelector('.picker-selection-hint').textContent='Select one flight, then click Add. This will not save the mapping.';
   document.querySelector('#flightPickerOverlay .mapping-close').setAttribute('aria-label','Close Select Another Flight');
   pickerPage=1;
   pickerSelected=new Set();
@@ -1972,49 +2224,58 @@ function renderFlightPicker(){
   document.getElementById('flightPickerTotal').textContent=`Total: ${results.length}`;
   const picked=pool.find(c=>c.legNo===pickedLeg);
   document.getElementById('flightPickerSelectionCount').textContent=picked?`Selected: ${picked.flight}`:'0 selected';
-  document.getElementById('applyFlightPicker').disabled=!picked||(r.status==='mapped'&&r.mappedLeg===pickedLeg);
+  document.getElementById('applyFlightPicker').disabled=!picked;
   let pagination=`<button type="button" data-pick-page="1" ${pickerPage===1?'disabled':''} aria-label="First page">«</button><button type="button" data-pick-page="${pickerPage-1}" ${pickerPage===1?'disabled':''} aria-label="Previous page">‹</button>`;
   const low=Math.max(1,pickerPage-2),high=Math.min(pages,pickerPage+2);
   for(let p=low;p<=high;p++)pagination+=`<button type="button" data-pick-page="${p}" class="${p===pickerPage?'active':''}" ${p===pickerPage?'aria-current="page"':''}>${p}</button>`;
   pagination+=`<button type="button" data-pick-page="${pickerPage+1}" ${pickerPage===pages?'disabled':''} aria-label="Next page">›</button><button type="button" data-pick-page="${pages}" ${pickerPage===pages?'disabled':''} aria-label="Last page">»</button>`;
   document.getElementById('flightPickerPages').innerHTML=pagination;
   function chooseFlight(legNo){
-    pickerSelected=new Set([legNo]);
+    pickerSelected=pickerSelected.has(legNo)?new Set():new Set([legNo]);
     renderFlightPicker();
   }
-  document.querySelectorAll('#flightPickerRows [data-remap-leg]').forEach(el=>el.onchange=()=>chooseFlight(Number(el.dataset.remapLeg)));
+  document.querySelectorAll('#flightPickerRows [data-remap-leg]').forEach(el=>el.onclick=e=>{
+    e.preventDefault();
+    chooseFlight(Number(el.dataset.remapLeg));
+  });
   document.querySelectorAll('#flightPickerRows [data-pick-row]').forEach(el=>el.onclick=e=>{
     if(e.target.closest('input'))return;
     chooseFlight(Number(el.dataset.pickRow));
   });
   document.querySelectorAll('#flightPickerPages [data-pick-page]').forEach(el=>el.onclick=()=>{pickerPage=Number(el.dataset.pickPage);renderFlightPicker();});
 }
-// The only place that mutates a message mapping, shared by the panel and picker confirmations.
+// The only place that mutates a message mapping, reached from the main drawer confirmation.
 function commitMapping(legNo){
   const r=byId(currentId);
   if(!r||legNo==null||(r.status==='mapped'&&r.mappedLeg===legNo))return;
-  const selected=getMappingDraft(legNo)||pool.find(c=>c.legNo===legNo);
+  const selected=selectedSource==='manual'&&manuallyAddedFlight?.legNo===legNo
+    ?manuallyAddedFlight:getMappingDraft(legNo);
   if(!selected)return;
-  // Persist in page memory only after explicit confirmation; reload restores demo records.
-  for(const c of mappingDraftCandidates){
-    if(!r.candidates.some(item=>item.legNo===c.legNo))r.candidates.push({...c});
-  }
-  if(!r.candidates.some(item=>item.legNo===selected.legNo))r.candidates.push({...selected,origin:'MANUAL'});
+  // Saving occurs ONLY here after clicking Confirm Mapping in the main drawer.
+  // Keep suggested flights separate, with at most one persisted manual entry.
+  r.candidates=r.candidates.filter(c=>c.origin!=='MANUAL');
+  if(selectedSource==='manual')r.candidates.push({...selected,origin:'MANUAL'});
   r.status='mapped';
   r.mappedLeg=selected.legNo;
   r.method='MANUAL';
   selectedLeg=selected.legNo;
-  hide('flightPickerOverlay');
   hide('mapOverlay');
   renderTable();
   toast(`Flight ${selected.flight} matched successfully · Method: Manual`,'success');
 }
-// Confirm inside Select Another Flight popup, no secondary confirmation step.
+// "Add" transfers a flight to the single manual draft slot; no backend mapping occurs here.
 function applyFlightPicker(){
-  const picked=[...pickerSelected][0];
-  if(picked!==undefined)commitMapping(picked);
+  const pickedLeg=[...pickerSelected][0];
+  const picked=pool.find(c=>c.legNo===pickedLeg);
+  if(!picked)return;
+  manuallyAddedFlight={...picked,origin:'MANUAL'}; // Replace any previously added flight.
+  selectedLeg=picked.legNo;
+  selectedSource='manual';
+  hide('flightPickerOverlay');
+  renderMapBody();
+  document.querySelector('.manually-added-section')?.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
-// Confirm a radio selection made directly in the Mapping side panel.
+// Confirm a selected candidate or a manually added flight in the Mapping side panel.
 function confirmMapPanelSelection(){
   if(selectedLeg!==null)commitMapping(selectedLeg);
 }
