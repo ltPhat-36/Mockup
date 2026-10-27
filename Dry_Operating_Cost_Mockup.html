@@ -160,16 +160,31 @@ body.detail-open{overflow:hidden}
 .table .table-action.icon-only.delete-action{color:#dc3545}
 .table .table-action.icon-only.delete-action:hover{background:#fff1f2;border-color:#ffd5da}
 .table .table-action.icon-only:focus-visible{outline:2px solid #118eab;outline-offset:2px}
-.delete-confirm-dialog{width:min(100%,440px);background:#fff;border-radius:11px;box-shadow:0 24px 60px #17283d40;overflow:hidden}
-.delete-confirm-head{display:flex;gap:11px;align-items:center;padding:20px 22px 12px}
-.delete-confirm-mark{width:35px;height:35px;display:grid;place-items:center;background:#fff0f1;border-radius:9px;color:#d93043}
-.delete-confirm-mark svg{width:20px;height:20px}
-.delete-confirm-head h2{font-size:17px;margin:0;color:#1b2c3c}
-.delete-confirm-body{padding:0 22px 18px;font-size:13px;color:#516174;line-height:1.6}
-.delete-confirm-body strong{overflow-wrap:anywhere;color:#22384b}
-.delete-confirm-foot{border-top:1px solid #e9edf1;padding:13px 22px;display:flex;justify-content:flex-end;gap:9px}
-.btn-danger{background:#dc3545;border-color:#dc3545;color:#fff}
-.btn-danger:hover{background:#c82335;border-color:#c82335;filter:none}
+/* v22: MGT-common Delete dialog with a before/after effective-period preview. */
+.delete-confirm-dialog{width:min(735px,calc(100vw - 32px));max-height:min(92vh,810px);display:flex;flex-direction:column;background:#f4f6f9;border-radius:8px;box-shadow:0 24px 65px #10273d3d;overflow:hidden}
+.delete-confirm-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 22px 13px;flex:none}
+.delete-confirm-head h2{font-size:18px;margin:0;color:#18293d;font-weight:700;line-height:1.35}
+.delete-confirm-head .delete-x{width:31px;height:31px;display:grid;place-items:center;border:0;background:transparent;color:#738195;border-radius:6px;flex:none}
+.delete-confirm-head .delete-x:hover{background:#e6eaee;color:#304459}
+.delete-confirm-body{padding:10px 22px 21px;overflow-y:auto;font-size:13px;color:#243248;line-height:1.55}
+.delete-confirm-body .delete-question{margin:0 0 16px;overflow-wrap:anywhere}
+.delete-confirm-body .delete-question strong{font-weight:700;color:#182638}
+.delete-period-card{border:1px solid #dce6ee;border-radius:12px;background:#fff;overflow:hidden}
+.delete-period-heading{background:#eef7fd;font-size:16px;color:#1b2939;font-weight:700;padding:13px 15px}
+.delete-period-inner{padding:11px 14px 15px;overflow-x:auto}
+.delete-period-table{border-collapse:collapse;table-layout:fixed;width:100%;background:#fff;min-width:420px;font-size:13px}
+.delete-period-table col:first-child{width:40%}
+.delete-period-table th{background:#f0f2f5;color:#252b35;font-size:12px;font-weight:700;text-align:left;padding:11px 9px;border:1px solid #e3e7eb}
+.delete-period-table td{padding:10px 9px;border:1px solid #e3e7eb;vertical-align:middle}
+.delete-period-table .delete-record-name{display:block;font-size:15px;font-weight:600;color:#152331;line-height:1.35}
+.delete-period-table .delete-record-sub{display:block;font-size:13px;color:#53667f;line-height:1.4;margin-top:2px}
+.delete-period-table .delete-old-period{font-size:15px;color:#526276;text-decoration:line-through;text-decoration-thickness:1px;text-decoration-color:#64748b;line-height:1.45;font-variant-numeric:tabular-nums;white-space:nowrap}
+.delete-period-table .delete-new-period{font-size:15px;color:#526276;margin-top:3px;line-height:1.45;font-variant-numeric:tabular-nums;white-space:nowrap}
+.delete-confirm-foot{display:flex;justify-content:flex-end;gap:11px;padding:15px 22px;border-top:1px solid #e3e8ee;flex:none;background:#f4f6f9}
+.delete-confirm-foot .btn{min-height:41px;border-radius:9px;padding:9px 15px;font-size:13px}
+.btn-danger{background:#ff353e;border-color:#ff353e;color:#fff}
+.btn-danger:hover{background:#e52933;border-color:#e52933;filter:none}
+@media(max-width:700px){.delete-confirm-head{padding:15px 16px 11px}.delete-confirm-body{padding:9px 15px 15px}.delete-period-inner{padding:9px}.delete-confirm-foot{padding:12px 15px}.delete-period-heading{font-size:14px}.delete-period-table th,.delete-period-table td{padding:8px}.delete-period-table .delete-old-period,.delete-period-table .delete-new-period{font-size:13px}.delete-period-table .delete-record-name{font-size:13px}}
 .detail-note:empty{display:none}
 
 /* Compact export action beside Import: match the approved orange button pattern. */
@@ -200,6 +215,70 @@ body.detail-open{overflow:hidden}
 .import-cal-bottom .import-cal-close{color:#55697d}
 .effective-validation{min-height:0;color:#d42b36;font-size:11px;line-height:1.4;margin-top:5px}
 #effectiveFrom[aria-invalid="true"]{color:#c52635}
+
+/* v23 — five-stage MGT-style Import workflow, retaining Dry period controls */
+#importMask .modal.import-flow-modal{width:min(100%,570px);background:#f2f4f7;border-radius:10px;min-height:375px}
+.import-flow-modal .modal-head{padding:16px 20px 12px;background:#f2f4f7;border-bottom:0}
+.import-flow-modal .modal-head h2{font-size:16px}
+.import-flow-modal .modal-body{padding:0 18px 10px;flex:1;overflow-y:auto}
+.import-stage-card{min-height:242px;background:#fff;border:1px solid #e4e9ee;border-radius:9px;padding:17px 18px;margin-bottom:12px}
+.import-stage-card[data-import-state="select"]{padding:13px 16px}
+.import-dates{padding:0 1px 1px;margin-bottom:11px}
+.import-dates .field{margin-bottom:4px}
+.import-dates .field label{font-size:12px;margin-bottom:6px}
+.import-dates .field .hint{font-size:10px;margin-top:4px}
+.import-dates .form-row{gap:11px}
+.import-stage-card .dropzone{border:1.5px dashed #cbdce5;background:#f8fafc;padding:15px 14px;border-radius:8px}
+.import-stage-card .dropzone strong{margin:0 0 8px;font-size:13px}
+.import-or{display:block;margin:4px 0 9px;color:#667789;font-size:11px}
+.import-select-file{min-height:30px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:6px 11px;border:1px solid #07a0c2;border-radius:6px;background:#fff;color:#008bad;font-size:12px;font-weight:650}
+.import-select-file:hover{background:#eefaff}
+.import-accepted{display:block;font-size:10px;color:#65778a;margin-top:9px}
+.import-template-toolbar{display:flex;align-items:center;justify-content:space-between;gap:9px;margin:10px 2px 0;border-bottom:1px solid #e9edf2;padding-bottom:9px;flex-wrap:wrap}
+.import-template-toolbar .template{margin:0;padding:0;font-size:11px;gap:4px}
+.import-template-tip{font-size:10px;color:#8290a0}
+.import-caption{font-size:10px;line-height:1.4;color:#8090a0;text-align:center;margin:10px 4px 0}
+.import-process-stage{min-height:241px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.import-stage-image{display:flex;align-items:center;justify-content:center;width:56px;height:56px;position:relative}
+.import-big-icon{width:50px;height:50px}
+.import-stage-image.upload .import-big-icon{background:#0097b6;border-radius:50%;padding:11px;color:white}
+.import-stage-image.success .import-big-icon{background:#42d68a;border-radius:50%;padding:10px;color:white}
+.import-stage-image.processing .import-big-icon{color:#efa700}
+.import-stage-image.result .import-big-icon{color:#188db0}
+.import-stage-subtitle{font-size:12px;color:#53677b}
+.import-file-strip{display:flex;align-items:center;gap:10px;width:100%;min-height:49px;background:#f9fbfd;border:1px solid #e1e8ef;border-radius:8px;padding:9px 11px;text-align:left}
+.import-xls-icon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:30px;height:33px;flex:none;color:#17935a}
+.import-xls-icon:after{content:'XLS';position:absolute;bottom:2px;left:3px;background:#0aa05c;color:white;font-size:8px;font-weight:700;padding:1px 3px;border-radius:2px}
+.import-strip-data{min-width:0;flex:1}
+.import-file-label{display:block;max-width:100%;font-size:11px;font-weight:600;color:#233347;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.import-progress-track{height:5px;background:#e1e5eb;border-radius:20px;overflow:hidden;flex:1}
+.import-progress-fill{height:100%;background:#0097bd;border-radius:20px;width:0;transition:width .12s linear}
+.import-progress-line{display:flex;align-items:center;gap:10px;width:100%;margin-top:6px}
+.import-percentage{font-size:10px;min-width:30px;color:#527087}
+.import-file-remove{width:29px;height:29px;border:0;border-radius:5px;background:transparent;color:#77899d;display:flex;align-items:center;justify-content:center;flex:none}
+.import-file-remove:hover{background:#f1f3f6;color:#ce3645}
+.import-flow-modal .modal-foot{padding:11px 18px 15px;border-top:0;background:#f2f4f7}
+.import-flow-modal .modal-foot .btn{min-height:35px;padding:8px 13px}
+.import-flow-modal .modal-foot .btn-primary{background:#0097b6;border-color:#0097b6}
+#importError:empty{display:none}
+#importError{margin:4px 2px 1px}
+.import-result-title{font-weight:700;font-size:13px;color:#233449;margin-top:2px}
+.import-result-stat{font-size:11px;color:#65758b;display:flex;gap:8px;align-items:center}
+.import-result-stat strong{color:#158d58}
+.import-result-stat.invalid strong{color:#e43c4b}
+.import-result-file{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:#167f9b;font-size:11px;max-width:100%;padding:5px 3px;cursor:pointer}
+.import-result-file:hover{text-decoration:underline}
+.import-result-file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:305px}
+.import-result-file[hidden]{display:none}
+.import-result-note{font-size:11px;line-height:1.5;color:#647789;max-width:460px;text-align:center}
+.import-result-headline{font-size:11px;font-weight:650;color:#158d58}
+.import-result-headline.failed{color:#d32d45}
+.import-result-counts{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.import-upload-row{width:100%}
+@media(max-width:650px){#importMask .modal.import-flow-modal{max-height:95vh}.import-stage-card{padding:14px;min-height:210px}.import-dates .form-row{grid-template-columns:1fr}.import-result-file span{max-width:180px}}
+
+
+[data-import-state][hidden],#importDates[hidden],#downloadChecked[hidden],#importTryAnother[hidden],#confirmImport[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -264,14 +343,78 @@ body.detail-open{overflow:hidden}
 <p class="footnote">UI prototype · 52 sample periods and 308 sample cost rows are for demonstration. Local file import and detail viewing work in supported browsers. No backend connection.</p>
 </main>
 </div>
-<div class="mask" id="importMask" role="dialog" aria-modal="true" aria-labelledby="importTitle"><div class="modal"><div class="modal-head"><h2 id="importTitle">Import Dry Operating Cost</h2><button class="icon-button" id="closeImport" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button></div><div class="modal-body"><div class="form-row"><div class="field"><label for="effectiveFrom">Effective From <span class="star">*</span></label><div class="modal-date"><input type="text" placeholder="dd/MM/yyyy" maxlength="10" id="effectiveFrom" inputmode="numeric" autocomplete="off" aria-haspopup="dialog" aria-controls="importDatePopover" aria-expanded="false"/><button type="button" class="calbtn" id="openImportDate" aria-label="Choose Effective From date" aria-expanded="false"><svg class="icon"><use href="#i-calendar"/></svg></button></div><div class="hint">Start date of the imported data set.</div><div class="effective-validation" id="effectiveFromValidation" aria-live="polite"></div></div><div class="field"><label for="effectiveTo">Effective To</label><input type="text" disabled id="effectiveTo" placeholder="Set automatically"/><div class="hint">Automatically calculated from the next period.</div></div></div><div class="field"><label>Import file <span class="star">*</span></label><div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose Excel file"><svg><use href="#i-upload"/></svg><strong>Drag & drop your file here or choose file</strong><p>.xlsx only · Maximum 5 MB · One file = one Dry Operating Cost record</p></div><input type="file" id="fileInput" accept=".xlsx" hidden/><div class="selected-file" id="selectedFile"><div style="display:flex;align-items:center;gap:9px;min-width:0"><svg class="icon" style="color:#0e91b0"><use href="#i-file"/></svg><div style="min-width:0"><div class="filename" id="filename"></div><div class="filesize" id="filesize"></div></div></div><button class="icon-button" id="removeFile" aria-label="Remove file"><svg class="icon"><use href="#i-x"/></svg></button></div><button class="template" id="downloadTemplate"><svg class="icon"><use href="#i-download"/></svg>Download Template</button></div><div class="error-message" id="importError" aria-live="polite"></div></div><div class="modal-foot"><button class="btn btn-ghost" id="cancelImport">Cancel</button><button class="btn btn-primary" id="confirmImport"><svg class="icon"><use href="#i-upload"/></svg>Import</button></div></div></div>
+<div class="mask" id="importMask" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+ <div class="modal import-flow-modal">
+  <div class="modal-head"><h2 id="importTitle">Import Dry Operating Cost</h2><button type="button" class="icon-button" id="closeImport" aria-label="Close"><svg class="icon"><use href="#i-x"/></svg></button></div>
+  <div class="modal-body">
+   <div class="import-dates" id="importDates">
+    <div class="form-row">
+     <div class="field"><label for="effectiveFrom">Effective From <span class="star">*</span></label><div class="modal-date"><input type="text" placeholder="dd/MM/yyyy" maxlength="10" id="effectiveFrom" inputmode="numeric" autocomplete="off" aria-haspopup="dialog" aria-controls="importDatePopover" aria-expanded="false"/><button type="button" class="calbtn" id="openImportDate" aria-label="Choose Effective From date" aria-expanded="false"><svg class="icon"><use href="#i-calendar"/></svg></button></div><div class="effective-validation" id="effectiveFromValidation" aria-live="polite"></div></div>
+     <div class="field"><label for="effectiveTo">Effective To</label><input type="text" disabled id="effectiveTo" placeholder="Set automatically"/><div class="hint">Calculated automatically based on effective periods.</div></div>
+    </div>
+   </div>
+   <section class="import-stage-card" data-import-state="select" aria-label="Select upload file">
+     <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Select or drag and drop an Excel file">
+      <strong>Drag and drop files here</strong><span class="import-or">or</span><span class="import-select-file"><svg class="icon"><use href="#i-upload"/></svg>Select file</span><span class="import-accepted">Accepted formats are .xlsx (up to 5MB)</span>
+     </div>
+     <input type="file" id="fileInput" accept=".xlsx" hidden/>
+     <div class="import-template-toolbar"><span class="import-template-tip">For accurate import results, please use the sample file.</span><button type="button" class="template" id="downloadTemplate"><svg class="icon"><use href="#i-download"/></svg>Download Template</button></div>
+     <p class="import-caption">One Excel workbook = one Dry Operating Cost record. Effective From applies to the whole workbook.</p>
+   </section>
+   <section class="import-stage-card import-process-stage" data-import-state="uploading" hidden aria-label="Uploading file">
+    <div class="import-stage-image upload"><svg class="icon import-big-icon"><use href="#i-upload"/></svg></div>
+    <span class="import-stage-subtitle">Uploading file to system...</span>
+    <div class="import-file-strip import-upload-row"><div class="import-xls-icon"><svg class="icon"><use href="#i-file"/></svg></div><div class="import-strip-data"><span class="import-file-label" id="uploadFileName"></span><div class="import-progress-line"><div class="import-progress-track"><div class="import-progress-fill" id="uploadProgressFill"></div></div><span class="import-percentage" id="uploadProgressText">0%</span></div></div></div>
+   </section>
+   <section class="import-stage-card import-process-stage" data-import-state="uploaded" hidden aria-label="File uploaded successfully">
+    <div class="import-stage-image success"><svg class="icon import-big-icon"><use href="#i-check"/></svg></div>
+    <span class="import-stage-subtitle">File uploaded successfully</span>
+    <div class="selected-file visible" id="selectedFile" style="display:flex;width:100%;margin:0"><div class="import-xls-icon"><svg class="icon"><use href="#i-file"/></svg></div><div class="import-strip-data"><span class="import-file-label" id="filename"></span><span class="smalltext" id="filesize"></span></div><button type="button" class="import-file-remove" id="removeFile" title="Remove selected file" aria-label="Remove selected file"><svg class="icon"><use href="#i-trash"/></svg></button></div>
+    <span class="import-caption">Select Import to validate the workbook and save the effective period.</span>
+   </section>
+   <section class="import-stage-card import-process-stage" data-import-state="processing" hidden aria-label="Processing file">
+    <div class="import-stage-image processing"><svg class="icon import-big-icon"><use href="#i-refresh"/></svg></div>
+    <span class="import-stage-subtitle">Processing file...</span>
+    <div class="import-progress-track" style="width:210px;flex:none;height:6px"><div class="import-progress-fill" id="processProgressFill"></div></div>
+   </section>
+   <section class="import-stage-card import-process-stage" data-import-state="results" hidden aria-label="File upload results">
+    <div class="import-stage-image result"><svg class="icon import-big-icon"><use href="#i-file"/></svg></div>
+    <div class="import-result-title">File upload results</div>
+    <div class="import-result-counts"><div class="import-result-stat">Number of valid records: <strong id="importValidCount">0/0</strong></div><div class="import-result-stat invalid">Number of invalid records: <strong id="importInvalidCount">0/0</strong></div></div>
+    <div class="import-result-headline" id="importResultHeadline"></div>
+    <button type="button" class="import-result-file" id="downloadChecked"><svg class="icon"><use href="#i-file"/></svg><span id="checkedFileName"></span><svg class="icon"><use href="#i-download"/></svg></button>
+    <div class="import-result-note" id="importResultNote"></div>
+   </section>
+   <div class="error-message" id="importError" aria-live="polite"></div>
+  </div>
+  <div class="modal-foot"><button type="button" class="btn btn-ghost" id="cancelImport">Cancel</button><button type="button" class="btn btn-primary" id="confirmImport" disabled>Import</button><button type="button" class="btn btn-primary" id="importTryAnother" hidden>Select another file</button></div>
+ </div>
+</div>
 
-<!-- Confirm deletion of one imported period (prototype data only). -->
-<div class="mask" id="deleteMask" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+<!-- Effective-period impact preview follows the existing MGT delete confirmation pattern. -->
+<div class="mask" id="deleteMask" role="dialog" aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteQuestion">
   <div class="delete-confirm-dialog">
-    <div class="delete-confirm-head"><div class="delete-confirm-mark"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></div><h2 id="deleteTitle">Delete Dry Operating Cost</h2></div>
-    <div class="delete-confirm-body">Are you sure you want to delete <strong id="deleteFileName"></strong>?<div class="smalltext" style="margin-top:8px">This will remove the selected effective period and its imported data from this local prototype.</div></div>
-    <div class="delete-confirm-foot"><button type="button" class="btn btn-ghost" id="cancelDelete">Cancel</button><button type="button" class="btn btn-danger" id="confirmDelete"><svg class="icon"><use href="#i-trash"/></svg>Delete</button></div>
+    <div class="delete-confirm-head">
+      <h2 id="deleteTitle">Delete Dry Operating Cost</h2>
+      <button type="button" class="delete-x" id="closeDelete" aria-label="Close" title="Close"><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="delete-confirm-body">
+      <p class="delete-question" id="deleteQuestion">Delete the Dry Operating Cost record <strong id="deleteFileName"></strong>, effective <strong id="deleteEffectivePeriod"></strong>?</p>
+      <section class="delete-period-card" aria-labelledby="deletePeriodTitle">
+        <div class="delete-period-heading" id="deletePeriodTitle">Effective period after deletion</div>
+        <div class="delete-period-inner">
+          <table class="delete-period-table" aria-label="Effective period changes after deletion">
+            <colgroup><col/><col/></colgroup>
+            <thead><tr><th scope="col">RECORD</th><th scope="col">EFFECTIVE PERIOD</th></tr></thead>
+            <tbody id="deletePreviewRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <div class="delete-confirm-foot">
+      <button type="button" class="btn btn-ghost" id="cancelDelete">Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+    </div>
   </div>
 </div>
 
@@ -473,9 +616,42 @@ $('clearFilter').addEventListener('click',()=>{chosenDateRange={from:'',to:''};p
 $('pageSize').addEventListener('change',()=>{page=1;render()});$('pageButtons').addEventListener('click',e=>{let btn=e.target.closest('[data-page]');if(btn){page=Number(btn.dataset.page);render()}});$('firstPage').addEventListener('click',()=>{page=1;render()});$('previousPage').addEventListener('click',()=>{page--;render()});$('nextPage').addEventListener('click',()=>{page++;render()});$('lastPage').addEventListener('click',()=>{page=Math.max(1,Math.ceil(getFiltered().length/Number($('pageSize').value)));render()});
 $('listBody').addEventListener('click',async e=>{const detail=e.target.closest('[data-detail]');if(detail){await openDetail(detail.dataset.detail);return}const exported=e.target.closest('[data-export]');if(exported){await exportRecord(exported.dataset.export);return}const deleted=e.target.closest('[data-delete]');if(deleted)openDeleteConfirm(deleted.dataset.delete)});
 $('filterToggle').addEventListener('click',()=>{const open=$('filterToggle').getAttribute('aria-expanded')!=='true';$('filterToggle').setAttribute('aria-expanded',String(open));$('filterFields').hidden=!open;$('filterToggle').querySelector('.chev').style.transform=open?'rotate(180deg)':'rotate(0deg)';});$('dataSourceToggle').addEventListener('click',()=>{const open=$('dataSourceToggle').getAttribute('aria-expanded')!=='true';$('dataSourceToggle').setAttribute('aria-expanded',String(open));$('sourceSubmenu').hidden=!open;$('dataSourceToggle').querySelector('.chev').classList.toggle('up',open)});$('collapseMenu').addEventListener('click',()=>{$('sidebar').classList.toggle('collapsed')});document.querySelectorAll('.nav a:not(.active)').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
-function openModal(){$('importMask').classList.add('open');$('importError').textContent='';$('effectiveFromValidation').textContent='';$('effectiveFrom').setAttribute('aria-invalid','false');$('effectiveFrom').value='';$('effectiveTo').value='';selectedFile=null;$('fileInput').value='';renderSelectedFile();$('effectiveFrom').focus();}
-function closeModal(){if(requestBusy)return;closeImportDate();$('importMask').classList.remove('open');}
-$('openImport').addEventListener('click',openModal);$('closeImport').addEventListener('click',closeModal);$('cancelImport').addEventListener('click',closeModal);$('importMask').addEventListener('click',e=>{if(e.target===$('importMask'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('importMask').classList.contains('open')&&$('importDatePopover').hidden)closeModal()});
+let importState='select';
+let importSeq=0;
+let activeImportTimer=null;
+let checkedImportResult=null;
+const setImportTimer=(fn,ms)=>{clearTimeout(activeImportTimer);activeImportTimer=setTimeout(fn,ms)};
+function stopImportTimer(){clearTimeout(activeImportTimer);activeImportTimer=null;importSeq++}
+function setImportState(stage){
+ importState=stage;
+ document.querySelectorAll('[data-import-state]').forEach(el=>el.hidden=el.dataset.importState!==stage);
+ $('importDates').hidden=!(stage==='select'||stage==='uploaded');
+ const settings={select:['Cancel','Import',false,false],uploading:['Cancel','Import',false,false],uploaded:['Close','Import',true,false],processing:['Cancel','Import',false,false],results:['Close','Import',false,true]}[stage];
+ $('cancelImport').textContent=settings[0];
+ $('cancelImport').disabled=stage==='processing';
+ $('confirmImport').textContent=settings[1];
+ $('confirmImport').hidden=stage==='results';
+ $('confirmImport').disabled=!settings[2];
+ $('importTryAnother').hidden=!(stage==='results'&&checkedImportResult?.failed);
+ if(stage!=='uploaded')closeImportDate();
+}
+function resetImportFile(keepDate=true){
+ stopImportTimer();selectedFile=null;checkedImportResult=null;$('fileInput').value='';
+ $('importError').textContent='';if(!keepDate){$('effectiveFrom').value='';$('effectiveTo').value='';$('effectiveFromValidation').textContent='';$('effectiveFrom').setAttribute('aria-invalid','false')}
+ renderSelectedFile();setImportState('select');
+}
+function openModal(){
+ resetImportFile(false);$('importMask').classList.add('open');$('effectiveFrom').focus();
+}
+function closeModal(){
+ if(requestBusy)return;
+ stopImportTimer();closeImportDate();$('importMask').classList.remove('open');
+}
+$('openImport').addEventListener('click',openModal);
+$('closeImport').addEventListener('click',closeModal);
+$('cancelImport').addEventListener('click',closeModal);
+$('importMask').addEventListener('click',e=>{if(e.target===$('importMask'))closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('importMask').classList.contains('open')&&$('importDatePopover').hidden)closeModal()});
 // Dry Operating Cost has ONE global effective-period timeline (no IATA dimension).
 // MGT analogue: duplicate From/Expired period are invalid; Effective To = next From - 1 day or Ongoing.
 function effectiveFromError(date){
@@ -543,9 +719,47 @@ document.addEventListener('pointerdown',e=>{if(!$('importDatePopover').hidden&&!
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('importDatePopover').hidden){e.preventDefault();e.stopPropagation();closeImportDate();$('effectiveFrom').focus()}});
 window.addEventListener('resize',()=>{if(!$('importDatePopover').hidden)positionImportCalendar()});
 
-function renderSelectedFile(){$('selectedFile').classList.toggle('visible',!!selectedFile);$('filename').textContent=selectedFile?.name||'';$('filesize').textContent=selectedFile?(selectedFile.size/1024).toFixed(1)+' KB':'';$('importError').textContent='';}
-function pickFile(f){if(!f)return;selectedFile=f;renderSelectedFile()};$('dropzone').addEventListener('click',()=>$('fileInput').click());$('dropzone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click()}});$('fileInput').addEventListener('change',e=>pickFile(e.target.files?.[0]));$('removeFile').addEventListener('click',()=>{selectedFile=null;$('fileInput').value='';renderSelectedFile()});$('dropzone').addEventListener('dragover',e=>{e.preventDefault();$('dropzone').classList.add('dragover')});$('dropzone').addEventListener('dragleave',()=>$('dropzone').classList.remove('dragover'));$('dropzone').addEventListener('drop',e=>{e.preventDefault();$('dropzone').classList.remove('dragover');pickFile(e.dataTransfer.files?.[0])});
-function errorImport(message){$('importError').textContent=message;toast(message,'error')}
+function renderSelectedFile(){
+ $('filename').textContent=selectedFile?.name||'';
+ $('uploadFileName').textContent=selectedFile?.name||'';
+ $('filesize').textContent=selectedFile? (selectedFile.size/1024).toFixed(1)+' KB' : '';
+}
+async function pickFile(f){
+ if(!f||requestBusy||importState==='processing')return;
+ const wrongExt=!f.name.toLowerCase().endsWith('.xlsx');
+ const tooLarge=f.size>5*1024*1024;
+ const empty=f.size===0;
+ if(wrongExt||tooLarge||empty){
+  resetImportFile(true);
+  $('importError').textContent=wrongExt?'Invalid upload file format. Only .xlsx is supported.':tooLarge?'File is too large. Maximum limit is 5MB.':'The selected file is empty.';
+  return;
+ }
+ stopImportTimer();selectedFile=f;checkedImportResult=null;$('importError').textContent='';renderSelectedFile();
+ $('uploadProgressFill').style.width='0%';$('uploadProgressText').textContent='0%';setImportState('uploading');
+ const seq=importSeq;
+ let current=0;
+ const advance=async()=>{
+  if(seq!==importSeq||importState!=='uploading')return;
+  current=Math.min(100,current+24);
+  $('uploadProgressFill').style.width=current+'%';$('uploadProgressText').textContent=current+'%';
+  if(current<100){setImportTimer(advance,125);return;}
+  try{
+   if(!await isXlsx(f))throw new Error('Invalid Excel workbook. Please select a valid .xlsx file.');
+   if(seq!==importSeq)return;
+   setImportState('uploaded');
+  }catch(err){if(seq!==importSeq)return;resetImportFile(true);$('importError').textContent=err?.message||'File could not be uploaded.';}
+ };
+ setImportTimer(advance,130);
+}
+$('dropzone').addEventListener('click',()=>$('fileInput').click());
+$('dropzone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click()}});
+$('fileInput').addEventListener('change',e=>pickFile(e.target.files?.[0]));
+$('removeFile').addEventListener('click',()=>resetImportFile(true));
+$('importTryAnother').addEventListener('click',()=>resetImportFile(true));
+$('dropzone').addEventListener('dragover',e=>{e.preventDefault();$('dropzone').classList.add('dragover')});
+$('dropzone').addEventListener('dragleave',()=>$('dropzone').classList.remove('dragover'));
+$('dropzone').addEventListener('drop',e=>{e.preventDefault();$('dropzone').classList.remove('dragover');pickFile(e.dataTransfer.files?.[0])});
+function errorImport(message){$('importError').textContent=message;}
 // XLSX check: ensure the file is a ZIP-based Office Open XML workbook by reading its central directory.
 async function isXlsx(file){const b=new Uint8Array(await file.arrayBuffer());if(b.length<100||b[0]!==0x50||b[1]!==0x4b)return false;const v=new DataView(b.buffer);let end=-1;for(let k=b.length-22;k>=Math.max(0,b.length-65557);k--){if(v.getUint32(k,true)===0x06054b50){end=k;break;}}if(end<0)return false;let cursor=v.getUint32(end+16,true),count=v.getUint16(end+10,true),names=new Set();for(let i=0;i<count;i++){if(cursor+46>b.length||v.getUint32(cursor,true)!==0x02014b50)return false;const size=v.getUint16(cursor+28,true),extra=v.getUint16(cursor+30,true),comment=v.getUint16(cursor+32,true);names.add(new TextDecoder().decode(b.slice(cursor+46,cursor+46+size)));cursor+=46+size+extra+comment;}return names.has('[Content_Types].xml')&&names.has('xl/workbook.xml');}
 // Browser IndexedDB keeps imported workbook intact for subsequent per-record Export (not sent to a server).
@@ -554,13 +768,31 @@ async function dbPut(id,file){const db=await dbOpen();return new Promise((resolv
 async function dbGet(id){const db=await dbOpen();return new Promise((resolve,reject)=>{const tx=db.transaction('files','readonly');const req=tx.objectStore('files').get(id);req.onsuccess=()=>{db.close();resolve(req.result)};req.onerror=()=>{db.close();reject(req.error)}})}
 async function dbDelete(id){const db=await dbOpen();return new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(id);tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)}})}
 let deleteRecordId=null;
+let deletePreviouslyFocused=null;
+function effectivePeriodLabel(row){return pretty(row.from)+' → '+(row.to?pretty(row.to):'Ongoing')}
 function openDeleteConfirm(id){
- const row=timeline().find(r=>r.id===id);if(!row)return;
- if(getStatus(row)==='Expired')return;
- deleteRecordId=id;$('deleteFileName').textContent=row.filename;
- $('deleteMask').classList.add('open');$('confirmDelete').focus();
+ const periods=timeline();
+ const record=periods.find(r=>r.id===id);
+ if(!record||getStatus(record)==='Expired')return;
+ deleteRecordId=id;
+ deletePreviouslyFocused=document.activeElement;
+ $('deleteFileName').textContent='from '+record.filename;
+ $('deleteEffectivePeriod').textContent=effectivePeriodLabel(record);
+ // Only a period immediately preceding the deleted one needs its Effective To adjusted.
+ const previous=periods.filter(r=>r.from<record.from).sort((a,b)=>b.from.localeCompare(a.from))[0];
+ const after=timeline(records.filter(r=>r.id!==id));
+ const adjusted=previous?after.find(r=>r.id===previous.id):null;
+ let rows='';
+ if(previous && adjusted){
+  rows+=`<tr><td><span class="delete-record-name">Previous period</span><span class="delete-record-sub">Will be adjusted</span></td><td><div class="delete-old-period">${effectivePeriodLabel(previous)}</div><div class="delete-new-period">${effectivePeriodLabel(adjusted)}</div></td></tr>`;
+ }
+ rows+=`<tr><td><span class="delete-record-name">Record being deleted</span><span class="delete-record-sub">${getStatus(record)}</span></td><td><div class="delete-old-period">${effectivePeriodLabel(record)}</div></td></tr>`;
+ $('deletePreviewRows').innerHTML=rows;
+ $('deleteMask').classList.add('open');
+ $('closeDelete').focus();
 }
-function closeDeleteConfirm(){deleteRecordId=null;$('deleteMask').classList.remove('open')}
+function closeDeleteConfirm(){deleteRecordId=null;$('deleteMask').classList.remove('open');if(deletePreviouslyFocused?.isConnected)deletePreviouslyFocused.focus();deletePreviouslyFocused=null}
+$('closeDelete').addEventListener('click',closeDeleteConfirm);
 $('cancelDelete').addEventListener('click',closeDeleteConfirm);
 $('deleteMask').addEventListener('click',e=>{if(e.target===$('deleteMask'))closeDeleteConfirm()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('deleteMask').classList.contains('open')){e.preventDefault();e.stopPropagation();closeDeleteConfirm()}});
@@ -577,8 +809,107 @@ $('confirmDelete').addEventListener('click',async()=>{
  }finally{confirmButton.disabled=false}
 });
 
-$('confirmImport').addEventListener('click',async()=>{if(requestBusy)return;const date=parseDMY($('effectiveFrom').value);const dateError=effectiveFromError(date);if(dateError){previewEffectiveTo(true);errorImport(dateError);return}if(!selectedFile){errorImport('Please select a file to upload.');return}if(!selectedFile.name.toLowerCase().endsWith('.xlsx')){errorImport('Invalid upload file format. Only .xlsx is supported.');return}if(selectedFile.size>5*1024*1024){errorImport('File is too large. Maximum limit is 5MB.');return}/* Date rules validated against current timeline. */requestBusy=true;$('confirmImport').disabled=true;$('confirmImport').textContent='Importing…';try{if(!await isXlsx(selectedFile)){errorImport('Invalid Excel workbook. Please select a valid .xlsx file.');return}const parsed=await readDocWorkbook(selectedFile);const newId='doc_'+Date.now()+'_'+Math.floor(Math.random()*1000);const f=selectedFile;const storedDoc={file:f,rows:parsed};try{await dbPut(newId,storedDoc)}catch(storageError){memoryFiles.set(newId,storedDoc)}records.push({id:newId,filename:f.name,from:date,importedAt:new Date().toISOString(),by:'current.user'});save();closeModalForce();filters={from:'',to:'',status:''};chosenDateRange={from:'',to:''};pendingDateRange={from:'',to:''};updateDateRangeLabel();closeDateRange();$('filterStatus').value='';page=1;render();toast('Dry Operating Cost imported successfully (local prototype).','success')}catch(err){errorImport('Import failed: '+(err?.message||'Unable to store the file.'))}finally{requestBusy=false;$('confirmImport').disabled=false;$('confirmImport').innerHTML=icon('i-upload')+'Import'}});
-function closeModalForce(){closeImportDate();$('importMask').classList.remove('open')}
+// Validation is a separate phase from upload. Nothing is saved until every row passes.
+async function validateDocWorkbook(file){
+ const bytes=new Uint8Array(await file.arrayBuffer());
+ const shared=await zipEntry(bytes,'xl/sharedStrings.xml');
+ let strings=[];
+ if(shared){const doc=new DOMParser().parseFromString(shared,'application/xml');strings=Array.from(doc.getElementsByTagNameNS('*','si'),n=>n.textContent||'')}
+ const sheet=await zipEntry(bytes,'xl/worksheets/sheet1.xml');
+ if(!sheet)throw new Error('Excel workbook does not contain the Import worksheet.');
+ const all=xmlCellRows(sheet,strings);
+ const matchesHeader=(raw)=>DOC_HEADER_ALIASES.every((aliases,j)=>aliases.some(a=>a.toLowerCase()===String(raw[j]??'').trim().toLowerCase()));
+ const headerAt=all.findIndex(matchesHeader);
+ if(headerAt<0)throw new Error('Incorrect Import template. Expected 12 Dry Operating Cost columns in the correct order.');
+ if(all[headerAt].slice(12).some(x=>String(x??'').trim()))throw new Error('Import header contains columns outside the template.');
+ const rawRows=[],valid=[],issues=[],seen=new Set();
+ for(let i=headerAt+1;i<all.length;i++){
+  const raw=all[i];if(!raw.some(x=>String(x??'').trim()))continue;
+  const excelRow=raw.__row||i+1;
+  const rowErrors=[],codes=raw.slice(0,4).map(x=>String(x??'').trim().toUpperCase());
+  if(codes.some(x=>!x))rowErrors.push('NetW3, ROUTE_2W, FLT_TYPE and AC_GROUP are required.');
+  const key=codes.join('|');if(seen.has(key))rowErrors.push('Duplicate NetW3 + ROUTE_2W + FLT_TYPE + AC_GROUP.');seen.add(key);
+  const amounts=[];
+  for(let j=4;j<8;j++){
+   const text=String(raw[j]??'').trim(),n=Number(text);
+   if(text===''||!Number.isFinite(n)||n<0)rowErrors.push(DOC_COLS[j]+' must be a non-negative number.');
+   amounts.push(n);
+  }
+  if(!(amounts[2]>0))rowErrors.push('Two_Way_Equivalent_Flight_Count must be greater than 0.');
+  if(!(amounts[3]>0))rowErrors.push('Block_Hours must be greater than 0.');
+  const computed=amounts[2]>0&&amounts[3]>0?[amounts[0]/amounts[2],amounts[1]/amounts[2],amounts[0]/amounts[3],amounts[1]/amounts[3]]:[NaN,NaN,NaN,NaN];
+  const ratios=[];
+  for(let j=8;j<12;j++){
+   const t=String(raw[j]??'').trim(),n=t===''?computed[j-8]:Number(t);
+   if(!Number.isFinite(n)||n<0)rowErrors.push(DOC_COLS[j]+' is invalid.');
+   ratios.push(n);
+  }
+  if(raw.slice(12).some(x=>String(x??'').trim()))rowErrors.push('Extra columns outside the template.');
+  const original=Array.from({length:12},(_,j)=>raw[j]??'');
+  rawRows.push({excelRow,values:original,errors:rowErrors});
+  if(rowErrors.length)issues.push({row:excelRow,message:rowErrors.join(' ')});
+  else valid.push([...codes,...amounts,...ratios]);
+ }
+ if(!rawRows.length)throw new Error('The Import sheet must contain at least one Dry Operating Cost row.');
+ return {rows:valid,rawRows,issues,validCount:valid.length,invalidCount:issues.length,totalCount:rawRows.length};
+}
+function showImportResults(result){
+ checkedImportResult=result;
+ const {validCount,invalidCount,totalCount,failed,message}=result;
+ $('importValidCount').textContent=validCount+'/'+totalCount;
+ $('importInvalidCount').textContent=invalidCount+'/'+totalCount;
+ $('importResultHeadline').textContent=failed?'Failed to import Dry Operating Cost.':'Dry Operating Cost imported successfully.';
+ $('importResultHeadline').classList.toggle('failed',failed);
+ const name=selectedFile?.name||'Dry_Operating_Cost.xlsx';
+ $('checkedFileName').textContent=name.replace(/\.xlsx$/i,'')+'_checked.xlsx';
+ $('downloadChecked').hidden=!failed;
+ $('importResultNote').textContent=failed
+   ? 'No data was written. All records must be valid before import. Download the checked file, correct the invalid records, and try again.'+(message?' '+message:'')
+   : 'All records are valid and have been imported. The effective period and list have been updated.';
+ $('importError').textContent='';
+ setImportState('results');
+}
+$('downloadChecked').addEventListener('click',()=>{
+ const result=checkedImportResult;if(!result?.failed)return;
+ const rows=(result.rawRows||[]).map(r=>[r.excelRow,...r.values,r.errors.length?'Invalid':'Valid',r.errors.join(' ')]);
+ const summary=[['Dry Operating Cost validation results',''],['File',selectedFile?.name||''],['Valid records',result.validCount],['Invalid records',result.invalidCount],['Total records',result.totalCount],['File-level error',result.message||'']];
+ const errors=(result.issues||[]).map(e=>[e.row,e.message]);
+ downloadBlob(workbookBlob([
+  {name:'Import_Checked',rows:[['Excel_Row',...DOC_COLS,'Validation_Result','Error_Detail'],...rows]},
+  {name:'Validation_Summary',rows:summary},
+  {name:'Validation_Errors',rows:[['Excel_Row','Error'],...errors]}
+ ]),$('checkedFileName').textContent);
+});
+$('confirmImport').addEventListener('click',async()=>{
+ if(requestBusy||importState!=='uploaded'||!selectedFile)return;
+ const date=parseDMY($('effectiveFrom').value),problem=effectiveFromError(date);
+ if(problem){previewEffectiveTo(true);errorImport(problem);return;}
+ requestBusy=true;$('processProgressFill').style.width='10%';setImportState('processing');
+ const processCycle=importSeq;
+ let progress=10;
+ const runBar=()=>{if(processCycle!==importSeq||importState!=='processing')return;progress=Math.min(91,progress+15);$('processProgressFill').style.width=progress+'%';if(progress<91)setImportTimer(runBar,105)};
+ setImportTimer(runBar,100);
+ try{
+  // Prototype progress delay (not a backend upload).
+  await new Promise(r=>setTimeout(r,620));
+  const validation=await validateDocWorkbook(selectedFile);
+  if(validation.invalidCount){showImportResults({...validation,failed:true});return;}
+  // Recheck dates immediately before commit; do not modify timeline on a failed validation.
+  const latestProblem=effectiveFromError(date);
+  if(latestProblem){previewEffectiveTo(true);showImportResults({...validation,failed:true,message:latestProblem});return;}
+  const newId='doc_'+Date.now()+'_'+Math.floor(Math.random()*1000);
+  const original=selectedFile;
+  const storedDoc={file:original,rows:validation.rows};
+  try{await dbPut(newId,storedDoc)}catch(err){memoryFiles.set(newId,storedDoc)}
+  records.push({id:newId,filename:original.name,from:date,importedAt:new Date().toISOString(),by:'current.user'});
+  save();filters={from:'',to:'',status:''};chosenDateRange={from:'',to:''};pendingDateRange={from:'',to:''};updateDateRangeLabel();closeDateRange();$('filterStatus').value='';page=1;render();
+  showImportResults({...validation,failed:false});
+  toast('Dry Operating Cost imported successfully.','success');
+ }catch(err){
+  showImportResults({rows:[],rawRows:[],issues:[{row:'File',message:err?.message||'Unable to read workbook.'}],validCount:0,invalidCount:0,totalCount:0,failed:true,message:err?.message||'Unable to process the file.'});
+ }finally{requestBusy=false;clearTimeout(activeImportTimer);$('processProgressFill').style.width='100%';$('cancelImport').disabled=false}
+});
+function closeModalForce(){stopImportTimer();closeImportDate();$('importMask').classList.remove('open')}
 function safeName(name){return String(name).replace(/[\\/:*?"<>|]/g,'_')};function downloadBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=safeName(name);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 // XLSX writer: Office Open XML workbook packed as a valid ZIP, no CDN/external libraries required.
 const encoder=new TextEncoder();const xmlEsc=v=>String(v??'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));let crcTable=null;
@@ -650,6 +981,7 @@ function xmlCellRows(xml,strings){
    let value=type==='inlineStr'?(c.getElementsByTagNameNS('*','is')[0]?.textContent||''):type==='s'?(strings[Number(v)]??''):type==='b'?Number(v):v===undefined?'':v;
    result[index]=value;
   }
+  result.__row=Number(row.getAttribute('r'))||undefined;
   return result;
  });
 }
