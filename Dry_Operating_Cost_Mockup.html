@@ -597,6 +597,10 @@ const prettyTime=iso=>{const d=new Date(iso);return String(d.getUTCDate()).padSt
 const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function timeline(list=records){const ordered=[...list].sort((a,b)=>a.from.localeCompare(b.from));return ordered.map((r,i)=>({...r,to:i+1<ordered.length?addDays(ordered[i+1].from,-1):null})).reverse();}
 function getStatus(row){let now=todayIso();return row.from>now?'Scheduled':row.to&&row.to<now?'Expired':'Active';}
+// Only the ONE record with the largest Effective From across ALL records may be deleted.
+// Do not derive delete permission from the filtered/current page or from Status alone.
+function latestEffectiveRecord(){return timeline()[0]||null}
+function canDeleteRecord(id){const newest=latestEffectiveRecord();return Boolean(newest&&newest.id===id)}
 function getFiltered(){return timeline().filter(r=>{
  const status=getStatus(r);if(filters.status&&status!==filters.status)return false;
  const effectiveStart=r.from,effectiveEnd=r.to||'9999-12-31';
@@ -604,7 +608,7 @@ function getFiltered(){return timeline().filter(r=>{
  if(filters.to&&effectiveStart>filters.to)return false;
  return true;
 });}
-function render(){const all=getFiltered(),size=Number($('pageSize').value)||10;const pages=Math.max(1,Math.ceil(all.length/size));page=Math.max(1,Math.min(page,pages));const visible=all.slice((page-1)*size,page*size);$('listBody').innerHTML=visible.map((r,i)=>{const stat=getStatus(r);return `<tr><td class="number">${(page-1)*size+i+1}</td><td class="file-cell" title="${escapeHtml(r.filename)}"><button class="file-view" type="button" data-detail="${escapeHtml(r.id)}" title="View imported data">${icon('i-file','icon small-file')}${escapeHtml(r.filename)}</button></td><td>${pretty(r.from)}</td><td>${r.to?pretty(r.to):'<span class="badge ongoing">Ongoing</span>'}</td><td><span class="badge ${stat.toLowerCase()}">${stat}</span></td><td>${prettyTime(r.importedAt)}</td><td>${escapeHtml(r.by)}</td><td><button type="button" class="table-action icon-only" data-detail="${escapeHtml(r.id)}" title="View detail" aria-label="View detail">${icon('i-eye')}</button><button type="button" class="table-action icon-only" data-export="${escapeHtml(r.id)}" title="Export Excel" aria-label="Export Excel">${icon('i-download')}</button>${stat==='Expired'?'':`<button type="button" class="table-action icon-only delete-action" data-delete="${escapeHtml(r.id)}" title="Delete" aria-label="Delete">${icon('i-trash')}</button>`}</td></tr>`}).join('');$('emptyState').hidden=all.length>0;$('totalText').textContent=`Total records: ${all.length}`;$('pageRange').textContent=all.length?`${(page-1)*size+1}–${(page-1)*size+visible.length} of ${all.length}`:'0–0 of 0';$('firstPage').disabled=$('previousPage').disabled=page<=1;$('nextPage').disabled=$('lastPage').disabled=page>=pages;let low=Math.max(1,page-2),high=Math.min(pages,low+4);low=Math.max(1,high-4);$('pageButtons').innerHTML=Array.from({length:high-low+1},(_,i)=>{let p=low+i;return `<button class="pagebtn ${p===page?'current':''}" data-page="${p}" aria-label="Page ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`}).join('');}
+function render(){const all=getFiltered(),size=Number($('pageSize').value)||10;const newest=latestEffectiveRecord();const pages=Math.max(1,Math.ceil(all.length/size));page=Math.max(1,Math.min(page,pages));const visible=all.slice((page-1)*size,page*size);$('listBody').innerHTML=visible.map((r,i)=>{const stat=getStatus(r);return `<tr><td class="number">${(page-1)*size+i+1}</td><td class="file-cell" title="${escapeHtml(r.filename)}"><button class="file-view" type="button" data-detail="${escapeHtml(r.id)}" title="View imported data">${icon('i-file','icon small-file')}${escapeHtml(r.filename)}</button></td><td>${pretty(r.from)}</td><td>${r.to?pretty(r.to):'<span class="badge ongoing">Ongoing</span>'}</td><td><span class="badge ${stat.toLowerCase()}">${stat}</span></td><td>${prettyTime(r.importedAt)}</td><td>${escapeHtml(r.by)}</td><td><button type="button" class="table-action icon-only" data-detail="${escapeHtml(r.id)}" title="View detail" aria-label="View detail">${icon('i-eye')}</button><button type="button" class="table-action icon-only" data-export="${escapeHtml(r.id)}" title="Export Excel" aria-label="Export Excel">${icon('i-download')}</button>${newest?.id===r.id?`<button type="button" class="table-action icon-only delete-action" data-delete="${escapeHtml(r.id)}" title="Delete latest effective period" aria-label="Delete">${icon('i-trash')}</button>`:''}</td></tr>`}).join('');$('emptyState').hidden=all.length>0;$('totalText').textContent=`Total records: ${all.length}`;$('pageRange').textContent=all.length?`${(page-1)*size+1}–${(page-1)*size+visible.length} of ${all.length}`:'0–0 of 0';$('firstPage').disabled=$('previousPage').disabled=page<=1;$('nextPage').disabled=$('lastPage').disabled=page>=pages;let low=Math.max(1,page-2),high=Math.min(pages,low+4);low=Math.max(1,high-4);$('pageButtons').innerHTML=Array.from({length:high-low+1},(_,i)=>{let p=low+i;return `<button class="pagebtn ${p===page?'current':''}" data-page="${p}" aria-label="Page ${p}" ${p===page?'aria-current="page"':''}>${p}</button>`}).join('');}
 function toast(msg,kind='info'){const node=document.createElement('div');node.className='toast '+kind;node.innerHTML=icon(kind==='error'?'i-alert':'i-check')+`<span>${escapeHtml(msg)}</span>`;$('toastHost').appendChild(node);setTimeout(()=>node.remove(),3200);}
 function runSearch(){
   filters={from:chosenDateRange.from,to:chosenDateRange.to,status:$('filterStatus').value};
@@ -773,12 +777,12 @@ function effectivePeriodLabel(row){return pretty(row.from)+' → '+(row.to?prett
 function openDeleteConfirm(id){
  const periods=timeline();
  const record=periods.find(r=>r.id===id);
- if(!record||getStatus(record)==='Expired')return;
+ if(!record||!canDeleteRecord(id))return;
  deleteRecordId=id;
  deletePreviouslyFocused=document.activeElement;
  $('deleteFileName').textContent='from '+record.filename;
  $('deleteEffectivePeriod').textContent=effectivePeriodLabel(record);
- // Only a period immediately preceding the deleted one needs its Effective To adjusted.
+ // Deleting the newest Effective From restores the previous period's Effective To to Ongoing.
  const previous=periods.filter(r=>r.from<record.from).sort((a,b)=>b.from.localeCompare(a.from))[0];
  const after=timeline(records.filter(r=>r.id!==id));
  const adjusted=previous?after.find(r=>r.id===previous.id):null;
@@ -798,7 +802,7 @@ $('deleteMask').addEventListener('click',e=>{if(e.target===$('deleteMask'))close
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('deleteMask').classList.contains('open')){e.preventDefault();e.stopPropagation();closeDeleteConfirm()}});
 $('confirmDelete').addEventListener('click',async()=>{
  const id=deleteRecordId;if(!id)return;
- const found=timeline().find(x=>x.id===id);if(!found||getStatus(found)==='Expired'){closeDeleteConfirm();return}
+ const found=timeline().find(x=>x.id===id);if(!found||!canDeleteRecord(id)){closeDeleteConfirm();toast('Only the record with the latest Effective From can be deleted.','error');return}
  const confirmButton=$('confirmDelete');confirmButton.disabled=true;
  try{
   // Remove the original file as well if it was stored locally; do not block deletion if local storage is unavailable.
