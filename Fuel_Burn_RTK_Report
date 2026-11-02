@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fuel Burn/RTK Report · TOSS</title>
+<style>
+:root{--canvas:#061321;--sidebar:#03101d;--panel:#0b1b2b;--input:#1a2838;--input-border:#2b3d50;--line:#203145;--text:#eaf2fb;--muted:#95a7bb;--faint:#6f839b;--cyan:#04b8db;--cyan-dark:#007f9e;--active:#04344b;--th:#17283e;--th2:#1d314a;--receipt:#5ec9d3;--acars:#e7bc86;--pageWidth:220px}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:Arial,"Segoe UI",sans-serif;background:var(--canvas);color:var(--text);font-size:12px}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #54cfe9;outline-offset:1px}button:disabled{opacity:.38;cursor:default}svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}.app{height:100vh;min-height:660px;display:grid;grid-template-columns:var(--pageWidth) minmax(0,1fr);overflow:hidden}
+.sidebar{background:var(--sidebar);border-right:1px solid #1d2f42;min-width:0;display:flex;flex-direction:column;z-index:3}.brand{height:74px;display:flex;align-items:center;padding:18px 13px;gap:7px;white-space:nowrap}.lotus{font-size:25px;color:#ebc32f;line-height:1}.brandname{font-size:17px;letter-spacing:-.8px;font-weight:500}.brandmark{font-size:14px;color:#9db2c8;margin-left:-2px}.sidebar-nav{padding:2px 9px}.nav-item{height:43px;display:flex;align-items:center;gap:12px;width:100%;background:none;color:#dde8f3;border:0;border-radius:6px;padding:0 10px;text-align:left;white-space:nowrap;font-size:12px;font-weight:600}.nav-item svg{width:17px;height:17px;color:#b1bfd1}.nav-item:hover,.sub-item:hover{background:#0b2335}.nav-item.active-group{color:#f6faff}.nav-item .chev{margin-left:auto;color:#97a9bb}.sub-nav{padding:1px 0 8px 12px}.sub-item{height:36px;width:100%;display:flex;align-items:center;gap:10px;padding:0 11px;border:0;background:transparent;color:#d8e4f2;text-align:left;border-radius:6px;font-weight:600;font-size:11.5px}.dot{width:5px;height:5px;background:#a6b5c5;border-radius:50%;flex:none}.sub-item.selected{background:#07374e;color:#00d4f3}.sub-item.selected .dot{background:#00d4f3;box-shadow:0 0 7px #00bde1}.sidebar-footer{margin-top:auto;padding:8px 13px 15px;border-top:1px solid #183047}.collapse{display:block;margin:0 auto 11px;padding:10px 6px 15px;border:0;background:none;color:#d5e3f2}.account{display:flex;gap:8px;align-items:center;padding-top:9px;border-top:1px solid #213247}.avatar{height:30px;width:30px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(120deg,#c7d5e7,#49799b);color:#153c58;font-weight:800}.account strong{font-size:11px}.account small{display:block;margin-top:3px;color:#8396aa;font-size:10px}
+.main{display:flex;flex-direction:column;min-width:0;overflow:hidden;background:#061321}.topbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid #1b2e42;flex-shrink:0;background:#081728}.breadcrumb{color:#92a4b8;font-size:11px;display:flex;align-items:center;gap:7px}.breadcrumb b{color:#edf5ff;font-weight:600}.top-right{display:flex;align-items:center;gap:12px;color:#a8b7c8;font-size:11px}.mode-switch{display:flex;align-items:center;border:1px solid #293e52;border-radius:20px;padding:2px;background:#142537}.mode-switch button{font-size:10px;color:#a1b1c3;padding:4px 9px;background:none;border:0;border-radius:18px}.mode-switch button.selected{background:#08a9c9;color:white;font-weight:700}
+.tabs{min-height:45px;border-bottom:1px solid #26374b;display:flex;align-items:stretch;gap:19px;padding:0 22px;background:#091b2b;flex-shrink:0;overflow-x:auto}.tab{border:0;border-bottom:2px solid transparent;color:#9cafc2;font-size:12px;font-weight:600;background:none;white-space:nowrap;padding:2px 1px 0}.tab.active{color:#16d0ee;border-bottom-color:#10bce1}.content{min-height:0;flex:1;display:flex;flex-direction:column;padding:17px 20px 16px;overflow:hidden;gap:0}.page-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;min-height:31px;flex-shrink:0}.page-head h1{font-size:18px;letter-spacing:-.2px;font-weight:700;margin:0}.page-head p{color:var(--muted);font-size:11px;margin:5px 0 0}.head-actions{display:flex;align-items:center;gap:9px}.secondary-btn{display:flex;align-items:center;gap:7px;height:32px;padding:0 12px;background:#1b2b3c;color:#e9f3ff;border:1px solid #34485d;border-radius:6px;font-weight:600;white-space:nowrap}.secondary-btn:hover{background:#253a50}.secondary-btn svg{width:14px;height:14px}.setting-wrap{position:relative}.settings-panel{position:absolute;z-index:25;right:0;top:39px;width:255px;padding:13px;background:#102236;border:1px solid #3c5166;border-radius:8px;box-shadow:0 16px 30px #0008}.settings-panel h3{margin:0 0 10px;font-size:12px}.settings-panel label{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:11px}.settings-panel label input{accent-color:#05bed9}.settings-panel .sg{font-size:10px;font-weight:700;color:#6cc9d4;margin-top:9px;border-top:1px solid #294157;padding-top:10px}.settings-panel .sg.acars{color:#e7bc86}.settings-panel .sg:first-of-type{margin-top:0;border:0;padding-top:0}
+.filterbox{border:1px solid #25394e;border-radius:7px;background:#0a1b2c;padding:10px 12px 9px;flex-shrink:0}.filter-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.filter-title{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}.filter-title svg{height:14px;width:14px;color:#a8b9cb}.filter-collapse{border:0;background:transparent;color:#92a9bd;font-size:11px}.filter-fields{display:grid;grid-template-columns:minmax(310px,2.1fr) minmax(180px,1.25fr) minmax(122px,.72fr) minmax(126px,.8fr);gap:10px;align-items:end}.filter-field{min-width:0}.filter-field label,.filter-field .filter-label{display:block;color:#a5b5c6;font-size:10.5px;margin-bottom:5px}.control,.custom-multi>button{height:34px;width:100%;background:#1b2b3b;border:1px solid #2d4054;border-radius:5px;color:#e6f0fb;outline-offset:0}.control{padding:0 9px}.control:focus,.custom-multi>button:focus{border-color:#0cb6d5}select.control{cursor:pointer}input[type=date].control{color-scheme:dark;min-width:0}input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.7}.date-wrap{display:grid;grid-template-columns:minmax(100px,1fr) 13px minmax(100px,1fr);align-items:center;gap:6px}.date-arrow{text-align:center;color:#7c93a9;font-size:14px}.custom-multi{position:relative}.custom-multi>button{display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:12px;text-align:left}.custom-multi>button span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.down{font-size:15px;color:#91a6bc}.multi-panel{position:absolute;top:39px;left:0;right:0;z-index:30;background:#102338;border:1px solid #40546a;border-radius:7px;box-shadow:0 13px 30px #0009;padding:10px}.multi-actions{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;padding:0 2px 7px;border-bottom:1px solid #2b4155}.multi-actions b{font-size:11px}.multi-actions button{border:0;background:none;color:#00d1ed;font-size:10px}.check-row{height:29px;display:flex;gap:9px;align-items:center;color:#d7e5f3;cursor:pointer}.check-row input{accent-color:#09b5d2}.filter-bottom{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:10px}.filter-actions{display:flex;align-items:center;gap:10px}.primary-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:90px;height:32px;background:#00a9cf;border:1px solid #00bde2;border-radius:5px;color:#fff;font-weight:700}.primary-btn:hover{background:#00c1e7}.primary-btn svg{height:14px;width:14px}.text-btn{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:#c5d4e3;padding:8px 5px}.text-btn:hover{color:white}.text-btn svg{height:13px;width:13px}.filter-note{font-size:10.5px;color:#8ba4b9;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.error{min-height:15px;color:#ff9a95;font-size:11px;padding:4px 3px 0;flex-shrink:0}
+.report-section{display:flex;flex:1;min-height:0;flex-direction:column}.report-title{text-align:center;flex-shrink:0;margin:7px 0 12px;font-size:15px;font-weight:700;letter-spacing:.1px}.data-shell{min-height:0;display:flex;flex-direction:column;flex:1;border:1px solid #2c4056;background:#071725}.data-scroll{position:relative;flex:1;min-height:160px;overflow:auto;scrollbar-width:thin;scrollbar-color:#456077 #102339}.data-table{border-collapse:separate;border-spacing:0;table-layout:fixed;min-width:1510px;width:100%;font-size:11px}.data-table th,.data-table td{border-right:1px solid #27394b;border-bottom:1px solid #213244;padding:0 10px;text-align:right;white-space:nowrap;height:32px}.data-table thead th{text-align:center;font-weight:700;background:var(--th);color:#e0eaf6;line-height:1.25}.data-table thead tr:first-child th{height:36px;position:sticky;top:0;z-index:6;background:#162940}.data-table thead tr:nth-child(2) th{height:51px;position:sticky;top:36px;z-index:6;background:#1c3048;font-size:10.5px}.data-table thead tr:first-child .group-receipt{background:#153447;border-top:2px solid #48b9c9;color:#8ce5e8}.data-table thead tr:first-child .group-acars{background:#3b3040;border-top:2px solid #dfa86d;color:#f8d5a2}.data-table th .unit{display:block;color:#8fa7be;font-size:10px;margin-top:3px;font-weight:400}.data-table .col-period{width:112px;min-width:112px}.data-table .col-doit{width:69px;min-width:69px}.data-table .col-ac{width:115px;min-width:115px}.data-table .metric{width:121px;min-width:121px}.data-table tbody td{color:#cbd8e8;background:#081a2b;font-variant-numeric:tabular-nums}.data-table tbody tr:nth-child(even) td{background:#0b1e30}.data-table tbody tr:hover td{background:#112940}.data-table tbody td.dim{color:#8294a8}.data-table tbody td.date-cell{text-align:center;color:#e8f2fd;font-weight:700;vertical-align:middle;border-right:1px solid #33495e}.data-table tbody td.center{text-align:center}.data-table tbody td .dom{color:#b0d9f6}.data-table tbody td .int{color:#e0c19e}.data-table tbody td.ratio{color:#8ee3e3;font-weight:700}.data-table tbody td.rtk{color:#eef6ff}.data-table .stick1{position:sticky;left:0;z-index:3;box-shadow:1px 0 0 #35495d}.data-table .stick2{position:sticky;left:112px;z-index:3}.data-table .stick3{position:sticky;left:181px;z-index:3;box-shadow:2px 0 0 #35495d}.data-table thead tr:first-child th.stick1,.data-table thead tr:first-child th.stick2,.data-table thead tr:first-child th.stick3{z-index:12}.data-table tbody .stick1,.data-table tbody .stick2,.data-table tbody .stick3{background:#0d2033}.data-table tbody tr:nth-child(even) .stick1,.data-table tbody tr:nth-child(even) .stick2,.data-table tbody tr:nth-child(even) .stick3{background:#112437}.data-table tbody tr:hover .stick1,.data-table tbody tr:hover .stick2,.data-table tbody tr:hover .stick3{background:#172e44}.no-data{position:sticky;left:0;right:0;margin:auto;width:calc(100vw - var(--pageWidth) - 60px);max-width:800px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;height:270px;color:#91a7bb;text-align:center}.no-data .empty-glyph{height:54px;width:54px;border:1px solid #2c4862;background:#12283e;display:grid;place-items:center;border-radius:14px;color:#4f9db6}.no-data .empty-glyph svg{width:27px;height:27px}.no-data strong{font-size:13px;color:#dceafa}.no-data p{margin:0;font-size:11px;line-height:1.65}.no-data[hidden]{display:none}.data-footer{height:45px;flex-shrink:0;border-top:1px solid #283d53;padding:0 12px;display:flex;justify-content:space-between;align-items:center;background:#0a1a2a;gap:12px}.record-total{font-size:11px;font-weight:700;color:#c7d6e6}.footer-actions{display:flex;align-items:center;gap:8px;color:#9eb2c7;font-size:11px}.page-size{background:#263a4f;color:#f0f5fd;border:1px solid #415269;border-radius:5px;padding:5px 6px}.pager{display:flex;align-items:center;gap:4px}.pager button{min-width:25px;height:25px;color:#b4c6d8;background:transparent;border:0;border-radius:4px}.pager button.current{background:#08aecd;color:white;font-weight:700}.pager button:not(:disabled):hover{background:#29435a}.footnote{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#91a5b7;font-size:10.5px;padding:9px 2px 0;flex-shrink:0}.footnote .left-note{display:flex;gap:7px;align-items:center}.footnote svg{height:14px;width:14px;color:#79c3d9}.footnote .demo{color:#d4b37d}.hidden{display:none!important}
+@media(max-width:1100px){:root{--pageWidth:185px}.brandname{font-size:14px}.brand{padding-left:9px}.sidebar-nav{padding:2px 5px}.nav-item{gap:8px;padding:0 7px;font-size:11px}.content{padding:12px 12px}.filter-fields{grid-template-columns:1.6fr 1fr;gap:9px}.filter-bottom{align-items:flex-start;flex-wrap:wrap}.filter-note{max-width:100%}}@media(max-width:680px){:root{--pageWidth:59px}.sidebar .brandname,.sidebar .brandmark,.sidebar .nav-item span,.sidebar .nav-item .chev,.sidebar .sub-nav,.sidebar .sidebar-footer .account,.sidebar .sidebar-footer .collapse{display:none}.brand{padding:12px}.sidebar-nav{padding:0 7px}.nav-item{justify-content:center;padding:0}.topbar{padding:0 11px}.breadcrumb{font-size:10px}.top-right .operating{display:none}.tabs{padding:0 12px;gap:12px}.content{padding:10px}.page-head{align-items:flex-start}.page-head h1{font-size:15px}.page-head p{font-size:10px}.filter-fields{grid-template-columns:1fr}.filter-note{display:none}.no-data{width:calc(100vw - 80px)}.head-actions .secondary-btn{font-size:0;min-width:32px;padding:0 8px}.head-actions .secondary-btn svg{width:16px;height:16px}}
+
+/* Compact list-first layout: maximize visible table rows, keep key controls. */
+.app{min-height:0}
+.content{padding:8px 10px 7px}
+.filterbox{padding:6px 9px;border-radius:5px}
+.filter-header{margin-bottom:5px;min-height:27px}
+.filter-title{font-size:11.5px;gap:7px}
+.filter-title .filter-collapse{margin-left:7px;padding:3px 5px;border-radius:3px}
+.filter-title .filter-collapse:hover{background:#152e42}
+.filter-fields{gap:8px}
+.filter-field label,.filter-field .filter-label{font-size:10px;margin-bottom:4px}
+.control,.custom-multi>button{height:29px}
+.date-wrap{gap:4px}
+.filter-bottom{margin-top:6px}
+.primary-btn{height:27px;min-width:80px}
+.text-btn{padding:5px 4px}
+.head-actions{gap:6px}
+.secondary-btn{height:27px;font-size:11px;padding:0 9px}
+.settings-panel{top:32px}
+.error{min-height:0;padding:0 3px}
+.error:not(:empty){min-height:20px;padding:5px 3px 2px}
+.data-shell{border-radius:3px;overflow:hidden}
+.data-scroll{min-height:0}
+.data-table{font-size:10.5px}
+.data-table th,.data-table td{height:25px;padding:0 7px}
+.data-table thead tr:first-child th{height:27px}
+.data-table thead tr:nth-child(2) th{height:40px;top:27px;font-size:10px}
+.data-table .unit{font-size:9.5px;margin-top:2px}
+.data-footer{height:35px;padding:0 10px}
+.footer-summary{display:flex;align-items:center;gap:15px;min-width:0}
+.footer-help{font-size:10px;color:#7892a9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.page-size{padding:3px 5px}
+.pager button{height:23px;min-width:23px}
+.no-data{height:240px}
+@media(max-width:1100px){.content{padding:7px}.filter-fields{gap:7px}}
+@media(max-width:680px){.filter-header{gap:6px}.filter-title{white-space:nowrap}.filter-header .head-actions .secondary-btn{font-size:0;padding:0 6px;min-width:28px}.filter-header .head-actions .secondary-btn svg{height:15px;width:15px}.footer-help{display:none}}
+
+
+/* Annual subtotal is shown before monthly breakdown, preserving compact row heights. */
+.data-table tbody tr.year-summary-row td{border-top:1px solid #385f79;font-weight:700;color:#e9f5ff}
+.data-table tbody tr.year-summary-row td:not(.stick1):not(.stick2):not(.stick3){background:#153147}
+.data-table tbody tr.year-summary-row td.stick1,.data-table tbody tr.year-summary-row td.stick2,.data-table tbody tr.year-summary-row td.stick3{background:#17354c}
+.data-table tbody tr.year-summary-row:hover td{background:#20445e!important}
+.data-table tbody td.year-period{color:#65d6ea;border-left:3px solid #2cbed5}
+.data-table tbody td.month-period{color:#c8d9e9}
+</style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>
+<symbol id="i-chart" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 16l4-5 3 2 3-5"/></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 3L3 10l7 2 2 7 9-16zM10 12l5-4"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5zM15 3v5h4M8 13h8M8 17h6"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M4 7h16M6 7 3 14h6L6 7zm12 0-3 7h6l-3-7zM7 21h10"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><path d="M4 21c0-5 3-8 8-8s8 3 8 8z"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 1 8M20 3v5h-5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v4h16v-4"/></symbol>
+<symbol id="i-columns" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M10 4v16m4-16v16"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7h.01"/></symbol>
+</defs></svg>
+<div class="app">
+<aside class="sidebar">
+  <div>
+    <div class="brand"><span class="lotus">✺</span><span class="brandname">VietnamAirlines</span><span class="brandmark">◉</span></div>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <button class="nav-item" type="button"><svg><use href="#i-plane"/></svg><span>Live Operations</span></button>
+      <button class="nav-item" type="button"><svg><use href="#i-file"/></svg><span>Flight Dispatch</span></button>
+      <button class="nav-item" type="button"><svg><use href="#i-scale"/></svg><span>Flight Load Control</span></button>
+      <button class="nav-item" type="button"><svg><use href="#i-user"/></svg><span>Station Manager</span></button>
+      <button class="nav-item active-group" type="button" id="operationsMenu"><svg><use href="#i-chart"/></svg><span>Operations Analysis</span><span class="chev">⌃</span></button>
+      <div class="sub-nav" id="operationsChildren">
+        <button class="sub-item" type="button"><i class="dot"></i><span>Performance Factor</span></button>
+        <button class="sub-item selected" type="button"><i class="dot"></i><span>Tankering</span></button>
+        <button class="sub-item" type="button"><i class="dot"></i><span>Fuel Analysis</span></button>
+      </div>
+      <button class="nav-item" type="button"><svg><use href="#i-file"/></svg><span>Report</span></button>
+      <button class="nav-item" type="button"><svg><use href="#i-refresh"/></svg><span>Export Report History</span></button>
+    </nav>
+  </div>
+  <div class="sidebar-footer"><button class="collapse" type="button">◀ &nbsp;Hide</button><div class="account"><div class="avatar">A</div><div><strong>Admin</strong><small>admin@viettel.com</small></div></div></div>
+</aside>
+<main class="main">
+  <div class="content">
+        <section class="filterbox"><div class="filter-header"><div class="filter-title"><svg><use href="#i-filter"/></svg> Filter <button class="filter-collapse" id="filterCollapse" type="button" aria-label="Hide filters">Hide ▴</button></div><div class="head-actions"><button class="secondary-btn" id="exportBtn" type="button"><svg><use href="#i-download"/></svg> Export Excel</button><div class="setting-wrap"><button class="secondary-btn" id="tableSettingBtn" type="button" aria-expanded="false"><svg><use href="#i-columns"/></svg> Table Setting</button><div class="settings-panel hidden" id="settingsPanel"><h3>Show / Hide Columns</h3><div id="settingList"></div></div></div></div></div><div id="filterBody">
+      <div class="filter-fields">
+        <div class="filter-field"><label for="dateFrom">Date Range <span style="color:#ff8686">*</span></label><div class="date-wrap"><input class="control" id="dateFrom" type="date" value="2026-08-01" aria-label="From Date"><span class="date-arrow">→</span><input class="control" id="dateTo" type="date" value="2026-10-31" aria-label="To Date"></div></div>
+        <div class="filter-field"><span class="filter-label" id="catLabel">AC Cate 2</span><div class="custom-multi" id="multiRoot"><button id="multiBtn" type="button" aria-labelledby="catLabel multiText" aria-expanded="false"><span id="multiText">All AC Cate 2</span><span class="down">⌄</span></button><div class="multi-panel hidden" id="multiPanel"><div class="multi-actions"><b>AC Cate 2</b><button type="button" id="allCatBtn">Unselect all</button></div><div id="catChoices"></div></div></div></div>
+        <div class="filter-field"><label for="domInt">DO/IT</label><select class="control" id="domInt"><option value="ALL">DO &amp; IT</option><option value="DO">DO</option><option value="IT">IT</option></select></div>
+        <div class="filter-field"><label for="groupBy">Group By</label><select class="control" id="groupBy"><option value="both">Month &amp; Year</option><option value="month">Month</option><option value="year">Year</option></select></div>
+      </div>
+      <div class="filter-bottom"><div class="filter-actions"><button class="primary-btn" id="searchBtn" type="button"><svg><use href="#i-search"/></svg> Search</button><button class="text-btn" id="resetBtn" type="button"><svg><use href="#i-refresh"/></svg> Clear Filter</button></div><div class="filter-note" id="filterNote">Data source: DEP_SCHED_DT · Sort newest to oldest</div></div>
+    </div></section>
+    <div class="error" id="error" role="alert"></div>
+    <section class="report-section"><div class="data-shell"><div class="data-scroll" id="dataScroll"><table class="data-table" id="dataTable"><colgroup id="cols"></colgroup><thead id="dataHead"></thead><tbody id="dataBody"></tbody></table><div class="no-data" id="emptyState"><div class="empty-glyph"><svg><use href="#i-chart"/></svg></div><strong id="emptyTitle">No data to display</strong><p id="emptyDescription">Select filter criteria and click <b>Search</b> to view the report.</p></div></div><div class="data-footer"><div class="footer-summary"><div class="record-total" id="totalRecords">Total: 0 records</div><span class="footer-help" title="Fuel Receipt pending FIMS integration. RTK is the sum of per-flight Payload × Ground Distance.">Fuel Receipt pending FIMS</span></div><div class="footer-actions"><span>Show</span><select class="page-size" id="pageSize"><option value="20">20 records</option><option value="50">50 records</option><option value="100" selected>100 records</option><option value="200">200 records</option></select><div class="pager" id="pager"></div></div></div></div></section>
+  </div>
+</main>
+</div>
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const CATS=['A320','A321 CEO','A321 NEO','A350','B787','ATR'];
+const METRICS=[
+  {key:'rFuel',name:'Total Fuel Receipt',unit:'kg',group:'receipt'},
+  {key:'rPayload',name:'Total Payload',unit:'tonnes',group:'receipt'},
+  {key:'rDistance',name:'Total GND DIST',unit:'km',group:'receipt'},
+  {key:'rRtk',name:'Total RTK',unit:'tonne-km',group:'receipt'},
+  {key:'rRatio',name:'Fuel Burn/RTK',unit:'kg/tonne-km',group:'receipt'},
+  {key:'aFuel',name:'Total TRIP FUEL ACARS',unit:'kg',group:'acars'},
+  {key:'aPayload',name:'Total Payload',unit:'tonnes',group:'acars'},
+  {key:'aDistance',name:'Total GND DIST',unit:'km',group:'acars'},
+  {key:'aRtk',name:'Total RTK',unit:'tonne-km',group:'acars'},
+  {key:'aRatio',name:'Fuel Burn/RTK',unit:'kg/tonne-km',group:'acars'}
+];
+const INIT={from:'2026-08-01',to:'2026-10-31',doit:'ALL',group:'both',cats:[...CATS]};
+let selected=new Set(CATS), visible=new Set(METRICS.map(m=>m.key)), hasSearched=false, rows=[],page=1, applied={...INIT};
+const fmtInt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
+const fmtTon=new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtRatio=new Intl.NumberFormat('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
+const monthFmt=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const AIRPORTS={HAN:[21.2212,105.8072],SGN:[10.8188,106.652],DAD:[16.0439,108.1994],CXR:[11.9982,109.2194],PQC:[10.1698,103.9931],BMV:[12.6683,108.120003],BKK:[13.69,100.7501],ICN:[37.4602,126.4407],SIN:[1.3644,103.9915],NRT:[35.7719,140.3929],HKG:[22.308,113.9185],KUL:[2.7456,101.7072],VTE:[17.9883,102.5633]};
+const ROUTES={DO:[['HAN','SGN'],['HAN','DAD'],['SGN','CXR'],['SGN','PQC'],['HAN','BMV']],IT:[['HAN','BKK'],['HAN','ICN'],['SGN','SIN'],['SGN','NRT'],['HAN','HKG'],['SGN','KUL'],['HAN','VTE']]};
+function haversine(a,b){const rad=Math.PI/180;const [la1,lo1]=AIRPORTS[a],[la2,lo2]=AIRPORTS[b];const dLa=(la2-la1)*rad,dLo=(lo2-lo1)*rad;const h=Math.sin(dLa/2)**2+Math.cos(la1*rad)*Math.cos(la2*rad)*Math.sin(dLo/2)**2;return 2*6371*Math.asin(Math.sqrt(h));}
+function pseudo(v){let x=Math.sin(v*127.1+321.21)*43758.5453;return x-Math.floor(x);}
+function buildRecords(){const out=[];let id=0;for(let y=2025;y<=2026;y++)for(let m=1;m<=12;m++){if(y===2026&&m>10)continue;for(const cat of CATS)for(const doit of ['DO','IT']){if(cat==='ATR'&&doit==='IT')continue;for(let k=0;k<7;k++){const dt=`${y}-${String(m).padStart(2,'0')}-${String(2+k*4).padStart(2,'0')}`;const routes=ROUTES[doit];const route=routes[Math.floor(pseudo(++id*1.1)*routes.length)];if(cat==='ATR' && !['DAD','BMV','CXR'].some(v=>route.includes(v)))continue;const dist=Math.round(haversine(...route));const base={A320:14,'A321 CEO':17,'A321 NEO':18,A350:49,B787:43,ATR:6}[cat];const payloadTon=base*(.70+pseudo(id*2.31)*.35);const fuelPerKm={A320:3.2,'A321 CEO':3.7,'A321 NEO':3.35,A350:8.3,B787:7.8,ATR:1.75}[cat];const fuel=Math.round(dist*fuelPerKm*(.90+pseudo(id*3.7)*.18)+150);out.push({date:dt,cat,doit,acarsFuel:fuel,tonnes:payloadTon,dist,rtk:dist*payloadTon});}}}return out;}
+const DEMO=buildRecords();
+function groupRows(filter){
+  const map=new Map();
+  for(const r of DEMO){
+    if(r.date<filter.from||r.date>filter.to)continue;
+    if(filter.doit!=='ALL'&&r.doit!==filter.doit)continue;
+    if(!filter.cats.includes(r.cat))continue;
+    // Month & Year: a yearly summary followed by the months belonging to that year.
+    // A flight contributes once to the annual summary and once to its corresponding month.
+    const year=r.date.slice(0,4), month=r.date.slice(0,7);
+    const periods=filter.group==='both'?[year,month]:filter.group==='year'?[year]:[month];
+    for(const period of periods){
+      const key=[period,r.doit,r.cat].join('|');
+      if(!map.has(key))map.set(key,{
+        period,doit:r.doit,cat:r.cat,
+        aFuel:0,aPayload:0,aDistance:0,aRtk:0,
+        rFuel:null,rPayload:null,rDistance:null,rRtk:null,rRatio:null
+      });
+      const v=map.get(key);
+      v.aFuel+=r.acarsFuel;
+      v.aPayload+=r.tonnes;
+      v.aDistance+=r.dist;
+      v.aRtk+=r.rtk;
+    }
+  }
+  return [...map.values()]
+    .map(r=>({...r,aRatio:r.aRtk>0?r.aFuel/r.aRtk:null}))
+    .sort((a,b)=>{
+      // Latest year first; the year's summary comes before all months of that year.
+      const yr=b.period.slice(0,4).localeCompare(a.period.slice(0,4));
+      if(yr)return yr;
+      const aYear=a.period.length===4,bYear=b.period.length===4;
+      if(aYear!==bYear)return aYear?-1:1;
+      const periodOrder=b.period.localeCompare(a.period);
+      return periodOrder||a.doit.localeCompare(b.doit)||CATS.indexOf(a.cat)-CATS.indexOf(b.cat);
+    });
+}
+function showPeriod(p){
+  if(p.length===4)return p;
+  const [y,m]=p.split('-');
+  return `${monthFmt[+m-1].toUpperCase()}/${y}`;
+}
+function validFilters(){const f={from:$('dateFrom').value,to:$('dateTo').value,doit:$('domInt').value,group:$('groupBy').value,cats:[...selected]};if(!f.from||!f.to)return ['Please select both From Date and To Date.',null];if(f.from>f.to)return ['From Date must be earlier than or equal to To Date.',null];if(!f.cats.length)return ['Please select at least one AC Cate 2.',null];return [null,f];}
+function renderChoice(){const holder=$('catChoices');holder.innerHTML='';for(const cat of CATS){const lbl=document.createElement('label');lbl.className='check-row';const cb=document.createElement('input');cb.type='checkbox';cb.value=cat;cb.checked=selected.has(cat);cb.addEventListener('change',()=>{cb.checked?selected.add(cat):selected.delete(cat);renderMultiText();});lbl.append(cb,document.createTextNode(cat));holder.appendChild(lbl);}renderMultiText();}
+function renderMultiText(){const items=[...selected];$('multiText').textContent=items.length===CATS.length?'All AC Cate 2':items.length===0?'Select AC Cate 2':items.length<=2?items.join(', '):`${items.length} categories selected`;$('allCatBtn').textContent=items.length===CATS.length?'Unselect all':'Select all';}
+function renderSetting(){const box=$('settingList');box.innerHTML='';for(const g of ['receipt','acars']){const title=document.createElement('div');title.className=`sg ${g}`;title.textContent=g==='receipt'?'Fuel Receipt':'ACARS';box.append(title);for(const m of METRICS.filter(m=>m.group===g)){const label=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.checked=visible.has(m.key);check.addEventListener('change',()=>{if(check.checked)visible.add(m.key);else visible.delete(m.key);if(visible.size===0){visible.add(m.key);check.checked=true;}renderTable();});label.append(check,document.createTextNode(m.name));box.append(label);}}}
+function visibleMetrics(group){return METRICS.filter(m=>m.group===group&&visible.has(m.key));}
+function renderHeader(){const dim=applied.group==='month'?'Month':applied.group==='year'?'Year':'Month / Year';const a=visibleMetrics('receipt'),b=visibleMetrics('acars');const fixed=[{name:dim,cls:'col-period stick1'},{name:'DO/IT',cls:'col-doit stick2'},{name:'AC Cate 2',cls:'col-ac stick3'}];$('cols').innerHTML=fixed.map(x=>`<col style="width:${x.name==='DO/IT'?'69px':x.name==='AC Cate 2'?'115px':'112px'}">`).join('')+Array.from({length:a.length+b.length},()=>'<col style="width:123px">').join('');let top='<tr>'+fixed.map(c=>`<th class="${c.cls}" rowspan="2">${c.name}</th>`).join('');if(a.length)top+=`<th colspan="${a.length}" class="group-receipt">Fuel Receipt</th>`;if(b.length)top+=`<th colspan="${b.length}" class="group-acars">ACARS</th>`;top+='</tr>';const next='<tr>'+[...a,...b].map(m=>`<th class="metric" title="${m.name} (${m.unit})">${m.name}<span class="unit">(${m.unit})</span></th>`).join('')+'</tr>';$('dataHead').innerHTML=top+next;}
+function metricText(m,row){const v=row[m.key];if(v===null||v===undefined)return '<span class="dim">—</span>';let out;if(m.key==='aRatio')out=fmtRatio.format(v);else if(m.key==='aPayload')out=fmtTon.format(v);else if(m.key==='aRtk')out=fmtTon.format(v);else out=fmtInt.format(v);return out;}
+function renderTable(){renderHeader();const size=+$('pageSize').value;const pages=Math.max(1,Math.ceil(rows.length/size));if(page>pages)page=pages;const current=rows.slice((page-1)*size,page*size);$('dataBody').innerHTML='';const list=[...visibleMetrics('receipt'),...visibleMetrics('acars')];let html='';for(let i=0;i<current.length;i++){const r=current[i];html+=`<tr class="${r.period.length===4?'year-summary-row':'month-data-row'}">`;if(i===0||current[i-1].period!==r.period){let n=1;while(i+n<current.length&&current[i+n].period===r.period)n++;html+=`<td class="date-cell stick1 ${r.period.length===4?'year-period':'month-period'}" rowspan="${n}">${showPeriod(r.period)}</td>`;}html+=`<td class="center stick2"><span class="${r.doit==='DO'?'dom':'int'}">${r.doit}</span></td><td class="center stick3">${r.cat}</td>`;for(const m of list){html+=`<td class="${m.key==='aRatio'?'ratio':''} ${m.key==='aRtk'?'rtk':''}">${metricText(m,r)}</td>`;}html+='</tr>';}$('dataBody').innerHTML=html;const empty=$('emptyState');empty.hidden=rows.length>0;if(rows.length===0){$('emptyTitle').textContent=hasSearched?'No matching records found':'No data to display';$('emptyDescription').innerHTML=hasSearched?'Try adjusting your filters and click <b>Search</b> again.':'Select filter criteria and click <b>Search</b> to view the report.';}$('totalRecords').textContent=`Total: ${fmtInt.format(rows.length)} records`;renderPager(pages);}
+function renderPager(pages){const div=$('pager');div.innerHTML='';const add=(label,n,disabled=false,active=false)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.disabled=disabled;b.className=active?'current':'';b.addEventListener('click',()=>{page=n;renderTable();$('dataScroll').scrollTop=0;});div.append(b);};add('«',1,page===1);add('‹',page-1,page===1);const pmin=Math.max(1,Math.min(page-2,pages-4));for(let i=pmin;i<=Math.min(pages,pmin+4);i++)add(String(i),i,false,i===page);add('›',page+1,page===pages);add('»',pages,page===pages);}
+function search(){const [error,f]=validFilters();$('error').textContent=error||'';if(error)return;applied=f;hasSearched=true;rows=groupRows(f);page=1;renderTable();$('dataScroll').scrollTop=0;const group=f.group==='month'?'Month':f.group==='year'?'Year':'Month & Year';$('filterNote').textContent=`${f.from} → ${f.to} · ${group} · ${f.doit==='ALL'?'DO & IT':f.doit}`;}
+$('searchBtn').addEventListener('click',search);
+$('resetBtn').addEventListener('click',()=>{$('dateFrom').value=INIT.from;$('dateTo').value=INIT.to;$('domInt').value=INIT.doit;$('groupBy').value=INIT.group;selected=new Set(CATS);renderChoice();rows=[];hasSearched=false;applied={...INIT};page=1;$('error').textContent='';$('filterNote').textContent='Data source: DEP_SCHED_DT · Sort newest to oldest';renderTable();});
+$('pageSize').addEventListener('change',()=>{page=1;renderTable();});
+$('multiBtn').addEventListener('click',()=>{$('multiPanel').classList.toggle('hidden');$('multiBtn').setAttribute('aria-expanded',String(!$('multiPanel').classList.contains('hidden')));$('settingsPanel').classList.add('hidden');});
+$('allCatBtn').addEventListener('click',()=>{selected=selected.size===CATS.length?new Set():new Set(CATS);renderChoice();});
+$('tableSettingBtn').addEventListener('click',()=>{const open=$('settingsPanel').classList.toggle('hidden');$('tableSettingBtn').setAttribute('aria-expanded',String(!open));$('multiPanel').classList.add('hidden');});
+window.addEventListener('click',e=>{if(!$('multiRoot').contains(e.target)){$('multiPanel').classList.add('hidden');$('multiBtn').setAttribute('aria-expanded','false');}if(!$('tableSettingBtn').parentElement.contains(e.target)){$('settingsPanel').classList.add('hidden');$('tableSettingBtn').setAttribute('aria-expanded','false');}});
+$('filterCollapse').addEventListener('click',()=>{const hidden=$('filterBody').classList.toggle('hidden');$('filterCollapse').textContent=hidden?'Show ▾':'Hide ▴';});
+$('operationsMenu').addEventListener('click',()=>{$('operationsChildren').classList.toggle('hidden');});
+
+// Standalone Office Open XML exporter; creates a real .xlsx without external libraries or internet access.
+function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
+function column(n){let s='';while(n){n--;s=String.fromCharCode(65+n%26)+s;n=Math.floor(n/26);}return s;}
+function cell(v,col,row,style=0){const addr=column(col)+row;if(typeof v==='number'&&Number.isFinite(v))return `<c r="${addr}" s="${style}"><v>${v}</v></c>`;return `<c r="${addr}" s="${style}" t="inlineStr"><is><t>${esc(v)}</t></is></c>`;}
+function sheetXml(){const lines=[];const add=(n,vals,style=0)=>lines.push(`<row r="${n}">${vals.map((v,i)=>cell(v,i+1,n,style)).join('')}</row>`);add(1,['Fuel Burn/RTK Report'],1);add(2,[`From ${applied.from} to ${applied.to}; AC Cate 2: ${applied.cats.join(', ')}; DO/IT: ${applied.doit}; Group By: ${applied.group==='both'?'Month & Year':applied.group}. DEMO DATA. FIMS pending integration.`]);add(3,['','','','Fuel Receipt','','','','','ACARS']);add(4,[applied.group==='month'?'Month':applied.group==='year'?'Year':'Month / Year','DO/IT','AC Cate 2',...METRICS.map(m=>`${m.name} (${m.unit})`)],1);rows.forEach((r,i)=>{add(i+5,[showPeriod(r.period),r.doit,r.cat,...METRICS.map(m=>r[m.key])]);});const last=rows.length+4;return `<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:M${last}"/><sheetViews><sheetView workbookViewId="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols><col min="1" max="3" width="20" customWidth="1"/><col min="4" max="13" width="25" customWidth="1"/></cols><sheetData>${lines.join('')}</sheetData><mergeCells count="4"><mergeCell ref="A1:M1"/><mergeCell ref="A2:M2"/><mergeCell ref="D3:H3"/><mergeCell ref="I3:M3"/></mergeCells></worksheet>`;}
+const enc=new TextEncoder();const crcTable=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1);t[n]=c>>>0;}return t;})();
+function crc32(bs){let c=0xffffffff;for(const b of bs)c=crcTable[(c^b)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
+function zip(files){const locals=[],centrals=[];let offset=0;for(const[name,content]of Object.entries(files)){const nam=enc.encode(name),dat=enc.encode(content),crc=crc32(dat);const l=new Uint8Array(30+nam.length);let v=new DataView(l.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint32(14,crc,true);v.setUint32(18,dat.length,true);v.setUint32(22,dat.length,true);v.setUint16(26,nam.length,true);l.set(nam,30);locals.push(l,dat);const c=new Uint8Array(46+nam.length);v=new DataView(c.buffer);v.setUint32(0,0x02014b50,true);v.setUint16(4,20,true);v.setUint16(6,20,true);v.setUint32(16,crc,true);v.setUint32(20,dat.length,true);v.setUint32(24,dat.length,true);v.setUint16(28,nam.length,true);v.setUint32(42,offset,true);c.set(nam,46);centrals.push(c);offset+=l.length+dat.length;}const e=new Uint8Array(22),v=new DataView(e.buffer);v.setUint32(0,0x06054b50,true);v.setUint16(8,Object.keys(files).length,true);v.setUint16(10,Object.keys(files).length,true);v.setUint32(12,centrals.reduce((s,c)=>s+c.length,0),true);v.setUint32(16,offset,true);return new Blob([...locals,...centrals,e],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});}
+function makeXlsx(){return zip({'[Content_Types].xml':`<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`,'_rels/.rels':`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`,'xl/workbook.xml':`<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Fuel Burn RTK" sheetId="1" r:id="rId1"/></sheets></workbook>`,'xl/_rels/workbook.xml.rels':`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`,'xl/styles.xml':`<?xml version="1.0" encoding="UTF-8"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF18334C"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`,'xl/worksheets/sheet1.xml':sheetXml()});}
+$('exportBtn').addEventListener('click',()=>{if(!hasSearched||rows.length===0){$('error').textContent='Please click Search to display report data before exporting.';return;}try{const blob=makeXlsx(),url=URL.createObjectURL(blob),a=document.createElement('a');const now=new Date();const dt=[String(now.getDate()).padStart(2,'0'),String(now.getMonth()+1).padStart(2,'0'),String(now.getFullYear()).slice(-2),String(now.getHours()).padStart(2,'0'),String(now.getMinutes()).padStart(2,'0')].join('');a.download=`Report_Fuel_Burn_RTK_Report_${dt}.xlsx`;a.href=url;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);}catch(err){$('error').textContent='Failed to export Excel.';console.error(err);}});
+// Exposed read-only flags used for automated mockup verification.
+window.MockupState=()=>({hasSearched,rowCount:rows.length,firstRow:rows[0],applied,shownColumns:[...visible]});
+renderChoice();renderSetting();renderTable();
+})();
+</script>
+</body></html>
