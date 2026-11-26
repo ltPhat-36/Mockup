@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Report Email Delivery | Vietnam Airlines</title><style>
+
+:root{--teal:#008da9;--teal-dark:#007b96;--teal-soft:#e9f7f9;--navy:#243545;--muted:#8595a2;--line:#e2e9ee;--bg:#f4f7fa;--sidebar:#e4ebef;--orange:#f5a000;--green:#139271;--red:#bc514d;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color-scheme:light}
+*{box-sizing:border-box}html,body{height:100%;margin:0;color:var(--navy);background:var(--bg)}body{font-size:12px;overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}input,select,textarea{background:#fff!important;color:#334957!important;-webkit-text-fill-color:#334957!important;color-scheme:light;caret-color:#008da9}input::placeholder,textarea::placeholder{color:#9baab7!important;opacity:1}input:-webkit-autofill{-webkit-text-fill-color:#334957!important;box-shadow:0 0 0 1000px #fff inset!important}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #79c8d8;outline-offset:2px}svg{width:17px;height:17px;flex-shrink:0;stroke-width:1.8}
+.app{display:flex;height:100vh;min-width:680px}.primary-sidebar{flex:0 0 220px;width:220px;background:var(--sidebar);border-right:1px solid #d9e3e9;display:flex;flex-direction:column;position:relative}.brand{height:89px;display:flex;align-items:center;gap:5px;padding:16px 14px 12px 19px;white-space:nowrap}.lotus{width:43px;height:43px;color:#dda400;margin-right:2px}.brand-text{font-weight:600;font-size:20px;letter-spacing:-1.15px;color:#007e9a}.brand-text span{font-weight:400;color:#006884}.brand-mark{font-size:7px;color:#246f8c;font-weight:700;align-self:center;margin-left:1px;transform:rotate(-18deg)}.nav-list{display:flex;flex-direction:column;gap:3px;padding:0 9px}.primary-link{border:0;background:transparent;width:100%;min-height:48px;border-radius:9px;display:flex;gap:14px;align-items:center;padding:0 15px;color:#273746;font-size:14px;font-weight:600;text-align:left}.primary-link svg{width:21px;height:21px}.primary-link:hover:not(.active){background:#d7e4e9}.primary-link.active{background:linear-gradient(100deg,#0098b5,#007f9a);color:white;box-shadow:0 1px 2px rgba(0,105,130,.18)}.sidebar-bottom{margin-top:auto;padding:20px 17px 22px;display:flex;align-items:center;gap:10px;color:#8b9aa5;font-size:10px;border-top:1px solid #d8e2e7}.sidebar-bottom svg{width:15px;height:15px}.collapse-knob{position:absolute;top:77px;right:-15px;z-index:3;border:1px solid #e4eaee;background:white;box-shadow:0 3px 7px #183a4b18;color:#475d6c;width:30px;height:30px;display:grid;place-items:center;border-radius:50%}.collapse-knob svg{width:18px}.second-sidebar{flex:0 0 224px;width:224px;background:linear-gradient(180deg,#e7edf1,#ecf1f4);padding:8px 10px 16px 11px;border-right:1px solid #dce4e8}.second-inner{height:100%;padding:18px 10px 10px;border-radius:15px 15px 0 0;border:1px solid rgba(255,255,255,.8)}.second-title{font-size:16px;font-weight:750;color:#1b2b3a;margin:0 0 17px 9px;letter-spacing:-.25px}.second-nav{display:flex;flex-direction:column;gap:6px}.second-link{width:100%;min-height:46px;border:none;text-align:left;border-radius:8px;padding:0 11px;background:transparent;color:#233341;font-weight:650;font-size:13px;line-height:1.25}.second-link:hover:not(.active){background:#dfe9ed}.second-link.active{background:linear-gradient(95deg,#0097b1,#007d99);color:#fff;box-shadow:0 1px 2px rgba(0,93,121,.12)}
+.main{overflow:auto;min-width:0;flex:1}.main-inner{max-width:1450px;margin:0 auto;padding:27px 24px 35px}.page-title{font-size:23px;font-weight:750;letter-spacing:-.5px;margin:0 0 19px;color:#263848}.job-card{background:white;border:1px solid var(--line);border-radius:9px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 22px;box-shadow:0 2px 7px #203b4b07;margin-bottom:18px}.job-left{display:flex;align-items:center;gap:13px;min-width:0}.job-icon{width:46px;height:46px;display:grid;place-items:center;background:#eaf7fa;border:1px solid #d8eef3;color:var(--teal);border-radius:10px}.job-icon svg{width:23px;height:23px}.job-name{font-size:15px;font-weight:750;margin-bottom:5px}.job-hint{font-size:11.5px;color:#8797a3;line-height:1.4}.job-right{display:flex;align-items:center;gap:20px;flex-shrink:0}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #d5efe7;background:#eaf8f4;color:#14856b;border-radius:20px;padding:7px 11px;font-weight:750;font-size:10.5px}.badge:before{content:"";display:block;width:6px;height:6px;background:currentColor;border-radius:50%}.badge.paused{color:#a77722;background:#fff6e7;border-color:#f1e0c5}.job-switch-group{display:flex;align-items:center;gap:11px;color:#5a6f80;font-weight:700}.switch{width:47px;height:26px;background:#cbd4d9;border:0;border-radius:18px;padding:3px;display:flex;align-items:center;transition:background .2s}.switch.on{background:#008eaa}.switch span{background:white;width:20px;height:20px;border-radius:50%;box-shadow:0 1px 4px #0002;transition:transform .2s}.switch.on span{transform:translateX(21px)}
+.workspace{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;box-shadow:0 2px 7px #203b4b07}.filter{padding:12px 15px 14px;background:#fbfcfd;border-bottom:1px solid var(--line)}.filter-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}.filter-heading{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:750}.filter-heading svg{width:15px;height:15px}.toolbar{display:flex;align-items:center;gap:8px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:6px;border:1px solid transparent;height:34px;padding:0 13px;white-space:nowrap;font-size:11.5px;font-weight:750}.btn svg{width:15px;height:15px}.btn-primary{background:var(--teal);color:white}.btn-primary:hover{background:var(--teal-dark)}.btn-ghost{background:transparent;color:#6c7f8e}.btn-ghost:hover{background:#eef3f6}.btn-secondary{border-color:#d8e1e7;background:white;color:#506777}.btn-secondary:hover{background:#f8fbfc}.btn-danger{background:#bd514d;color:white}.btn-danger:hover{background:#a43d3a}.btn:disabled{opacity:.48;cursor:not-allowed}.filter-fields{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.control{height:35px;border:1px solid #dce5eb;border-radius:7px;padding:0 12px;outline:0;min-width:0;font-size:11.7px}.control:focus{border-color:#4ca6ba;box-shadow:0 0 0 2px #c3e8ef}.filter-field{width:clamp(160px,22vw,280px)}.filter-field-email{width:clamp(160px,22vw,275px)}
+.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px}th{height:38px;text-align:left;font-size:11px;font-weight:750;color:#455564;background:#f0f3f6;border-bottom:1px solid #e3e9ed;padding:0 16px;white-space:nowrap}td{border-bottom:1px solid #e8eef1;padding:14px 16px;color:#2e4251;line-height:1.45}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fbfdfe}.col-no{width:48px}.col-actions{width:95px;text-align:center}.table-link{font-size:12.5px;font-weight:700;color:#263d4e;border:0;background:transparent;padding:0;text-align:left}.table-link:hover{color:var(--teal);text-decoration:underline}.count-button{display:inline-flex;align-items:center;gap:7px;border:1px solid #d5edf1;background:#edf9fb;color:#0786a2;padding:6px 10px;border-radius:6px;font-weight:750;font-size:11px}.count-button svg{width:13px;height:13px}.count-button:hover{background:#dff3f7}.subtle{color:#81919f;font-size:11.5px}.person{font-weight:650;color:#364b5c}.icon-btn{width:30px;height:30px;display:inline-grid;place-items:center;border:1px solid transparent;border-radius:6px;color:#698091;background:transparent}.icon-btn svg{width:16px;height:16px}.icon-btn:hover{background:#eaf7fa;color:#008da9;border-color:#d7ecf0}.icon-btn.danger:hover{color:#bc504d;background:#fff0ef;border-color:#f5d8d4}.actions-inline{display:flex;align-items:center;justify-content:center;gap:4px}.foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:#677988;background:#fff}.foot .pagination{display:flex;align-items:center;gap:7px}.page-size{border:1px solid #e0e7eb;background:#fff;border-radius:6px;padding:5px 7px;color:#536b7a;font-size:11px}.page-btn{border:1px solid #e2e9ec;background:#fff;border-radius:5px;width:26px;height:26px;color:#5f7483}.page-btn:disabled{color:#b7c3cb;cursor:default}.page-number{font-weight:750;color:#068cab;padding:0 6px}
+.shade{position:fixed;inset:0;background:rgba(22,37,47,.32);z-index:40;opacity:0;pointer-events:none;transition:opacity .22s}.shade.open{opacity:1;pointer-events:auto}.panel{position:fixed;top:0;right:0;bottom:0;background:#fff;z-index:41;width:610px;max-width:calc(100vw - 24px);box-shadow:-14px 0 42px rgba(22,40,53,.21);display:flex;flex-direction:column;transform:translateX(106%);transition:transform .26s ease}.panel.open{transform:translateX(0)}.panel-wide{width:690px}.panel-head{padding:22px 25px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.panel-head h2{margin:0;font-size:21px;letter-spacing:-.4px;color:#223949}.panel-sub{font-size:11.5px;color:#8497a4;margin-top:6px}.panel-body{flex:1;min-height:0;overflow:auto;padding:21px 25px 25px}.panel-footer{border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 25px;background:#fff}.panel-title-sub{margin:0 0 8px;font-size:11.5px;font-weight:750;color:#344d5e}.field-label{font-size:11.7px;font-weight:750;display:block;margin-bottom:9px}.required{color:#c65854}.field-block{margin-bottom:23px}.inline-muted{font-size:11px;color:#8195a4}.helper{font-size:11px;color:#8699a6;margin-top:7px;line-height:1.4}.notice{font-size:11px;color:#5f7b8b;background:#f1f8fa;border:1px solid #deeff3;border-radius:7px;padding:10px 12px;line-height:1.5}.input-row{display:flex;align-items:center;gap:8px}.input-row input{flex:1;width:0}.error{font-size:11px;color:#c04d49;min-height:15px;margin-top:6px}.chips{display:flex;gap:7px;flex-wrap:wrap;align-content:start;padding:10px;border:1px solid #e2e9ed;background:#fbfdfe;border-radius:7px;min-height:55px;max-height:132px;overflow-y:auto}.chip{display:inline-flex;align-items:center;gap:8px;max-width:100%;border:1px solid #d3e9ee;background:#eaf7fa;color:#267687;padding:5px 7px 5px 10px;border-radius:5px;font-size:11px}.chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chip button{border:0;background:transparent;color:#759bab;display:grid;place-items:center;padding:0}.chip button svg{width:13px;height:13px}.chip-placeholder{font-size:11px;color:#9aabb5;padding:6px 0}.chip-top{display:flex;align-items:center;justify-content:space-between;margin:10px 0 7px}.chip-top button{border:0;background:transparent;color:#668da0;font-size:11px}.chip-top button:hover{text-decoration:underline}
+.multi-picker{position:relative}.multi-trigger{height:41px;border:1px solid #dce5e9;background:white;border-radius:7px;width:100%;padding:0 11px;display:flex;align-items:center;gap:8px;color:#405b6a;text-align:left}.multi-trigger:hover{border-color:#80bfcd}.multi-trigger .pick-value{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11.5px}.counter{font-size:10.5px;color:#078ba6;background:#e8f7fa;border-radius:5px;padding:5px 7px;font-weight:750}.multi-trigger svg{width:15px;height:15px;color:#89a0ae}.multi-pop{position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:10;background:white;border:1px solid #dce5eb;border-radius:8px;box-shadow:0 13px 32px #213d521f;display:none;overflow:hidden}.multi-pop.open{display:block}.multi-search{margin:10px 11px;width:calc(100% - 22px)}.multi-actions{display:flex;justify-content:space-between;padding:0 12px 9px;border-bottom:1px solid #edf1f3}.text-button{border:0;background:transparent;color:#078ba6;font-weight:700;font-size:11px;padding:0}.multi-list{max-height:224px;overflow:auto}.multi-option{display:flex;align-items:center;gap:10px;padding:10px 12px;font-size:12px;cursor:pointer;border-bottom:1px solid #f0f3f5}.multi-option:last-child{border:0}.multi-option:hover{background:#f4fafb}.multi-option:has(input:checked){background:#edf8fa}.multi-option input{accent-color:#008fa8;width:15px;height:15px}.multi-label{font-weight:600;color:#334a58}.selection-note{font-size:11px;margin-top:8px;color:#728b9c}
+.detail-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.detail-total{font-size:11.5px;color:#5b7381;display:flex;align-items:center;gap:8px}.detail-total strong{color:#087f99;font-size:14px}.detail-search-row{display:flex;gap:8px;align-items:center;margin-bottom:13px}.detail-search-row input{flex:1}.email-list{background:#fff;border:1px solid #e1e9ed;border-radius:8px;overflow:hidden}.email-list-head{background:#f1f4f6;padding:11px 14px;font-size:11px;font-weight:750;color:#4c6170}.email-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 14px;border-top:1px solid #e8eef1;min-height:54px}.email-row:hover{background:#fbfdfe}.email-text{font-size:12px;color:#344b5a;overflow-wrap:anywhere}.email-actions{display:flex;gap:4px;flex-shrink:0}.email-empty{padding:35px 12px;text-align:center;color:#9aa9b5;font-size:12px}.inline-edit{display:flex;align-items:center;gap:7px;flex:1;min-width:0}.inline-edit .control{flex:1;min-width:0}.inline-edit .icon-btn{flex-shrink:0}.inline-edit .save-icon{color:#008ca7}.pending-email-list{margin-top:0;}
+.pending-email-list .pending-email-rows{max-height:278px;overflow-y:auto;overscroll-behavior:contain;}
+.pending-email-list .email-row{min-height:54px;}
+.pending-email-list .email-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pending-email-list .email-empty{padding:23px 12px;}
+.pending-email-list .inline-edit{min-width:0;}
+.email-pagination{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px;color:#6e8391;font-size:11px}.email-pagination .pagination{display:flex;align-items:center;gap:8px}.composer{border:1px solid #d8e8ed;background:#f9fcfd;border-radius:8px;padding:14px;margin-bottom:16px}.composer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.composer-head strong{font-size:12px;color:#314c5c}.composer-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}.composer .chips{background:white;min-height:48px;max-height:96px}
+.dialog-shade{position:fixed;inset:0;background:rgba(16,33,44,.4);z-index:60;display:none;align-items:center;justify-content:center}.dialog-shade.open{display:flex}.dialog{background:#fff;border-radius:11px;width:420px;max-width:calc(100vw - 24px);padding:24px;box-shadow:0 22px 55px #1733454a}.dialog h3{font-size:17px;margin:0 0 10px}.dialog p{margin:0;color:#667d8b;font-size:12px;line-height:1.6;overflow-wrap:anywhere}.dialog-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:23px}.toast{position:fixed;bottom:22px;right:24px;display:flex;align-items:center;gap:9px;background:#273e4b;color:white;border-radius:8px;padding:12px 15px;font-size:12px;box-shadow:0 10px 25px #15283636;z-index:75;opacity:0;transform:translateY(12px);pointer-events:none;transition:all .2s}.toast.show{opacity:1;transform:translateY(0)}.toast svg{color:#8de1c3}
+@media(max-width:1280px){.primary-sidebar{flex-basis:66px;width:66px}.brand{padding:14px 8px;justify-content:center}.lotus{width:38px}.brand-text,.brand-mark,.primary-link span,.sidebar-bottom span{display:none}.nav-list{padding:0 6px}.primary-link{justify-content:center;padding:0}.collapse-knob{display:none}.sidebar-bottom{justify-content:center;padding:18px 0}}
+@media(max-width:980px){.second-sidebar{flex-basis:170px;width:170px}.second-title{font-size:14px}.second-link{font-size:11.5px}.main-inner{padding:22px 15px}.job-card{align-items:flex-start;flex-direction:column}.panel{max-width:calc(100vw - 10px)}}
+@media(max-width:740px){.second-sidebar{display:none}.panel{width:calc(100vw - 10px)}.panel-wide{width:calc(100vw - 10px)}.job-right{width:100%;justify-content:space-between}.filter-field,.filter-field-email{width:100%}.filter-fields .btn{flex:1}}
+
+/* Compact list layout — maximize visible rows while retaining common design-system colors. */
+.main-inner{padding:17px 17px 24px;max-width:none}
+.page-title{font-size:20px;margin:0 0 10px;line-height:1.24}
+.compact-job-card{padding:9px 14px;margin-bottom:11px;min-height:60px;gap:12px}
+.compact-job-card .job-icon{width:36px;height:36px;border-radius:8px}
+.compact-job-card .job-icon svg{width:19px;height:19px}
+.compact-job-card .job-left{gap:10px}
+.compact-job-card .job-name{font-size:13px;margin-bottom:2px}
+.compact-job-card .job-hint{font-size:10.5px;line-height:1.3}
+.compact-job-card .job-right{gap:15px}
+.compact-job-card .badge{padding:5px 9px;font-size:10px}
+.compact-job-card .job-switch-group{gap:8px;font-size:11px}
+.compact-workspace .filter{padding:8px 12px 10px}
+.compact-workspace .filter-top{margin-bottom:6px}
+.compact-workspace .filter-fields{gap:7px}
+.compact-workspace .filter-heading{font-size:11px}
+.compact-workspace .toolbar .btn{height:30px}
+.compact-workspace .filter-fields .btn{height:30px}
+.compact-workspace .control{height:31px;font-size:11px}
+.compact-workspace .filter-field{width:clamp(160px,21vw,255px)}
+.compact-workspace .filter-field-email{width:clamp(160px,21vw,255px)}
+.reports-table{table-layout:fixed;width:100%}
+.reports-table th{height:32px;padding:0 10px;font-size:10.5px}
+.reports-table td{height:36px;padding:4px 10px;font-size:11px;vertical-align:middle;line-height:1.25}
+.reports-table th:nth-child(1),.reports-table td:nth-child(1){width:46px}
+.reports-table th:nth-child(2),.reports-table td:nth-child(2){width:auto}
+.reports-table th:nth-child(3),.reports-table td:nth-child(3){width:122px}
+.reports-table th:nth-child(4),.reports-table td:nth-child(4){width:134px;white-space:nowrap}
+.reports-table th:nth-child(5),.reports-table td:nth-child(5){width:116px;white-space:nowrap}
+.reports-table th:nth-child(6),.reports-table td:nth-child(6){width:69px;text-align:center}
+.reports-table .table-link{display:block;width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11.5px;line-height:1.3}
+.reports-table .count-button{padding:4px 7px;height:26px;font-size:10.5px;gap:5px}
+.reports-table .icon-btn{height:26px;width:26px}
+.reports-table .person{font-size:11px;font-weight:600}
+.reports-table .subtle{font-size:10.5px}
+.compact-workspace .foot{padding:7px 12px;min-height:36px}
+.compact-workspace .page-size{padding:4px 6px}
+.compact-workspace .page-btn{height:24px;width:24px}
+/* Add Recipient: concise report selector and a single table header that includes count/clear action. */
+.add-reports-block{margin-bottom:17px}
+.add-email-block{margin-bottom:12px}
+.add-reports-block .multi-trigger{height:38px}
+.add-reports-block .multi-trigger .pick-value{font-weight:600}
+.add-email-block .input-row .control{height:36px}
+.add-email-block .input-row .btn{height:36px}
+.compact-email-head{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:36px;padding:7px 12px}
+.compact-email-head .small-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;margin-left:7px;border-radius:5px;background:#dfeff3;color:#0a819b;font-size:10px;font-weight:800}
+.compact-email-head .text-button{color:#1389a3;font-weight:600}
+.pending-email-list .email-row{min-height:43px;padding:6px 9px 6px 12px}
+.pending-email-list .email-empty{padding:15px 12px}
+.pending-email-list .pending-email-rows{max-height:240px}
+.pending-email-list .email-text{font-size:11.5px}
+.pending-email-list .icon-btn{height:27px;width:27px}
+@media(max-width:1120px){.reports-table th:nth-child(4),.reports-table td:nth-child(4){width:118px}.reports-table th:nth-child(5),.reports-table td:nth-child(5){width:105px}}
+@media(max-width:760px){.reports-table{min-width:670px}.compact-job-card{align-items:flex-start}.compact-job-card .job-hint{max-width:290px}}
+
+</style></head><body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M4 21v-2c0-4.2 3.2-6.3 8-6.3s8 2.1 8 6.3v2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.9"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M8 10V7a4 4 0 018 0v3" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="15.5" r="1.5" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="18" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M2 20v-2c0-3 2-5 7-5s7 2 7 5v2H2zm15-6c2.5 0 5 2 5 5v1h-4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5.5 3.8 8.6 9 10 5.2-1.4 9-4.5 9-10V6l-9-4z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="12" cy="10" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 12v4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l5 5v15H6a2 2 0 01-2-2V4a2 2 0 012-2zM14 2v5h5M9 12l-2 2 2 2m6-4 2 2-2 2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5z" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m15.5 15.5 5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M19 8V3l-4 4M4 11a8 8 0 0114-4l1 1M5 16v5l4-4m11-4a8 8 0 01-14 4l-1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.4 10-6.4S22 12 22 12s-3.6 6.4-10 6.4S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12.5 5.8 18 11.3M3 21l4.7-1 12.1-12.1a2.7 2.7 0 00-3.8-3.8L3.9 16.2 3 21zM3 21h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m-9 0 1 14h10l1-14M10 11v6m4-6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m3.5 6 8.5 7 8.5-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M9 9v12M3 15h18" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18M7 11h10m-7 6h4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5m0-8v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 6.5V12l4 3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v5m0 3v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-lotus" viewBox="0 0 60 60"><path d="M30 12c-6 11-6 19 0 26 6-7 6-15 0-26zM17 16c-3 12 1 21 10 26-1-10-4-18-10-26zM43 16c3 12-1 21-10 26 1-10 4-18 10-26zM6 27c2 11 9 16 19 17-5-9-11-14-19-17zm48 0c-2 11-9 16-19 17 5-9 11-14 19-17zM8 43c14 2 30 2 44 0-6 6-15 8-22 8S14 49 8 43z" fill="currentColor"/></symbol>
+</svg>
+<div class="app">
+  <aside class="primary-sidebar">
+    <div class="brand"><svg class="lotus"><use href="#i-lotus"/></svg><span class="brand-text">Vietnam<span>Airlines</span></span><small class="brand-mark">✈</small></div>
+    <div class="nav-list">
+      <button class="primary-link" type="button" data-demo-nav><svg><use href="#i-user"/></svg><span>Users</span></button>
+      <button class="primary-link" type="button" data-demo-nav><svg><use href="#i-lock"/></svg><span>Roles</span></button>
+      <button class="primary-link" type="button" data-demo-nav><svg><use href="#i-users"/></svg><span>User Group</span></button>
+      <button class="primary-link active" type="button" aria-current="page"><svg><use href="#i-shield"/></svg><span>System Parameters</span></button>
+      <button class="primary-link" type="button" data-demo-nav><svg><use href="#i-file"/></svg><span>Permissions</span></button>
+      <button class="primary-link" type="button" data-demo-nav><svg><use href="#i-settings"/></svg><span>System Log</span></button>
+    </div>
+    <div class="sidebar-bottom"><svg><use href="#i-info"/></svg><span>System Administration · Demo</span></div>
+    <span class="collapse-knob" aria-hidden="true"><svg><use href="#i-chevron-left"/></svg></span>
+  </aside>
+
+  <aside class="second-sidebar">
+    <div class="second-inner">
+      <h2 class="second-title">Parameter Configuration</h2>
+      <div class="second-nav">
+        <button class="second-link" type="button" data-demo-nav>Live Operations</button>
+        <button class="second-link" type="button" data-demo-nav>Flight Dispatch</button>
+        <button class="second-link" type="button" data-demo-nav>Flight Load Control</button>
+        <button class="second-link" type="button" data-demo-nav>Station Manager</button>
+        <button class="second-link" type="button" data-demo-nav>Report</button>
+        <button class="second-link" type="button" data-demo-nav>Export Report History</button>
+        <button class="second-link active" type="button" aria-current="page">Report Email Delivery</button>
+      </div>
+    </div>
+  </aside>
+
+
+<main class="main"><div class="main-inner">
+  <h1 class="page-title">Report Email Delivery</h1>
+  <section class="job-card compact-job-card">
+    <div class="job-left"><div class="job-icon"><svg><use href="#i-send"/></svg></div><div><div class="job-name">Automatic Report Delivery</div><div class="job-hint" id="jobHint">Automatically sends reports to configured recipients when the job runs.</div></div></div>
+    <div class="job-right"><span class="badge" id="jobBadge">Enabled</span><div class="job-switch-group"><span>Enable Job</span><button id="jobSwitch" class="switch on" aria-label="Enable automatic report delivery" role="switch" aria-checked="true"><span></span></button></div></div>
+  </section>
+  <section class="workspace compact-workspace">
+    <div class="filter">
+      <div class="filter-top"><div class="filter-heading"><svg><use href="#i-filter"/></svg> Filter</div><div class="toolbar"><button class="btn btn-ghost" id="refresh"><svg><use href="#i-rotate"/></svg> Refresh</button><button class="btn btn-primary" id="addGlobal"><svg><use href="#i-plus"/></svg> Add Recipient</button></div></div>
+      <form class="filter-fields" id="filterForm"><input type="search" id="filterName" class="control filter-field" placeholder="Search by Report Name" aria-label="Search by Report Name"/><input type="search" id="filterEmail" class="control filter-field-email" placeholder="Search by Recipient Email" aria-label="Search by Recipient Email"/><button class="btn btn-primary"><svg><use href="#i-search"/></svg> Search</button><button class="btn btn-ghost" type="button" id="clearFilter"><svg><use href="#i-rotate"/></svg> Clear Filter</button></form>
+    </div>
+    <div class="table-scroll"><table class="reports-table"><thead><tr><th class="col-no">No.</th><th>Report Name</th><th>Recipients</th><th>Updated at</th><th>Updated by</th><th class="col-actions">Actions</th></tr></thead><tbody id="reportsRows"></tbody></table></div>
+    <div class="foot"><strong id="reportsTotal">Total: 5</strong><div class="pagination"><span>Show</span><select class="page-size" disabled><option>25 records</option></select><button class="page-btn" disabled>«</button><button class="page-btn" disabled>‹</button><span class="page-number">1</span><button class="page-btn" disabled>›</button><button class="page-btn" disabled>»</button></div></div>
+  </section>
+</div></main></div>
+<div class="shade" id="shade"></div>
+<!-- Add Recipient panel -->
+<aside class="panel" id="addPanel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="addTitle">
+  <div class="panel-head"><div><h2 id="addTitle">Add Recipient</h2></div><button class="icon-btn" id="closeAdd" aria-label="Close Add Recipient"><svg><use href="#i-x"/></svg></button></div>
+  <div class="panel-body">
+    <div class="field-block add-reports-block"><label class="field-label">Report Name <span class="required">*</span></label>
+      <div class="multi-picker" id="picker"><button id="pickerTrigger" class="multi-trigger" type="button" aria-expanded="false"><span class="pick-value" id="pickerValue">Select reports</span><span class="counter" id="pickerCount">0/5</span><svg><use href="#i-chevron-down"/></svg></button>
+        <div class="multi-pop" id="pickerPop"><input class="control multi-search" type="search" id="pickerSearch" placeholder="Search by Report Name"/><div class="multi-actions"><button class="text-button" id="pickerSelectAll" type="button">Select all results</button><button class="text-button" id="pickerClear" type="button">Clear selection</button></div><div class="multi-list" id="pickerList"></div></div>
+      </div>
+    </div>
+    <div class="field-block add-email-block"><label class="field-label" for="globalEmail">Recipient Emails <span class="required">*</span></label>
+      <div class="input-row"><input class="control" id="globalEmail" placeholder="Enter email address" autocomplete="off" spellcheck="false"/><button class="btn btn-primary" id="globalChipAdd" type="button"><svg><use href="#i-plus"/></svg> Add</button></div><div class="error" id="globalError" role="alert"></div>
+      <div class="email-list pending-email-list" aria-label="Recipient emails to add">
+        <div class="email-list-head compact-email-head"><span>Recipient Email <span id="globalChipCount" class="small-count">0</span></span><button type="button" id="globalClearChips" class="text-button">Clear all</button></div>
+        <div id="globalChips" class="pending-email-rows" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer"><button class="btn btn-secondary" id="globalCancel">Cancel</button><button class="btn btn-primary" id="globalSave"><svg><use href="#i-check"/></svg> Save</button></div>
+</aside>
+<!-- Report recipients / management panel -->
+<aside class="panel panel-wide" id="detailPanel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="detailTitle">
+  <div class="panel-head"><div><h2 id="detailTitle">Report Name</h2><div class="panel-sub">Recipient Emails</div></div><button class="icon-btn" id="closeDetail" aria-label="Close report recipients"><svg><use href="#i-x"/></svg></button></div>
+  <div class="panel-body">
+    <div class="detail-tools"><div class="detail-total">Total Recipients: <strong id="detailCount">0</strong></div></div>
+    <div class="composer" id="composer" hidden><div class="composer-head"><strong>Add Recipient Emails</strong><button class="icon-btn" type="button" id="dismissComposer" aria-label="Close add emails"><svg><use href="#i-x"/></svg></button></div><div class="input-row"><input class="control" id="detailEmailInput" placeholder="Enter email address" autocomplete="off" spellcheck="false"/><button class="btn btn-primary" id="detailChipAdd"><svg><use href="#i-plus"/></svg> Add</button></div><div class="helper">Press Enter to add an email. You can paste a column from Excel.</div><div class="error" id="detailError" role="alert"></div><div class="chip-top"><span class="inline-muted">Added emails: <strong id="detailChipCount">0</strong></span><button type="button" id="detailClearChips">Clear all</button></div><div class="chips" id="detailChips"></div><div class="composer-actions"><button class="btn btn-secondary" id="cancelComposer">Cancel</button><button class="btn btn-primary" id="saveComposer"><svg><use href="#i-check"/></svg> Save</button></div></div>
+    <div class="detail-search-row"><input type="search" class="control" id="detailSearch" placeholder="Search by Recipient Email" aria-label="Search by Recipient Email"/><button class="btn btn-ghost" id="detailSearchClear">Clear</button></div>
+    <div class="email-list"><div class="email-list-head">Recipient Email</div><div id="emailsRows"></div></div>
+    <div class="email-pagination"><span id="emailRange">Showing 0</span><div class="pagination"><span>Show</span><select id="emailPageSize" class="page-size"><option value="10">10 records</option><option value="25">25 records</option><option value="50">50 records</option></select><button class="page-btn" id="prevEmailPage" aria-label="Previous page">‹</button><span id="emailPageLabel" class="page-number">1 / 1</span><button class="page-btn" id="nextEmailPage" aria-label="Next page">›</button></div></div>
+  </div>
+</aside>
+<div class="dialog-shade" id="dialogShade"><div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="dialogTitle"><h3 id="dialogTitle"></h3><p id="dialogText"></p><div class="dialog-footer"><button class="btn btn-secondary" id="dialogCancel">Cancel</button><button class="btn btn-danger" id="dialogConfirm">Confirm</button></div></div></div>
+<div class="toast" id="toast"><svg><use href="#i-check"/></svg><span id="toastText"></span></div>
+<script>
+(function(){
+'use strict';
+const STORAGE_KEY='vna_report_email_delivery_mockup_v1';
+const seed=[
+{id:'RPT-001',name:'Start-of-Day Flight Report',emails:['operations.report@gmail.com','ops.supervisor@gmail.com']},
+{id:'RPT-002',name:'Daily Operations Status Overview Report',emails:['dispatch.team@gmail.com']},
+{id:'RPT-003',name:'Weekly Airport OTP/OSP Report – Airport Representatives',emails:['loadcontrol.vn@gmail.com','duty.manager@gmail.com']},
+{id:'RPT-004',name:'Flight Delay Report – Civil Aviation Authority',emails:['station.manager@gmail.com']},
+{id:'RPT-005',name:'Flight Cancellation Report – Civil Aviation Authority',emails:['operations.report@gmail.com','planning.report@gmail.com','admin.report@gmail.com']}
+];
+const $=id=>document.getElementById(id);
+const sym=name=>`<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let stored=null;try{stored=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch(_){}
+let reports=Array.isArray(stored?.reports)&&stored.reports.length?stored.reports.map(r=>({...r,name:seed.find(item=>item.id===r.id)?.name||r.name,emails:Array.isArray(r.emails)?r.emails:[]})):seed.map(r=>({...r,updated:'10/11/2026 09:15',editor:'System Admin'}));
+let enabled=stored?.jobEnabled!==false;
+let appliedFilter={name:'',email:''};
+let panel=null,detailId=null,detailSearch='',detailPage=1,detailPageSize=10,editEmail=null;
+let selected=new Set(),globalEmails=[],detailEmails=[],pendingAction=null,pickerOpen=false,toastTimer=null,globalEditingIndex=null;
+const validEmail=x=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(x);
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({reports,jobEnabled:enabled}))}catch(_){}}
+function stamp(){const d=new Date();const z=n=>String(n).padStart(2,'0');return `${z(d.getDate())}/${z(d.getMonth()+1)}/${d.getFullYear()} ${z(d.getHours())}:${z(d.getMinutes())}`;}
+function touch(r){r.updated=stamp();r.editor='Current User'}
+function toast(s){$('toastText').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),3200)}
+function renderJob(){ $('jobBadge').textContent=enabled?'Enabled':'Disabled';$('jobBadge').classList.toggle('paused',!enabled);$('jobSwitch').classList.toggle('on',enabled);$('jobSwitch').setAttribute('aria-checked',String(enabled));$('jobHint').textContent=enabled?'Automatically sends reports to configured recipients when the job runs.':'Automatic delivery is paused. Existing recipients are retained.';}
+function renderReports(){const list=reports.filter(r=>(!appliedFilter.name||r.name.toLowerCase().includes(appliedFilter.name))&&(!appliedFilter.email||r.emails.some(e=>e.toLowerCase().includes(appliedFilter.email))));$('reportsRows').innerHTML=list.map(r=>`<tr><td class="col-no">${reports.indexOf(r)+1}</td><td><button class="table-link" data-open-detail="${esc(r.id)}" title="${esc(r.name)}">${esc(r.name)}</button></td><td><button class="count-button" data-open-detail="${esc(r.id)}" title="View recipient emails">${sym('mail')} ${r.emails.length} email${r.emails.length===1?'':'s'}</button></td><td class="subtle">${esc(r.updated||'—')}</td><td><span class="person">${esc(r.editor||'System Admin')}</span></td><td class="col-actions"><button class="icon-btn" type="button" data-open-detail="${esc(r.id)}" title="Manage recipients" aria-label="Manage recipients for ${esc(r.name)}">${sym('edit')}</button></td></tr>`).join('')||'<tr><td colspan="6" style="text-align:center;padding:32px;color:#9aabb6">No matching records found.</td></tr>';$('reportsTotal').textContent=`Total: ${list.length}`}
+function closeAllPanels(){panel=null;$('shade').classList.remove('open');['addPanel','detailPanel'].forEach(id=>{$(id).classList.remove('open');$(id).setAttribute('aria-hidden','true')});setPicker(false);editEmail=null;}
+function showPanel(type){closeAllPanels();panel=type;$('shade').classList.add('open');const p=$(type==='add'?'addPanel':'detailPanel');p.classList.add('open');p.setAttribute('aria-hidden','false');}
+function openDetail(id){const r=reports.find(x=>x.id===id);if(!r)return;detailId=id;detailSearch='';detailPage=1;editEmail=null;hideComposer();$('detailSearch').value='';$('detailTitle').textContent=r.name;showPanel('detail');renderDetail();}
+function renderDetail(){const r=reports.find(x=>x.id===detailId);if(!r)return;$('detailTitle').textContent=r.name;$('detailCount').textContent=r.emails.length.toLocaleString('en-US');const found=r.emails.filter(x=>x.toLowerCase().includes(detailSearch));const pages=Math.max(1,Math.ceil(found.length/detailPageSize));detailPage=Math.min(detailPage,pages);const start=(detailPage-1)*detailPageSize;const show=found.slice(start,start+detailPageSize);$('emailsRows').innerHTML=show.map(e=>{
+ if(e===editEmail)return `<div class="email-row"><div class="inline-edit"><input class="control" id="inlineEmail" type="email" value="${esc(e)}" aria-label="Edit recipient email"/><button class="icon-btn save-icon" data-save-inline="${esc(e)}" title="Save" aria-label="Save email">${sym('check')}</button><button class="icon-btn" data-cancel-inline title="Cancel" aria-label="Cancel editing">${sym('x')}</button></div></div>`;
+ return `<div class="email-row"><span class="email-text">${esc(e)}</span><div class="email-actions"><button class="icon-btn" data-edit-email="${esc(e)}" title="Edit email" aria-label="Edit ${esc(e)}">${sym('edit')}</button><button class="icon-btn danger" data-delete-email="${esc(e)}" title="Delete email" aria-label="Delete ${esc(e)}">${sym('trash')}</button></div></div>`
+ }).join('')||'<div class="email-empty">No recipient emails found.</div>';
+ $('emailRange').textContent=found.length?`Showing ${start+1}–${Math.min(found.length,start+detailPageSize)} of ${found.length}`:'Showing 0';$('emailPageLabel').textContent=`${detailPage} / ${pages}`;$('prevEmailPage').disabled=detailPage<=1;$('nextEmailPage').disabled=detailPage>=pages;}
+function openAdd(){selected.clear();globalEmails=[];globalEditingIndex=null;$('globalEmail').value='';$('globalError').textContent='';$('pickerSearch').value='';setPicker(false);renderPicker();renderChips('global');showPanel('add');}
+function setPicker(open){pickerOpen=Boolean(open)&&panel==='add';$('pickerPop').classList.toggle('open',pickerOpen);$('pickerTrigger').setAttribute('aria-expanded',String(pickerOpen));if(pickerOpen){renderPicker();$('pickerSearch').focus()}}
+function visiblePicker(){const q=$('pickerSearch').value.trim().toLowerCase();return reports.filter(r=>r.name.toLowerCase().includes(q));}
+function renderPicker(){const visible=visiblePicker();$('pickerList').innerHTML=visible.map(r=>`<label class="multi-option"><input type="checkbox" value="${esc(r.id)}" ${selected.has(r.id)?'checked':''}/><span class="multi-label">${esc(r.name)}</span></label>`).join('')||'<div class="email-empty">No reports found.</div>';$('pickerValue').textContent=selected.size?`${selected.size} report${selected.size===1?'':'s'} selected`:'Select reports';$('pickerCount').textContent=`${selected.size}/${reports.length}`;}
+function renderChips(which){
+  const arr=which==='global'?globalEmails:detailEmails;
+  $(which+'ChipCount').textContent=arr.length;
+  if(which==='global'){
+    $('globalChips').innerHTML=arr.map((email,i)=>{
+      if(i===globalEditingIndex){
+        return `<div class="email-row"><div class="inline-edit"><input class="control" id="globalInlineEmail" type="email" value="${esc(email)}" aria-label="Edit recipient email"/><button type="button" class="icon-btn save-icon" data-save-global="${i}" title="Save" aria-label="Save email">${sym('check')}</button><button type="button" class="icon-btn" data-cancel-global title="Cancel" aria-label="Cancel editing">${sym('x')}</button></div></div>`;
+      }
+      return `<div class="email-row"><span class="email-text" title="${esc(email)}">${esc(email)}</span><div class="email-actions"><button type="button" class="icon-btn" data-edit-global="${i}" title="Edit email" aria-label="Edit ${esc(email)}">${sym('edit')}</button><button type="button" class="icon-btn danger" data-remove-global="${i}" title="Delete email" aria-label="Delete ${esc(email)}">${sym('trash')}</button></div></div>`;
+    }).join('')||'<div class="email-empty">No recipient emails added.</div>';
+    return;
+  }
+  $(which+'Chips').innerHTML=arr.map((email,i)=>`<span class="chip"><span title="${esc(email)}">${esc(email)}</span><button type="button" data-remove-${which}="${i}" aria-label="Remove ${esc(email)}">${sym('x')}</button></span>`).join('')||'<span class="chip-placeholder">No emails added.</span>';
+}
+function saveGlobalInline(){
+  if(globalEditingIndex===null)return true;
+  const inp=$('globalInlineEmail');if(!inp)return false;
+  const email=inp.value.trim().toLowerCase();
+  if(!validEmail(email)){$('globalError').textContent='Enter a valid email address.';inp.focus();return false;}
+  if(globalEmails.some((e,i)=>i!==globalEditingIndex&&e.toLowerCase()===email)){$('globalError').textContent='This email is already in the list.';inp.focus();return false;}
+  globalEmails[globalEditingIndex]=email;globalEditingIndex=null;$('globalError').textContent='';renderChips('global');return true;
+}
+function parseEmails(raw){return String(raw).split(/[\s,;]+/).map(x=>x.trim().toLowerCase()).filter(Boolean)}
+function queueEmails(which){if(which==='global'&&globalEditingIndex!==null&&!saveGlobalInline())return false;const inp=$(which==='global'?'globalEmail':'detailEmailInput'),error=$(which+'Error'),existing=which==='global'?globalEmails:detailEmails;const entries=parseEmails(inp.value);error.textContent='';if(!entries.length){error.textContent='Enter an email address.';return false}const invalid=entries.filter(x=>!validEmail(x));if(invalid.length){error.textContent=`Invalid email: ${invalid[0]}`;return false}let added=0;for(const e of entries)if(!existing.includes(e)){existing.push(e);added++}inp.value='';renderChips(which);if(!added){error.textContent='All entered emails are already listed.';return false}inp.focus();return true}
+function setUpEmailInput(which){const inp=$(which==='global'?'globalEmail':'detailEmailInput');inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();queueEmails(which)}});inp.addEventListener('input',()=>$(which+'Error').textContent='');inp.addEventListener('paste',e=>{const raw=e.clipboardData?.getData('text/plain')||'';if(/[\r\n\t;,]/.test(raw)){e.preventDefault();inp.value=raw;queueEmails(which)}})}
+function saveGlobal(){if(globalEditingIndex!==null&&!saveGlobalInline())return;if(!selected.size){$('globalError').textContent='Select at least one report.';setPicker(true);return}const typed=$('globalEmail').value.trim();if(typed&&!queueEmails('global'))return;if(!globalEmails.length){$('globalError').textContent='Add at least one email address.';return}let added=0,changed=0;for(const r of reports){if(!selected.has(r.id))continue;let update=false;for(const e of globalEmails){if(!r.emails.some(x=>x.toLowerCase()===e)){r.emails.push(e);added++;update=true}}if(update){touch(r);changed++}}if(!added){$('globalError').textContent='These emails are already assigned to the selected reports.';return}save();renderReports();closeAllPanels();toast(`${added} email assignment${added===1?'':'s'} added to ${changed} report${changed===1?'':'s'}.`)}
+function showComposer(){detailEmails=[];$('detailEmailInput').value='';$('detailError').textContent='';$('composer').hidden=false;renderChips('detail');$('detailEmailInput').focus();}
+function hideComposer(){$('composer').hidden=true;detailEmails=[];if($('detailEmailInput'))$('detailEmailInput').value='';}
+function saveComposer(){const r=reports.find(x=>x.id===detailId);if(!r)return;const typed=$('detailEmailInput').value.trim();if(typed&&!queueEmails('detail'))return;if(!detailEmails.length){$('detailError').textContent='Add at least one email address.';return}let added=0;for(const e of detailEmails){if(!r.emails.some(x=>x.toLowerCase()===e)){r.emails.push(e);added++}}if(!added){$('detailError').textContent='These emails are already assigned to this report.';return}touch(r);save();renderReports();hideComposer();detailSearch='';$('detailSearch').value='';detailPage=1;renderDetail();toast(`${added} email${added===1?'':'s'} added.`)}
+function saveInline(original){const inp=$('inlineEmail');if(!inp)return;const v=inp.value.trim().toLowerCase();if(!validEmail(v)){toast('Enter a valid email address.');inp.focus();return}const r=reports.find(x=>x.id===detailId);if(!r)return;if(r.emails.some(x=>x.toLowerCase()===v&&x!==original)){toast('This email is already assigned to this report.');inp.focus();return}const i=r.emails.indexOf(original);if(i<0)return;r.emails[i]=v;touch(r);editEmail=null;save();renderReports();renderDetail();toast('Recipient email updated.');}
+function openConfirm({title,text,confirmLabel,danger=true,onConfirm}){pendingAction=onConfirm;$('dialogTitle').textContent=title;$('dialogText').textContent=text;$('dialogConfirm').textContent=confirmLabel;$('dialogConfirm').className='btn '+(danger?'btn-danger':'btn-primary');$('dialogShade').classList.add('open');}
+function closeConfirm(){$('dialogShade').classList.remove('open');pendingAction=null;}
+$('filterForm').addEventListener('submit',e=>{e.preventDefault();appliedFilter={name:$('filterName').value.trim().toLowerCase(),email:$('filterEmail').value.trim().toLowerCase()};renderReports()});$('clearFilter').addEventListener('click',()=>{$('filterName').value='';$('filterEmail').value='';appliedFilter={name:'',email:''};renderReports()});$('refresh').addEventListener('click',()=>{renderReports();toast('List refreshed.');});$('addGlobal').addEventListener('click',openAdd);
+$('reportsRows').addEventListener('click',e=>{const b=e.target.closest('[data-open-detail]');if(b)openDetail(b.dataset.openDetail)});
+$('shade').addEventListener('click',closeAllPanels);$('closeAdd').addEventListener('click',closeAllPanels);$('globalCancel').addEventListener('click',closeAllPanels);$('closeDetail').addEventListener('click',closeAllPanels);
+$('pickerTrigger').addEventListener('click',()=>setPicker(!pickerOpen));$('pickerSearch').addEventListener('input',renderPicker);$('pickerList').addEventListener('change',e=>{const c=e.target.closest('input[type=checkbox]');if(!c)return;if(c.checked)selected.add(c.value);else selected.delete(c.value);renderPicker()});$('pickerSelectAll').addEventListener('click',()=>{visiblePicker().forEach(r=>selected.add(r.id));renderPicker()});$('pickerClear').addEventListener('click',()=>{selected.clear();renderPicker()});document.addEventListener('pointerdown',e=>{if(pickerOpen&&!e.target.closest('#picker'))setPicker(false)});
+setUpEmailInput('global');setUpEmailInput('detail');$('globalChipAdd').addEventListener('click',()=>queueEmails('global'));$('globalClearChips').addEventListener('click',()=>{globalEmails=[];globalEditingIndex=null;$('globalError').textContent='';renderChips('global')});$('globalChips').addEventListener('click',e=>{
+  const edit=e.target.closest('[data-edit-global]');
+  const remove=e.target.closest('[data-remove-global]');
+  const commit=e.target.closest('[data-save-global]');
+  const cancel=e.target.closest('[data-cancel-global]');
+  if(edit){if(globalEditingIndex!==null&&!saveGlobalInline())return;globalEditingIndex=Number(edit.dataset.editGlobal);$('globalError').textContent='';renderChips('global');$('globalInlineEmail')?.focus();$('globalInlineEmail')?.select();}
+  else if(remove){const idx=Number(remove.dataset.removeGlobal);globalEmails.splice(idx,1);if(globalEditingIndex!==null){if(globalEditingIndex===idx)globalEditingIndex=null;else if(globalEditingIndex>idx)globalEditingIndex--;}$('globalError').textContent='';renderChips('global');}
+  else if(commit)saveGlobalInline();
+  else if(cancel){globalEditingIndex=null;$('globalError').textContent='';renderChips('global');}
+});
+$('globalChips').addEventListener('keydown',e=>{if(e.target.id!=='globalInlineEmail')return;if(e.key==='Enter'){e.preventDefault();saveGlobalInline()}else if(e.key==='Escape'){e.stopPropagation();globalEditingIndex=null;$('globalError').textContent='';renderChips('global')}});
+$('globalSave').addEventListener('click',saveGlobal);
+$('startAddEmail')?.addEventListener('click',()=>{$('composer').hidden?showComposer():hideComposer()});$('dismissComposer').addEventListener('click',hideComposer);$('cancelComposer').addEventListener('click',hideComposer);$('detailChipAdd').addEventListener('click',()=>queueEmails('detail'));$('detailClearChips').addEventListener('click',()=>{detailEmails=[];renderChips('detail')});$('detailChips').addEventListener('click',e=>{const b=e.target.closest('[data-remove-detail]');if(b){detailEmails.splice(Number(b.dataset.removeDetail),1);renderChips('detail')}});$('saveComposer').addEventListener('click',saveComposer);
+$('detailSearch').addEventListener('input',e=>{detailSearch=e.target.value.trim().toLowerCase();detailPage=1;editEmail=null;renderDetail()});$('detailSearchClear').addEventListener('click',()=>{$('detailSearch').value='';detailSearch='';detailPage=1;renderDetail()});$('emailPageSize').addEventListener('change',e=>{detailPageSize=Number(e.target.value)||10;detailPage=1;renderDetail()});$('prevEmailPage').addEventListener('click',()=>{detailPage--;renderDetail()});$('nextEmailPage').addEventListener('click',()=>{detailPage++;renderDetail()});
+$('emailsRows').addEventListener('click',e=>{const edit=e.target.closest('[data-edit-email]'),del=e.target.closest('[data-delete-email]'),cancel=e.target.closest('[data-cancel-inline]'),confirm=e.target.closest('[data-save-inline]');if(edit){editEmail=edit.dataset.editEmail;renderDetail();$('inlineEmail')?.focus()}else if(cancel){editEmail=null;renderDetail()}else if(confirm){saveInline(confirm.dataset.saveInline)}else if(del){const email=del.dataset.deleteEmail;openConfirm({title:'Delete recipient email?',text:`${email} will be removed from this report only.`,confirmLabel:'Delete',onConfirm:()=>{const r=reports.find(x=>x.id===detailId);if(!r)return;const i=r.emails.indexOf(email);if(i>=0){r.emails.splice(i,1);touch(r);save();renderReports();renderDetail();toast('Recipient email deleted.')}}})}});
+$('emailsRows').addEventListener('keydown',e=>{if(e.target.id==='inlineEmail'){if(e.key==='Enter'){e.preventDefault();saveInline(editEmail)}else if(e.key==='Escape'){e.stopPropagation();editEmail=null;renderDetail()}}});
+$('jobSwitch').addEventListener('click',()=>{if(!enabled){enabled=true;save();renderJob();toast('Automatic delivery enabled.');return}openConfirm({title:'Disable automatic delivery?',text:'Automated sends will stop for all reports. Recipient email configurations will be retained.',confirmLabel:'Disable Job',onConfirm:()=>{enabled=false;save();renderJob();toast('Automatic delivery disabled.')}})});
+$('dialogCancel').addEventListener('click',closeConfirm);$('dialogShade').addEventListener('click',e=>{if(e.target===$('dialogShade'))closeConfirm()});$('dialogConfirm').addEventListener('click',()=>{const cb=pendingAction;closeConfirm();if(cb)cb()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('dialogShade').classList.contains('open'))closeConfirm();else if(pickerOpen)setPicker(false);else if(panel)closeAllPanels()}});
+document.querySelectorAll('[data-demo-nav]').forEach(b=>b.addEventListener('click',()=>toast('Only Report Email Delivery is included in this mockup.')));
+renderJob();renderReports();renderPicker();renderChips('global');renderChips('detail');
+})();
+</script></body></html>
